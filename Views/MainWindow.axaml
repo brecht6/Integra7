@@ -1,0 +1,47 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Integra7AuralAlchemist.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Integra7AuralAlchemist.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Integra-7 Aural Alchemist">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,600" Margin="4">
+
+        <TextBlock  Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Text="{Binding MidiDevices}"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Button Command="{Binding RescanMidiDevicesCommand}" 
+            Grid.Column="0" Grid.Row="1"  HorizontalAlignment="Center" VerticalAlignment="Center">Rescan Midi Devices</Button>
+        <Button Command="{Binding PlayNoteCommand}" IsEnabled="{Binding Connected}" 
+            Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Center" VerticalAlignment="Center">Play Note</Button>
+        <DataGrid Name="PresetDataGrid" 
+            SelectionMode="Single" ItemsSource="{Binding Presets}" 
+            Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="2" 
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            SelectedItem="{Binding SelectedPreset, Mode=TwoWay}"
+            >
+            <DataGrid.Styles>
+                <Style Selector="DataGridCell:current /template/ Grid#FocusVisual"> 
+                    <Setter Property="IsVisible" Value="false" /> 
+                </Style> 
+            </DataGrid.Styles>            
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tone Type"  Binding="{Binding ToneTypeStr}"/>
+                <DataGridTextColumn Header="Tone Bank" Binding="{Binding ToneBankStr}" />
+                <DataGridTextColumn Header="Tone Name" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Category" Binding="{Binding CategoryStr}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+
+</Window>

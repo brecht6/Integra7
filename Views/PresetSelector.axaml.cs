@@ -4,7 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Integra7AuralAlchemist.Models.Data;
 
-namespace Integral7AuralAlchemist.Views;
+namespace Integra7AuralAlchemist.Views;
 
 public partial class PresetSelector : UserControl
 {

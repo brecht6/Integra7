@@ -1,25 +1,16 @@
 <UserControl xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-    x:Class="Integra7AuralAlchemist.Views.PresetSelector"
-    xmlns:vm="using:Integra7AuralAlchemist.ViewModels"
-    x:DataType="vm:MainWindowViewModel"
-    >
-    <DataGrid Name="PresetDataGrid" 
-        SelectionMode="Single" ItemsSource="{Binding Presets}" 
-        HorizontalAlignment="Center" VerticalAlignment="Center"
-        SelectedItem="{Binding SelectedPreset, Mode=TwoWay}"
-        >
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" x:Class="Integra7AuralAlchemist.Views.PresetSelector"
+    xmlns:vm="using:Integra7AuralAlchemist.ViewModels" x:DataType="vm:MainWindowViewModel">
+    <DataGrid Name="PresetDataGrid" SelectionMode="Single" ItemsSource="{Binding Presets}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectedItem="{Binding SelectedPreset, Mode=TwoWay}">
         <DataGrid.Styles>
-            <Style Selector="DataGridCell:current /template/ Grid#FocusVisual"> 
-                <Setter Property="IsVisible" Value="false" /> 
-            </Style> 
-        </DataGrid.Styles>            
-        
+            <Style Selector="DataGridCell:current /template/ Grid#FocusVisual">
+                <Setter Property="IsVisible" Value="false" />
+            </Style>
+        </DataGrid.Styles>
         <DataGrid.Columns>
-            <DataGridTextColumn Header="Tone Type"  Binding="{Binding ToneTypeStr}"/>
+            <DataGridTextColumn Header="Tone Type" Binding="{Binding ToneTypeStr}" />
             <DataGridTextColumn Header="Tone Bank" Binding="{Binding ToneBankStr}" />
             <DataGridTextColumn Header="Tone Name" Binding="{Binding Name}" />
             <DataGridTextColumn Header="Category" Binding="{Binding CategoryStr}" />

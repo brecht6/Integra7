@@ -428,7 +428,7 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void RescanMidiDevices()
     {
-        Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING));
+        Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING));
         Connected = Integra7.ConnectionOk();
         if (Connected)
         {
@@ -472,7 +472,7 @@ public partial class MainWindowViewModel : ObservableObject
 
     public MainWindowViewModel()
     {
-        Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING));
+        Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING));
         Connected = Integra7.ConnectionOk();
         if (Connected)
         {

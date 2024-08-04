@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using Commons.Music.Midi;
 using CoreMidi;
 
@@ -6,6 +7,7 @@ namespace Integra7AuralAlchemist.Models.Services;
 
 public interface IIntegra7Api 
 {
+    bool CheckIdentity();
     bool ConnectionOk();    
     void NoteOn(byte Channel, byte Note, byte Velocity);
     void NoteOff(byte Channel, byte Note);
@@ -15,9 +17,25 @@ public interface IIntegra7Api
 public class Integra7Api : IIntegra7Api
 {
     private IMidiOut? _midiOut;
-    public Integra7Api(IMidiOut midiOut)
+    private IMidiIn? _midiIn;
+    private Integra7SysexHelpers _sysex;
+
+    public Integra7Api(IMidiOut midiOut, IMidiIn midiIn)
     {
         _midiOut = midiOut;
+        _midiIn = midiIn;
+        _sysex = new Integra7SysexHelpers();
+        if (!CheckIdentity())
+        {
+            Debug.WriteLine("oeioeioeioeioeioeioeioei");
+        }  
+    }
+
+    public bool CheckIdentity()
+    {
+        byte[] data = _sysex.IDENTITY_REQUEST;
+        _midiOut?.SafeSend(data);
+        return true;
     }
 
     public bool ConnectionOk(){
@@ -59,7 +77,7 @@ public class Integra7Api : IIntegra7Api
 
     private void ProgramChange(byte Channel, int ProgramNumber) {
         byte[] data = [(byte)(MidiEvent.Program + Channel), (byte)ProgramNumber];
-        _midiOut.SafeSend(data);
+        _midiOut?.SafeSend(data);
     }
 
     public void ChangePreset(byte Channel, int Msb, int Lsb, int Pc)

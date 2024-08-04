@@ -3,16 +3,21 @@
     xmlns:vm="using:Integra7AuralAlchemist.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" x:Class="Integra7AuralAlchemist.Views.MainWindow"
-    xmlns:local="clr-namespace:Integra7AuralAlchemist.Views" x:DataType="vm:MainWindowViewModel" Icon="/Assets/avalonia-logo.ico" Title="Integra-7 Aural Alchemist">
+    xmlns:local="clr-namespace:Integra7AuralAlchemist.Views" x:DataType="vm:MainWindowViewModel" Icon="/Assets/avalonia-logo.ico" 
+    Title="Integra-7 Aural Alchemist">
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel />
     </Design.DataContext>
     <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,600" Margin="4">
-        <TextBlock Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Text="{Binding MidiDevices}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <Button Command="{Binding RescanMidiDevicesCommand}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">Rescan Midi Devices</Button>
-        <Button Command="{Binding PlayNoteCommand}" IsEnabled="{Binding Connected}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">Play Note</Button>
-        <local:PresetSelector Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Presets="{Binding Presets}" />
+        <TextBlock Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Text="{Binding MidiDevices}" HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" />
+        <Button Command="{Binding RescanMidiDevicesCommand}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" 
+                VerticalAlignment="Center">Rescan Midi Devices</Button>
+        <Button Command="{Binding PlayNoteCommand}" IsEnabled="{Binding Connected}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" 
+                VerticalAlignment="Center">Play Note</Button>
+        <local:PresetSelector Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Presets="{Binding PresetsCh0}" 
+                              SelectedPreset="{Binding SelectedPresetCh0, Mode=TwoWay}"/>
     </Grid>
 </Window>

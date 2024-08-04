@@ -86,8 +86,8 @@ internal class MidiOut : IMidiOut
 
     public void ChangePreset(byte Channel, int Msb, int Lsb, int Pc)
     {
-        BankSelectMsb(0, Msb);
-        BankSelectLsb(0, Lsb);
-        ProgramChange(0, Pc -1);
+        BankSelectMsb(Channel, Msb);
+        BankSelectLsb(Channel, Lsb);
+        ProgramChange(Channel, Pc -1);
     }
 }

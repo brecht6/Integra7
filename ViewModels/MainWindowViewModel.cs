@@ -409,9 +409,10 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void PlayNote()
     {
-        TheMidiOut?.NoteOn(0, 65, 100);
+        byte currentTab = (byte)CurrentPartSelection;
+        TheMidiOut?.NoteOn(currentTab, 65, 100);
         Thread.Sleep(1000);
-        TheMidiOut?.NoteOff(0, 65);
+        TheMidiOut?.NoteOff(currentTab, 65);
     }
 
     [RelayCommand]
@@ -439,6 +440,10 @@ public partial class MainWindowViewModel : ObservableObject
             MidiDevices = "Could not find " + INTEGRA_CONNECTION_STRING;
         }
     }
+
+    [ObservableProperty]
+    private int currentPartSelection = 0;
+    
 
     private async void LoadPresets()
     {

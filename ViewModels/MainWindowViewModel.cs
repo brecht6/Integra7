@@ -11,6 +11,9 @@ using Avalonia;
 using DynamicData;
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
+using Microsoft.VisualBasic;
+using Avalonia.Controls;
+using System.Diagnostics;
 
 namespace Integra7AuralAlchemist.ViewModels;
 
@@ -39,6 +42,13 @@ public partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty]
     private string midiDevices = "No Midi Devices Detected";
+
+    [RelayCommand]
+    public void SelectionChanged(SelectionChangedEventArgs args)
+    {   
+        Debug.Write("meh: "); 
+        Debug.WriteLine(args);
+    }
 
 
     [RelayCommand]

@@ -7,15 +7,13 @@ using CoreMidi;
 
 namespace Integra7AuralAlchemist.Models.Services;
 
-interface IMidiOut 
+public interface IMidiOut 
 {
-    bool ConnectionOk();    
-    void NoteOn(byte Channel, byte Note, byte Velocity);
-    void NoteOff(byte Channel, byte Note);
-    void ChangePreset(byte Channel, int Msb, int Lsb, int Pc);
+    public bool ConnectionOk();
+    public void SafeSend(byte[] data);
 }
 
-internal class MidiOut : IMidiOut 
+public class MidiOut : IMidiOut 
 {
     private readonly IMidiAccess2? _midiAccessManager = null;
     private IMidiOutput? _access = null;
@@ -32,7 +30,7 @@ internal class MidiOut : IMidiOut
     
     public bool ConnectionOk() => _midiPortDetails != null;
 
-    private void SafeSend(byte[] data) 
+    public void SafeSend(byte[] data) 
     {
         try { 
             if (_access is null) {
@@ -46,48 +44,5 @@ internal class MidiOut : IMidiOut
             _midiPortDetails = null;
             _access = null;
         }
-    }
-
-    public void NoteOn(byte Channel, byte Note, byte Velocity)
-    {
-        byte[] data = [(byte)(MidiEvent.NoteOn + Channel), Note, Velocity];
-        SafeSend(data);
-    }
-
-    public void NoteOff(byte Channel, byte Note)
-    {
-        byte[] data = [(byte)(MidiEvent.NoteOff + Channel), Note, 0];
-        SafeSend(data);
-    }
-
-    private void BankSelectMsb(byte Channel, int BankNumberMsb) {
-        ISet<int> PossibleBankMsb = new HashSet<int>{ 85, 86, 87, 88, 89, 92, 93, 95, 96, 97, 120, 121};
-        if (PossibleBankMsb.Contains(BankNumberMsb)) {
-            byte[] data = [(byte)(MidiEvent.CC + Channel), 0, (byte)BankNumberMsb];
-            SafeSend(data);
-        } else {
-            throw new MidiException("Trying to select impossible MSB Banknumber: " + BankNumberMsb);
-        }
-    }
-
-    private void BankSelectLsb(byte Channel, int BankNumberLsb) {
-        if (0 <= BankNumberLsb && BankNumberLsb <= 127) {
-            byte[] data = [(byte)(MidiEvent.CC + Channel), 0x20, (byte)BankNumberLsb];
-            SafeSend(data);
-        } else {
-            throw new MidiException("Trying to select impossible LSB BankNumber: " + BankNumberLsb);
-        }
-    }
-
-    private void ProgramChange(byte Channel, int ProgramNumber) {
-        byte[] data = [(byte)(MidiEvent.Program + Channel), (byte)ProgramNumber];
-        SafeSend(data);
-    }
-
-    public void ChangePreset(byte Channel, int Msb, int Lsb, int Pc)
-    {
-        BankSelectMsb(Channel, Msb);
-        BankSelectLsb(Channel, Lsb);
-        ProgramChange(Channel, Pc -1);
     }
 }

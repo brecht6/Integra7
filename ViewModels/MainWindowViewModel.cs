@@ -398,7 +398,7 @@ public partial class MainWindowViewModel : ObservableObject
     private readonly Dictionary<int, IDisposable> _cleanUp = new Dictionary<int, IDisposable>();
 
     private const string INTEGRA_CONNECTION_STRING = "INTEGRA-7";
-    private IMidiOut? TheMidiOut { get; set; } = null;
+    private IIntegra7Api? Integra7 { get; set; } = null;
 
     [ObservableProperty]
     private bool connected = false;
@@ -410,9 +410,9 @@ public partial class MainWindowViewModel : ObservableObject
     private void PlayNote()
     {
         byte currentTab = (byte)CurrentPartSelection;
-        TheMidiOut?.NoteOn(currentTab, 65, 100);
+        Integra7?.NoteOn(currentTab, 65, 100);
         Thread.Sleep(1000);
-        TheMidiOut?.NoteOff(currentTab, 65);
+        Integra7?.NoteOff(currentTab, 65);
     }
 
     [RelayCommand]
@@ -421,16 +421,15 @@ public partial class MainWindowViewModel : ObservableObject
         Integra7Preset CurrentSelection = GetSelectedPreset(MidiChannel);
         if (CurrentSelection != null)
         {
-
-            TheMidiOut?.ChangePreset(MidiChannel, CurrentSelection.Msb, CurrentSelection.Lsb, CurrentSelection.Pc);
+            Integra7?.ChangePreset(MidiChannel, CurrentSelection.Msb, CurrentSelection.Lsb, CurrentSelection.Pc);
         }
     }
 
     [RelayCommand]
     private void RescanMidiDevices()
     {
-        TheMidiOut = new MidiOut(INTEGRA_CONNECTION_STRING);
-        Connected = TheMidiOut.ConnectionOk();
+        Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING));
+        Connected = Integra7.ConnectionOk();
         if (Connected)
         {
             MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING;
@@ -473,8 +472,8 @@ public partial class MainWindowViewModel : ObservableObject
 
     public MainWindowViewModel()
     {
-        TheMidiOut = new MidiOut(INTEGRA_CONNECTION_STRING);
-        Connected = TheMidiOut.ConnectionOk();
+        Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING));
+        Connected = Integra7.ConnectionOk();
         if (Connected)
         {
             MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING;

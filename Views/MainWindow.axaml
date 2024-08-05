@@ -9,11 +9,23 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel />
     </Design.DataContext>
-    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,800">
-        <TextBlock Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Text="{Binding MidiDevices}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <Button Command="{Binding RescanMidiDevicesCommand}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">Rescan Midi Devices</Button>
-        <Button Command="{Binding PlayNoteCommand}" IsEnabled="{Binding Connected}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">Play Note</Button>
-        <TabControl HorizontalContentAlignment="Left" TabStripPlacement="Left" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" SelectedIndex="{Binding CurrentPartSelection, Mode=TwoWay}">
+    <Grid ColumnDefinitions="*" RowDefinitions="Auto,Auto,Auto,800">
+
+        <Border Grid.Row="0" Height="32">
+            <TextBlock Text="Integra-7 Aural Alchemist" VerticalAlignment="Center" Margin="10 0"/>
+        </Border>
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding MidiDevices}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="20">
+            <Button Command="{Binding RescanMidiDevicesCommand}" >Rescan Midi Devices</Button>
+            <Button Command="{Binding PlayNoteCommand}" IsEnabled="{Binding Connected}" >Play Note</Button>
+            <Button Command="{Binding PanicCommand}" IsEnabled="{Binding Connected}" Background="Red" Foreground="White">
+                Panic!
+            </Button>
+        </StackPanel>
+        
+        <TabControl HorizontalContentAlignment="Left" TabStripPlacement="Left" Grid.Row="3" Grid.Column="0" SelectedIndex="{Binding CurrentPartSelection, Mode=TwoWay}">
             <TabItem Header="Part 1">
                 <local:PresetSelector Presets="{Binding PresetsCh0}" SelectedPreset="{Binding SelectedPresetCh0, Mode=TwoWay}" />
             </TabItem>

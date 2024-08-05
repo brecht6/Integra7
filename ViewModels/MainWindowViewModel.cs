@@ -416,6 +416,12 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private void Panic()
+    {
+        Integra7?.AllNotesOff();
+    }
+
+    [RelayCommand]
     private void ChangePreset(byte MidiChannel)
     {
         Integra7Preset CurrentSelection = GetSelectedPreset(MidiChannel);

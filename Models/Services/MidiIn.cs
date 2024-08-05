@@ -2,13 +2,14 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Commons.Music.Midi;
 using ReactiveUI;
 
+namespace Integra7AuralAlchemist.Models.Services;
 public interface IMidiIn
 {
-    public void SetCustomReplyHandler(EventHandler<MidiReceivedEventArgs> eventHandler);
-    public void RemoveCustomReplyHandler(bool reinstateDefaultHandler);
+    public byte[] GetReply();
 }
 
 
@@ -17,13 +18,16 @@ public class MidiIn : IMidiIn
     private readonly IMidiAccess2? _midiAccessManager = null;
     private IMidiInput? _access = null;
     private IMidiPortDetails? _midiPortDetails = null;
-    private byte[] _data = [];
     private event EventHandler<MidiReceivedEventArgs> _lastEventHandler;
+    private static ManualResetEvent _replyReady = new ManualResetEvent(false);
+    private byte[] _replyData = [];
+    public bool Verbose { get; set; } = false;
 
-    public MidiIn(string Name) 
+    public MidiIn(string Name)
     {
         _midiAccessManager = MidiAccessManager.Default as IMidiAccess2;
-        try {
+        try
+        {
             _midiPortDetails = _midiAccessManager?.Inputs.Where(x => x.Name.Contains(Name)).Last();
             _access = _midiAccessManager?.OpenInputAsync(_midiPortDetails?.Id).Result;
             if (_access != null)
@@ -31,44 +35,41 @@ public class MidiIn : IMidiIn
                 _lastEventHandler = DefaultHandler;
                 _access.MessageReceived += _lastEventHandler;
             }
-        } catch(System.InvalidOperationException) {
+        }
+        catch (System.InvalidOperationException)
+        {
             _midiPortDetails = null;
-        }
-    }
-
-    public void SetCustomReplyHandler(EventHandler<MidiReceivedEventArgs> eventHandler)
-    {
-        if (_access != null)
-        {
-            if (_lastEventHandler != null) {
-                _access.MessageReceived -= _lastEventHandler;
-            }
-            _lastEventHandler = eventHandler;
-            _access.MessageReceived += _lastEventHandler;
-        }
-    }
-
-    public void RemoveCustomReplyHandler(bool reinstateDefaultHandler)
-    {
-        if (_access != null) 
-        {
-            if (_lastEventHandler != null) {
-                _access.MessageReceived -= _lastEventHandler;
-                if (reinstateDefaultHandler) {
-                    _lastEventHandler = DefaultHandler;
-                    _access.MessageReceived += _lastEventHandler;
-                }
-            }
         }
     }
 
     private void DefaultHandler(object? sender, MidiReceivedEventArgs e)
     {
-        StringBuilder hex = new StringBuilder(e.Length * 2);
-        for (int i = 0; i < e.Length; i++)
+        _replyData = new byte[e.Length];
+        Array.Copy(e.Data, _replyData, e.Length);
+        _replyReady.Set();
+
+        if (Verbose)
         {
-            hex.AppendFormat("{0:x2} ", e.Data[i]);
+            StringBuilder hex = new StringBuilder(e.Length * 2);
+            for (int i = 0; i < e.Length; i++)
+            {
+                hex.AppendFormat("{0:x2} ", e.Data[i]);
+            }
+            Debug.WriteLine(hex.ToString());
         }
-        Debug.WriteLine(hex.ToString());
+    }
+
+    public byte[] GetReply()
+    {
+        if (_replyReady.WaitOne(5000))
+        {
+            _replyReady.Reset();
+            return _replyData;
+        }
+        else
+        {
+            // if no reply after 5 seconds, most likely no reply will come anymore...
+            return [];
+        }
     }
 }

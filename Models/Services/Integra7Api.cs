@@ -27,21 +27,21 @@ public class Integra7Api : IIntegra7Api
         _sysex = new Integra7SysexHelpers();
         if (!CheckIdentity())
         {
-            Debug.WriteLine("oeioeioeioeioeioeioeioei");
+            _midiOut = null;
+            _midiIn = null;
         }  
     }
 
     public bool CheckIdentity()
     {
-        byte[] data = _sysex.IDENTITY_REQUEST;
+        byte[] data = Integra7SysexHelpers.IDENTITY_REQUEST;
         _midiOut?.SafeSend(data);
-        return true;
+        byte[] reply = _midiIn?.GetReply() ?? [];
+        return Integra7SysexHelpers.CheckIdentityReply(reply);
     }
 
     public bool ConnectionOk(){
-        if (_midiOut != null)
-            return _midiOut.ConnectionOk();
-        return false;
+        return _midiOut?.ConnectionOk() ?? false;
     }
 
     public void NoteOn(byte Channel, byte Note, byte Velocity)

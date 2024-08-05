@@ -19,13 +19,13 @@ public class Integra7SysexHelpers
     private static byte[] END_OF_SYSEX = [0xF7];
     private static byte[] DEVICE_ID = [0x10];
 
-    public static byte[] IDENTITY_REQUEST = ByteUtils.Flatten([ EXCLUSIVE_STATUS, UNIVERSAL_NON_RT, SYSEX_GLOBAL_CH, 
+    public static byte[] IDENTITY_REQUEST = ByteUtils.Flatten([ EXCLUSIVE_STATUS, UNIVERSAL_NON_RT, SYSEX_GLOBAL_CH,
                                        IDENTITY_GEN_INFO, IDENTITY_ID_REQ, END_OF_SYSEX ]);
-    public static byte[] IDENTITY_REPLY = ByteUtils.Flatten([EXCLUSIVE_STATUS, UNIVERSAL_NON_RT, DEVICE_ID, 
+    public static byte[] IDENTITY_REPLY = ByteUtils.Flatten([EXCLUSIVE_STATUS, UNIVERSAL_NON_RT, DEVICE_ID,
                                     IDENTITY_GEN_INFO, IDENTITY_ID_REP, ROLAND_ID,
-                                    ROLAND_DEVICE_FAMILY_CODE, ROLAND_DEVICE_FAMILY_NUMBER_CODE, ROLAND_DEVICE_FAMILY_SW_REV, 
+                                    ROLAND_DEVICE_FAMILY_CODE, ROLAND_DEVICE_FAMILY_NUMBER_CODE, ROLAND_DEVICE_FAMILY_SW_REV,
                                     END_OF_SYSEX]);
-    
+
     public static bool CheckIdentityReply(byte[] reply)
     {
         return reply.SequenceEqual(IDENTITY_REPLY);

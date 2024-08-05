@@ -442,7 +442,7 @@ public partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty]
     private int currentPartSelection = 0;
-    
+
 
     private async void LoadPresets()
     {

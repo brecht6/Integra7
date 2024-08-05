@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Channels;
 using Commons.Music.Midi;
 using CoreMidi;
+using ReactiveUI;
 
 namespace Integra7AuralAlchemist.Models.Services;
 
@@ -11,6 +13,7 @@ public interface IIntegra7Api
     bool ConnectionOk();
     void NoteOn(byte Channel, byte Note, byte Velocity);
     void NoteOff(byte Channel, byte Note);
+    void AllNotesOff();
     void ChangePreset(byte Channel, int Msb, int Lsb, int Pc);
 }
 
@@ -47,14 +50,23 @@ public class Integra7Api : IIntegra7Api
 
     public void NoteOn(byte Channel, byte Note, byte Velocity)
     {
-        byte[] data = [(byte)(MidiEvent.NoteOn + Channel), Note, Velocity];
+        byte[] data = [(byte)(Integra7MidiControlNos.NoteOn + Channel), Note, Velocity];
         _midiOut?.SafeSend(data);
     }
 
     public void NoteOff(byte Channel, byte Note)
     {
-        byte[] data = [(byte)(MidiEvent.NoteOff + Channel), Note, 0];
+        byte[] data = [(byte)(Integra7MidiControlNos.NoteOff + Channel), Note, 0];
         _midiOut?.SafeSend(data);
+    }
+
+    public void AllNotesOff()
+    {
+        for (int i = 0; i < 16; i++)
+        {
+            byte[] data = [(byte)(Integra7MidiControlNos.AllNotesOff + i), 0x7C, 0x00];
+            _midiOut?.SafeSend(data);
+        }
     }
 
     private void BankSelectMsb(byte Channel, int BankNumberMsb)

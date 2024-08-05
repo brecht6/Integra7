@@ -435,10 +435,15 @@ public partial class MainWindowViewModel : ObservableObject
     private void RescanMidiDevices()
     {
         Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING));
-        Connected = Integra7.ConnectionOk();
+        UpdateConnected(Integra7);
+    }
+
+    private void UpdateConnected(IIntegra7Api integra7)
+    {
+        Connected = integra7.ConnectionOk();
         if (Connected)
         {
-            MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING;
+            MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING + " with device id " + integra7.DeviceId().ToString("x2");
         }
         else
         {
@@ -479,15 +484,7 @@ public partial class MainWindowViewModel : ObservableObject
     public MainWindowViewModel()
     {
         Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING));
-        Connected = Integra7.ConnectionOk();
-        if (Connected)
-        {
-            MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING;
-        }
-        else
-        {
-            MidiDevices = "Could not find " + INTEGRA_CONNECTION_STRING;
-        }
+        UpdateConnected(Integra7);
 
         LoadPresets();
         for (byte i = 0; i < 16; ++i)

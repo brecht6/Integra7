@@ -9,6 +9,7 @@ namespace Integra7AuralAlchemist.Models.Services;
 
 public interface IIntegra7Api
 {
+    byte DeviceId();
     bool CheckIdentity();
     bool ConnectionOk();
     void NoteOn(byte Channel, byte Note, byte Velocity);
@@ -21,17 +22,21 @@ public class Integra7Api : IIntegra7Api
 {
     private IMidiOut? _midiOut;
     private IMidiIn? _midiIn;
-    private Integra7SysexHelpers _sysex;
+    private byte _deviceId = 0;
+    public byte DeviceId() 
+    { 
+        return _deviceId;
+    }
 
     public Integra7Api(IMidiOut midiOut, IMidiIn midiIn)
     {
         _midiOut = midiOut;
         _midiIn = midiIn;
-        _sysex = new Integra7SysexHelpers();
         if (!CheckIdentity())
         {
             _midiOut = null;
             _midiIn = null;
+            _deviceId = 0;
         }
     }
 
@@ -40,7 +45,7 @@ public class Integra7Api : IIntegra7Api
         byte[] data = Integra7SysexHelpers.IDENTITY_REQUEST;
         _midiOut?.SafeSend(data);
         byte[] reply = _midiIn?.GetReply() ?? [];
-        return Integra7SysexHelpers.CheckIdentityReply(reply);
+        return Integra7SysexHelpers.CheckIdentityReply(reply, out _deviceId);
     }
 
     public bool ConnectionOk()

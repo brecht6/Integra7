@@ -26,9 +26,16 @@ public class Integra7SysexHelpers
                                     ROLAND_DEVICE_FAMILY_CODE, ROLAND_DEVICE_FAMILY_NUMBER_CODE, ROLAND_DEVICE_FAMILY_SW_REV,
                                     END_OF_SYSEX]);
 
-    public static bool CheckIdentityReply(byte[] reply)
+    public static bool CheckIdentityReply(byte[] reply, out byte deviceId)
     {
-        return reply.SequenceEqual(IDENTITY_REPLY);
+        if (reply.Length > 2)
+        {
+            deviceId = reply[2];
+            IDENTITY_REPLY[2] = deviceId;
+            return reply.SequenceEqual(IDENTITY_REPLY);
+        }
+        deviceId = 0;
+        return false;
     }
 
 }

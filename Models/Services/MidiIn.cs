@@ -21,7 +21,11 @@ public class MidiIn : IMidiIn
     private event EventHandler<MidiReceivedEventArgs> _lastEventHandler;
     private static ManualResetEvent _replyReady = new ManualResetEvent(false);
     private byte[] _replyData = [];
+#if DEBUG    
+    public bool Verbose { get; set; } = true;
+#else
     public bool Verbose { get; set; } = false;
+#endif
 
     public MidiIn(string Name)
     {

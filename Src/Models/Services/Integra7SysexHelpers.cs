@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Linq;
 
 namespace Integra7AuralAlchemist.Models.Services;
+
 public class Integra7SysexHelpers
 {
     private static byte[] EXCLUSIVE_STATUS = [0xF0];
@@ -88,10 +89,17 @@ public class Integra7SysexHelpers
     public static byte[] Offset_PCM_SynthTone_Common = [0x00, 0x00, 0x00];
     public static byte[] Offset_PCM_SynthTone_Common_MFX = [0x00, 0x02, 0x00];
     public static byte[] Offset_PCM_SynthTone_PartialMixTable = [0x00, 0x10, 0x00];
-    public static byte[] Offset_PCM_SynthTone_Partial_1 = [0x00, 0x20, 0x00];
-    public static byte[] Offset_PCM_SynthTone_Partial_2 = [0x00, 0x22, 0x00];
-    public static byte[] Offset_PCM_SynthTone_Partial_3 = [0x00, 0x24, 0x00];
-    public static byte[] Offset_PCM_SynthTone_Partial_4 = [0x00, 0x26, 0x00];
+    public static byte[] Offset_PCM_SynthTone_Partial(int ZeroBasedPartial)
+    {
+        Debug.Assert(ZeroBasedPartial >= 0);
+        Debug.Assert(ZeroBasedPartial <= 4);
+        byte[] final = [0x00, 0x20, 0x00];
+        for (int i = 0; i < ZeroBasedPartial; i++)
+        {
+            final = ByteUtils.AddressWithOffset(final, [0x02, 0x00]);
+        }
+        return final;
+    }
     public static byte[] Offset_PCM_SynthTone_Common_2 = [0x00, 0x30, 0x00];
 
     public static byte[] Offset_PCM_DrumKit_Common = [0x00, 0x00, 0x00];
@@ -100,27 +108,45 @@ public class Integra7SysexHelpers
 
     public static byte[] Offset_PCM_DrumKit_Partial_Key(int KeyNumber)
     {
+        Debug.Assert(KeyNumber >= 21);
+        Debug.Assert(KeyNumber <= 108);
         if (KeyNumber >= 21 && KeyNumber <= 76)
         {
-            byte[] base_offset = [0x00, 0x10, 0x00];
-            for (int i=0; i<(KeyNumber-21); i++)
+            byte[] final = [0x00, 0x10, 0x00];
+            for (int i = 0; i < (KeyNumber - 21); i++)
             {
-                base_offset = ByteUtils.AddressWithOffset(base_offset, [0x02, 0x00]);
+                final = ByteUtils.AddressWithOffset(final, [0x02, 0x00]);
             }
-            return base_offset;
+            return final;
         }
         else if (KeyNumber >= 77 && KeyNumber <= 108)
         {
-            byte[] base_offset = [0x01, 0x00, 0x00];
-            for (int i=0; i<(KeyNumber-77); i++)
+            byte[] final = [0x01, 0x00, 0x00];
+            for (int i = 0; i < (KeyNumber - 77); i++)
             {
-                base_offset = ByteUtils.AddressWithOffset(base_offset, [0x02, 0x00]);
+                final = ByteUtils.AddressWithOffset(final, [0x02, 0x00]);
             }
-            return base_offset;
+            return final;
         }
         Debug.Assert(false); // invalid key number specified...
         return [];
     }
+
+    public static byte[] Offset_SN_SynthTone_Common = [0x00, 0x00, 0x00];
+    public static byte[] Offset_SN_SynthTone_MFX = [0x00, 0x02, 0x00];
+    public static byte[] Offset_SN_SynthTone_Partial(int ZeroBasedPartial)
+    {
+        Debug.Assert(ZeroBasedPartial >= 0);
+        Debug.Assert(ZeroBasedPartial <= 2);
+        byte[] final = [0x00, 0x20, 0x00];
+        for (int i =0; i < ZeroBasedPartial; i++)
+        {
+            final = ByteUtils.AddressWithOffset(final, [0x00, 0x01, 0x00]);
+        }
+        return final;
+    }
+
+    public static byte[] Offset_Setup_SoundMode = [0x00, 0x00]; 
 
     public static bool CheckIdentityReply(byte[] reply, out byte deviceId)
     {
@@ -134,20 +160,20 @@ public class Integra7SysexHelpers
         return false;
     }
 
-    public static byte[] MakeDataRequest(byte deviceId, long address, long size)
+    public static byte[] MakeDataRequest(byte deviceId, byte[] address, long size)
     {
-        byte[] payload = ByteUtils.Flatten([ByteUtils.IntToBytes7(address), ByteUtils.IntToBytes7(size)]);
-        byte[] data = ByteUtils.Flatten([EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID, 
+        byte[] payload = ByteUtils.Flatten([address, ByteUtils.IntToBytes7_4(size)]);
+        byte[] data = ByteUtils.Flatten([EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID,
                                          COMMAND_DATAREQ, payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX]);
         return data;
     }
 
-    public static byte[] MakeDataSet(byte deviceId, long address, byte[] data)
+    public static byte[] MakeDataSet(byte deviceId, byte[] address, byte[] data)
     {
-        byte[] payload = ByteUtils.Flatten([ByteUtils.IntToBytes7(address), data]);
+        byte[] payload = ByteUtils.Flatten([address, data]);
         byte[] msg = ByteUtils.Flatten([EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID,
                                         COMMAND_DATASET, payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX]);
         return msg;
     }
-
 }
+

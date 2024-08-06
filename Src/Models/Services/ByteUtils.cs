@@ -42,7 +42,13 @@ public class ByteUtils
         return (byte)((value >> 21) & 0x7f);
     }
 
-    public static byte[] IntToBytes7(long value)
+    public static byte[] IntToBytes7_2(long value)
+    {
+        Debug.Assert(value < 0x8000);
+        return [LtlEnd_SecondByte7(value), LtlEnd_FirstByte7(value)];
+    }
+
+    public static byte[] IntToBytes7_4(long value)
     {
         Debug.Assert(value < 0x80000000);
         return [LtlEnd_FourthByte7(value), LtlEnd_ThirdByte7(value),
@@ -63,8 +69,13 @@ public class ByteUtils
 
     public static long Bytes7ToInt(byte[] data)
     {
-        Debug.Assert(data.Length == 4);
-        return ((((((long)data[0] << 7) + (long)data[1]) << 7) + (long)data[2]) << 7) + (long)data[3];
+        long total = 0;
+        for (int i=0; i < data.Length; i++)
+        {
+            total <<= 7;
+            total += data[i];
+        }
+        return total;
     }
 
     public static byte CheckSum(byte[] data)

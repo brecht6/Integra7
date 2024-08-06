@@ -1,0 +1,247 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Numerics;
+using Avalonia.Data.Core;
+using FluentAvalonia.UI.Controls;
+
+namespace Integra7AuralAlchemist.Models.Data;
+
+
+public class Integra7Parameters
+{
+    public readonly IDictionary<int, string> SoundModes = new Dictionary<int, string> { [1] = "STUDIO", [2] = "GM1", [3] = "GM2", [4] = "GS" };
+    public readonly IDictionary<int, string> _1_16_OFF = new Dictionary<int, string> { [0] = "1", [1] = "2", [2] = "3", [3] = "4", [4] = "5", [5] = "6",
+        [6] = "7", [7] = "8", [8] = "9", [9] = "10", [10] = "11", [11] = "12",
+        [12] = "13", [13] = "14", [14] = "15", [15] = "16", [16] = "OFF"
+    };
+
+    public readonly IDictionary<int, string> _1_16 = new Dictionary<int, string> { [0] = "1", [1] = "2", [2] = "3", [3] = "4", [4] = "5", [5] = "6",
+        [6] = "7", [7] = "8", [8] = "9", [9] = "10", [10] = "11", [11] = "12",
+        [12] = "13", [13] = "14", [14] = "15", [15] = "16"
+    };
+
+    public readonly IDictionary<int, string> OFF_1_16 = new Dictionary<int, string> { [0] = "OFF", [1] = "1", [2] = "2", [3] = "3", [4] = "4", [5] = "5",
+        [6] = "6", [7] = "7", [8] = "8", [9] = "9", [10] = "10", [11] = "11",
+        [12] = "12", [13] = "13", [14] = "14", [15] = "15", [16] = "16"
+    };
+    
+    public readonly IDictionary<int, string> CONTROL_SOURCE = new Dictionary<int, string> { [0] = "OFF", [1] = "CC01 (MOD WHEEL)", [2] = "CC02 (BREATH)", 
+        [3] = "CC03",  [4] = "CC04 (FOOT)", [5] = "CC05 (PORTAMENTO TIME)", [6] = "CC06 (DATA MSB)", [7] = "CC07 (MAIN VOLUME)", 
+        [8] = "CC08 (BALANCE)", [9] = "CC09", [10] = "CC10 (PAN)", [11] = "CC11 (EXPRESSION)", [12] = "CC12 (EFFECT CTRL 1)", 
+        [13] = "CC13 (EFFECT CTRL 2)", [14] = "CC14", [15] = "CC15", [16] = "CC16 (GEN PURP. 1)", [17] = "CC17 (GEN PURP. 2)", 
+        [18] = "CC18 (GEN PURP. 3)", [19] = "CC19 (GEN PURP. 4)", [20] = "CC20", [21] = "CC21", [22] = "CC22", [23] = "CC23", 
+        [24] = "CC24", [25] = "CC25", [26] = "CC26", [27] = "CC27",
+        [28] = "CC28", [29] = "CC29", [30] = "CC30", [31] = "CC31", [32] = "CC33", [33] = "CC34", [34] = "CC35", [35] = "CC36",
+        [36] = "CC37", [37] = "CC38", [38] = "CC39", [39] = "CC40", [40] = "CC41", [41] = "CC42", [42] = "CC43", [43] = "CC44",
+        [44] = "CC45", [45] = "CC46", [46] = "CC47", [47] = "CC48", [48] = "CC49", [49] = "CC50", [50] = "CC51", [51] = "CC52",
+        [52] = "CC53", [53] = "CC54", [54] = "CC55", [55] = "CC56", [56] = "CC57", [57] = "CC58", [58] = "CC59", [59] = "CC60",
+        [60] = "CC61", [61] = "CC62", [62] = "CC63", [63] = "CC64 (SUSTAIN)", [64] = "CC65 (PORTAMENTO)", [65] = "CC66 (SOSTENUTO)", 
+        [66] = "CC67 (SOFT PED.)", [67] = "CC68 (LEGATO FOOTSWITCH)", [68] = "CC69 (HOLD 2)", [69] = "CC70 (SOUND CTRLR 1 SND VAR)", 
+        [70] = "CC71 (SOUND CTRLR 2 HARM)", [71] = "CC72 (SOUND CTRLR 3 REL TIME)", [72] = "CC73 (SOUND CTRLR 4 ATT TIME)", 
+        [73] = "CC74 (SOUND CTRLR 5 BRIGHT)", [74] = "CC75 (SOUND CTRLR 6)", [75] = "CC76 (SOUND CTRLR 7)",
+        [76] = "CC77 (SOUND CTRLR 8)", [77] = "CC78 (SOUND CTRLR 9)", [78] = "CC79 (SOUND CTRLR 10)", [79] = "CC80 (GEN PURP. 5)", 
+        [80] = "CC81 (GEN PURP. 6)", [81] = "CC82 (GEN PURP. 7)", [82] = "CC83 (GEN PURP. 8)", [83] = "CC84 (PORTAMENTO CTRL)",
+        [84] = "CC85", [85] = "CC86", [86] = "CC87", [87] = "CC88", [88] = "CC89", [89] = "CC90", [90] = "CC91 (FX 1 DEPTH)", 
+        [91] = "CC92 (FX 2 DEPTH)", [92] = "CC93 (FX 3 DEPTH)", [93] = "CC94 (FX 4 DEPTH)", [94] = "CC95 (FX 5 DEPTH)", 
+        [95] = "BEND", [96] = "AFTERTOUCH", 
+    };
+    public readonly IDictionary<int, string> SYS_STUDIO = new Dictionary<int, string> { [0] = "SYSTEM", [1] = "STUDIO SET" };
+    public readonly IDictionary<int, string> MIDI_USB = new Dictionary<int, string> { [0] = "MIDI", [1] = "USB" };
+    public readonly IDictionary<int, string> OFF_ON = new Dictionary<int, string> { [0] = "OFF", [1] = "ON" };
+    public readonly IDictionary<int, string> SPEAKER_PHONES = new Dictionary<int, string> { [0] = "SPEAKER", [1] = "PHONES" };
+    public readonly IDictionary<int, string> VOICE_RESERV = new Dictionary<int, string> { 
+         [0] = "0",   [1] = "1",   [2] = "2",   [3] = "3",   [4] = "4",   [5] = "5",   [6] = "6",   [7] = "7",   [8] = "8",   [9] = "9",
+        [10] = "10", [11] = "11", [12] = "12", [13] = "13", [14] = "14", [15] = "15", [16] = "16", [17] = "17", [18] = "18", [19] = "19",
+        [20] = "20", [21] = "21", [22] = "22", [23] = "23", [24] = "24", [25] = "25", [26] = "26", [27] = "27", [28] = "28", [29] = "29",
+        [30] = "30", [31] = "31", [32] = "32", [33] = "33", [34] = "34", [35] = "35", [36] = "36", [37] = "37", [38] = "38", [39] = "39",
+        [40] = "40", [41] = "41", [42] = "42", [43] = "43", [44] = "44", [45] = "45", [46] = "46", [47] = "47", [48] = "48", [49] = "49",
+        [50] = "50", [51] = "51", [52] = "52", [53] = "53", [54] = "54", [55] = "55", [56] = "56", [57] = "57", [58] = "58", [59] = "59",
+        [60] = "60", [61] = "61", [62] = "62", [63] = "63", [64] = "FULL",
+     };
+    public readonly IDictionary<int, string> PART_A_8 = new Dictionary<int, string> {
+        [0] = "PART", [1] ="A", [2] = "B", [3] = "C", [4] = "D", [5] = "1", [6] = "2", [7] = "3", [8] = "4", [9] = "5", [10] = "6", [11] = "7", [12] = "8"
+    };
+    public const bool USED = false;
+    public const bool RESERVED = true;
+    private IList<Integra7ParameterSpec> _parameters;
+    public Integra7Parameters()
+    {
+        const Integra7ParameterSpec.SpecType NUM = Integra7ParameterSpec.SpecType.NUMERIC;
+        const Integra7ParameterSpec.SpecType ASC = Integra7ParameterSpec.SpecType.ASCII;
+
+        _parameters = new List<Integra7ParameterSpec>
+        {
+            new(type:NUM, path:"Setup/Sound Mode", offs:[0x00, 0x00], imin:1, imax:4, omin:1, omax:4, bytes:1, vis:USED, nib: false, repr:SoundModes),
+            new(type:NUM, path:"Setup/Reserved1", offs:[0x00, 0x01], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved2", offs:[0x00, 0x02], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved3", offs:[0x00, 0x03], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Studio Set BS MSB", offs:[0x00, 0x04], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Studio Set BS LSB", offs:[0x00, 0x05], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Studio Set PC", offs:[0x00, 0x06], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved4", offs:[0x00, 0x07], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved5", offs:[0x00, 0x08], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved6", offs:[0x00, 0x09], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved7", offs:[0x00, 0x0a], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved8", offs:[0x00, 0x0b], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved9", offs:[0x00, 0x0c], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved10", offs:[0x00, 0x0d], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved11", offs:[0x00, 0x0e], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved12", offs:[0x00, 0x0f], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved13", offs:[0x00, 0x10], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved14", offs:[0x00, 0x11], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved15", offs:[0x00, 0x12], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved16", offs:[0x00, 0x13], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved17", offs:[0x00, 0x14], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved18", offs:[0x00, 0x15], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved19", offs:[0x00, 0x16], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved20", offs:[0x00, 0x17], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved21", offs:[0x00, 0x18], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved22", offs:[0x00, 0x19], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved23", offs:[0x00, 0x1a], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved24", offs:[0x00, 0x1b], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved25", offs:[0x00, 0x1c], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved26", offs:[0x00, 0x1d], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved27", offs:[0x00, 0x1e], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved28", offs:[0x00, 0x1f], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved29", offs:[0x00, 0x20], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved30", offs:[0x00, 0x21], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved31", offs:[0x00, 0x22], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved32", offs:[0x00, 0x23], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved33", offs:[0x00, 0x24], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved34", offs:[0x00, 0x25], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved35", offs:[0x00, 0x26], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved36", offs:[0x00, 0x27], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved37", offs:[0x00, 0x28], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved38", offs:[0x00, 0x29], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved39", offs:[0x00, 0x2a], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved40", offs:[0x00, 0x2b], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved41", offs:[0x00, 0x2c], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved42", offs:[0x00, 0x2d], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved43", offs:[0x00, 0x2e], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved44", offs:[0x00, 0x2f], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved45", offs:[0x00, 0x30], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved46", offs:[0x00, 0x31], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved47", offs:[0x00, 0x32], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved48", offs:[0x00, 0x33], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved49", offs:[0x00, 0x34], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved50", offs:[0x00, 0x35], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved51", offs:[0x00, 0x36], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib: false, repr:null),
+            new(type:NUM, path:"Setup/Reserved52", offs:[0x00, 0x37], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib: false, repr:null),  
+
+            new(type:NUM, path:"System Common/Master Tune", offs:[0x00, 0x00], imin:24, imax:2024, omin:-100, omax:100, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"System Common/Master Key Shift", offs:[0x00, 0x04], imin:40, imax:88, omin:-24, omax:24, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Master Level", offs:[0x00, 0x05], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Scale Tune Switch", offs:[0x00, 0x06], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved1", offs:[0x00, 0x07], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved2", offs:[0x00, 0x08], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved3", offs:[0x00, 0x09], imin:0, imax:31, omin:0, omax:31, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved4", offs:[0x00, 0x0a], imin:0, imax:31, omin:0, omax:31, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved5", offs:[0x00, 0x0b], imin:0, imax:31, omin:0, omax:31, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved6", offs:[0x00, 0x0c], imin:0, imax:31, omin:0, omax:31, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved7", offs:[0x00, 0x0d], imin:0, imax:31, omin:0, omax:31, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved8", offs:[0x00, 0x0e], imin:0, imax:31, omin:0, omax:31, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved9", offs:[0x00, 0x0f], imin:0, imax:31, omin:0, omax:31, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved10", offs:[0x00, 0x10], imin:0, imax:31, omin:0, omax:31, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Studio Set Control Channel", offs:[0x00, 0x11], imin:0, imax:16, omin:0, omax:16, bytes:1, vis:USED, nib:false, repr:_1_16_OFF),
+            new(type:NUM, path:"System Common/Reserved11", offs:[0x00, 0x12], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved12", offs:[0x00, 0x13], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved13", offs:[0x00, 0x14], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved14", offs:[0x00, 0x15], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved15", offs:[0x00, 0x16], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved16", offs:[0x00, 0x17], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved17", offs:[0x00, 0x18], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved18", offs:[0x00, 0x19], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved19", offs:[0x00, 0x1a], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved20", offs:[0x00, 0x1b], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved21", offs:[0x00, 0x1c], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved22", offs:[0x00, 0x1d], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved23", offs:[0x00, 0x1e], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/Reserved24", offs:[0x00, 0x1f], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"System Common/System Control 1 Source", offs:[0x00, 0x20], imin:0, imax:97, omin:0, omax:97, bytes:1, vis:RESERVED, nib:false, repr:CONTROL_SOURCE),
+            new(type:NUM, path:"System Common/System Control 2 Source", offs:[0x00, 0x21], imin:0, imax:97, omin:0, omax:97, bytes:1, vis:RESERVED, nib:false, repr:CONTROL_SOURCE),
+            new(type:NUM, path:"System Common/System Control 3 Source", offs:[0x00, 0x22], imin:0, imax:97, omin:0, omax:97, bytes:1, vis:RESERVED, nib:false, repr:CONTROL_SOURCE),
+            new(type:NUM, path:"System Common/System Control 4 Source", offs:[0x00, 0x23], imin:0, imax:97, omin:0, omax:97, bytes:1, vis:RESERVED, nib:false, repr:CONTROL_SOURCE),
+            new(type:NUM, path:"System Common/Control Source", offs:[0x00, 0x24], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:SYS_STUDIO),
+            new(type:NUM, path:"System Common/System Clock Source", offs:[0x00, 0x25], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:MIDI_USB),
+            new(type:NUM, path:"System Common/System Tempo", offs:[0x00, 0x26], imin:0, imax:0x0f0f, omin:20, omax:250, bytes:2, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"System Common/Tempo Assign Source", offs:[00, 0x28], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"System Common/Receive Program Change", offs:[00, 0x29], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"System Common/Receive Bank Select", offs:[00, 0x2a], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"System Common/5.1CH Center Speaker", offs:[00, 0x2b], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"System Common/5.1CH Sub Woofer Speaker", offs:[00, 0x2c], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"System Common/2CH Output mode", offs:[00, 0x2d], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:SPEAKER_PHONES),
+            new(type:NUM, path:"System Common/Reserved25", offs:[00, 0x2e], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:RESERVED, nib:false, repr:OFF_ON),
+
+            new(type:ASC, path:"Studio Set Common/Studio Set Name", offs:[0x00, 0x00], imin:32, imax:127, omin:32, omax:127, bytes:16, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved1", offs:[0x00, 0x10], imin:0, imax:63, omin:0, omax:63, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved2", offs:[0x00, 0x11], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved3", offs:[0x00, 0x12], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved4", offs:[0x00, 0x13], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved5", offs:[0x00, 0x14], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved6", offs:[0x00, 0x15], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved7", offs:[0x00, 0x16], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved8", offs:[0x00, 0x17], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 1", offs:[0x00, 0x18], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 2", offs:[0x00, 0x19], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 3", offs:[0x00, 0x1a], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 4", offs:[0x00, 0x1b], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 5", offs:[0x00, 0x1c], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 6", offs:[0x00, 0x1d], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 7", offs:[0x00, 0x1e], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 8", offs:[0x00, 0x1f], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 9", offs:[0x00, 0x20], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 10", offs:[0x00, 0x21], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 11", offs:[0x00, 0x22], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 12", offs:[0x00, 0x23], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 13", offs:[0x00, 0x24], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 14", offs:[0x00, 0x25], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 15", offs:[0x00, 0x26], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Voice Reserve 16", offs:[0x00, 0x27], imin:0, imax:64, omin:0, omax:64, bytes:1, vis:USED, nib:false, repr:VOICE_RESERV),
+            new(type:NUM, path:"Studio Set Common/Reserved10", offs:[0x00, 0x28], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved11", offs:[0x00, 0x29], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved12", offs:[0x00, 0x2a], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved13", offs:[0x00, 0x2b], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved14", offs:[0x00, 0x2c], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved15", offs:[0x00, 0x2d], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved16", offs:[0x00, 0x2e], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved17", offs:[0x00, 0x2f], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved18", offs:[0x00, 0x30], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved19", offs:[0x00, 0x31], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved20", offs:[0x00, 0x32], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved21", offs:[0x00, 0x33], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved22", offs:[0x00, 0x34], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved23", offs:[0x00, 0x35], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved24", offs:[0x00, 0x36], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved25", offs:[0x00, 0x37], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved26", offs:[0x00, 0x38], imin:0, imax:15, omin:0, omax:15, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Tone Control 1 Source", offs:[0x00, 0x39], imin:0, imax:97, omin:0, omax:97, bytes:1, vis:USED, nib:false, repr:CONTROL_SOURCE),
+            new(type:NUM, path:"Studio Set Common/Tone Control 2 Source", offs:[0x00, 0x3a], imin:0, imax:97, omin:0, omax:97, bytes:1, vis:USED, nib:false, repr:CONTROL_SOURCE),
+            new(type:NUM, path:"Studio Set Common/Tone Control 3 Source", offs:[0x00, 0x3b], imin:0, imax:97, omin:0, omax:97, bytes:1, vis:USED, nib:false, repr:CONTROL_SOURCE),
+            new(type:NUM, path:"Studio Set Common/Tone Control 4 Source", offs:[0x00, 0x3c], imin:0, imax:97, omin:0, omax:97, bytes:1, vis:USED, nib:false, repr:CONTROL_SOURCE),
+            new(type:NUM, path:"Studio Set Common/Studio Set Tempo", offs:[0x00, 0x3d], imin:0, imax:0x0f0f, omin:20, omax:250, bytes:2, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common/Solo Part", offs:[0x00, 0x3f], imin:0, imax:16, omin:0, omax:16, bytes:1, vis:USED, nib:false, repr:OFF_1_16),
+            new(type:NUM, path:"Studio Set Common/Reverb Switch", offs:[0x00, 0x40], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Common/Chorus Switch", offs:[0x00, 0x41], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Common/Master EQ Switch", offs:[0x00, 0x42], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Common/Drum Comp/EQ Switch", offs:[0x00, 0x43], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Common/Drum Comp/EQ Part", offs:[0x00, 0x44], imin:0, imax:15, omin:0, omax:15, bytes:1, vis:USED, nib:false, repr:_1_16),
+            new(type:NUM, path:"Studio Set Common/Drum Comp/EQ 1 Output Assign", offs:[0x00, 0x45], imin:0, imax:12, omin:0, omax:12, bytes:1, vis:USED, nib:false, repr:PART_A_8),
+            new(type:NUM, path:"Studio Set Common/Drum Comp/EQ 2 Output Assign", offs:[0x00, 0x46], imin:0, imax:12, omin:0, omax:12, bytes:1, vis:USED, nib:false, repr:PART_A_8),
+            new(type:NUM, path:"Studio Set Common/Drum Comp/EQ 3 Output Assign", offs:[0x00, 0x47], imin:0, imax:12, omin:0, omax:12, bytes:1, vis:USED, nib:false, repr:PART_A_8),
+            new(type:NUM, path:"Studio Set Common/Drum Comp/EQ 4 Output Assign", offs:[0x00, 0x48], imin:0, imax:12, omin:0, omax:12, bytes:1, vis:USED, nib:false, repr:PART_A_8),
+            new(type:NUM, path:"Studio Set Common/Drum Comp/EQ 5 Output Assign", offs:[0x00, 0x49], imin:0, imax:12, omin:0, omax:12, bytes:1, vis:USED, nib:false, repr:PART_A_8),
+            new(type:NUM, path:"Studio Set Common/Drum Comp/EQ 6 Output Assign", offs:[0x00, 0x4a], imin:0, imax:12, omin:0, omax:12, bytes:1, vis:USED, nib:false, repr:PART_A_8),
+            new(type:NUM, path:"Studio Set Common/Reserved27", offs:[0x00, 0x4b], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, null),
+            new(type:NUM, path:"Studio Set Common/Ext Part Level", offs:[0x00, 0x4c], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Ext Part Chorus Send Level", offs:[0x00, 0x4d], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Ext Part Reverb Send Level", offs:[0x00, 0x4e], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Ext Part Mute Switch", offs:[0x00, 0x4f], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Common/Reserved28", offs:[0x00, 0x50], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved29", offs:[0x00, 0x51], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved30", offs:[0x00, 0x52], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common/Reserved31", offs:[0x00, 0x53], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+        };
+
+    }
+
+}

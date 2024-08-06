@@ -70,13 +70,13 @@ public class ByteUtils
     public static byte CheckSum(byte[] data)
     {
         int sum = 0;
+        // & 0x7f is the same as modulo 128 and (a mod N + b mod N + ... + n mod N) mod N = (a + b + ... + n) mod N
         for (int i = 0; i < data.Length; i++)
         {
-            sum += data[i];
-            sum &= 0xff;
+            sum += data[i]; // (should should be data[i] mod 128 or data[i] & 0x7f but data[i] is 7-bit so this will always yield back data[i])
+            sum &= 0x7f; 
         }
-        int remainder = (sum % 128);
-        int checksum = 128 - remainder;
+        int checksum = 0x80 - sum;
         return (byte)checksum;
     }
 }

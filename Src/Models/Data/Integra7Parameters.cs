@@ -1,9 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
-using System.Numerics;
-using Avalonia.Data.Core;
-using FluentAvalonia.UI.Controls;
-
 namespace Integra7AuralAlchemist.Models.Data;
 
 
@@ -25,25 +20,26 @@ public class Integra7Parameters
         [12] = "12", [13] = "13", [14] = "14", [15] = "15", [16] = "16"
     };
     
-    public readonly IDictionary<int, string> CONTROL_SOURCE = new Dictionary<int, string> { [0] = "OFF", [1] = "CC01 (MOD WHEEL)", [2] = "CC02 (BREATH)", 
-        [3] = "CC03",  [4] = "CC04 (FOOT)", [5] = "CC05 (PORTAMENTO TIME)", [6] = "CC06 (DATA MSB)", [7] = "CC07 (MAIN VOLUME)", 
-        [8] = "CC08 (BALANCE)", [9] = "CC09", [10] = "CC10 (PAN)", [11] = "CC11 (EXPRESSION)", [12] = "CC12 (EFFECT CTRL 1)", 
-        [13] = "CC13 (EFFECT CTRL 2)", [14] = "CC14", [15] = "CC15", [16] = "CC16 (GEN PURP. 1)", [17] = "CC17 (GEN PURP. 2)", 
-        [18] = "CC18 (GEN PURP. 3)", [19] = "CC19 (GEN PURP. 4)", [20] = "CC20", [21] = "CC21", [22] = "CC22", [23] = "CC23", 
+    public readonly IDictionary<int, string> CONTROL_SOURCE = new Dictionary<int, string> { 
+        [0] = "OFF", [1] = "CC01 (Mod Wheel)", [2] = "CC02 (Breath)", 
+        [3] = "CC03",  [4] = "CC04 (Foot Type)", [5] = "CC05 (Portamento Time)", [6] = "CC06 (Data Entry MSB)", [7] = "CC07 (Volume)", 
+        [8] = "CC08 (Balance)", [9] = "CC09", [10] = "CC10 (Pan)", [11] = "CC11 (Expression)", [12] = "CC12", 
+        [13] = "CC13", [14] = "CC14", [15] = "CC15", [16] = "CC16 (Gen. Purp. Ctrlr 1)", [17] = "CC17 (Gen. Purp. Ctrlr 2)", 
+        [18] = "CC18 (Gen. Purp. Ctrlr 3)", [19] = "CC19 (Gen. Purp. Ctrlr 4)", [20] = "CC20", [21] = "CC21", [22] = "CC22", [23] = "CC23", 
         [24] = "CC24", [25] = "CC25", [26] = "CC26", [27] = "CC27",
-        [28] = "CC28", [29] = "CC29", [30] = "CC30", [31] = "CC31", [32] = "CC33", [33] = "CC34", [34] = "CC35", [35] = "CC36",
-        [36] = "CC37", [37] = "CC38", [38] = "CC39", [39] = "CC40", [40] = "CC41", [41] = "CC42", [42] = "CC43", [43] = "CC44",
-        [44] = "CC45", [45] = "CC46", [46] = "CC47", [47] = "CC48", [48] = "CC49", [49] = "CC50", [50] = "CC51", [51] = "CC52",
-        [52] = "CC53", [53] = "CC54", [54] = "CC55", [55] = "CC56", [56] = "CC57", [57] = "CC58", [58] = "CC59", [59] = "CC60",
-        [60] = "CC61", [61] = "CC62", [62] = "CC63", [63] = "CC64 (SUSTAIN)", [64] = "CC65 (PORTAMENTO)", [65] = "CC66 (SOSTENUTO)", 
-        [66] = "CC67 (SOFT PED.)", [67] = "CC68 (LEGATO FOOTSWITCH)", [68] = "CC69 (HOLD 2)", [69] = "CC70 (SOUND CTRLR 1 SND VAR)", 
-        [70] = "CC71 (SOUND CTRLR 2 HARM)", [71] = "CC72 (SOUND CTRLR 3 REL TIME)", [72] = "CC73 (SOUND CTRLR 4 ATT TIME)", 
-        [73] = "CC74 (SOUND CTRLR 5 BRIGHT)", [74] = "CC75 (SOUND CTRLR 6)", [75] = "CC76 (SOUND CTRLR 7)",
-        [76] = "CC77 (SOUND CTRLR 8)", [77] = "CC78 (SOUND CTRLR 9)", [78] = "CC79 (SOUND CTRLR 10)", [79] = "CC80 (GEN PURP. 5)", 
-        [80] = "CC81 (GEN PURP. 6)", [81] = "CC82 (GEN PURP. 7)", [82] = "CC83 (GEN PURP. 8)", [83] = "CC84 (PORTAMENTO CTRL)",
-        [84] = "CC85", [85] = "CC86", [86] = "CC87", [87] = "CC88", [88] = "CC89", [89] = "CC90", [90] = "CC91 (FX 1 DEPTH)", 
-        [91] = "CC92 (FX 2 DEPTH)", [92] = "CC93 (FX 3 DEPTH)", [93] = "CC94 (FX 4 DEPTH)", [94] = "CC95 (FX 5 DEPTH)", 
-        [95] = "BEND", [96] = "AFTERTOUCH", 
+        [28] = "CC28", [29] = "CC29", [30] = "CC30", [31] = "CC31", [32] = "---", [33] = "CC33", [34] = "CC34", [35] = "CC35",
+        [36] = "CC36", [37] = "CC37", [38] = "CC38 (Data Entry LSB)", [39] = "CC39", [40] = "CC40", [41] = "CC41", [42] = "CC42", [43] = "CC43",
+        [44] = "CC44", [45] = "CC45", [46] = "CC46", [47] = "CC47", [48] = "CC48", [49] = "CC49", [50] = "CC50", [51] = "CC51",
+        [52] = "CC52", [53] = "CC53", [54] = "CC54", [55] = "CC55", [56] = "CC56", [57] = "CC57", [58] = "CC58", [59] = "CC59",
+        [60] = "CC60", [61] = "CC61", [62] = "CC62", [63] = "CC63", [64] = "CC64 (Sustain)", [65] = "CC65 (Portamento Switch)", 
+        [66] = "CC66 (Sostenuto)", [67] = "CC67 (Soft Ped.)", [68] = "CC68 (Legato Switch)", [69] = "CC69 (Hold-2)", 
+        [70] = "CC70", [71] = "CC71 (Resonance)", [72] = "CC72 (Release Time)", 
+        [73] = "CC73 (Attack Time)", [74] = "CC74 (CutOff)", [75] = "CC75 (Decay Time)",
+        [76] = "CC76 (Vibr. Rate)", [77] = "CC77 (Vibr. Depth)", [78] = "CC78 (Vibr. Delay)", [79] = "CC79", 
+        [80] = "CC80 (Gen. Purp. Ctrlr 5)", [81] = "CC81 (Gen. Purp. Ctrlr 6)", [82] = "CC82 (Gen. Purp. Ctrlr 7)", [83] = "CC83 (Gen. Purp. Ctrlr 8)",
+        [84] = "CC84 (Porta Ctrl)", [85] = "CC85", [86] = "CC86", [87] = "CC87", [88] = "CC88", [89] = "CC89", [90] = "CC90", 
+        [91] = "CC91 (Reverb)", [92] = "CC92 (Tremolo)", [93] = "CC93 (Chorus)", [94] = "CC94 (Celeste)", [95] = "CC95 (Phaser)",
+        [96] = "BEND", [97] = "AFTERTOUCH", 
     };
     public readonly IDictionary<int, string> SYS_STUDIO = new Dictionary<int, string> { [0] = "SYSTEM", [1] = "STUDIO SET" };
     public readonly IDictionary<int, string> MIDI_USB = new Dictionary<int, string> { [0] = "MIDI", [1] = "USB" };
@@ -60,6 +56,224 @@ public class Integra7Parameters
      };
     public readonly IDictionary<int, string> PART_A_8 = new Dictionary<int, string> {
         [0] = "PART", [1] ="A", [2] = "B", [3] = "C", [4] = "D", [5] = "1", [6] = "2", [7] = "3", [8] = "4", [9] = "5", [10] = "6", [11] = "7", [12] = "8"
+    };
+    public readonly IDictionary<int, string> MAIN_REV = new Dictionary<int, string> {
+        [0] = "MAIN", [1] = "REV", [2] = "MAIN+REV"
+    };
+    public readonly IDictionary<int, string> CHORUS_TYPE = new Dictionary<int, string> {
+        [0] = "OFF", [1] = "Chorus", [2] ="Delay", [3] = "GM2 Chorus"
+    };
+    public readonly IDictionary<int, string> REVERB_TYPE = new Dictionary<int, string> {
+        [0] = "OFF", [1] = "Room1", [2] = "Room2", [3] = "Hall 1", [4] = "Hall 2", [5] = "Plate", [6] = "GM2 Reverb"
+    };
+    public readonly IDictionary<int, string> ABCD = new Dictionary<int, string> {
+        [0] = "A", [1] = "B", [2] = "C", [3] = "D"
+    };
+    public readonly IDictionary<int, string> ABCD1_8 = new Dictionary<int, string> {
+        [0] = "A", [1] = "B", [2] = "C", [3] = "D", [4] = "1", 
+        [5] = "2", [6] = "3", [7] = "4", [8] = "5", [9] = "6",
+        [10] = "7", [11] = "8"
+    };
+    public readonly IDictionary<int, string> ROOM_TYPE = new Dictionary<int, string> {
+        [0] = "Room1", [1] = "Room2", [2] = "Hall1", [3] = "Hall2"
+    };
+    public readonly IDictionary<int, string> ROOM_SIZE = new Dictionary<int, string> {
+        [0] = "Small", [1] ="Medium", [2] = "Large"
+    };
+    public readonly IDictionary<int, string> _200_400Hz = new Dictionary<int, string> {
+        [0] = "200 Hz", [1] = "400 Hz"
+    };
+    public readonly IDictionary<int, string> _min15_15dB = new Dictionary<int, string> {
+        [0] = "-15 dB", [1] = "-14 dB", [2] = "-13 dB", [3] = "-12 dB", [4] = "-11 dB", 
+        [5] = "-10 dB", [6] = "-9 dB", [7] = "-8 dB", [8] = "-7 dB", [9] = "-6 dB",
+        [10] = "-5 dB", [11] = "-4 dB", [12] = "-3 dB", [13] = "-2 dB", [14] = "-1 dB", 
+        [15] = "0 dB", [16] = "+1 dB", [17] = "+2 dB", [18] = "+3 dB", [19] = "+4 dB",
+        [20] = "+5 dB", [21] = "+6 dB", [22] = "+7 dB", [23] = "+8 dB", [24] = "+9 dB", 
+        [25] = "+10 dB", [26] = "+11 dB", [27] = "+12 dB", [28] = "+13 dB", [29] = "+14 dB",
+        [30] = "+15 dB",
+    };
+    public readonly IDictionary<int, string> _200_8000Hz = new Dictionary<int, string> {
+        [0]= "200 Hz", [1] = "250 Hz", [2] = "315 Hz", [3] = "400 Hz", [4] = "500 Hz",
+        [5] = "630 Hz", [6] = "800 Hz", [7] = "1000 Hz", [8] = "1250 Hz", [9] = "1600 Hz",
+        [10] = "2000 Hz", [11] = "2500 Hz", [12] = "3150 Hz", [13] = "4000 Hz", [14] = "5000 Hz",
+        [15] = "6300 Hz", [16] = "8000 Hz"
+    };
+    public readonly IDictionary<int, string> MID_Q = new Dictionary<int, string> {
+        [0] = "0.5", [1] = "1.0", [2] = "2.0", [3] = "4.0", [4] = "8.0"
+    };
+    public readonly IDictionary<int, string> _2000_8000Hz = new Dictionary<int, string> {
+        [0] = "2000 Hz", [1] = "4000 Hz", [2] = "8000 Hz"
+    };
+    public readonly IDictionary<int, string> MONO_POLY = new Dictionary<int, string> {
+        [0] = "Mono", [1] = "Poly", [2] = "Tone"
+    };
+    public readonly IDictionary<int, string> OFF_ON_TONE = new Dictionary<int, string> {
+        [0] = "Off", [1] = "On", [2] = "Tone"
+    };
+    public readonly IDictionary<int, string> _0_24_TONE = new Dictionary<int, string> {
+        [0] ="0", [1] = "1", [2] = "2", [3] = "3", [4] = "4", 
+        [5] = "5", [6] = "6", [7] = "7", [8] = "8", [9] = "9",
+        [10] = "10", [11] = "11", [12] = "12", [13] = "13", [14] = "14", 
+        [15] = "15", [16] = "16", [17] = "17", [18] = "18", [19] = "19",
+        [20] = "20", [21] = "21", [22] = "22", [23] = "23", [24] = "24", 
+        [25] = "Tone",
+    };
+    public readonly IDictionary<int, string> OCTAVE_SHIFT = new Dictionary<int, string> {
+        [61] = "-3", [62] = "-2", [63] = "-1", [64] = "0", [65] = "+1", [66] = "+2", [67] = "+3";
+    };
+    public readonly IDictionary<int, string> OFF_MUTE = new Dictionary<int, string> {
+        [0] = "Mute Off", [1] = "Mute On"
+    };
+    public readonly IDictionary<int, string> SCALE_TYPE = new Dictionary<int, string> {
+        [0] = "Custom", [1] = "Equal", [2] = "Just Major", [3] = "Just Minor", [4] = "Pythagorean", 
+        [5] = "Kirnberger", [6] = "Mean tone", [7] = "Werckmeister", [8] = "Arabic"
+    };
+    public readonly IDictionary<int, string> SCALE_KEY = new Dictionary<int, string> {
+        [0] = "C", [1] = "C#", [2] = "D", [3] = "D#", [4] = "E", 
+        [5] = "F", [6] = "F#", [7] = "G", [8] = "G#", [9] = "A",
+        [10]= "A#", [11] = "B"
+    };
+    public readonly IDictionary<int, string> VELO_CURVE = new Dictionary<int, string> {
+        [0] = "OFF", [1] = "1", [2] = "2", [3] = "3", [4] = "4"
+    };
+    public readonly IDictionary<int, string> LAST_LOUDEST = new Dictionary<int, string> {
+        [0] = "Last", [1] = "Loudest"
+    };
+    public readonly IDictionary<int, string> OFF_1_3 = new Dictionary<int, string> {
+        [0] = "Off", [1] = "1", [2] = "2", [3] = "3"
+    };
+    public readonly IDictionary<int, string> NORMAL_LEGATO = new Dictionary<int, string> {
+        [0] = "Normal", [1] = "Legato"
+    };
+    public readonly IDictionary<int, string> RATE_TIME = new Dictionary<int, string> {
+        [0] = "Rate", [1] = "Time"
+    };
+    public readonly IDictionary<int, string> PITCH_NOTE = new Dictionary<int, string> {
+        [0] = "Pitch", [1] = "Note"
+    };
+    public readonly IDictionary<int, string> MATRIX_SRC = new Dictionary<int, string> {
+        [0] = "OFF", [1] = "CC01 (Mod Wheel)", [2] = "CC02 (Breath)", 
+        [3] = "CC03",  [4] = "CC04 (Foot Type)", [5] = "CC05 (Portamento Time)", [6] = "CC06 (Data Entry MSB)", [7] = "CC07 (Volume)", 
+        [8] = "CC08 (Balance)", [9] = "CC09", [10] = "CC10 (Pan)", [11] = "CC11 (Expression)", [12] = "CC12", 
+        [13] = "CC13", [14] = "CC14", [15] = "CC15", [16] = "CC16 (Gen. Purp. Ctrlr 1)", [17] = "CC17 (Gen. Purp. Ctrlr 2)", 
+        [18] = "CC18 (Gen. Purp. Ctrlr 3)", [19] = "CC19 (Gen. Purp. Ctrlr 4)", [20] = "CC20", [21] = "CC21", [22] = "CC22", [23] = "CC23", 
+        [24] = "CC24", [25] = "CC25", [26] = "CC26", [27] = "CC27",
+        [28] = "CC28", [29] = "CC29", [30] = "CC30", [31] = "CC31", [32] = "---", [33] = "CC33", [34] = "CC34", [35] = "CC35",
+        [36] = "CC36", [37] = "CC37", [38] = "CC38 (Data Entry LSB)", [39] = "CC39", [40] = "CC40", [41] = "CC41", [42] = "CC42", [43] = "CC43",
+        [44] = "CC44", [45] = "CC45", [46] = "CC46", [47] = "CC47", [48] = "CC48", [49] = "CC49", [50] = "CC50", [51] = "CC51",
+        [52] = "CC52", [53] = "CC53", [54] = "CC54", [55] = "CC55", [56] = "CC56", [57] = "CC57", [58] = "CC58", [59] = "CC59",
+        [60] = "CC60", [61] = "CC61", [62] = "CC62", [63] = "CC63", [64] = "CC64 (Sustain)", [65] = "CC65 (Portamento Switch)", 
+        [66] = "CC66 (Sostenuto)", [67] = "CC67 (Soft Ped.)", [68] = "CC68 (Legato Switch)", [69] = "CC69 (Hold-2)", 
+        [70] = "CC70", [71] = "CC71 (Resonance)", [72] = "CC72 (Release Time)", 
+        [73] = "CC73 (Attack Time)", [74] = "CC74 (CutOff)", [75] = "CC75 (Decay Time)",
+        [76] = "CC76 (Vibr. Rate)", [77] = "CC77 (Vibr. Depth)", [78] = "CC78 (Vibr. Delay)", [79] = "CC79", 
+        [80] = "CC80 (Gen. Purp. Ctrlr 5)", [81] = "CC81 (Gen. Purp. Ctrlr 6)", [82] = "CC82 (Gen. Purp. Ctrlr 7)", [83] = "CC83 (Gen. Purp. Ctrlr 8)",
+        [84] = "CC84 (Porta Ctrl)", [85] = "CC85", [86] = "CC86", [87] = "CC87", [88] = "CC88", [89] = "CC89", [90] = "CC90", 
+        [91] = "CC91 (Reverb)", [92] = "CC92 (Tremolo)", [93] = "CC93 (Chorus)", [94] = "CC94 (Celeste)", [95] = "CC95 (Phaser)",
+        [96] = "BEND", [97] = "AFTERTOUCH", [98] = "CTRL-1", [99] = "CTRL-2", [100] = "CTRL-3",
+        [101] = "CTRL-4", [102] = "VELOCITY", [103] = "KEYFOLLOW", [104] = "TEMPO", [105] = "LFO1",
+        [106] = "LFO2", [107] = "PITCH-ENV", [108] = "TVF-ENV", [109] = "TVA-ENV",
+
+    };
+    public readonly IDictionary<int, string> MATRIX_DST = new Dictionary<int, string> {
+        [0] = "Off", [1] = "Pitch", [2] = "Cutoff", [3] = "Resonance", [4] = "Level",
+        [5] = "Pan", [6] = "Output Level", [7] = "Chorus Send", [8] = "Reverb Send", [9] = "LFO1 Pitch Depth",
+        [10] = "LFO2 Pitch Depth", [11] = "LFO1 TVF Depth", [12] = "LFO2 TVF Depth", [13] = "LFO1 TVA Depth", [14] = "LFO2 TVA Depth",
+        [15] = "LFO1 Pan Depth", [16] = "LFO2 Pan Depth", [17] = "LFO1 Rate", [18] = "LFO2 Rate", [19] = "Pitch Env Attack Time",
+        [20] = "Pitch Env Decay Time", [21] = "Pitch Env Release Time", [22] = "TVF Env Attack Time", [23] = "TVF Env Decay Time", [24] = "TVF Env Release Time",
+        [25] = "TVA Env Attack Time", [26] = "TVA Env Decay Time", [27] = "TVA Env Release Time", [28] = "Partial Mix Table", [29] = "FXM Depth", 
+        [30] = "Reserved", [31] = "Reserved", [32] = "Reserved", [33] = "Reserved",
+    };
+    public readonly IDictionary<int, string> MFX_TYPE = new Dictionary<int, string> {
+        [0] = "Thru", [1] = "Equalizer", [2] = "Spectrum", [3] = "Low Boost", [4] = "Step Filter",
+        [5] = "Enhancer", [6] = "Auto Wah", [7] = "Humanizer", [8] = "Speaker Simulator", [9] = "Phaser 1",
+        [10] = "Phaser 2", [11] = "Phaser 3", [12] = "Step Phaser", [13] = "Multi Stage Phaser", [14] = "Infinite Phaser",
+        [15] = "Ring Modulator", [16] = "Tremolo", [17] = "Auto Pan", [18] = "Slicer", [19] = "Rotary 1",
+        [20] = "Rotary 2", [21] = "Rotary 3", [22] = "Chorus", [23] = "Flanger", [24] = "Step Flanger",
+        [25] = "Hexa-Chorus", [26] = "Tremolo Chorus", [27] = "Space-D", [28] = "Overdrive", [29] = "Distortion",
+        [30] = "Guitar Amp Simulator", [31] = "Compressor", [32] = "Limiter", [33] = "Gate", [34] = "Delay",
+        [35] = "Modulation Delay", [36] = "3-Tap Pan Delay", [37] = "4-Tap Pan Delay", [38] = "Multi Tap Delay", [39] = "Reverse Delay",
+        [40] = "Time Ctrl. Delay", [41] = "Lo-Fi Compressor", [42] = "Bit Crusher", [43] = "Pitch Shifter", [44] = "Voice Pitch Shifter",
+        [45] = "Overdrive->Chorus", [46] = "Overdrive->Flanger", [47] = "Overdrive->Delay", [48] = "Distortion->Chorus", [49] = "Distortion->Flanger",
+        [50] = "Distortion->Delay", [51] = "Overdrive/Distortion->TouchWah", [52] = "Overdrive/Distortion->AutoWah", [53] = "Guitar Amp Sim->Chorus", [54] = "Guitar Amp Sim->Flanger",
+        [55] = "Guitar Amp Sim->Phaser", [56] = "Guitar Amp Sim->Delay", [57] = "EP Amp Sim->Tremolo", [58] = "EP Amp Sim->Chorus", [59] = "EP Amp Sim->Flanger",
+        [60] = "EP Amp Sim->Phaser", [61] = "EP Amp Sim->Delay", [62] = "Enhancer->Chorus", [63] = "Enhancer->Flanger", [64] = "Enhancer->Delay",
+        [65] = "Chorus->Delay", [66] = "Flanger->Delay", [67] = "Chorus->Flanger"
+    };
+    public readonly IDictionary<int, string> MFX_SRC = new Dictionary<int, string> {
+        [0] = "OFF", [1] = "CC01 (Mod Wheel)", [2] = "CC02 (Breath)", 
+        [3] = "CC03",  [4] = "CC04 (Foot Type)", [5] = "CC05 (Portamento Time)", [6] = "CC06 (Data Entry MSB)", [7] = "CC07 (Volume)", 
+        [8] = "CC08 (Balance)", [9] = "CC09", [10] = "CC10 (Pan)", [11] = "CC11 (Expression)", [12] = "CC12", 
+        [13] = "CC13", [14] = "CC14", [15] = "CC15", [16] = "CC16 (Gen. Purp. Ctrlr 1)", [17] = "CC17 (Gen. Purp. Ctrlr 2)", 
+        [18] = "CC18 (Gen. Purp. Ctrlr 3)", [19] = "CC19 (Gen. Purp. Ctrlr 4)", [20] = "CC20", [21] = "CC21", [22] = "CC22", [23] = "CC23", 
+        [24] = "CC24", [25] = "CC25", [26] = "CC26", [27] = "CC27",
+        [28] = "CC28", [29] = "CC29", [30] = "CC30", [31] = "CC31", [32] = "---", [33] = "CC33", [34] = "CC34", [35] = "CC35",
+        [36] = "CC36", [37] = "CC37", [38] = "CC38 (Data Entry LSB)", [39] = "CC39", [40] = "CC40", [41] = "CC41", [42] = "CC42", [43] = "CC43",
+        [44] = "CC44", [45] = "CC45", [46] = "CC46", [47] = "CC47", [48] = "CC48", [49] = "CC49", [50] = "CC50", [51] = "CC51",
+        [52] = "CC52", [53] = "CC53", [54] = "CC54", [55] = "CC55", [56] = "CC56", [57] = "CC57", [58] = "CC58", [59] = "CC59",
+        [60] = "CC60", [61] = "CC61", [62] = "CC62", [63] = "CC63", [64] = "CC64 (Sustain)", [65] = "CC65 (Portamento Switch)", 
+        [66] = "CC66 (Sostenuto)", [67] = "CC67 (Soft Ped.)", [68] = "CC68 (Legato Switch)", [69] = "CC69 (Hold-2)", 
+        [70] = "CC70", [71] = "CC71 (Resonance)", [72] = "CC72 (Release Time)", 
+        [73] = "CC73 (Attack Time)", [74] = "CC74 (CutOff)", [75] = "CC75 (Decay Time)",
+        [76] = "CC76 (Vibr. Rate)", [77] = "CC77 (Vibr. Depth)", [78] = "CC78 (Vibr. Delay)", [79] = "CC79", 
+        [80] = "CC80 (Gen. Purp. Ctrlr 5)", [81] = "CC81 (Gen. Purp. Ctrlr 6)", [82] = "CC82 (Gen. Purp. Ctrlr 7)", [83] = "CC83 (Gen. Purp. Ctrlr 8)",
+        [84] = "CC84 (Porta Ctrl)", [85] = "CC85", [86] = "CC86", [87] = "CC87", [88] = "CC88", [89] = "CC89", [90] = "CC90", 
+        [91] = "CC91 (Reverb)", [92] = "CC92 (Tremolo)", [93] = "CC93 (Chorus)", [94] = "CC94 (Celeste)", [95] = "CC95 (Phaser)",
+        [96] = "BEND", [97] = "AFTERTOUCH", [98] = "SYS-1", [99] = "SYS-2", [100] = "SYS-3",
+        [101] = "SYS-4", 
+    };
+    public readonly IDictionary<int, string> _0_18dB = new Dictionary<int, string> {
+        [0] = "0 dB", [1] = "+6 dB", [2] = "+12 dB", [3] = "+18 dB"
+    };
+    public readonly IDictionary<int, string> OFF_CYCLE = new Dictionary<int, string> {
+        [0] = "Off", [1] = "On", [2] = "Random", [3] = "Cycle"
+    };
+    public readonly IDictionary<int, string> RND_PITCH_DEPTH = new Dictionary<int, string> {
+        [0] = "0", [1] = "1", [2] = "2", [3] = "3", [4] = "4", 
+        [5] = "5", [6] = "6", [7] = "7", [8] = "8", [9] = "9",
+        [10] = "10", [11] = "20", [12] = "30", [13] = "40", [14] = "50", 
+        [15] = "60", [16] = "70", [17] = "80", [18] = "90", [19] = "100", 
+        [20] = "200", [21] = "300", [22] = "400", [23] = "500", [24] = "600",
+        [25] = "700", [26] = "800", [27] = "900", [28] = "1000", [29] = "1100",
+        [30] = "1200"
+    };
+    public readonly IDictionary<int, string> NOSUS_SUS = new Dictionary<int, string> {
+        [0] = "No sustain", [1] = "Sustain"
+    };
+    public readonly IDictionary<int, string> NORM_KEYOFF = new Dictionary<int, string> {
+        [0] = "Normal", [1] = "Hold", [2] = "Key off Normal", [3] = "Key off Decay"
+    };
+    public readonly IDictionary<int, string> PARTIAL_DELAY_TIME = new Dictionary<int, string> {
+         [0] = "0",   [1] = "1",   [2] = "2",   [3] = "3",   [4] = "4",   [5] = "5",   [6] = "6",   [7] = "7",   [8] = "8",   [9] = "9",
+        [10] = "10", [11] = "11", [12] = "12", [13] = "13", [14] = "14", [15] = "15", [16] = "16", [17] = "17", [18] = "18", [19] = "19",
+        [20] = "20", [21] = "21", [22] = "22", [23] = "23", [24] = "24", [25] = "25", [26] = "26", [27] = "27", [28] = "28", [29] = "29",
+        [30] = "30", [31] = "31", [32] = "32", [33] = "33", [34] = "34", [35] = "35", [36] = "36", [37] = "37", [38] = "38", [39] = "39",
+        [40] = "40", [41] = "41", [42] = "42", [43] = "43", [44] = "44", [45] = "45", [46] = "46", [47] = "47", [48] = "48", [49] = "49",
+        [50] = "50", [51] = "51", [52] = "52", [53] = "53", [54] = "54", [55] = "55", [56] = "56", [57] = "57", [58] = "58", [59] = "59",
+        [60] = "60", [61] = "61", [62] = "62", [63] = "63", [64] = "64", [65] = "65", [66] = "66", [67] = "67", [68] = "68", [69] = "69",
+        [70] = "70", [71] = "71", [72] = "72", [73] = "73", [74] = "74", [75] = "75", [76] = "76", [77] = "77", [78] = "78", [79] = "79",
+        [80] = "80", [81] = "81", [82] = "82", [83] = "83", [84] = "84", [85] = "85", [86] = "86", [87] = "87", [88] = "88", [89] = "89",
+        [90] = "90", [91] = "91", [92] = "92", [93] = "93", [94] = "94", [95] = "95", [96] = "96", [97] = "97", [98] = "98", [99] = "99",
+        [100] = "100", [101] = "101", [102] = "102", [103] = "103", [104] = "104", [105] = "105", [106] = "106", [107] = "107", [108] = "108", [109] = "109",
+        [110] = "110", [111] = "111", [112] = "112", [113] = "113", [114] = "114", [115] = "115", [116] = "116", [117] = "117", [118] = "118", [119] = "119",
+        [120] = "120", [121] = "121", [122] = "122", [123] = "123", [124] = "124", [125] = "125", [126] = "126", [127] = "127", [128] = "64th triplet", [129] = "64th",
+        [130] = "32th triplet", [131] = "32th", [132] = "16th triplet", [133] = "dotted 32th", [134] = "16th", 
+        [135] = "8th triplet", [136] = "dotted 16th", [137] = "8th", [138] = "4th triplet", [139] = "dotted 8th",
+        [140] = "4th", [141] = "half triplet", [142] = "dotted 4th", [143] = "half", [144] = "whole triplet", 
+        [145] = "dotted half", [146] = "whole", [147] = "double whole triplet", [148] = "dotted whole", [149] = "double whole",
+    };
+    public readonly IDictionary<int, string> OFF_ON_REVERSE = new Dictionary<int, string> {
+        [0] = "Off", [1] = "On", [2] = "Reverse"
+    };
+    public readonly IDictionary<int, string> INT_SRX_RES = new Dictionary<int, string> {
+        [0] = "Internal", [1] = "SRX", [2] = "Reserved", [3] = "Reserved"
+    };
+    public readonly IDictionary<int, string> _min6_12dB = new Dictionary<int, string> {
+        [0] = "-6 DB", [1] = "0 dB", [2] = "+6 dB", [3] = "=12 dB"
+    };
+    public readonly IDictionary<int, string> TVF_FILTER_TYPE = new Dictionary<int, string> {
+        [0] ="Off", [1] = "Low-pass filter", [2] = "Band-pass filter", [3] = "High-pass filter", [4] = "Peaking filter",
+        [5] = "Low-pass filter 2", [6] = "Low-pass filter 3"
     };
     public const bool USED = false;
     public const bool RESERVED = true;
@@ -240,6 +454,399 @@ public class Integra7Parameters
             new(type:NUM, path:"Studio Set Common/Reserved29", offs:[0x00, 0x51], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
             new(type:NUM, path:"Studio Set Common/Reserved30", offs:[0x00, 0x52], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
             new(type:NUM, path:"Studio Set Common/Reserved31", offs:[0x00, 0x53], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Type", offs:[0x00, 0x00], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:USED, nib:false, repr:CHORUS_TYPE),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Level", offs:[0x00, 0x01], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Reserved", offs:[0x00, 0x02], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Output Select", offs:[0x00, 0x03], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:MAIN_REV),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 4", offs:[0x00, 0x10], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 6", offs:[0x00, 0x18], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 7", offs:[0x00, 0x1c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 8", offs:[0x00, 0x20], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 9", offs:[0x00, 0x24], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 10", offs:[0x00, 0x28], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 11", offs:[0x00, 0x2c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 12", offs:[0x00, 0x30], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 13", offs:[0x00, 0x34], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 14", offs:[0x00, 0x38], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 15", offs:[0x00, 0x3c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 16", offs:[0x00, 0x40], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 17", offs:[0x00, 0x44], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 18", offs:[0x00, 0x48], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 19", offs:[0x00, 0x4c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 20", offs:[0x00, 0x50], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Type", offs:[0x00, 0x00], imin:0, imax:6, omin:0, omax:6, bytes:1, vis:USED, nib:false, repr:REVERB_TYPE),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Level", offs:[0x00, 0x01], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Output Assign", offs:[0x00, 0x02], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:USED, nib:false, repr:ABCD),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 1", offs:[0x00, 0x03], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 2", offs:[0x00, 0x07], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 3", offs:[0x00, 0x0b], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 4", offs:[0x00, 0x0f], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 5", offs:[0x00, 0x13], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 6", offs:[0x00, 0x17], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 7", offs:[0x00, 0x1b], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 8", offs:[0x00, 0x1f], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 9", offs:[0x00, 0x23], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 10", offs:[0x00, 0x27], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 11", offs:[0x00, 0x28], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 12", offs:[0x00, 0x2f], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 13", offs:[0x00, 0x33], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 14", offs:[0x00, 0x37], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 15", offs:[0x00, 0x3b], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 16", offs:[0x00, 0x3f], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 17", offs:[0x00, 0x43], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 18", offs:[0x00, 0x47], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 19", offs:[0x00, 0x4b], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 20", offs:[0x00, 0x4f], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 21", offs:[0x00, 0x53], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 22", offs:[0x00, 0x57], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 23", offs:[0x00, 0x5b], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 24", offs:[0x00, 0x5f], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+
+            new(type:NUM, path:"Studio Set Common Motional Surround/Motional Surround Switch", offs:[0x00, 0x00], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Common Motional Surround/Room Type", offs:[0x00, 0x01], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:USED, nib:false, repr:ROOM_TYPE),
+            new(type:NUM, path:"Studio Set Common Motional Surround/Ambience Level", offs:[0x00, 0x02], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common Motional Surround/Room Size", offs:[0x00, 0x03], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:ROOM_SIZE),
+            new(type:NUM, path:"Studio Set Common Motional Surround/Ambience Time", offs:[0x00, 0x04], imin:0, imax:100, omin:0, omax:100, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common Motional Surround/Ambience Density", offs:[0x00, 0x05], imin:0, imax:100, omin:0, omax:100, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common Motional Surround/Ambience HF Damp", offs:[0x00, 0x06], imin:0, imax:100, omin:0, omax:100, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common Motional Surround/Ext Part L-R", offs:[0x00, 0x07], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common Motional Surround/Ext Part F-B", offs:[0x00, 0x08], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common Motional Surround/Ext Part Width", offs:[0x00, 0x09], imin:0, imax:32, omin:0, omax:32, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common Motional Surround/Ext Part Ambience Send Level", offs:[0x00, 0x0a], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common Motional Surround/Ext Part Control Channel", offs:[0x00, 0x0b], imin:0, imax:16, omin:0, omax:16, bytes:1, vis:USED, nib:false, repr:_1_16_OFF),
+            new(type:NUM, path:"Studio Set Common Motional Surround/Motional Surround Depth", offs:[0x00, 0x0c], imin:0, imax:100, omin:0, omax:100, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common Motional Surround/Reserved1", offs:[0x00, 0x0d], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common Motional Surround/Reserved2", offs:[0x00, 0x0e], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Common Motional Surround/Reserved3", offs:[0x00, 0x0f], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+
+            new(type:NUM, path:"Studio Set Master EQ/EQ Low Freq", offs:[0x00, 0x00], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:_200_400Hz),
+            new(type:NUM, path:"Studio Set Master EQ/EQ Low Gain", offs:[0x00, 0x01], imin:0, imax:30, omin:0, omax:30, bytes:1, vis:USED, nib:false, repr:_min15_15dB),
+            new(type:NUM, path:"Studio Set Master EQ/EQ Mid Freq", offs:[0x00, 0x02], imin:0, imax:16, omin:0, omax:16, bytes:1, vis:USED, nib:false, repr:_200_8000Hz),
+            new(type:NUM, path:"Studio Set Master EQ/EQ Mid Gain", offs:[0x00, 0x03], imin:0, imax:30, omin:0, omax:30, bytes:1, vis:USED, nib:false, repr:_min15_15dB),
+            new(type:NUM, path:"Studio Set Master EQ/EQ Mid Q", offs:[0x00, 0x04], imin:0, imax:4, omin:0, omax:4, bytes:1, vis:USED, nib:false, repr:MID_Q),
+            new(type:NUM, path:"Studio Set Master EQ/EQ High Freq", offs:[0x00, 0x05], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:_2000_8000Hz),
+            new(type:NUM, path:"Studio Set Master EQ/EQ High Gain", offs:[0x00, 0x06], imin:0, imax:30, omin:0, omax:30, bytes:1, vis:USED, nib:false, repr:_min15_15dB),
+
+            new(type:NUM, path:"Studio Set MIDI/Phase Lock", offs:[0x00, 0x00], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+
+            new(type:NUM, path:"Studio Set Part/Receive Channel", offs:[0x00, 0x00], imin:0, imax:15, omin:1, omax:16, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Receive Switch", offs:[0x00, 0x01], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Part/Reserved1", offs:[0x00, 0x02], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Reserved2", offs:[0x00, 0x03], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Reserved3", offs:[0x00, 0x04], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Reserved4", offs:[0x00, 0x05], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Tone Bank Select MSB", offs:[0x00, 0x06], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Tone Bank Select LSB", offs:[0x00, 0x07], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Tone Bank Program Number (PC)", offs:[0x00, 0x08], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+
+            new(type:NUM, path:"Studio Set Part/Part Level", offs:[0x00, 0x09], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Pan", offs:[0x00, 0x0a], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Coarse Tune", offs:[0x00, 0x0b], imin:16, imax:112, omin:-48, omax:48, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Fine Tune", offs:[0x00, 0x0c], imin:14, imax:114, omin:-50, omax:50, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Mono-Poly", offs:[0x00, 0x0d], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:MONO_POLY),
+            new(type:NUM, path:"Studio Set Part/Part Legato Switch", offs:[0x00, 0x0e], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_TONE),
+            new(type:NUM, path:"Studio Set Part/Part Pitch Bend Range", offs:[0x00, 0x0f], imin:0, imax:25, omin:0, omax:25, bytes:1, vis:USED, nib:false, repr:_0_24_TONE),
+            new(type:NUM, path:"Studio Set Part/Part Portamento Switch", offs:[0x00, 0x10], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_TONE),
+            new(type:NUM, path:"Studio Set Part/Part Portamento Time", offs:[0x00, 0x11], imin:0, imax:128, omin:0, omax:128, bytes:2, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Cutoff Offset", offs:[0x00, 0x13], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Resonance Offset", offs:[0x00, 0x14], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Attack Time Offset", offs:[0x00, 0x15], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Decay Time Offset", offs:[0x00, 0x16], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Release Time Offset", offs:[0x00, 0x17], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Vibrato Rate", offs:[0x00, 0x18], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Vibrato Depth", offs:[0x00, 0x19], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Vibrato Delay", offs:[0x00, 0x1a], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Octave Shift", offs:[0x00, 0x1b], imin:61, imax:67, omin:61, omax:67, bytes:1, vis:USED, nib:false, repr:OCTAVE_SHIFT),
+            new(type:NUM, path:"Studio Set Part/Part Velocity Sens Offset", offs:[0x00, 0x1c], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Keyboard Range Lower", offs:[0x00, 0x1d], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Keyboard Range Upper", offs:[0x00, 0x1e], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Keyboard Fade Width Lower", offs:[0x00, 0x1f], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Keyboard Fade Width Upper", offs:[0x00, 0x20], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Velocity Range Lower", offs:[0x00, 0x21], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Velocity Range Upper", offs:[0x00, 0x22], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Velocity Fade Width Lower", offs:[0x00, 0x23], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Velocity Fade Width Upper", offs:[0x00, 0x24], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Mute Switch", offs:[0x00, 0x25], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_MUTE),
+            new(type:NUM, path:"Studio Set Part/Reserved1", offs:[0x00, 0x26], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Chorus Send Level", offs:[0x00, 0x27], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Reverb Send Level", offs:[0x00, 0x28], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Output Assign", offs:[0x00, 0x29], imin:0, imax:11, omin:0, omax:11, bytes:1, vis:USED, nib:false, repr:ABCD1_8),
+            new(type:NUM, path:"Studio Set Part/Reserved2", offs:[0x00, 0x2a], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Scale Tune Type", offs:[0x00, 0x2b], imin:0, imax:8, omin:0, omax:8, bytes:1, vis:USED, nib:false, repr:SCALE_TYPE),
+            new(type:NUM, path:"Studio Set Part/Part Scale Tune Key", offs:[0x00, 0x2c], imin:0, imax:11, omin:0, omax:11 bytes:1, vis:USED, nib:false, repr:SCALE_KEY),
+            new(type:NUM, path:"Studio Set Part/Part Scale Tune for C", offs:[0x00, 0x2d], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Scale Tune for C#", offs:[0x00, 0x2e], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Scale Tune for D", offs:[0x00, 0x2f], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Scale Tune for D#", offs:[0x00, 0x30], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Scale Tune for E", offs:[0x00, 0x31], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Scale Tune for F", offs:[0x00, 0x32], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Scale Tune for F#", offs:[0x00, 0x33], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Scale Tune for G", offs:[0x00, 0x34], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Scale Tune for G#", offs:[0x00, 0x35], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Scale Tune for A", offs:[0x00, 0x36], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Scale Tune for A#", offs:[0x00, 0x37], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Part Scale Tune for B", offs:[0x00, 0x38], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Receive Program Change", offs:[0x00, 0x39], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Part/Receive Bank Select", offs:[0x00, 0x3a], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Part/Receive Pitch Bend", offs:[0x00, 0x3b], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Part/Receive Polyphonic Key Pressure", offs:[0x00, 0x3c], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Part/Receive Channel Pressure", offs:[0x00, 0x3d], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Part/Receive Modulation", offs:[0x00, 0x3e], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Part/Receive Volume", offs:[0x00, 0x3f], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Part/Receive Pan", offs:[0x00, 0x40], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Part/Receive Expression", offs:[0x00, 0x41], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Part/Receive Hold-1", offs:[0x00, 0x42], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Part/Velocity Curve Type", offs:[0x00, 0x43], imin:0, imax:4, omin:0, omax:4, bytes:1, vis:USED, nib:false, repr:VELO_CURVE),
+            new(type:NUM, path:"Studio Set Part/Motional Surround L-R", offs:[0x00, 0x44], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Reserved3", offs:[0x00, 0x45], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Motional Surround F-B", offs:[0x00, 0x46], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Reserved4", offs:[0x00, 0x47], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Motional Surround Width", offs:[0x00, 0x48], imin:0, imax:32, omin:0, omax:32, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Motional Surround Ambience Send Level", offs:[0x00, 0x49], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Reserved5", offs:[0x00, 0x4a], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Reserved6", offs:[0x00, 0x4b], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"Studio Set Part/Reserved7", offs:[0x00, 0x4c], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+
+            new(type:NUM, path:"Studio Set Part EQ/EQ Switch", offs:[0x00, 0x00], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"Studio Set Part EQ/EQ Low Freq", offs:[0x00, 0x00], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:_200_400Hz),
+            new(type:NUM, path:"Studio Set Part EQ/EQ Low Gain", offs:[0x00, 0x01], imin:0, imax:30, omin:0, omax:30, bytes:1, vis:USED, nib:false, repr:_min15_15dB),
+            new(type:NUM, path:"Studio Set Part EQ/EQ Mid Freq", offs:[0x00, 0x02], imin:0, imax:16, omin:0, omax:16, bytes:1, vis:USED, nib:false, repr:_200_8000Hz),
+            new(type:NUM, path:"Studio Set Part EQ/EQ Mid Gain", offs:[0x00, 0x03], imin:0, imax:30, omin:0, omax:30, bytes:1, vis:USED, nib:false, repr:_min15_15dB),
+            new(type:NUM, path:"Studio Set Part EQ/EQ Mid Q", offs:[0x00, 0x04], imin:0, imax:4, omin:0, omax:4, bytes:1, vis:USED, nib:false, repr:MID_Q),
+            new(type:NUM, path:"Studio Set Part EQ/EQ High Freq", offs:[0x00, 0x05], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:_2000_8000Hz),
+            new(type:NUM, path:"Studio Set Part EQ/EQ High Gain", offs:[0x00, 0x06], imin:0, imax:30, omin:0, omax:30, bytes:1, vis:USED, nib:false, repr:_min15_15dB),
+
+            new(type:ASC, path:"PCM Synth Tone Common/PCM Synth Tone Name", offs:[0x00, 0x00], imin:32, imax:127, omin:32, omax:127, bytes:12, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Reserved1", offs:[0x00, 0x0c], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Reserved2", offs:[0x00, 0x0d], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/PCM Synth Tone Level", offs:[0x00, 0x0e], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/PCM Synth Tone Pan", offs:[0x00, 0x0f], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/PCM Synth Tone Priority", offs:[0x00, 0x10], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:LAST_LOUDEST),
+            new(type:NUM, path:"PCM Synth Tone Common/PCM Synth Tone Coarse Tune", offs:[0x00, 0x11], imin:16, imax:112, omin:-48, omax:48, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/PCM Synth Tone Fine Tune", offs:[0x00, 0x12], imin:14, imax:114, omin:-50, omax:50, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Octave Shift", offs:[0x00, 0x13], imin:61, imax:67, omin:-3, omax:3, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Stretch Tune Depth", offs:[0x00, 0x14], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:USED, nib:false, repr:OFF_1_3),
+            new(type:NUM, path:"PCM Synth Tone Common/Analog Feel", offs:[0x00, 0x15], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Mono-Poly", offs:[0x00, 0x16], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:MONO_POLY),
+            new(type:NUM, path:"PCM Synth Tone Common/Legato Switch", offs:[0x00, 0x17], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"PCM Synth Tone Common/Legato Retrigger", offs:[0x00, 0x18], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"PCM Synth Tone Common/Portamento Switch", offs:[0x00, 0x19], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"PCM Synth Tone Common/Portamento Mode", offs:[0x00, 0x1a], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:NORMAL_LEGATO),
+            new(type:NUM, path:"PCM Synth Tone Common/Portamento Type", offs:[0x00, 0x1b], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:RATE_TIME),
+            new(type:NUM, path:"PCM Synth Tone Common/Portamento Start", offs:[0x00, 0x1c], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:PITCH_NOTE),
+            new(type:NUM, path:"PCM Synth Tone Common/Portamento Time", offs:[0x00, 0x1d], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Reserved3", offs:[0x00, 0x1e], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Reserved4", offs:[0x00, 0x1f], imin:0, imax:128, omin:0, omax:128, bytes:2, vis:RESERVED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Reserved5", offs:[0x00, 0x21], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Cutoff Offset", offs:[0x00, 0x22], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Resonance Offset", offs:[0x00, 0x23], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Attack Time Offset", offs:[0x00, 0x24], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Release Time Offset", offs:[0x00, 0x25], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Velocity Sens Offset", offs:[0x00, 0x26], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Reserved6", offs:[0x00, 0x27], imin:0, imax:15, omin:0, omax:15, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Partial Mix Table Control Switch", offs:[0x00, 0x28], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"PCM Synth Tone Common/Pitch Bend Range Up", offs:[0x00, 0x29], imin:0, imax:48, omin:0, omax:48, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Pitch Bend Range Down", offs:[0x00, 0x2a], imin:0, imax:48, omin:0, omax:48, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 1 Source", offs:[0x00, 0x2b], imin:0, imax:109, omin:0, omax:109, bytes:1, vis:USED, nib:false, repr:MATRIX_SRC),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 1 Dest 1", offs:[0x00, 0x2c], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 1 Sens 1", offs:[0x00, 0x2d], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 1 Dest 2", offs:[0x00, 0x2e], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 1 Sens 2", offs:[0x00, 0x2f], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 1 Dest 3", offs:[0x00, 0x30], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 1 Sens 3", offs:[0x00, 0x31], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 1 Dest 4", offs:[0x00, 0x32], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 1 Sens 4", offs:[0x00, 0x33], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 2 Source", offs:[0x00, 0x34], imin:0, imax:109, omin:0, omax:109, bytes:1, vis:USED, nib:false, repr:MATRIX_SRC),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 2 Dest 1", offs:[0x00, 0x35], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 2 Sens 1", offs:[0x00, 0x36], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 2 Dest 2", offs:[0x00, 0x37], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 2 Sens 2", offs:[0x00, 0x38], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 2 Dest 3", offs:[0x00, 0x39], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 2 Sens 3", offs:[0x00, 0x3a], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 2 Dest 4", offs:[0x00, 0x3b], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 2 Sens 4", offs:[0x00, 0x3c], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 3 Source", offs:[0x00, 0x3d], imin:0, imax:109, omin:0, omax:109, bytes:1, vis:USED, nib:false, repr:MATRIX_SRC),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 3 Dest 1", offs:[0x00, 0x3e], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 3 Sens 1", offs:[0x00, 0x3f], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 3 Dest 2", offs:[0x00, 0x40], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 3 Sens 2", offs:[0x00, 0x41], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 3 Dest 3", offs:[0x00, 0x42], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 3 Sens 3", offs:[0x00, 0x43], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 3 Dest 4", offs:[0x00, 0x44], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 3 Sens 4", offs:[0x00, 0x45], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 4 Source", offs:[0x00, 0x46], imin:0, imax:109, omin:0, omax:109, bytes:1, vis:USED, nib:false, repr:MATRIX_SRC),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 4 Dest 1", offs:[0x00, 0x47], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 4 Sens 1", offs:[0x00, 0x48], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 4 Dest 2", offs:[0x00, 0x49], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 4 Sens 2", offs:[0x00, 0x4a], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 4 Dest 3", offs:[0x00, 0x4b], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 4 Sens 3", offs:[0x00, 0x4c], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 4 Dest 4", offs:[0x00, 0x4d], imin:0, imax:33, omin:0, omax:33, bytes:1, vis:USED, nib:false, repr:MATRIX_DST),
+            new(type:NUM, path:"PCM Synth Tone Common/Matrix Control 4 Sens 4", offs:[0x00, 0x4e], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common/Reserved7", offs:[0x00, 0x4f], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, repr:null),
+
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Type", offs:[0x00, 0x00], imin:0, imax:67, omin:0, omax:67, bytes:1, vis:USED, nib:false, repr:MFX_TYPE),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/Reserved1", offs:[0x00, 0x01], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Chorus Send Level", offs:[0x00, 0x02], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Reverb Send Level", offs:[0x00, 0x03], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/Reserved2", offs:[0x00, 0x04], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Control 1 Source", offs:[0x00, 0x05], imin:0, imax:101, omin:0, omax:101, bytes:1, vis:USED, nib:false, repr:MFX_SRC),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Control 1 Sens", offs:[0x00, 0x06], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Control 2 Source", offs:[0x00, 0x07], imin:0, imax:101, omin:0, omax:101, bytes:1, vis:USED, nib:false, repr:MFX_SRC),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Control 2 Sens", offs:[0x00, 0x08], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Control 3 Source", offs:[0x00, 0x09], imin:0, imax:101, omin:0, omax:101, bytes:1, vis:USED, nib:false, repr:MFX_SRC),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Control 3 Sens", offs:[0x00, 0x0a], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Control 4 Source", offs:[0x00, 0x0b], imin:0, imax:101, omin:0, omax:101, bytes:1, vis:USED, nib:false, repr:MFX_SRC),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Control 4 Sens", offs:[0x00, 0x0c], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Control Assign 1", offs:[0x00, 0x0d], imin:0, imax:16, omin:0, omax:16, bytes:1, vis:USED, nib:false, repr:OFF_1_16),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Control Assign 2", offs:[0x00, 0x0e], imin:0, imax:16, omin:0, omax:16, bytes:1, vis:USED, nib:false, repr:OFF_1_16),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Control Assign 3", offs:[0x00, 0x0f], imin:0, imax:16, omin:0, omax:16, bytes:1, vis:USED, nib:false, repr:OFF_1_16),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Control Assign 4", offs:[0x00, 0x10], imin:0, imax:16, omin:0, omax:16, bytes:1, vis:USED, nib:false, repr:OFF_1_16),
+
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 1", offs:[0x00, 0x11], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 2", offs:[0x00, 0x15], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 3", offs:[0x00, 0x19], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 4", offs:[0x00, 0x1d], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 5", offs:[0x00, 0x21], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 6", offs:[0x00, 0x25], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 7", offs:[0x00, 0x29], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 8", offs:[0x00, 0x2d], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 9", offs:[0x00, 0x31], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 10", offs:[0x00, 0x35], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 11", offs:[0x00, 0x39], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 12", offs:[0x00, 0x3d], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 13", offs:[0x00, 0x41], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 14", offs:[0x00, 0x45], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 15", offs:[0x00, 0x49], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 16", offs:[0x00, 0x4d], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 17", offs:[0x00, 0x51], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 18", offs:[0x00, 0x55], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 19", offs:[0x00, 0x59], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 20", offs:[0x00, 0x5d], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 21", offs:[0x00, 0x61], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 22", offs:[0x00, 0x65], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 23", offs:[0x00, 0x69], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 24", offs:[0x00, 0x6d], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 25", offs:[0x00, 0x71], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 26", offs:[0x00, 0x75], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 27", offs:[0x00, 0x79], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 28", offs:[0x00, 0x7d], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 29", offs:[0x01, 0x01], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 30", offs:[0x01, 0x05], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 31", offs:[0x01, 0x09], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 32", offs:[0x01, 0x0d], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
+
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/Structure Type 1 & 2", offs:[0x00, 0x00], imin:0, imax:9, omin:1, omax:10, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/Booster 1 & 2", offs:[0x00, 0x01], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:USED, nib:false, repr:_0_18dB),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/Structure Type 3 & 4", offs:[0x00, 0x02], imin:0, imax:9, omin:1, omax:10, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/Booster 3 & 4", offs:[0x00, 0x03], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:USED, nib:false, repr:_0_18dB),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT Velocity Control", offs:[0x00, 0x04], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:USED, nib:false, repr:OFF_CYCLE),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 1 Partial Switch", offs:[0x00, 0x05], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 1 Keyboard Range Lower", offs:[0x00, 0x06], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 1 Keyboard Range Upper", offs:[0x00, 0x07], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 1 Keyboard Fade Width Lower", offs:[0x00, 0x08], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 1 Keyboard Fade Width Upper", offs:[0x00, 0x09], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 1 Velocity Range Lower", offs:[0x00, 0x0a], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 1 Velocity Range Upper", offs:[0x00, 0x0b], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 1 Velocity Width Lower", offs:[0x00, 0x0c], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 1 Velocity Width Upper", offs:[0x00, 0x0d], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 2 Partial Switch", offs:[0x00, 0x0e], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 2 Keyboard Range Lower", offs:[0x00, 0x0f], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 2 Keyboard Range Upper", offs:[0x00, 0x10], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 2 Keyboard Fade Width Lower", offs:[0x00, 0x11], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 2 Keyboard Fade Width Upper", offs:[0x00, 0x12], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 2 Velocity Range Lower", offs:[0x00, 0x13], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 2 Velocity Range Upper", offs:[0x00, 0x14], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 2 Velocity Width Lower", offs:[0x00, 0x15], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 2 Velocity Width Upper", offs:[0x00, 0x16], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 3 Partial Switch", offs:[0x00, 0x17], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 3 Keyboard Range Lower", offs:[0x00, 0x18], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 3 Keyboard Range Upper", offs:[0x00, 0x19], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 3 Keyboard Fade Width Lower", offs:[0x00, 0x1a], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 3 Keyboard Fade Width Upper", offs:[0x00, 0x1b], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 3 Velocity Range Lower", offs:[0x00, 0x1c], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 3 Velocity Range Upper", offs:[0x00, 0x1d], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 3 Velocity Width Lower", offs:[0x00, 0x1e], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 3 Velocity Width Upper", offs:[0x00, 0x1f], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 4 Partial Switch", offs:[0x00, 0x20], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 4 Keyboard Range Lower", offs:[0x00, 0x21], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 4 Keyboard Range Upper", offs:[0x00, 0x22], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 4 Keyboard Fade Width Lower", offs:[0x00, 0x23], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 4 Keyboard Fade Width Upper", offs:[0x00, 0x24], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 4 Velocity Range Lower", offs:[0x00, 0x25], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 4 Velocity Range Upper", offs:[0x00, 0x26], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 4 Velocity Width Lower", offs:[0x00, 0x27], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial Mix Table/PMT 4 Velocity Width Upper", offs:[0x00, 0x28], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Level", offs:[0x00, 0x00], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Coarse Tune", offs:[0x00, 0x01], imin:16, imax:112, omin:-48, omax:48, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Fine Tune", offs:[0x00, 0x02], imin:14, imax:114, omin:-50, omax:50, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Random Pitch Depth", offs:[0x00, 0x03], imin:0, imax:30, omin:0, omax:30, bytes:1, vis:USED, nib:false, repr:RND_PITCH_DEPTH),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Pan", offs:[0x00, 0x04], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Pan Keyfollow", offs:[0x00, 0x05], imin:54, imax:74, omin:-100, omax:100, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Random Pan Depth", offs:[0x00, 0x06], imin:0, imax:63, omin:0, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Alternate Pan Depth", offs:[0x00, 0x07], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Env Mode", offs:[0x00, 0x08], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:NOSUS_SUS),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Delay Mode", offs:[0x00, 0x09], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:USED, nib:false, repr:NORM_KEYOFF),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Delay Time", offs:[0x00, 0x0a], imin:0, imax:149, omin:0, omax:149, bytes:2, vis:USED, nib:true, repr:PARTIAL_DELAY_TIME),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Output Level", offs:[0x00, 0x0c], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Reserved1", offs:[0x00, 0x0d], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Reserved2", offs:[0x00, 0x0e], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Chorus Send Level", offs:[0x00, 0x0f], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Reverb Send Level", offs:[0x00, 0x10], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Reserved3", offs:[0x00, 0x11], imin:0, imax:63, omin:0, omax:63, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Receive Bender", offs:[0x00, 0x12], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Receive Expression", offs:[0x00, 0x13], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Receive Sustain", offs:[0x00, 0x14], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"PCM Synth Tone Partial/Reserved4", offs:[0x00, 0x15], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Redamper Switch", offs:[0x00, 0x16], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 1 Switch 1", offs:[0x00, 0x17], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 1 Switch 2", offs:[0x00, 0x18], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 1 Switch 3", offs:[0x00, 0x19], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 1 Switch 4", offs:[0x00, 0x1a], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 2 Switch 1", offs:[0x00, 0x1b], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 2 Switch 2", offs:[0x00, 0x1c], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 2 Switch 3", offs:[0x00, 0x1d], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 2 Switch 4", offs:[0x00, 0x1e], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 3 Switch 1", offs:[0x00, 0x1f], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 3 Switch 2", offs:[0x00, 0x20], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 3 Switch 3", offs:[0x00, 0x21], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 3 Switch 4", offs:[0x00, 0x22], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 4 Switch 1", offs:[0x00, 0x23], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 4 Switch 2", offs:[0x00, 0x24], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 4 Switch 3", offs:[0x00, 0x25], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 4 Switch 4", offs:[0x00, 0x26], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OFF_ON_REVERSE),
+            new(type:NUM, path:"PCM Synth Tone Partial/Wave Group Type", offs:[0x00, 0x27], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:USED, nib:false, repr:INT_SRX_RES),
+            new(type:NUM, path:"PCM Synth Tone Partial/Wave Group ID", offs:[0x00, 0x28], imin:0, imax:16384, omin:0, omax:16384, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Wave Number L (Mono)", offs:[0x00, 0x2c], imin:0, imax:16384, omin:0, omax:16384, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Wave Number R", offs:[0x00, 0x30], imin:0, imax:16384, omin:0, omax:16384, bytes:4, vis:USED, nib:true, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Wave Gain", offs:[0x00, 0x34], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:USED, nib:false, repr:_min6_12dB),
+            new(type:NUM, path:"PCM Synth Tone Partial/Wave FXM Switch", offs:[0x00, 0x35], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"PCM Synth Tone Partial/Wave FXM Color", offs:[0x00, 0x36], imin:0, imax:3, omin:1, omax:4, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Wave FXM Depth", offs:[0x00, 0x37], imin:0, imax:16, omin:0, omax:16, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Wave Tempo Sync", offs:[0x00, 0x38], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"PCM Synth Tone Partial/Wave Pitch Keyfollow", offs:[0x00, 0x39], imin:44, imax:84, omin:-200, omax:200, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Pitch Env Depth", offs:[0x00, 0x3a], imin:52, imax:76, omin:-12, omax:12, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Pitch Env Velocity Sens", offs:[0x00, 0x3b], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Pitch Env Time 1 Velocity Sens", offs:[0x00, 0x3c], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Pitch Env Time 4 Velocity Sens", offs:[0x00, 0x3d], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Pitch Env Time Keyfollow", offs:[0x00, 0x3e], imin:54, imax:74, omin:-100, omax:100, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Pitch Env Time 1", offs:[0x00, 0x3f], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Pitch Env Time 2", offs:[0x00, 0x40], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Pitch Env Time 3", offs:[0x00, 0x41], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Pitch Env Time 4", offs:[0x00, 0x42], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Pitch Env Level 0", offs:[0x00, 0x43], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Pitch Env Level 1", offs:[0x00, 0x44], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Pitch Env Level 2", offs:[0x00, 0x45], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Pitch Env Level 3", offs:[0x00, 0x46], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Pitch Env Level 4", offs:[0x00, 0x47], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/TVF Filter Type", offs:[0x00, 0x48], imin:0, imax:6, omin:0, omax:6, bytes:1, vis:USED, nib:false, repr:TVF_FILTER_TYPE),
+
         };
 
     }

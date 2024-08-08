@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Threading.Tasks;
 using Commons.Music.Midi;
 using CoreMidi;
 
@@ -52,6 +53,14 @@ public class MidiOut : IMidiOut
         {
             _midiPortDetails = null;
             _access = null;
+        }
+    }
+
+    ~MidiOut()
+    {
+        if (_access != null)
+        {
+            Task.WaitAll(_access.CloseAsync());
         }
     }
 }

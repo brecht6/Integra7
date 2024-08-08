@@ -22,6 +22,7 @@ namespace Integra7AuralAlchemist.ViewModels;
 public partial class MainWindowViewModel : ObservableObject
 {
 #pragma warning disable CA1822 // Mark members as static
+#pragma warning disable CS8618 // Non-nullable field 'xxx' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the field as nullable.
     private Integra7Preset _selectedPreset0;
     private Integra7Preset _selectedPreset1;
     private Integra7Preset _selectedPreset2;
@@ -38,7 +39,6 @@ public partial class MainWindowViewModel : ObservableObject
     private Integra7Preset _selectedPreset13;
     private Integra7Preset _selectedPreset14;
     private Integra7Preset _selectedPreset15;
-
     public Integra7Preset SelectedPresetCh0
     {
         get => _selectedPreset0;
@@ -221,7 +221,7 @@ public partial class MainWindowViewModel : ObservableObject
             case 15:
                 return SelectedPresetCh15;
             default:
-                return null;
+                return SelectedPresetCh0;
         }
     }
 
@@ -561,5 +561,6 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
 #pragma warning restore CA1822 // Mark members as static
+#pragma warning restore CS8618 // nullable must be assigned in constructor
 }
 

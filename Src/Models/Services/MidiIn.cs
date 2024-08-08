@@ -30,13 +30,13 @@ public class MidiIn : IMidiIn
     public MidiIn(string Name)
     {
         _midiAccessManager = MidiAccessManager.Default as IMidiAccess2;
+        _lastEventHandler = DefaultHandler;     
         try
         {
-            _midiPortDetails = _midiAccessManager?.Inputs.Where(x => x.Name.Contains(Name)).Last();
-            _access = _midiAccessManager?.OpenInputAsync(_midiPortDetails?.Id).Result;
+            _midiPortDetails = _midiAccessManager?.Inputs.Where(x => x.Name.Contains(Name)).Last();       
+            _access = _midiAccessManager?.OpenInputAsync(_midiPortDetails?.Id).Result;            
             if (_access != null)
             {
-                _lastEventHandler = DefaultHandler;
                 _access.MessageReceived += _lastEventHandler;
             }
         }

@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
+using Avalonia.Platform;
 namespace Integra7AuralAlchemist.Models.Data;
 
 
@@ -269,7 +272,7 @@ public class Integra7Parameters
         [0] = "Internal", [1] = "SRX", [2] = "Reserved", [3] = "Reserved"
     };
     public readonly IDictionary<int, string> _min6_12dB = new Dictionary<int, string> {
-        [0] = "-6 DB", [1] = "0 dB", [2] = "+6 dB", [3] = "=12 dB"
+        [0] = "-6 DB", [1] = "0 dB", [2] = "+6 dB", [3] = "+12 dB"
     };
     public readonly IDictionary<int, string> TVF_FILTER_TYPE = new Dictionary<int, string> {
         [0] ="Off", [1] = "Low-pass filter", [2] = "Band-pass filter", [3] = "High-pass filter", [4] = "Peaking filter",
@@ -341,13 +344,56 @@ public class Integra7Parameters
     public readonly IDictionary<int, string> UNISON_SIZE = new Dictionary<int, string> {
         [0] = "2", [1] = "4", [2] = "6", [4] = "8"
     };
+    public readonly IDictionary<int, string> OSC_WAVE = new Dictionary<int, string> {
+        [0] = "Saw", [1] = "Square", [2] = "Pulse Width Mod. Square", [3] = "Triangle", [4] = "Sine",
+        [5] = "Noise", [6] = "SuperSaw", [7] = "Pcm"
+    };
+    public readonly IDictionary<int, string> OSC_WAV_VARIATION = new Dictionary<int, string> {
+        [0] = "A", [1] = "B", [2] = "C"
+    };
+    public readonly IDictionary<int, string> FILTER_MODE = new Dictionary<int, string> {
+        [0] = "Bypass", [1] = "Low pass", [2] = "High pass", [3] = "Band pass", [4] = "Peaking",
+        [5] = "Low pass 2", [6] = "Low pass 3", [7] = "Low pass 4"
+    };
+    public readonly IDictionary<int, string> FILTER_SLOPE = new Dictionary<int, string> {
+        [0] = "-12 dB", [1] = "-24 dB"
+    };
+    public readonly IDictionary<int, string> LFO_SHAPE = new Dictionary<int, string> {
+        [0] = "Triangle", [1] = "Sine", [2] = "Sawtooth", [3] = "Square", [4] = "Sample&Hold",
+        [5] = "Random"
+    };
+    public readonly IDictionary<int, string> TEMP_SYNC_NOTE = new Dictionary<int, string> {
+        [0] = "16", [1] = "12", [2] = "8", [3] = "4", [4] = "2", 
+        [5] = "1",  [6] = "3/4", [7] = "2/3", [8] = "1/2", [9] = "3/8", 
+        [10] = "1/3", [11] = "1/4", [12] = "3/16", [13]="1/6", [14]="1/8", 
+        [15]= "3/32",  [16] = "1/12", [17]= "1/16", [18] = "1/24", [19] = "1/32"
+    };
+    public readonly IDictionary<int, string> PCM_WAVEFORMS = new Dictionary<int, string> {};
     public const bool USED = false;
     public const bool RESERVED = true;
     private IList<Integra7ParameterSpec> _parameters;
+    private async void LoadPCMWaveForms()
+    {
+        var uri = @"avares://" + "Integra7AuralAlchemist/" + "Assets/PcmWavenumbers.csv";
+        var file = new StreamReader(AssetLoader.Open(new Uri(uri)));
+        var data = file.ReadLine();
+        char[] separators = [','];
+        int id = 0;
+        while ((data = await file.ReadLineAsync()) != null)
+        {
+            string[] read = data.Split(separators, StringSplitOptions.None);
+            string name = read[0].Trim('"');
+            PCM_WAVEFORMS[id] = name;
+            id++;
+        }
+    }
+
     public Integra7Parameters()
     {
         const Integra7ParameterSpec.SpecType NUM = Integra7ParameterSpec.SpecType.NUMERIC;
         const Integra7ParameterSpec.SpecType ASC = Integra7ParameterSpec.SpecType.ASCII;
+        
+        LoadPCMWaveForms();
 
         _parameters = new List<Integra7ParameterSpec>
         {
@@ -1485,6 +1531,66 @@ public class Integra7Parameters
             new(type:NUM, path:"SuperNATURAL Synth Tone Common MFX/MFX Parameter 31", offs:[0x01, 0x09], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
             new(type:NUM, path:"SuperNATURAL Synth Tone Common MFX/MFX Parameter 32", offs:[0x01, 0x0d], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, vis:USED, nib:true, repr:null),
 
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/OSC Wave", offs:[0x00, 0x00], imin:0, imax:7, omin:0, omax:7, bytes:1, vis:USED, nib:false, repr:OSC_WAVE),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/OSC Wave Variation", offs:[0x00, 0x01], imin:0, imax:2, omin:0, omax:2, bytes:1, vis:USED, nib:false, repr:OSC_WAV_VARIATION),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Reserved1", offs:[0x00, 0x02], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/OSC Pitch", offs:[0x00, 0x03], imin:40, imax:88, omin:-24, omax:24, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/OSC Detune", offs:[0x00, 0x04], imin:14, imax:114, omin:-50, omax:50, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/OSC Pulse Width Mod Depth", offs:[0x00, 0x05], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/OSC Pulse Width", offs:[0x00, 0x06], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/OSC Pitch Env Attack Time", offs:[0x00, 0x07], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/OSC Pitch Env Decay", offs:[0x00, 0x08], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/OSC Pitch Env Depth", offs:[0x00, 0x09], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Filter Mode", offs:[0x00, 0x0a], imin:0, imax:7, omin:0, omax:7, bytes:1, vis:USED, nib:false, repr:FILTER_MODE),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Filter Slope", offs:[0x00, 0x0b], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:FILTER_SLOPE),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Filter Cutoff", offs:[0x00, 0x0c], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Filter Cutoff Keyfollow", offs:[0x00, 0x0d], imin:54, imax:74, omin:-100, omax:100, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Filter Env Velocity Sens", offs:[0x00, 0x0e], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Filter Resonance", offs:[0x00, 0x0f], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Filter Env Attack Time", offs:[0x00, 0x10], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Filter Env Decay Time", offs:[0x00, 0x11], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Filter Env Sustain Level", offs:[0x00, 0x12], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Filter Env Release Time", offs:[0x00, 0x13], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Filter Env Depth", offs:[0x00, 0x14], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/AMP Level", offs:[0x00, 0x15], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/AMP Level Velocity Sens", offs:[0x00, 0x16], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/AMP Env Atttack Time", offs:[0x00, 0x17], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/AMP Env Decay Time", offs:[0x00, 0x18], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/AMP Env Sustain Level", offs:[0x00, 0x19], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/AMP Env Release Time", offs:[0x00, 0x1a], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/AMP Pan", offs:[0x00, 0x1b], imin:0, imax:127, omin:-64, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/LFO Shape", offs:[0x00, 0x1c], imin:0, imax:5, omin:0, omax:5, bytes:1, vis:USED, nib:false, repr:LFO_SHAPE),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/LFO Rate", offs:[0x00, 0x1d], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/LFO Tempo Sync Switch", offs:[0x00, 0x1e], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/LFO Tempo Sync Note", offs:[0x00, 0x1f], imin:0, imax:19, omin:0, omax:19, bytes:1, vis:USED, nib:false, repr:TEMP_SYNC_NOTE),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/LFO Fade Time", offs:[0x00, 0x20], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/LFO Key Trigger", offs:[0x00, 0x21], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/LFO Pitch Depth", offs:[0x00, 0x22], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/LFO Filter Depth", offs:[0x00, 0x23], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/LFO AMP Depth", offs:[0x00, 0x24], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/LFO Pan Depth", offs:[0x00, 0x25], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Modulation LFO Shape", offs:[0x00, 0x26], imin:0, imax:5, omin:0, omax:5, bytes:1, vis:USED, nib:false, repr:LFO_SHAPE),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Modulation LFO Rate", offs:[0x00, 0x27], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Modulation LFO Tempo Sync Switch", offs:[0x00, 0x28], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:USED, nib:false, repr:OFF_ON),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Modulation LFO Tempo Sync Note", offs:[0x00, 0x29], imin:0, imax:19, omin:0, omax:19, bytes:1, vis:USED, nib:false, repr:TEMP_SYNC_NOTE),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/OSC Pulse Width shift", offs:[0x00, 0x2a], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Reserved2", offs:[0x00, 0x2b], imin:0, imax:1, omin:0, omax:1, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Modulation LFO Pitch Depth", offs:[0x00, 0x2c], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Modulation LFO Filter Depth", offs:[0x00, 0x2d], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Modulation LFO AMP Depth", offs:[0x00, 0x2e], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Modulation LFO Pan Depth", offs:[0x00, 0x2f], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Cutoff Aftertouch Sens", offs:[0x00, 0x30], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Level Aftertouch Sens", offs:[0x00, 0x31], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Reserved3", offs:[0x00, 0x32], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Reserved4", offs:[0x00, 0x33], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:RESERVED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Wave Gain", offs:[0x00, 0x34], imin:0, imax:3, omin:0, omax:3, bytes:1, vis:USED, nib:false, repr:_min6_12dB),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Wave Number", offs:[0x00, 0x35], imin:0, imax:450, omin:0, omax:450, bytes:4, vis:USED, nib:true, repr:PCM_WAVEFORMS),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/HPF Cutoff", offs:[0x00, 0x39], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Super Saw Detune", offs:[0x00, 0x3a], imin:0, imax:127, omin:0, omax:127, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/Modulation LFO Rate Control", offs:[0x00, 0x3b], imin:1, imax:127, omin:-63, omax:63, bytes:1, vis:USED, nib:false, repr:null),
+            new(type:NUM, path:"SuperNATURAL Synth Tone Partial/AMP Level Keyfollow", offs:[0x00, 0x3c], imin:54, imax:74, omin:-100, omax:100, bytes:1, vis:USED, nib:false, repr:null),
+
+            
         };
     }
 }

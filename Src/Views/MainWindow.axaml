@@ -18,7 +18,7 @@
         <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding MidiDevices}" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="20">
-            <Button Command="{Binding RescanMidiDevicesCommand}" >Rescan Midi Devices</Button>
+            <Button IsEnabled="{Binding RescanButtonEnabled}" Command="{Binding RescanMidiDevicesCommand}" >Rescan Midi Devices</Button>
             <Button Command="{Binding PlayNoteCommand}" IsEnabled="{Binding Connected}" >Play Note</Button>
             <Button Command="{Binding PanicCommand}" IsEnabled="{Binding Connected}" Background="Red" Foreground="White">
                 Panic!

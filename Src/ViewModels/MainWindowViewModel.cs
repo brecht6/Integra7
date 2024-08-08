@@ -184,6 +184,9 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
+    [ObservableProperty]
+    private bool rescanButtonEnabled = true;
+    
     Integra7Preset GetSelectedPreset(byte Channel)
     {
         switch (Channel)
@@ -436,6 +439,9 @@ public partial class MainWindowViewModel : ObservableObject
     {
         Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING));
         UpdateConnected(Integra7);
+        if (Connected) {
+            RescanButtonEnabled = false;
+        }
     }
 
     private void UpdateConnected(IIntegra7Api integra7)

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+
 using Commons.Music.Midi;
 
 namespace Integra7AuralAlchemist.Models.Services;
@@ -38,7 +38,6 @@ public class MidiIn : IMidiIn
             _access = _midiAccessManager?.OpenInputAsync(_midiPortDetails?.Id).Result;
             if (_access != null)
             {
-                _access.MessageReceived -= _lastEventHandler;
                 _access.MessageReceived += _lastEventHandler;
             }
         }
@@ -77,14 +76,6 @@ public class MidiIn : IMidiIn
             // if no reply after 5 seconds, most likely no reply will come anymore...
             _replyReady.Reset();
             return [];
-        }
-    }
-
-    ~MidiIn()
-    {
-        if (_access != null)
-        {
-            Task.WaitAll(_access.CloseAsync());
         }
     }
 }

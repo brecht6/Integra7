@@ -1,9 +1,6 @@
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Channels;
 using Commons.Music.Midi;
 using CoreMidi;
-using ReactiveUI;
 
 namespace Integra7AuralAlchemist.Models.Services;
 
@@ -39,6 +36,7 @@ public class Integra7Api : IIntegra7Api
             _deviceId = 0;
         }
     }
+
 
     public bool CheckIdentity()
     {

@@ -1,9 +1,5 @@
-using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
-using System.Threading.Tasks;
 using Commons.Music.Midi;
-using CoreMidi;
 
 
 namespace Integra7AuralAlchemist.Models.Services;
@@ -53,14 +49,6 @@ public class MidiOut : IMidiOut
         {
             _midiPortDetails = null;
             _access = null;
-        }
-    }
-
-    ~MidiOut()
-    {
-        if (_access != null)
-        {
-            Task.WaitAll(_access.CloseAsync());
         }
     }
 }

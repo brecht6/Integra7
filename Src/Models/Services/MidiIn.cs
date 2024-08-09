@@ -31,7 +31,6 @@ public class MidiIn : IMidiIn
     {
         _midiAccessManager = MidiAccessManager.Default as IMidiAccess2;
         _lastEventHandler = DefaultHandler;
-        _replyReady.Reset();
         try
         {
             _midiPortDetails = _midiAccessManager?.Inputs.Where(x => x.Name.Contains(Name)).Last();       
@@ -49,6 +48,7 @@ public class MidiIn : IMidiIn
 
     private void DefaultHandler(object? sender, MidiReceivedEventArgs e)
     {
+        _replyReady.Reset();
         _replyData = new byte[e.Length];
         Array.Copy(e.Data, _replyData, e.Length);
         _replyReady.Set();

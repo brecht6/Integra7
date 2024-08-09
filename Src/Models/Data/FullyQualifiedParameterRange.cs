@@ -10,7 +10,7 @@ public class FullyQualifiedParameterRange
     private Integra7ParameterSpec _firstPar;
     private Integra7ParameterSpec _lastPar;
     private List<FullyQualifiedParameter> _range;
-    public List<FullyQualifiedParameter> Range => _range ?? [] ;
+    public List<FullyQualifiedParameter> Range => _range ?? [];
 
     public FullyQualifiedParameterRange(string start, string offset, Integra7ParameterSpec firstPar, Integra7ParameterSpec lastPar)
     {
@@ -36,6 +36,7 @@ public class FullyQualifiedParameterRange
             size += allRelevantPars[i].Bytes;
             _range.Add(new FullyQualifiedParameter(_start, _offset, allRelevantPars[i]));
         }
+
         byte[] reply = integra7Api.MakeDataRequest(totalAddr, size);
         ParseFromSysexReply(reply, parameters, _firstPar);
     }

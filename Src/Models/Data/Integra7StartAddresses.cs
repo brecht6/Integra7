@@ -42,8 +42,8 @@ public class Integra7StartAddresses
             ["TemporaryTone/Part15"] = new(addr: [0x1C, 0x40, 0x00, 0x00]),
             ["TemporaryTone/Part16"] = new(addr: [0x1C, 0x60, 0x00, 0x00]),
 
-            ["Offset/Setup/SoundMode"] = new(addr: [0x00, 0x00]),
-            ["Offset/System/Common"] = new(addr: [0x00, 0x00, 0x00]),
+            ["Offset/Setup Sound Mode"] = new(addr: [0x00, 0x00]),
+            ["Offset/System Common"] = new(addr: [0x00, 0x00, 0x00]),
             ["Offset/Temporary PCM Synth Tone"] = new(addr: [0x00, 0x00, 0x00]),
             ["Offset/Temporary SuperNATURAL Synth Tone"] = new(addr: [0x01, 0x00, 0x00]),
             ["Offset/Temporary SuperNATURAL Acoustic Tone"] = new(addr: [0x02, 0x00, 0x00]),

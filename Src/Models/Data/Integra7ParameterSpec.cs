@@ -2,15 +2,15 @@ using System.Collections.Generic;
 
 namespace Integra7AuralAlchemist.Models.Data;
 
-class Integra7ParameterSpec
+public class Integra7ParameterSpec
 {
     public enum SpecType { NUMERIC, ASCII };
     private SpecType _type;
     public SpecType Type { get => _type; }
     private string _path;
     public string Path { get => _path; }
-    private byte[] _offsetAddress;
-    public byte[] OffsetAddress { get => _offsetAddress; }
+    private byte[] _address;
+    public byte[] Address { get => _address; }
     private int _imin;
     public int IMin { get => _imin; }
     private int _imax;
@@ -21,31 +21,26 @@ class Integra7ParameterSpec
     public float OMax { get => _omax; }
     private int _bytes;
     public int Bytes { get => _bytes; }
-    private bool _exposed = false;
-    public bool Exposed { get => _exposed; }
+    private bool _reserved = false;
+    public bool Reserved { get => _reserved; }
     private bool _perNibble = false;
     public bool PerNibble { get => _perNibble; }
     private IDictionary<int, string>? _repr;
     public IDictionary<int, string>? Repr { get => _repr; }
 
-    public Integra7ParameterSpec(SpecType type, string path, byte[] offs, int imin, int imax, float omin, float omax, int bytes, bool vis, bool nib, IDictionary<int, string>? repr)
+    public Integra7ParameterSpec(SpecType type, string path, byte[] offs, int imin, int imax, float omin, float omax, int bytes, bool res, bool nib, IDictionary<int, string>? repr)
     {
         _type = type;
         _path = path;
-        _offsetAddress = offs;
+        _address = offs;
         _imin = imin;
         _imax = imax;
         _omin = omin;
         _omax = omax;
         _bytes = bytes;
-        _exposed = vis;
+        _reserved = res;
         _perNibble = nib;
         _repr = repr;
     }
 
 }
-
-
-/*
-
-*/

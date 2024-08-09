@@ -15,6 +15,7 @@ using Avalonia.Controls;
 using System.Diagnostics;
 using System.Collections.Generic;
 using Avalonia.Collections;
+using Integra7AuralAlchemist.Models.Domain;
 
 namespace Integra7AuralAlchemist.ViewModels;
 
@@ -23,6 +24,8 @@ public partial class MainWindowViewModel : ObservableObject
 {
 #pragma warning disable CA1822 // Mark members as static
 #pragma warning disable CS8618 // Non-nullable field 'xxx' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the field as nullable.
+    private Integra7StartAddresses _i7startAddresses = new Integra7StartAddresses();
+    private Integra7Parameters _i7parameters = new Integra7Parameters();
     private Integra7Preset _selectedPreset0;
     private Integra7Preset _selectedPreset1;
     private Integra7Preset _selectedPreset2;
@@ -460,6 +463,12 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty]
     private int currentPartSelection = 0;
 
+    private void DebugCode()
+    {
+        DomainSetup d = new DomainSetup(Integra7, _i7startAddresses, _i7parameters);
+        d.ReadFromIntegra();
+    }
+
 
     private async void LoadPresets()
     {
@@ -563,7 +572,7 @@ public partial class MainWindowViewModel : ObservableObject
                                     .Bind(out _presetsCh15)
                                     .DisposeMany()
                                     .Subscribe();
-
+        // DebugCode();
     }
 
 #pragma warning restore CA1822 // Mark members as static

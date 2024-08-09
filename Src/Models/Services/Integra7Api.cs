@@ -13,6 +13,8 @@ public interface IIntegra7Api
     void NoteOff(byte Channel, byte Note);
     void AllNotesOff();
     void ChangePreset(byte Channel, int Msb, int Lsb, int Pc);
+
+    byte[] MakeDataRequest(byte[] address, long size);
 }
 
 public class Integra7Api : IIntegra7Api
@@ -44,6 +46,14 @@ public class Integra7Api : IIntegra7Api
         _midiOut?.SafeSend(data);
         byte[] reply = _midiIn?.GetReply() ?? [];
         return Integra7SysexHelpers.CheckIdentityReply(reply, out _deviceId);
+    }
+
+    public byte[] MakeDataRequest(byte[] address, long size)
+    {
+        byte[] data = Integra7SysexHelpers.MakeDataRequest(DeviceId(), address, size);
+        _midiOut?.SafeSend(data);
+        byte[] reply = _midiIn?.GetReply() ?? [];
+        return reply;
     }
 
     public bool ConnectionOk()

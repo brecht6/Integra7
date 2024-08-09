@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Avalonia.Platform;
 namespace Integra7AuralAlchemist.Models.Data;
 
 
 public class Integra7Parameters
 {
+    private bool _testing = false;
     public readonly IDictionary<int, string> SoundModes = new Dictionary<int, string> { [1] = "STUDIO", [2] = "GM1", [3] = "GM2", [4] = "GS" };
     public readonly IDictionary<int, string> _1_16_OFF = new Dictionary<int, string> { [0] = "1", [1] = "2", [2] = "3", [3] = "4", [4] = "5", [5] = "6",
         [6] = "7", [7] = "8", [8] = "9", [9] = "10", [10] = "11", [11] = "12",
@@ -392,12 +395,47 @@ public class Integra7Parameters
         }
     }
 
-    public Integra7Parameters()
+    public Integra7ParameterSpec Lookup(string path)
+    {
+        return _parameters.Where(x => x.Path == path).First();
+    }
+
+    private static int FindIndex<T>(IList<T> source, int startIndex, Predicate<T> match)
+    {
+        for (int i = startIndex; i < source.Count; i++)
+        {
+            if (match(source[i]))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public List<Integra7ParameterSpec> GetParametersFromTo(string firstPar, string endPar)
+    {
+        List<Integra7ParameterSpec> result = new List<Integra7ParameterSpec>();
+        int indexFirstPar = Integra7Parameters.FindIndex(_parameters, 0, p => p.Path == firstPar);
+        int indexSecondPar = Integra7Parameters.FindIndex(_parameters, 0, p => p.Path == endPar);
+        Debug.Assert(indexFirstPar != -1);
+        Debug.Assert(indexSecondPar != -1);
+        Debug.Assert(indexFirstPar <= indexSecondPar);
+        for (int i = indexFirstPar; i <= indexSecondPar; i++)
+        {
+            result.Add(_parameters[i]);
+        }
+        return result;
+    }
+
+    public Integra7Parameters(bool testing=false)
     {
         const Integra7ParameterSpec.SpecType NUM = Integra7ParameterSpec.SpecType.NUMERIC;
         const Integra7ParameterSpec.SpecType ASC = Integra7ParameterSpec.SpecType.ASCII;
-        
-        LoadPCMWaveForms();
+
+        if (!testing)
+        {
+            LoadPCMWaveForms(); // crashes in unit test with Unhandled exception. System.InvalidOperationException: Unable to locate 'Avalonia.Platform.IAssetLoader'.
+        }
 
         _parameters = new List<Integra7ParameterSpec>
         {

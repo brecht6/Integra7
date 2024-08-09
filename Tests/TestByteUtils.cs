@@ -37,12 +37,14 @@ public class ByteUtilsTests
     [Test]
     public void TestCheckSum()
     {
-        byte[] payload = ByteUtils.AddressWithOffset(
+        byte[] payload = ByteUtils.Concat(
             ByteUtils.AddressWithOffset(
-                ByteUtils.AddressWithOffset([0x18, 0x00, 0x00, 0x00] /*temp studio set start address*/, [0x06, 0x00] /*studio set reverb offset*/),
-                [0x00, 0x00] /*reverb address*/),
+                ByteUtils.AddressWithOffset(
+                    [0x18, 0x00, 0x00, 0x00] /*temp studio set start address*/, 
+                    [0x06, 0x00] /*studio set reverb offset*/),
+                [0x00, 0x00] /*reverb type address*/),
             [0x02] /*reverb value*/);
-        Assert.That(payload, Is.EquivalentTo((byte[])[0x18, 0x00, 0x06, 0x02]));
+        Assert.That(payload, Is.EquivalentTo((byte[])[0x18, 0x00, 0x06, 0x00, 0x02]));
         byte cs = ByteUtils.CheckSum(payload);
         Assert.That(cs, Is.EqualTo(0x60));
     }
@@ -92,5 +94,41 @@ public class ByteUtilsTests
         byte[] data2 = [0x0f, 0x0b, 0x0e, 0x0a];
         Assert.That(ByteUtils.NibbledToInt(data2), Is.EqualTo(0xfbea));
 
+    }
+
+    [Test]
+    public void TestConcat1()
+    {
+        byte[] data1 = [0x01, 0x02, 0x03];
+        byte[] data2 = [0x04, 0x05];
+        byte[] conc = ByteUtils.Concat(data1, data2);
+        Assert.That(conc, Is.EquivalentTo((byte[])[0x01, 0x02, 0x03, 0x04, 0x05]));
+    }
+
+    [Test]
+    public void TestConcat2()
+    {
+        byte[] data1 = [];
+        byte[] data2 = [0x04, 0x05];
+        byte[] conc = ByteUtils.Concat(data1, data2);
+        Assert.That(conc, Is.EquivalentTo((byte[])[0x04, 0x05]));
+    }
+
+    [Test]
+    public void TestConcat3()
+    {
+        byte[] data1 = [0x01, 0x02, 0x03];
+        byte[] data2 = [];
+        byte[] conc = ByteUtils.Concat(data1, data2);
+        Assert.That(conc, Is.EquivalentTo((byte[])[0x01, 0x02, 0x03]));
+    }
+
+    [Test]
+    public void TestConcat4()
+    {
+        byte[] data1 = [];
+        byte[] data2 = [];
+        byte[] conc = ByteUtils.Concat(data1, data2);
+        Assert.That(conc, Is.EquivalentTo((byte[])[]));
     }
 }

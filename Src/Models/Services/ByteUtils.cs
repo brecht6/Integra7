@@ -117,4 +117,12 @@ public class ByteUtils
         }
         return result;
     }
+
+    public static byte[] Concat(byte[] data1, byte[] data2)
+    {
+        byte[] result = new byte[data1.Length + data2.Length];
+        System.Buffer.BlockCopy(data1, 0, result, 0, data1.Length);
+        System.Buffer.BlockCopy(data2, 0, result, data1.Length, data2.Length);
+        return result;
+    }
 }

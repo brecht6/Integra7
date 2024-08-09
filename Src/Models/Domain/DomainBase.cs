@@ -61,4 +61,19 @@ public class DomainBase
         }
     }
 
+    public void WriteToIntegra(Integra7ParameterSpec singleParameter)
+    {
+        bool found = false;
+        for (int i = 0; i < _domainParameters.Count && !found; i++)
+        {
+            FullyQualifiedParameter p = _domainParameters[i];
+            if (p.ParSpec.IsSameAs(singleParameter))
+            {
+                found = true;
+                p.WriteToIntegra(_integra7Api, _startAddresses, _parameters);
+                p.DebugLog();
+            }
+        }
+    }
+
 }

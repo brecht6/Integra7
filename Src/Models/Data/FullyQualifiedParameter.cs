@@ -49,6 +49,16 @@ public class FullyQualifiedParameter
         ParseFromSysexReply(reply, parameters);
     }
 
+    public void WriteToIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
+    {
+        byte [] startAddr = startAddresses.Lookup(_start).Address;
+        byte [] offsetAddr = startAddresses.Lookup(_offset).Address;
+        byte [] firstParameterAddr = _parspec.Address;
+        byte [] totalAddr = ByteUtils.AddressWithOffset(startAddr, offsetAddr, firstParameterAddr);
+        byte[] data = GetSysexDataFragment();
+        integra7Api.MakeDataTransmission(totalAddr, data);
+    }
+
     public void ParseFromSysexReply(byte[] reply, Integra7Parameters parameters, Integra7ParameterSpec? firstParameterInSysexReply = null)
     {
         if (firstParameterInSysexReply == null)
@@ -84,7 +94,6 @@ public class FullyQualifiedParameter
             _stringValue = System.Text.Encoding.ASCII.GetString(parResult);
         }
     }
-
 
     public byte[] GetSysexDataFragment()
     {
@@ -122,6 +131,20 @@ public class FullyQualifiedParameter
             return ByteUtils.Pad(Encoding.ASCII.GetBytes(_stringValue), _parspec.Bytes);
         }
     }
+
+    public void UpdateDisplayedValue(string displayedValue)
+    {
+        if (IsNumeric)
+        {
+
+        }
+        else
+        {
+            int bytes = _parspec.Bytes;
+            _stringValue = displayedValue.Substring(0, bytes);
+        }
+    }
+
     public void CopyParsedDataFrom(FullyQualifiedParameter other)
     {
         _numeric = other.IsNumeric;

@@ -163,4 +163,17 @@ public class ByteUtils
         System.Buffer.BlockCopy(data, 0, result, 0, data.Length);
         return result;
     }
+
+    public static byte[] PadString(byte[] data, long desiredLength)
+    {
+        Debug.Assert(desiredLength >= data.Length);
+        if (desiredLength == 0) return data;
+        byte[] result = new byte[desiredLength];
+        for (int i = 0; i < result.Length; i++)
+        {
+            result[i] = 32; // space
+        }
+        System.Buffer.BlockCopy(data, 0, result, 0, data.Length);
+        return result;
+    }
 }

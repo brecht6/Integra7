@@ -1,5 +1,6 @@
 namespace Tests;
 
+using System.Text;
 using Integra7AuralAlchemist.Models.Services;
 
 public class ByteUtilsTests
@@ -154,5 +155,13 @@ public class ByteUtilsTests
         int noOfZeros2 = 4;
         byte[] zeros2 = ByteUtils.Zeros(noOfZeros2);
         Assert.That(zeros2, Is.EquivalentTo((byte[])[0x00, 0x00, 0x00, 0x00]));
+    }
+
+    [Test]
+    public void TestPadString()
+    {
+        byte[] shortd = Encoding.ASCII.GetBytes("biebel");
+        byte[] longd = ByteUtils.PadString(shortd, 12);
+        Assert.That(longd, Is.EquivalentTo(ByteUtils.Flatten(shortd, [0x20, 0x20, 0x20, 0x20, 0x20, 0x20])));
     }
 }

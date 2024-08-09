@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Integra7AuralAlchemist.Models.Data;
@@ -41,6 +42,21 @@ public class Integra7ParameterSpec
         _reserved = res;
         _perNibble = nib;
         _repr = repr;
+    }
+
+    public bool IsSameAs(Integra7ParameterSpec other)
+    {
+        return _type == other._type &&
+            _path == other._path && 
+            _address == other._address &&
+            _imin == other._imin && 
+            _imax == other._imax && 
+            _omin == other._omin &&
+            _omax == other._omax &&
+            _bytes == other._bytes && 
+            _reserved == other._reserved && 
+            _perNibble == other._perNibble;
+            // no need to check repr
     }
 
 }

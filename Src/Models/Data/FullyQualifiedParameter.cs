@@ -1,15 +1,16 @@
-
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using Integra7AuralAlchemist.Models.Services;
-using ReactiveUI;
 
 namespace Integra7AuralAlchemist.Models.Data;
 
 public class FullyQualifiedParameter
 {
     private readonly string _start;
+    public string Start { get => _start; }
     private readonly string _offset;
+    public string Offset { get => _offset; }
     private readonly Integra7ParameterSpec _parspec;
     public Integra7ParameterSpec ParSpec { get => _parspec; }
 
@@ -38,7 +39,7 @@ public class FullyQualifiedParameter
         ParseFromSysexReply(reply, parameters);
     }
 
-    void ParseFromSysexReply(byte[] reply, Integra7Parameters parameters, Integra7ParameterSpec? firstParameterInSysexReply = null)
+    public void ParseFromSysexReply(byte[] reply, Integra7Parameters parameters, Integra7ParameterSpec? firstParameterInSysexReply = null)
     {
         if (firstParameterInSysexReply == null)
         {
@@ -59,7 +60,8 @@ public class FullyQualifiedParameter
             {
                 _stringValue = _parspec.Repr[(int)_rawNumericValue];
             }
-            else if (_parspec.IMin != _parspec.OMin || _parspec.IMax != _parspec.OMax) {
+            else if (_parspec.IMin != _parspec.OMin || _parspec.IMax != _parspec.OMax)
+            {
                 _stringValue = $"{(long)Mapping.linlin(_rawNumericValue, _parspec.IMin, _parspec.IMax, _parspec.OMin, _parspec.OMax)}";
             }
             else
@@ -67,11 +69,40 @@ public class FullyQualifiedParameter
                 _stringValue = $"{_rawNumericValue}";
             }
         }
-        else 
+        else
         {
             _stringValue = System.Text.Encoding.ASCII.GetString(parResult);
         }
 
     }
 
+    public void CopyParsedDataFrom(FullyQualifiedParameter other)
+    {
+        _numeric = other.IsNumeric;
+        _rawNumericValue = other.RawNumericValue;
+        _stringValue = other.StringValue;
+    }
+
+    public void DebugLog()
+    {
+        StringBuilder hex = new StringBuilder(ParSpec.Address.Length * 2);
+        for (int i = 0; i < ParSpec.Address.Length; i++)
+        {
+            hex.AppendFormat("{0:x2} ", ParSpec.Address[i]);
+        }
+        string address = "[ " + hex.ToString() + "]";
+        string Wrn = "";
+        if (ParSpec.Reserved)
+        {
+            Wrn = " (reserved!)";
+        }
+        if (IsNumeric)
+        {
+            Debug.WriteLine($"Read{Wrn} parameter {ParSpec.Path} at parameter address {address} and found value raw {RawNumericValue} (mapped: {StringValue})");
+        }
+        else
+        {
+            Debug.WriteLine($"Read{Wrn} parameter {ParSpec.Path} at parameter address {address} and found value {StringValue}");
+        }
+    }
 }

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
 
@@ -19,7 +19,7 @@ public class DomainSetup
         _startAddresses = startAddresses;
         _parameters = parameters;
         List<Integra7ParameterSpec> relevant = parameters.GetParametersWithPrefix("Setup/");
-        for (int i=0; i < relevant.Count; i++)
+        for (int i = 0; i < relevant.Count; i++)
         {
             _domainParameters.Add(new FullyQualifiedParameter("Setup", "Offset/Setup Sound Mode", relevant[i]));
         }
@@ -27,20 +27,27 @@ public class DomainSetup
 
     public void ReadFromIntegra()
     {
-        for (int i=0; i < _domainParameters.Count; i++)
+        FullyQualifiedParameterRange r = new FullyQualifiedParameterRange("Setup", "Offset/Setup Sound Mode",
+                                                                          _domainParameters[0].ParSpec,
+                                                                          _domainParameters.Last().ParSpec);
+        r.RetrieveFromIntegra(_integra7Api, _startAddresses, _parameters);
+        for (int i = 0; i < r.Range.Count; i++)
+        {
+            _domainParameters[i].CopyParsedDataFrom(r.Range[i]);
+        }
+    }
+
+    public void ReadFromIntegra(Integra7ParameterSpec singleParameter)
+    {
+        bool found = false;
+        for (int i = 0; i < _domainParameters.Count && !found; i++)
         {
             FullyQualifiedParameter p = _domainParameters[i];
-            if (!p.ParSpec.Reserved)
+            if (p.ParSpec.IsSameAs(singleParameter))
             {
-                p.RetrieveFromIntegra(_integra7Api, _startAddresses, _parameters);  
-                if (p.IsNumeric)      
-                {
-                    Debug.WriteLine($"Read parameter {p.ParSpec.Path} and found value raw {p.RawNumericValue} (mapped: {p.StringValue})");
-                }
-                else
-                {
-                    Debug.WriteLine($"Read parameter {p.ParSpec.Path} and found value {p.StringValue}");
-                }
+                found = true;
+                p.RetrieveFromIntegra(_integra7Api, _startAddresses, _parameters);
+                p.DebugLog();
             }
         }
     }

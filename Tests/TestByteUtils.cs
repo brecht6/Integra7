@@ -131,4 +131,16 @@ public class ByteUtilsTests
         byte[] conc = ByteUtils.Concat(data1, data2);
         Assert.That(conc, Is.EquivalentTo((byte[])[]));
     }
+
+    [Test]
+    public void TestSlice()
+    {
+        byte[] data1 = [0x0, 0x1, 0x2, 0x3];
+
+        byte[] slice = ByteUtils.Slice(data1, 0, 1);
+        Assert.That(slice, Is.EquivalentTo((byte[])[0x0]));
+
+        byte[] slice2 = ByteUtils.Slice(data1, 1, 2);
+        Assert.That(slice2, Is.EquivalentTo((byte[])[0x1, 0x2]));
+    }
 }

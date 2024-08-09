@@ -72,6 +72,11 @@ public class ByteUtils
         return result;
     }
 
+    public static byte[] AddressWithOffset(byte[] StartAddress, byte[] Offset, byte[] ParameterAddress)
+    {
+        return ByteUtils.AddressWithOffset(ByteUtils.AddressWithOffset(StartAddress, Offset), ParameterAddress);
+    }
+
     public static long Bytes7ToInt(byte[] data)
     {
         long total = 0;
@@ -123,6 +128,15 @@ public class ByteUtils
         byte[] result = new byte[data1.Length + data2.Length];
         System.Buffer.BlockCopy(data1, 0, result, 0, data1.Length);
         System.Buffer.BlockCopy(data2, 0, result, data1.Length, data2.Length);
+        return result;
+    }
+
+    public static byte[] Slice(byte[] data, int from, int length)
+    {
+        Debug.Assert(from + length <= data.Length);
+
+        byte[] result = new byte[length];
+        System.Buffer.BlockCopy(data, from, result, 0, length);
         return result;
     }
 }

@@ -40,7 +40,7 @@ public class ByteUtilsTests
         byte[] payload = ByteUtils.Concat(
             ByteUtils.AddressWithOffset(
                 ByteUtils.AddressWithOffset(
-                    [0x18, 0x00, 0x00, 0x00] /*temp studio set start address*/, 
+                    [0x18, 0x00, 0x00, 0x00] /*temp studio set start address*/,
                     [0x06, 0x00] /*studio set reverb offset*/),
                 [0x00, 0x00] /*reverb type address*/),
             [0x02] /*reverb value*/);
@@ -142,5 +142,17 @@ public class ByteUtilsTests
 
         byte[] slice2 = ByteUtils.Slice(data1, 1, 2);
         Assert.That(slice2, Is.EquivalentTo((byte[])[0x1, 0x2]));
+    }
+
+    [Test]
+    public void TestZeros()
+    {
+        int noOfZeros = 0;
+        byte[] zeros = ByteUtils.Zeros(noOfZeros);
+        Assert.That(zeros, Is.EquivalentTo((byte[])[]));
+
+        int noOfZeros2 = 4;
+        byte[] zeros2 = ByteUtils.Zeros(noOfZeros2);
+        Assert.That(zeros2, Is.EquivalentTo((byte[])[0x00, 0x00, 0x00, 0x00]));
     }
 }

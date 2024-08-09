@@ -64,7 +64,7 @@ public class ByteUtils
         byte[] tempresult = ByteUtils.IntToBytes7_4(sum);
         int toremove = tempresult.Length - StartAddress.Length;
         if (toremove == 0)
-        {   
+        {
             return tempresult;
         }
         byte[] result = new byte[StartAddress.Length];
@@ -80,7 +80,7 @@ public class ByteUtils
     public static long Bytes7ToInt(byte[] data)
     {
         long total = 0;
-        for (int i=0; i < data.Length; i++)
+        for (int i = 0; i < data.Length; i++)
         {
             total <<= 7;
             total += data[i];
@@ -95,7 +95,7 @@ public class ByteUtils
         for (int i = 0; i < data.Length; i++)
         {
             sum += data[i]; // (should should be data[i] mod 128 or data[i] & 0x7f but data[i] is 7-bit so this will always yield back data[i])
-            sum &= 0x7f; 
+            sum &= 0x7f;
         }
         int checksum = 0x80 - sum;
         return (byte)checksum;
@@ -118,7 +118,7 @@ public class ByteUtils
         long result = 0;
         for (int i = 0; i < data.Length; i++)
         {
-            result += (data[data.Length - 1 - i] << (i*4));
+            result += (data[data.Length - 1 - i] << (i * 4));
         }
         return result;
     }
@@ -137,6 +137,15 @@ public class ByteUtils
 
         byte[] result = new byte[length];
         System.Buffer.BlockCopy(data, from, result, 0, length);
+        return result;
+    }
+
+    public static byte[] Zeros(int noOfZeros)
+    {
+        Debug.Assert(noOfZeros >= 0);
+        if (noOfZeros == 0)
+            return [];
+        byte[] result = new byte[noOfZeros];
         return result;
     }
 }

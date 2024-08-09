@@ -37,6 +37,15 @@ public class DomainBase
         }
     }
 
+    public void WriteToIntegra()
+    {
+        FullyQualifiedParameterRange r = new FullyQualifiedParameterRange("Setup", "Offset/Setup Sound Mode",
+                                                                          _domainParameters[0].ParSpec,
+                                                                          _domainParameters.Last().ParSpec);
+        r.Initialize(_domainParameters);
+        r.WriteToIntegra(_integra7Api, _startAddresses, _parameters);
+    }
+
     public void ReadFromIntegra(Integra7ParameterSpec singleParameter)
     {
         bool found = false;

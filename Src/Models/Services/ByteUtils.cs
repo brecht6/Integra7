@@ -42,6 +42,12 @@ public class ByteUtils
         return (byte)((value >> 21) & 0x7f);
     }
 
+    public static byte[] IntToBytes7_1(long value)
+    {
+        Debug.Assert(value < 0x80);
+        return [LtlEnd_FirstByte7(value)];
+    }
+
     public static byte[] IntToBytes7_2(long value)
     {
         Debug.Assert(value < 0x8000);
@@ -146,6 +152,15 @@ public class ByteUtils
         if (noOfZeros == 0)
             return [];
         byte[] result = new byte[noOfZeros];
+        return result;
+    }
+
+    public static byte[] Pad(byte[] data, long desiredLength)
+    {
+        Debug.Assert(desiredLength >= data.Length);
+        if (desiredLength == 0) return data;
+        byte[] result = new byte[desiredLength];
+        System.Buffer.BlockCopy(data, 0, result, 0, data.Length);
         return result;
     }
 }

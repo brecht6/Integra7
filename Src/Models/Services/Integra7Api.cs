@@ -15,6 +15,7 @@ public interface IIntegra7Api
     void ChangePreset(byte Channel, int Msb, int Lsb, int Pc);
 
     byte[] MakeDataRequest(byte[] address, long size);
+    void MakeDataTransmission(byte[] address, byte[] data);
 }
 
 public class Integra7Api : IIntegra7Api
@@ -54,6 +55,12 @@ public class Integra7Api : IIntegra7Api
         _midiOut?.SafeSend(data);
         byte[] reply = _midiIn?.GetReply() ?? [];
         return reply;
+    }
+
+    public void MakeDataTransmission(byte[] address, byte[] data)
+    {
+        byte[] transmission = Integra7SysexHelpers.MakeDataSet(DeviceId(), address, data);
+        _midiOut?.SafeSend(transmission);
     }
 
     public bool ConnectionOk()

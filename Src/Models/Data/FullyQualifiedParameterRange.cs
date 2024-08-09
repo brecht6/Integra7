@@ -21,12 +21,34 @@ public class FullyQualifiedParameterRange
         _range = new List<FullyQualifiedParameter>();
     }
 
+    public void Initialize(List<FullyQualifiedParameter> parameters)
+    {
+        _range.Clear();
+        for (int i = 0; i < parameters.Count; i++)
+        {
+            _range.Add(new FullyQualifiedParameter(_start, _offset, parameters[i].ParSpec, parameters[i].RawNumericValue, parameters[i].StringValue));
+        }
+    }
+
+    public void WriteToIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
+    {
+        byte [] startAddr = startAddresses.Lookup(_start).Address;
+        byte [] offsetAddr = startAddresses.Lookup(_offset).Address;
+        byte [] firstParameterAddr = _firstPar.Address;
+        byte [] totalAddr = ByteUtils.AddressWithOffset(startAddr, offsetAddr, firstParameterAddr);
+        byte[] data = [];
+        for (int i = 0; i < Range.Count; i++)
+        {
+            data = ByteUtils.Flatten(data, Range[i].GetSysexDataFragment());
+        }
+        integra7Api.MakeDataTransmission(totalAddr, data);
+    }
+
     public void RetrieveFromIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
     {
         byte[] startAddr = startAddresses.Lookup(_start).Address;
         byte[] offsetAddr = startAddresses.Lookup(_offset).Address;
         byte[] firstParameterAddr = _firstPar.Address;
-        byte[] lastParameterAddr = _lastPar.Address;
         byte[] totalAddr = ByteUtils.AddressWithOffset(startAddr, offsetAddr, firstParameterAddr);
         List<Integra7ParameterSpec> allRelevantPars = parameters.GetParametersFromTo(_firstPar.Path, _lastPar.Path);
         long size = 0;

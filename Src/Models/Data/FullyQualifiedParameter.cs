@@ -29,6 +29,16 @@ public class FullyQualifiedParameter
         _numeric = parspec.Type == Integra7ParameterSpec.SpecType.NUMERIC;
     }
 
+    public FullyQualifiedParameter(string start, string offset, Integra7ParameterSpec parspec, long rawNumericValue, string stringValue)
+    {
+        _start = start;
+        _offset = offset;
+        _parspec = parspec;
+        _numeric = parspec.Type == Integra7ParameterSpec.SpecType.NUMERIC;
+        _rawNumericValue = rawNumericValue;
+        _stringValue = stringValue;
+    }
+
     public void RetrieveFromIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
     {
         byte[] startAddr = startAddresses.Lookup(_start).Address;
@@ -73,9 +83,45 @@ public class FullyQualifiedParameter
         {
             _stringValue = System.Text.Encoding.ASCII.GetString(parResult);
         }
-
     }
 
+
+    public byte[] GetSysexDataFragment()
+    {
+        if (_numeric)
+        {
+            byte[] sysex = new byte[_parspec.Bytes];
+            if (_parspec.PerNibble)
+            {
+                sysex = ByteUtils.IntToNibbled(_rawNumericValue, _parspec.Bytes);
+            }
+            else
+            {
+                if (_parspec.Bytes == 1)
+                {
+                    sysex = ByteUtils.IntToBytes7_1(_rawNumericValue);
+                }
+                else if (_parspec.Bytes == 2)
+                {
+                    sysex = ByteUtils.IntToBytes7_2(_rawNumericValue);
+                }
+                else if (_parspec.Bytes == 4)
+                {
+                    sysex = ByteUtils.IntToBytes7_4(_rawNumericValue);
+                }
+                else
+                {
+                    Debug.Assert(false);
+                }
+
+            }
+            return sysex;
+        }
+        else
+        {
+            return ByteUtils.Pad(Encoding.ASCII.GetBytes(_stringValue), _parspec.Bytes);
+        }
+    }
     public void CopyParsedDataFrom(FullyQualifiedParameter other)
     {
         _numeric = other.IsNumeric;

@@ -9,7 +9,6 @@ namespace Integra7AuralAlchemist.Models.Data;
 
 public class Integra7Parameters
 {
-    private bool _testing = false;
     public readonly IDictionary<int, string> SoundModes = new Dictionary<int, string> { [1] = "STUDIO", [2] = "GM1", [3] = "GM2", [4] = "GS" };
     public readonly IDictionary<int, string> _1_16_OFF = new Dictionary<int, string> { [0] = "1", [1] = "2", [2] = "3", [3] = "4", [4] = "5", [5] = "6",
         [6] = "7", [7] = "8", [8] = "9", [9] = "10", [10] = "11", [11] = "12",

@@ -17,9 +17,9 @@ public class FullyQualifiedParameter
     private bool _numeric;
     public bool IsNumeric { get => _numeric; }
     private long _rawNumericValue = 0;
-    public long RawNumericValue { get => _rawNumericValue; }
+    public long RawNumericValue { get => _rawNumericValue; set => _rawNumericValue = value; }
     private string _stringValue = "";
-    public string StringValue { get => _stringValue; }
+    public string StringValue { get => _stringValue; set => _stringValue = value; }
 
     public FullyQualifiedParameter(string start, string offset, Integra7ParameterSpec parspec)
     {
@@ -128,7 +128,7 @@ public class FullyQualifiedParameter
         }
         else
         {
-            return ByteUtils.Pad(Encoding.ASCII.GetBytes(_stringValue), _parspec.Bytes);
+            return ByteUtils.PadString(Encoding.ASCII.GetBytes(_stringValue), _parspec.Bytes);
         }
     }
 
@@ -141,7 +141,7 @@ public class FullyQualifiedParameter
         else
         {
             int bytes = _parspec.Bytes;
-            _stringValue = displayedValue.Substring(0, bytes);
+            _stringValue = displayedValue[..bytes];
         }
     }
 

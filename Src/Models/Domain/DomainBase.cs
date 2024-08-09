@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
@@ -71,6 +72,52 @@ public class DomainBase
             {
                 found = true;
                 p.WriteToIntegra(_integra7Api, _startAddresses, _parameters);
+                p.DebugLog();
+            }
+        }
+    }
+
+    public void ModifySingleParameterDisplayedValue(string parameterName, string displayedValue)
+    {
+        bool found = false;
+        for (int i = 0; i < _domainParameters.Count && !found; i++)
+        {
+            FullyQualifiedParameter p = _domainParameters[i];
+            if (p.ParSpec.Path  == parameterName)
+            {
+                found = true;
+                if (p.IsNumeric)
+                {
+                    if (p.ParSpec.Repr != null)
+                    {
+                        var key = p.ParSpec.Repr
+                            .Where(keyvaluepair => keyvaluepair.Value == displayedValue)
+                            .Select(keyvaluepair => keyvaluepair.Key)
+                            .ToList();
+                        if (key.Count == 0)
+                        {
+                            Debug.Assert(false);
+                        }
+                        p.RawNumericValue = key.First();
+                        p.StringValue = displayedValue;
+                    }
+                    else if (p.ParSpec.IMin != p.ParSpec.OMin || p.ParSpec.IMax != p.ParSpec.OMax)
+                    {
+                        // need to unmap mapped value to raw value
+                        p.RawNumericValue = (long)Mapping.linlin(long.Parse(displayedValue), p.ParSpec.OMin, p.ParSpec.OMax, p.ParSpec.IMin, p.ParSpec.IMax, true);
+                        p.StringValue = displayedValue;
+                    }
+                    else
+                    {
+                        p.RawNumericValue = long.Parse(displayedValue);
+                        p.StringValue = displayedValue;
+                    }
+                }
+                else
+                {
+                    p.StringValue = displayedValue[..p.ParSpec.Bytes]; // clip string to max length
+                }
+
                 p.DebugLog();
             }
         }

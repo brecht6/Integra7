@@ -467,6 +467,7 @@ public partial class MainWindowViewModel : ObservableObject
     {
         DomainSetup d = new DomainSetup(Integra7, _i7startAddresses, _i7parameters);
         d.ReadFromIntegra();
+        d.ModifySingleParameterDisplayedValue("Setup/Studio Set BS MSB", "85");
         d.WriteToIntegra();
     }
 

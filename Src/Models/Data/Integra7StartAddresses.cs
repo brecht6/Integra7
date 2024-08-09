@@ -44,62 +44,62 @@ public class Integra7StartAddresses
 
             ["Offset/Setup/SoundMode"] = new(addr: [0x00, 0x00]),
             ["Offset/System/Common"] = new(addr: [0x00, 0x00, 0x00]),
-            ["Offset/Temporary/PCM Synth Tone"] = new(addr: [0x00, 0x00, 0x00]),
-            ["Offset/Temporary/SN Synth Tone"] = new(addr: [0x01, 0x00, 0x00]),
-            ["Offset/Temporary/SN Acoustic Tone"] = new(addr: [0x02, 0x00, 0x00]),
-            ["Offset/Temporary/SN Drum Kit"] = new(addr: [0x03, 0x00, 0x00]),
-            ["Offset/Temporary/PCM Drum Kit"] = new([0x10, 0x00, 0x00]),
-            ["Offset/StudioSet/Common"] = new([0x00, 0x00, 0x00]),
-            ["Offset/StudioSet/Common Chorus"] = new([0x00, 0x04, 0x00]),
-            ["Offset/StudioSet/Common Reverb"] = new([0x00, 0x06, 0x00]),
-            ["Offset/StudioSet/Common Motional Surround"] = new(addr: [0x00, 0x08, 0x00]),
-            ["Offset/StudioSet/Master EQ"] = new(addr: [0x00, 0x09, 0x00]),
+            ["Offset/Temporary PCM Synth Tone"] = new(addr: [0x00, 0x00, 0x00]),
+            ["Offset/Temporary SuperNATURAL Synth Tone"] = new(addr: [0x01, 0x00, 0x00]),
+            ["Offset/Temporary SuperNATURAL Acoustic Tone"] = new(addr: [0x02, 0x00, 0x00]),
+            ["Offset/Temporary SuperNATURAL Drum Kit"] = new(addr: [0x03, 0x00, 0x00]),
+            ["Offset/Temporary PCM Drum Kit"] = new([0x10, 0x00, 0x00]),
+            ["Offset/Studio Set Common"] = new([0x00, 0x00, 0x00]),
+            ["Offset/Studio Set Common Chorus"] = new([0x00, 0x04, 0x00]),
+            ["Offset/Studio Set Common Reverb"] = new([0x00, 0x06, 0x00]),
+            ["Offset/Studio Set Common Motional Surround"] = new(addr: [0x00, 0x08, 0x00]),
+            ["Offset/Studio Set Master EQ"] = new(addr: [0x00, 0x09, 0x00]),
 
-            ["Offset/PCM Synth Tone/Common"] = new(addr: [0x00, 0x00, 0x00]),
-            ["Offset/PCM Synth Tone/Common MFX"] = new(addr: [0x00, 0x02, 0x00]),
-            ["Offset/PCM Synth Tone/Partial Mix Table"] = new(addr: [0x00, 0x10, 0x00]),
+            ["Offset/PCM Synth Tone Common"] = new(addr: [0x00, 0x00, 0x00]),
+            ["Offset/PCM Synth Tone Common MFX"] = new(addr: [0x00, 0x02, 0x00]),
+            ["Offset/PCM Synth Tone Partial Mix Table"] = new(addr: [0x00, 0x10, 0x00]),
 
-            ["Offset/PCM Synth Tone/Common 2"] = new(addr: [0x00, 0x30, 0x00]),
-            ["Offset/PCM Drum Kit/Common"] = new(addr: [0x00, 0x00, 0x00]),
-            ["Offset/PCM Drum Kit/Common MFX"] = new(addr: [0x00, 0x02, 0x00]),
-            ["Offset/PCM Drum Kit/Common COMP-EQ"] = new(addr: [0x00, 0x08, 0x00]),
+            ["Offset/PCM Synth Tone Common 2"] = new(addr: [0x00, 0x30, 0x00]),
+            ["Offset/PCM Drum Kit Common"] = new(addr: [0x00, 0x00, 0x00]),
+            ["Offset/PCM Drum Kit Common MFX"] = new(addr: [0x00, 0x02, 0x00]),
+            ["Offset/PCM Drum Kit Common COMP-EQ"] = new(addr: [0x00, 0x08, 0x00]),
 
-            ["Offset/SN Synth Tone/Common"] = new(addr: [0x00, 0x00, 0x00]),
-            ["Offset/SN Synth Tone/MFX"] = new(addr: [0x00, 0x02, 0x00]),
+            ["Offset/SuperNATURAL Synth Tone Common"] = new(addr: [0x00, 0x00, 0x00]),
+            ["Offset/SuperNATURAL Synth Tone MFX"] = new(addr: [0x00, 0x02, 0x00]),
 
-            ["Offset/SN Acoustic Tone/Common"] = new(addr: [0x00, 0x00, 0x00]),
-            ["Offset/SN Acoustic Tone/MFX"] = new(addr: [0x00, 0x02, 0x00]),
+            ["Offset/SuperNATURAL Acoustic Tone Common"] = new(addr: [0x00, 0x00, 0x00]),
+            ["Offset/SuperNATURAL Acoustic Tone MFX"] = new(addr: [0x00, 0x02, 0x00]),
 
-            ["Offset/SN Drum Kit/Common"] = new(addr: [0x00, 0x00, 0x00]),
-            ["Offset/SN Drum Kit/MFX"] = new(addr: [0x00, 0x02, 0x00]),
-            ["Offset/SN Drum Kit/Common COMP-EQ"] = new(addr: [0x00, 0x08, 0x00]),
+            ["Offset/SuperNATURAL Drum Kit Common"] = new(addr: [0x00, 0x00, 0x00]),
+            ["Offset/SuperNATURAL Drum Kit MFX"] = new(addr: [0x00, 0x02, 0x00]),
+            ["Offset/SuperNATURAL Drum Kit Common COMP-EQ"] = new(addr: [0x00, 0x08, 0x00]),
         };
 
         for (byte i = 0; i < 16; i++)
         {
-            _startAddresses[$"Offset/StudioSet/MIDI Channel {i + 1}"] = new(addr: Offset_StudioSet_MIDI_Ch(i));
-            _startAddresses[$"Offset/StudioSet/Part {i + 1}"] = new(addr: Offset_StudioSet_Part(i));
-            _startAddresses[$"Offset/StudioSet/Part EQ {i + 1}"] = new(addr: Offset_StudioSet_Part_EQ(i));
+            _startAddresses[$"Offset/Studio Set MIDI Channel {i + 1}"] = new(addr: Offset_StudioSet_MIDI_Ch(i));
+            _startAddresses[$"Offset/Studio Set Part {i + 1}"] = new(addr: Offset_StudioSet_Part(i));
+            _startAddresses[$"Offset/Studio Set Part EQ {i + 1}"] = new(addr: Offset_StudioSet_Part_EQ(i));
         }
 
         for (byte i = 0; i < 4; i++)
         {
-            _startAddresses[$"Offset/PCM Synth Tone/Partial {i + 1}"] = new(addr: Offset_PCM_SynthTone_Partial(i));
+            _startAddresses[$"Offset/PCM Synth Tone Partial {i + 1}"] = new(addr: Offset_PCM_SynthTone_Partial(i));
         }
 
         for (byte i = 21; i < 109; i++)
         {
-            _startAddresses[$"Offset/PCM Drum Kit/Partial {i}"] = new(addr: Offset_PCM_DrumKit_Partial_Key(i));
+            _startAddresses[$"Offset/PCM Drum Kit Partial {i}"] = new(addr: Offset_PCM_DrumKit_Partial_Key(i));
         }
 
         for (byte i = 0; i < 3; i++)
         {
-            _startAddresses[$"Offset/SN Synth Tone/Partial {i + 1}"] = new(addr: Offset_SN_SynthTone_Partial(i));
+            _startAddresses[$"Offset/SuperNATURAL Synth Tone Partial {i + 1}"] = new(addr: Offset_SN_SynthTone_Partial(i));
         }
 
         for (byte i = 27; i < 89; i++)
         {
-            _startAddresses[$"Offset/SN Drum Kit/Partial {i}"] = new(addr: Offset_SN_DrumKit_Partial_Key(i));
+            _startAddresses[$"Offset/SuperNATURAL Drum Kit Partial {i}"] = new(addr: Offset_SN_DrumKit_Partial_Key(i));
         }
     }
 

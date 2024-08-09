@@ -26,6 +26,15 @@ public class ByteUtilsTests
     }
 
     [Test]
+    public void TestAddressWithOffsetCarryOver()
+    {
+        byte[] addr = [0x00, 0x20, 0x00];
+        byte[] offs = [0x00, 0x70, 0x00];
+        byte[] comb = ByteUtils.AddressWithOffset(addr, offs);
+        Assert.That(comb, Is.EquivalentTo((byte[])[0x01, 0x10, 0x00]));
+    }
+
+    [Test]
     public void TestCheckSum()
     {
         byte[] payload = ByteUtils.AddressWithOffset(
@@ -60,5 +69,28 @@ public class ByteUtilsTests
         byte[] data2 = [0x01, 0x00];
         long value2 = ByteUtils.Bytes7ToInt(data2);
         Assert.That(value2, Is.EqualTo(0x80));
+    }
+
+    [Test]
+    public void TestIntToNibbled()
+    {
+        long value = 0xab;
+        byte[] nibbled = ByteUtils.IntToNibbled(value, 2);
+        Assert.That(nibbled, Is.EquivalentTo((byte[])[0x0a, 0x0b]));
+
+        long value2 = 0xfbea;
+        byte[] nibbled2 = ByteUtils.IntToNibbled(value2, 4);
+        Assert.That(nibbled2, Is.EquivalentTo((byte[])[0xf, 0xb, 0x0e, 0x0a]));
+    }
+
+    [Test]
+    public void TestNibbledToInt()
+    {
+        byte[] data = [0x0a, 0x0b];
+        Assert.That(ByteUtils.NibbledToInt(data), Is.EqualTo(0xab));
+
+        byte[] data2 = [0x0f, 0x0b, 0x0e, 0x0a];
+        Assert.That(ByteUtils.NibbledToInt(data2), Is.EqualTo(0xfbea));
+
     }
 }

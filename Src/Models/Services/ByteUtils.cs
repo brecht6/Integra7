@@ -57,13 +57,18 @@ public class ByteUtils
 
     public static byte[] AddressWithOffset(byte[] StartAddress, byte[] Offset)
     {
-        byte[] result = new byte[StartAddress.Length];
-        Array.Copy(StartAddress, result, StartAddress.Length);
         Debug.Assert(StartAddress.Length >= Offset.Length);
-        for (int i = 0; i < Offset.Length; i++)
-        {
-            result[StartAddress.Length - 1 - i] = (byte)(result[StartAddress.Length - 1 - i] + Offset[Offset.Length - 1 - i]);
+        long saddr = ByteUtils.Bytes7ToInt(StartAddress);
+        long offs = ByteUtils.Bytes7ToInt(Offset);
+        long sum = saddr + offs;
+        byte[] tempresult = ByteUtils.IntToBytes7_4(sum);
+        int toremove = tempresult.Length - StartAddress.Length;
+        if (toremove == 0)
+        {   
+            return tempresult;
         }
+        byte[] result = new byte[StartAddress.Length];
+        Array.Copy(tempresult, toremove, result, 0, result.Length);
         return result;
     }
 
@@ -89,5 +94,27 @@ public class ByteUtils
         }
         int checksum = 0x80 - sum;
         return (byte)checksum;
+    }
+
+    public static byte[] IntToNibbled(long value, int noOfNibbles)
+    {
+        byte[] result = new byte[noOfNibbles];
+        for (int i = 0; i < noOfNibbles; i++)
+        {
+            byte nibble = (byte)(value & 0x0f);
+            result[noOfNibbles - 1 - i] = (byte)nibble;
+            value >>= 4;
+        }
+        return result;
+    }
+
+    public static long NibbledToInt(byte[] data)
+    {
+        long result = 0;
+        for (int i = 0; i < data.Length; i++)
+        {
+            result += (data[data.Length - 1 - i] << (i*4));
+        }
+        return result;
     }
 }

@@ -28,7 +28,8 @@ public class DomainBase
 
     public void ReadFromIntegra()
     {
-        FullyQualifiedParameterRange r = new FullyQualifiedParameterRange("Setup", "Offset/Setup Sound Mode",
+        FullyQualifiedParameterRange r = new FullyQualifiedParameterRange(_domainParameters[0].Start,
+                                                                          _domainParameters[0].Offset,
                                                                           _domainParameters[0].ParSpec,
                                                                           _domainParameters.Last().ParSpec);
         r.RetrieveFromIntegra(_integra7Api, _startAddresses, _parameters);
@@ -40,35 +41,38 @@ public class DomainBase
 
     public void WriteToIntegra()
     {
-        FullyQualifiedParameterRange r = new FullyQualifiedParameterRange("Setup", "Offset/Setup Sound Mode",
+        FullyQualifiedParameterRange r = new FullyQualifiedParameterRange(_domainParameters[0].Start,
+                                                                          _domainParameters[0].Offset,
                                                                           _domainParameters[0].ParSpec,
                                                                           _domainParameters.Last().ParSpec);
         r.Initialize(_domainParameters);
         r.WriteToIntegra(_integra7Api, _startAddresses, _parameters);
     }
 
-    public void ReadFromIntegra(Integra7ParameterSpec singleParameter)
+    public FullyQualifiedParameter? ReadFromIntegra(string parameterName)
     {
         bool found = false;
         for (int i = 0; i < _domainParameters.Count && !found; i++)
         {
             FullyQualifiedParameter p = _domainParameters[i];
-            if (p.ParSpec.IsSameAs(singleParameter))
+            if (p.ParSpec.Path == parameterName)
             {
                 found = true;
                 p.RetrieveFromIntegra(_integra7Api, _startAddresses, _parameters);
                 p.DebugLog();
+                return p;
             }
         }
+        return null;
     }
 
-    public void WriteToIntegra(Integra7ParameterSpec singleParameter)
+    public void WriteToIntegra(string parameterName)
     {
         bool found = false;
         for (int i = 0; i < _domainParameters.Count && !found; i++)
         {
             FullyQualifiedParameter p = _domainParameters[i];
-            if (p.ParSpec.IsSameAs(singleParameter))
+            if (p.ParSpec.Path == parameterName)
             {
                 found = true;
                 p.WriteToIntegra(_integra7Api, _startAddresses, _parameters);
@@ -77,13 +81,32 @@ public class DomainBase
         }
     }
 
+    public void WriteToIntegra(string parameterName, string displayedValue)
+    {
+        ModifySingleParameterDisplayedValue(parameterName, displayedValue);
+        WriteToIntegra(parameterName);
+    }
+
+    public string LookupSingleParameterDisplayedValue(string parameterName)
+    {
+        for (int i = 0; i < _domainParameters.Count; i++)
+        {
+            FullyQualifiedParameter p = _domainParameters[i];
+            if (p.ParSpec.Path == parameterName)
+            {
+                return p.StringValue;
+            }
+        }
+        return "";
+    }
+
     public void ModifySingleParameterDisplayedValue(string parameterName, string displayedValue)
     {
         bool found = false;
         for (int i = 0; i < _domainParameters.Count && !found; i++)
         {
             FullyQualifiedParameter p = _domainParameters[i];
-            if (p.ParSpec.Path  == parameterName)
+            if (p.ParSpec.Path == parameterName)
             {
                 found = true;
                 if (p.IsNumeric)
@@ -121,6 +144,20 @@ public class DomainBase
                 p.DebugLog();
             }
         }
+    }
+
+    List<string> GetParameterNames(bool IncludeReserved = false)
+    {
+        List<string> names = [];
+        for (int i = 0; i < _domainParameters.Count; i++)
+        {
+            Integra7ParameterSpec p = _domainParameters[i].ParSpec;
+            if (p.Reserved && IncludeReserved || !p.Reserved)
+            {
+                names.Add(p.Path);
+            }
+        }
+        return names;
     }
 
 }

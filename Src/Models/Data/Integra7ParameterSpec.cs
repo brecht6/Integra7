@@ -26,10 +26,12 @@ public class Integra7ParameterSpec
     public bool Reserved { get => _reserved; }
     private bool _perNibble = false;
     public bool PerNibble { get => _perNibble; }
+    private string _unit = "";
+    public string Unit { get => _unit; }
     private IDictionary<int, string>? _repr;
     public IDictionary<int, string>? Repr { get => _repr; }
 
-    public Integra7ParameterSpec(SpecType type, string path, byte[] offs, int imin, int imax, float omin, float omax, int bytes, bool res, bool nib, IDictionary<int, string>? repr)
+    public Integra7ParameterSpec(SpecType type, string path, byte[] offs, int imin, int imax, float omin, float omax, int bytes, bool res, bool nib, string unit, IDictionary<int, string>? repr)
     {
         _type = type;
         _path = path;
@@ -41,6 +43,7 @@ public class Integra7ParameterSpec
         _bytes = bytes;
         _reserved = res;
         _perNibble = nib;
+        _unit = unit;
         _repr = repr;
     }
 

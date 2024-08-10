@@ -173,13 +173,18 @@ public class FullyQualifiedParameter
         {
             Wrn = " (reserved!)";
         }
+        string unit = "";
+        if (ParSpec.Unit != "")
+        {
+            unit = "[" + ParSpec.Unit + "]";
+        }
         if (IsNumeric)
         {
-            Debug.WriteLine($"Read{Wrn} parameter {ParSpec.Path} at parameter address {address} and found value raw {RawNumericValue} (mapped: {StringValue})");
+            Debug.WriteLine($"[DebugLog] {Wrn} parameter {ParSpec.Path} at parameter address {address} has value raw {RawNumericValue} (mapped: {StringValue}{unit})");
         }
         else
         {
-            Debug.WriteLine($"Read{Wrn} parameter {ParSpec.Path} at parameter address {address} and found value {StringValue}");
+            Debug.WriteLine($"[DebugLog] {Wrn} parameter {ParSpec.Path} at parameter address {address} has value {StringValue}");
         }
     }
 }

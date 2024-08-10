@@ -10,6 +10,7 @@ namespace Integra7AuralAlchemist.Models.Services;
 public interface IMidiIn
 {
     public byte[] GetReply();
+    public void DiscardUnhandledPreviousReply();
 }
 
 
@@ -53,7 +54,6 @@ public class MidiIn : IMidiIn
         Debug.WriteLineIf(e.Length == 0, "WHY?! BROKEN");
         Array.Copy(e.Data, _replyData, e.Length);
         _replyReady.Set();
-
         if (Verbose)
         {
             StringBuilder hex = new StringBuilder(e.Length * 2);
@@ -78,5 +78,10 @@ public class MidiIn : IMidiIn
             _replyReady.Reset();
             return [];
         }
+    }
+
+    public void DiscardUnhandledPreviousReply()
+    {
+        _replyReady.Reset();
     }
 }

@@ -52,6 +52,7 @@ public class Integra7Api : IIntegra7Api
     public byte[] MakeDataRequest(byte[] address, long size)
     {
         byte[] data = Integra7SysexHelpers.MakeDataRequest(DeviceId(), address, size);
+        _midiIn.DiscardUnhandledPreviousReply();
         _midiOut?.SafeSend(data);
         byte[] reply = _midiIn?.GetReply() ?? [];
         return reply;

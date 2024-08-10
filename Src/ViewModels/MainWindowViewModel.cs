@@ -498,6 +498,11 @@ public partial class MainWindowViewModel : ObservableObject
         FullyQualifiedParameter? s = dssc.ReadFromIntegra("Studio Set Common/Studio Set Name");
         s?.DebugLog();
         */
+
+        /*
+        DomainStudioSetCommonChorus dsscc = new DomainStudioSetCommonChorus(Integra7, _i7startAddresses, _i7parameters);
+        dsscc.ReadFromIntegra();
+        */
     }
 
 

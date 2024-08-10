@@ -138,7 +138,8 @@ public class DomainBase
                 }
                 else
                 {
-                    p.StringValue = displayedValue[..p.ParSpec.Bytes]; // clip string to max length
+                    if (displayedValue.Length > p.ParSpec.Bytes)
+                        p.StringValue = displayedValue[..p.ParSpec.Bytes]; // clip string to max length
                 }
 
                 p.DebugLog();

@@ -51,10 +51,10 @@ public class FullyQualifiedParameter
 
     public void WriteToIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
     {
-        byte [] startAddr = startAddresses.Lookup(_start).Address;
-        byte [] offsetAddr = startAddresses.Lookup(_offset).Address;
-        byte [] firstParameterAddr = _parspec.Address;
-        byte [] totalAddr = ByteUtils.AddressWithOffset(startAddr, offsetAddr, firstParameterAddr);
+        byte[] startAddr = startAddresses.Lookup(_start).Address;
+        byte[] offsetAddr = startAddresses.Lookup(_offset).Address;
+        byte[] firstParameterAddr = _parspec.Address;
+        byte[] totalAddr = ByteUtils.AddressWithOffset(startAddr, offsetAddr, firstParameterAddr);
         byte[] data = GetSysexDataFragment();
         integra7Api.MakeDataTransmission(totalAddr, data);
     }
@@ -75,7 +75,15 @@ public class FullyQualifiedParameter
         byte[] parResult = ByteUtils.Slice(reply, dataToSkip, _parspec.Bytes);
         if (_numeric)
         {
-            _rawNumericValue = ByteUtils.Bytes7ToInt(parResult);
+            if (_parspec.PerNibble)
+            {
+                _rawNumericValue = ByteUtils.NibbledToInt(parResult);
+            }
+            else
+            {
+                _rawNumericValue = ByteUtils.Bytes7ToInt(parResult);
+            }
+
             if (_parspec.Repr != null)
             {
                 _stringValue = _parspec.Repr[(int)_rawNumericValue];

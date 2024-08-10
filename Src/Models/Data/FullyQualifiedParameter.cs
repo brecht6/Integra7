@@ -136,20 +136,11 @@ public class FullyQualifiedParameter
         }
         else
         {
+            if (_stringValue.Length > _parspec.Bytes)
+            {
+                _stringValue = _stringValue[.._parspec.Bytes]; // clip to max length
+            }
             return ByteUtils.PadString(Encoding.ASCII.GetBytes(_stringValue), _parspec.Bytes);
-        }
-    }
-
-    public void UpdateDisplayedValue(string displayedValue)
-    {
-        if (IsNumeric)
-        {
-
-        }
-        else
-        {
-            int bytes = _parspec.Bytes;
-            _stringValue = displayedValue[..bytes];
         }
     }
 
@@ -180,11 +171,11 @@ public class FullyQualifiedParameter
         }
         if (IsNumeric)
         {
-            Debug.WriteLine($"[DebugLog] {Wrn} parameter {ParSpec.Path} at parameter address {address} has value raw {RawNumericValue} (mapped: {StringValue}{unit})");
+            Debug.WriteLine($"[DebugLog] {Wrn} parameter {ParSpec.Path} at parameter address {address} has value raw {RawNumericValue} (meaning: {StringValue}{unit})");
         }
         else
         {
-            Debug.WriteLine($"[DebugLog] {Wrn} parameter {ParSpec.Path} at parameter address {address} has value {StringValue}");
+            Debug.WriteLine($"[DebugLog] {Wrn} parameter {ParSpec.Path} at parameter address {address} has value \"{StringValue}\"");
         }
     }
 }

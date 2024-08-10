@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Integra7AuralAlchemist.Models.Services;
 
 
@@ -25,22 +24,23 @@ public class Integra7StartAddresses
         {
             ["Setup"] = new(addr: [0x01, 0x00, 0x00, 0x00]),
             ["System"] = new(addr: [0x02, 0x00, 0x00, 0x00]),
-            ["TemporaryTone/Part1"] = new(addr: [0x19, 0x00, 0x00, 0x00]),
-            ["TemporaryTone/Part2"] = new(addr: [0x19, 0x20, 0x00, 0x00]),
-            ["TemporaryTone/Part3"] = new(addr: [0x19, 0x40, 0x00, 0x00]),
-            ["TemporaryTone/Part4"] = new(addr: [0x19, 0x60, 0x00, 0x00]),
-            ["TemporaryTone/Part5"] = new(addr: [0x1A, 0x00, 0x00, 0x00]),
-            ["TemporaryTone/Part6"] = new(addr: [0x1A, 0x20, 0x00, 0x00]),
-            ["TemporaryTone/Part7"] = new(addr: [0x1A, 0x40, 0x00, 0x00]),
-            ["TemporaryTone/Part8"] = new(addr: [0x1A, 0x60, 0x00, 0x00]),
-            ["TemporaryTone/Part9"] = new(addr: [0x1B, 0x00, 0x00, 0x00]),
-            ["TemporaryTone/Part10"] = new(addr: [0x1B, 0x20, 0x00, 0x00]),
-            ["TemporaryTone/Part11"] = new(addr: [0x1B, 0x40, 0x00, 0x00]),
-            ["TemporaryTone/Part12"] = new(addr: [0x1B, 0x60, 0x00, 0x00]),
-            ["TemporaryTone/Part13"] = new(addr: [0x1C, 0x00, 0x00, 0x00]),
-            ["TemporaryTone/Part14"] = new(addr: [0x1C, 0x20, 0x00, 0x00]),
-            ["TemporaryTone/Part15"] = new(addr: [0x1C, 0x40, 0x00, 0x00]),
-            ["TemporaryTone/Part16"] = new(addr: [0x1C, 0x60, 0x00, 0x00]),
+            ["Temporary Studio Set"] = new(addr: [0x18, 0x00, 0x00, 0x00]),
+            ["Temporary Tone Part 1"] = new(addr: [0x19, 0x00, 0x00, 0x00]),
+            ["Temporary Tone Part 2"] = new(addr: [0x19, 0x20, 0x00, 0x00]),
+            ["Temporary Tone Part 3"] = new(addr: [0x19, 0x40, 0x00, 0x00]),
+            ["Temporary Tone Part 4"] = new(addr: [0x19, 0x60, 0x00, 0x00]),
+            ["Temporary Tone Part 5"] = new(addr: [0x1A, 0x00, 0x00, 0x00]),
+            ["Temporary Tone Part 6"] = new(addr: [0x1A, 0x20, 0x00, 0x00]),
+            ["Temporary Tone Part 7"] = new(addr: [0x1A, 0x40, 0x00, 0x00]),
+            ["Temporary Tone Part 8"] = new(addr: [0x1A, 0x60, 0x00, 0x00]),
+            ["Temporary Tone Part 9"] = new(addr: [0x1B, 0x00, 0x00, 0x00]),
+            ["Temporary Tone Part 10"] = new(addr: [0x1B, 0x20, 0x00, 0x00]),
+            ["Temporary Tone Part 11"] = new(addr: [0x1B, 0x40, 0x00, 0x00]),
+            ["Temporary Tone Part 12"] = new(addr: [0x1B, 0x60, 0x00, 0x00]),
+            ["Temporary Tone Part 13"] = new(addr: [0x1C, 0x00, 0x00, 0x00]),
+            ["Temporary Tone Part 14"] = new(addr: [0x1C, 0x20, 0x00, 0x00]),
+            ["Temporary Tone Part 15"] = new(addr: [0x1C, 0x40, 0x00, 0x00]),
+            ["Temporary Tone Part 16"] = new(addr: [0x1C, 0x60, 0x00, 0x00]),
 
             ["Offset/Setup Sound Mode"] = new(addr: [0x00, 0x00]),
             ["Offset/System Common"] = new(addr: [0x00, 0x00, 0x00]),

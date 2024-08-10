@@ -463,13 +463,16 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty]
     private int currentPartSelection = 0;
 
+    [RelayCommand]
     private void DebugCode()
-    {
+    {   /*
         DomainSetup dse = new DomainSetup(Integra7, _i7startAddresses, _i7parameters);
         dse.ReadFromIntegra();
         dse.ModifySingleParameterDisplayedValue("Setup/Studio Set BS MSB", "85");
         dse.WriteToIntegra();
+        */
 
+        /*
         DomainSystem dsy = new DomainSystem(Integra7, _i7startAddresses, _i7parameters);
         FullyQualifiedParameter? q = dsy.ReadFromIntegra("System Common/Master Tune");
         q?.DebugLog();
@@ -486,6 +489,15 @@ public partial class MainWindowViewModel : ObservableObject
         dsy.WriteToIntegra("System Common/Master Level", "127");
         r = dsy.ReadFromIntegra("System Common/Master Level");
         r?.DebugLog();
+        */
+
+        /*
+        DomainStudioSetCommon dssc = new DomainStudioSetCommon(Integra7, _i7startAddresses, _i7parameters);
+        dssc.ReadFromIntegra();
+        dssc.WriteToIntegra("Studio Set Common/Studio Set Name", "Integra Preview");
+        FullyQualifiedParameter? s = dssc.ReadFromIntegra("Studio Set Common/Studio Set Name");
+        s?.DebugLog();
+        */
     }
 
 
@@ -591,7 +603,6 @@ public partial class MainWindowViewModel : ObservableObject
                                     .Bind(out _presetsCh15)
                                     .DisposeMany()
                                     .Subscribe();
-        // DebugCode();
     }
 
 #pragma warning restore CA1822 // Mark members as static

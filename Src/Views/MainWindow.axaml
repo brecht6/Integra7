@@ -23,6 +23,7 @@
             <Button Command="{Binding PanicCommand}" IsEnabled="{Binding Connected}" Background="Red" Foreground="White">
                 Panic!
             </Button>
+            <Button Command="{Binding DebugCodeCommand}">Trigger Debug Code</Button>
         </StackPanel>
         
         <TabControl HorizontalContentAlignment="Left" TabStripPlacement="Left" Grid.Row="3" Grid.Column="0" SelectedIndex="{Binding CurrentPartSelection, Mode=TwoWay}">

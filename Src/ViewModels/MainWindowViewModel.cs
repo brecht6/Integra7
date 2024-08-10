@@ -465,10 +465,27 @@ public partial class MainWindowViewModel : ObservableObject
 
     private void DebugCode()
     {
-        DomainSetup d = new DomainSetup(Integra7, _i7startAddresses, _i7parameters);
-        d.ReadFromIntegra();
-        d.ModifySingleParameterDisplayedValue("Setup/Studio Set BS MSB", "85");
-        d.WriteToIntegra();
+        DomainSetup dse = new DomainSetup(Integra7, _i7startAddresses, _i7parameters);
+        dse.ReadFromIntegra();
+        dse.ModifySingleParameterDisplayedValue("Setup/Studio Set BS MSB", "85");
+        dse.WriteToIntegra();
+
+        DomainSystem dsy = new DomainSystem(Integra7, _i7startAddresses, _i7parameters);
+        FullyQualifiedParameter? q = dsy.ReadFromIntegra("System Common/Master Tune");
+        q?.DebugLog();
+        dsy.ReadFromIntegra();
+        string CurrentValue = dsy.LookupSingleParameterDisplayedValue("System Common/Master Tune");
+        dsy.ModifySingleParameterDisplayedValue("System Common/Master Tune", "-50");
+        dsy.WriteToIntegra();
+        FullyQualifiedParameter? p = dsy.ReadFromIntegra("System Common/Master Tune");
+        p?.DebugLog();
+        string originalVal = dsy.LookupSingleParameterDisplayedValue("System Common/Master Level");
+        dsy.WriteToIntegra("System Common/Master Level", "120");
+        FullyQualifiedParameter? r = dsy.ReadFromIntegra("System Common/Master Level");
+        r?.DebugLog();
+        dsy.WriteToIntegra("System Common/Master Level", "127");
+        r = dsy.ReadFromIntegra("System Common/Master Level");
+        r?.DebugLog();
     }
 
 

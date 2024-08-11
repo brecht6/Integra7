@@ -128,39 +128,7 @@ public class DomainBase
             if (p.ValidInContext(ctx) && p.ParSpec.Path == parameterName)
             {
                 found = true;
-                if (p.IsNumeric)
-                {
-                    if (p.ParSpec.Repr != null)
-                    {
-                        var key = p.ParSpec.Repr
-                            .Where(keyvaluepair => keyvaluepair.Value == displayedValue)
-                            .Select(keyvaluepair => keyvaluepair.Key)
-                            .ToList();
-                        if (key.Count == 0)
-                        {
-                            Debug.Assert(false);
-                        }
-                        p.RawNumericValue = key.First();
-                        p.StringValue = displayedValue;
-                    }
-                    else if (p.ParSpec.IMin != p.ParSpec.OMin || p.ParSpec.IMax != p.ParSpec.OMax)
-                    {
-                        // need to unmap mapped value to raw value
-                        p.RawNumericValue = (long)Mapping.linlin(long.Parse(displayedValue), p.ParSpec.OMin, p.ParSpec.OMax, p.ParSpec.IMin, p.ParSpec.IMax, true);
-                        p.StringValue = displayedValue;
-                    }
-                    else
-                    {
-                        p.RawNumericValue = long.Parse(displayedValue);
-                        p.StringValue = displayedValue;
-                    }
-                }
-                else
-                {
-                    if (displayedValue.Length > p.ParSpec.Bytes)
-                        p.StringValue = displayedValue[..p.ParSpec.Bytes]; // clip string to max length
-                }
-
+                DisplayValueToRawValueConverter.UpdateFromDisplayedValue(displayedValue, p);
                 p.DebugLog();
             }
         }

@@ -2,10 +2,12 @@ namespace Tests;
 
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
+using System.Text;
 
 public class TestSysexParameterValueInterpreter
 {
     const Integra7ParameterSpec.SpecType NUM = Integra7ParameterSpec.SpecType.NUMERIC;
+    const Integra7ParameterSpec.SpecType ASC = Integra7ParameterSpec.SpecType.ASCII;
     public const bool USED = false;
     public const bool RESERVED = true;
 
@@ -147,7 +149,7 @@ public class TestSysexParameterValueInterpreter
         Integra7ParameterSpec testspec = new(type: ASC, path: "Studio Set Common/Studio Set Name", offs: [0x00, 0x00], imin: 32, imax: 127, omin: 32, omax: 127, bytes: 16, res: USED, nib: false, unit: "", repr: null);
         long n;
         string s;
-        TestSysexParameterValueInterpreter.Interpret(parData, testspec, out n, out s);
+        SysexParameterValueInterpreter.Interpret(parData, testspec, out n, out s);
         Assert.That(n, Is.EqualTo(0)); // not used
         Assert.That(s, Is.EqualTo("Integra Preview "));
     }

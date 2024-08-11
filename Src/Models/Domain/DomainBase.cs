@@ -52,10 +52,13 @@ public class DomainBase
     public FullyQualifiedParameter? ReadFromIntegra(string parameterName)
     {
         bool found = false;
+        ParserContext ctx = new ParserContext();
+        ctx.InitializeFromExistingData(_domainParameters);
+
         for (int i = 0; i < _domainParameters.Count && !found; i++)
         {
             FullyQualifiedParameter p = _domainParameters[i];
-            if (p.ParSpec.Path == parameterName)
+            if (p.ValidInContext(ctx) && p.ParSpec.Path == parameterName)
             {
                 found = true;
                 p.RetrieveFromIntegra(_integra7Api, _startAddresses, _parameters);
@@ -63,21 +66,31 @@ public class DomainBase
                 return p;
             }
         }
+        if (!found)
+        {
+            Debug.WriteLine($"parameter {parameterName} does not exist, or is not valid in the current context.");
+        }
         return null;
     }
 
     public void WriteToIntegra(string parameterName)
     {
         bool found = false;
+        ParserContext ctx = new ParserContext();
+        ctx.InitializeFromExistingData(_domainParameters);
         for (int i = 0; i < _domainParameters.Count && !found; i++)
         {
             FullyQualifiedParameter p = _domainParameters[i];
-            if (p.ParSpec.Path == parameterName)
+            if (p.ValidInContext(ctx) && p.ParSpec.Path == parameterName)
             {
                 found = true;
                 p.WriteToIntegra(_integra7Api, _startAddresses, _parameters);
                 p.DebugLog();
             }
+        }
+        if (!found)
+        {
+            Debug.WriteLine($"parameter {parameterName} does not exist, or is not valid in the current context.");
         }
     }
 
@@ -156,7 +169,7 @@ public class DomainBase
                 // did you try to update a parameter that simply does not exist?
                 // or did you try to update a data dependent parameter while the master parameter was set to a
                 // value that makes this parameter inaccessible?
-                Debug.Assert(false, $"Parameter {parameterName} does not exist in the current context.");
+                Debug.Assert(false, $"Parameter {parameterName} does not exist or is not valid in the current context.");
             }
         }
     }

@@ -4,46 +4,46 @@ namespace Integra7AuralAlchemist.Models.Services;
 
 public class SysexParameterValueInterpreter
 {
-    public static void Interpret(byte[] parResult, Integra7ParameterSpec _parspec, out long _rawNumericValue, out string _stringValue)
+    public static void Interpret(byte[] parResult, Integra7ParameterSpec parspec, out long rawNumericValue, out string stringValue)
     {
-        _rawNumericValue = 0;
+        rawNumericValue = 0;
 
-        if (_parspec.Type == Integra7ParameterSpec.SpecType.NUMERIC)
+        if (parspec.Type == Integra7ParameterSpec.SpecType.NUMERIC)
         {
-            if (_parspec.PerNibble)
+            if (parspec.PerNibble)
             {
-                _rawNumericValue = ByteUtils.NibbledToInt(parResult);
+                rawNumericValue = ByteUtils.NibbledToInt(parResult);
             }
             else
             {
-                _rawNumericValue = ByteUtils.Bytes7ToInt(parResult);
+                rawNumericValue = ByteUtils.Bytes7ToInt(parResult);
             }
 
-            if (_parspec.IMin != _parspec.OMin || _parspec.IMax != _parspec.OMax)
+            if (parspec.IMin != parspec.OMin || parspec.IMax != parspec.OMax)
             {
-                _stringValue = $"{(long)Mapping.linlin(_rawNumericValue, _parspec.IMin, _parspec.IMax, _parspec.OMin, _parspec.OMax)}";
+                stringValue = $"{(long)Mapping.linlin(rawNumericValue, parspec.IMin, parspec.IMax, parspec.OMin, parspec.OMax)}";
             }
             else
             {
-                _stringValue = $"{_rawNumericValue}";
+                stringValue = $"{rawNumericValue}";
             }
 
-            if (_parspec.Repr != null)
+            if (parspec.Repr != null)
             {
-                bool mappedNibbledValue = _parspec.PerNibble && (_parspec.IMin != _parspec.OMin || _parspec.IMax != _parspec.OMax);
+                bool mappedNibbledValue = parspec.PerNibble && (parspec.IMin != parspec.OMin || parspec.IMax != parspec.OMax);
                 if (mappedNibbledValue)
                 {
-                    _stringValue = _parspec.Repr[int.Parse(_stringValue)];
+                    stringValue = parspec.Repr[int.Parse(stringValue)];
                 }
                 else
                 {
-                    _stringValue = _parspec.Repr[(int)_rawNumericValue];
+                    stringValue = parspec.Repr[(int)rawNumericValue];
                 }
             }
         }
         else
         {
-            _stringValue = System.Text.Encoding.ASCII.GetString(parResult);
+            stringValue = System.Text.Encoding.ASCII.GetString(parResult);
         }
     }
 }

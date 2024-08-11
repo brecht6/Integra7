@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using Integra7AuralAlchemist.Models.Services;
+using Integra7AuralAlchemist.Models.Data;
 
-namespace Integra7AuralAlchemist.Models.Data;
+namespace Integra7AuralAlchemist.Models.Services;
 
 public class ParameterListSysexSizeCalculator
 {

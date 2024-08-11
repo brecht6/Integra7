@@ -554,7 +554,7 @@ public class Integra7Parameters
             new(type:NUM, path:"System Common/System Control 4 Source", offs:[0x00, 0x23], imin:0, imax:97, omin:0, omax:97, bytes:1, res:RESERVED, nib:false, unit:"", repr:CONTROL_SOURCE),
             new(type:NUM, path:"System Common/Control Source", offs:[0x00, 0x24], imin:0, imax:1, omin:0, omax:1, bytes:1, res:USED, nib:false, unit:"", repr:SYS_STUDIO),
             new(type:NUM, path:"System Common/System Clock Source", offs:[0x00, 0x25], imin:0, imax:1, omin:0, omax:1, bytes:1, res:USED, nib:false, unit:"", repr:MIDI_USB),
-            new(type:NUM, path:"System Common/System Tempo", offs:[0x00, 0x26], imin:0, imax:0x0f0f, omin:20, omax:250, bytes:2, res:USED, nib:true, unit:"bpm", repr:null),
+            new(type:NUM, path:"System Common/System Tempo", offs:[0x00, 0x26], imin:0, imax:0x0f0f, omin:0, omax:0x0f0f, bytes:2, res:USED, nib:true, unit:"bpm", repr:null),
             new(type:NUM, path:"System Common/Tempo Assign Source", offs:[00, 0x28], imin:0, imax:1, omin:0, omax:1, bytes:1, res:USED, nib:false, unit:"", repr:OFF_ON),
             new(type:NUM, path:"System Common/Receive Program Change", offs:[00, 0x29], imin:0, imax:1, omin:0, omax:1, bytes:1, res:USED, nib:false, unit:"", repr:OFF_ON),
             new(type:NUM, path:"System Common/Receive Bank Select", offs:[00, 0x2a], imin:0, imax:1, omin:0, omax:1, bytes:1, res:USED, nib:false, unit:"", repr:OFF_ON),

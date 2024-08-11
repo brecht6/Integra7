@@ -63,7 +63,7 @@ public class Integra7Parameters
         [0] = "MAIN", [1] = "REV", [2] = "MAIN+REV"
     };
     public readonly IDictionary<int, string> CHORUS_TYPE = new Dictionary<int, string> {
-        [0] = "OFF", [1] = "Chorus", [2] ="Delay", [3] = "GM2 Chorus"
+        [0] = "Off", [1] = "Chorus", [2] ="Delay", [3] = "GM2 Chorus"
     };
     public readonly IDictionary<int, string> REVERB_TYPE = new Dictionary<int, string> {
         [0] = "OFF", [1] = "Room1", [2] = "Room2", [3] = "Hall 1", [4] = "Hall 2", [5] = "Plate", [6] = "GM2 Reverb"
@@ -337,6 +337,12 @@ public class Integra7Parameters
         [0] = "Off", [1] = "Flam1", [2] = "Flam2", [3] = "Flam3", [4] = "Buzz1",
         [5] = "Buzz2", [6] = "Buzz3", [7] = "Roll"
     };
+    public readonly IDictionary<int, string> OFF_LPF_HPF = new Dictionary<int, string> {
+        [0] = "Off", [1] = "Low Pass Filter", [2] = "High Pass Filter"
+    };
+    public readonly IDictionary<int, string> DELAY_MSEC_NOTE = new Dictionary<int, string> {
+        [0] = "msec", [1] = "Note"
+    };
     public readonly IDictionary<int, string> PCM_WAVEFORMS = new Dictionary<int, string> {};
     public const bool USED = false;
     public const bool RESERVED = true;
@@ -410,6 +416,49 @@ public class Integra7Parameters
         {
             LoadPCMWaveForms(); // crashes in unit test with Unhandled exception. System.InvalidOperationException: Unable to locate 'Avalonia.Platform.IAssetLoader'.
         }
+
+        /*
+        Define the sysex layout for each individual parameter
+        
+        Note that in some cases, the exact parameter name changes based on information that came before (value of a "master" parameter)
+        e.g. in the studio common set chorus parameters, the chorus parameter 1 is "Filter Type" if the master parameter "Studio Set Common  Chorus/Chorus Type" is set to "Chorus"
+        and the chorus parameter 1 is "Delay Left" if the master parameter "Studio Set Common  Chorus/Chorus Type" has value "Delay"
+        
+        To model this situation each Integra7ParameterSpec has optional fields:
+           * master parameters must have "store = true" -> during parsing of sysex their values will be registered in a ParserContext table
+           * The parameters that depend on the master parameter must have entries mst:"path/to/master/parameter" and mstval:"displayed value of master parameter".
+        For each possible value of the master parameter, an Integra7ParameterSpec must be present.
+        Each of these entries must have a path consisting of a common prefix, followed by a relevant name.
+          
+        Example to hopefully make this a bit clearer:
+        Depending on which chorus type is selected in the studio set common chorus parameters, the chorus parameters change.
+        So chorus type is a master parameter, and the changing parameters depend on the chorus type displayed value.
+        
+        Here's how to model the chorus type master parameter:
+        Note the "store:true" entry.
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Type", offs:[0x00, 0x00], imin:0, imax:3, omin:0, omax:3, bytes:1, res:USED, nib:false, unit:"", repr:CHORUS_TYPE, store:true),
+
+        And here's how the changing chorus parameter 1 entries should be added:
+        Each of the entries have 
+            * a common prefix "Studio Set Common Chorus/Chorus Parameter 1", and an 
+            * mst:"Studio Set Common Chorus/Chorus Type" to indicate they depend on the chorus type master parameter
+            * and a unique mstval:"something" entry to say for which value of the chorus type this entry is relevant.
+
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Reserved", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[0]),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Filter Type", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:OFF_LPF_HPF, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1]),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:DELAY_MSEC_NOTE, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2]),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Pre-LPF", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),
+        
+        During parsing the displayvalue of the mst: control will be looked up in the ParserContext, and only if it is equal to the mstval:, it is relevant for the current situation.
+        * The path of parameters whi
+        
+        Note also that for nibbled values that are also mapped, a representation lookup table must be defined in terms of the *mapped* value 
+        (such values occur in the data dependent parameters)
+        for all other parameters, the representation lookup tables are defined in terms of their raw (de-nibbled) values
+
+        Final Note: each reserved parameter should have a unique name.
+        
+        */
 
         _parameters = new List<Integra7ParameterSpec>
         {
@@ -583,11 +632,17 @@ public class Integra7Parameters
             new(type:NUM, path:"Studio Set Common/Reserved30", offs:[0x00, 0x52], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common/Reserved31", offs:[0x00, 0x53], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
 
-            new(type:NUM, path:"Studio Set Common Chorus/Chorus Type", offs:[0x00, 0x00], imin:0, imax:3, omin:0, omax:3, bytes:1, res:USED, nib:false, unit:"", repr:CHORUS_TYPE),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Type", offs:[0x00, 0x00], imin:0, imax:3, omin:0, omax:3, bytes:1, res:USED, nib:false, unit:"", repr:CHORUS_TYPE, store:true),
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Level", offs:[0x00, 0x01], imin:0, imax:127, omin:0, omax:127, bytes:1, res:USED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Chorus/Reserved", offs:[0x00, 0x02], imin:0, imax:3, omin:0, omax:3, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Output Select", offs:[0x00, 0x03], imin:0, imax:2, omin:0, omax:2, bytes:1, res:USED, nib:false, unit:"", repr:MAIN_REV),
-            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
+
+            //new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Reserved", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Reserved", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[0]),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Filter Type", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:OFF_LPF_HPF, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1]),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:DELAY_MSEC_NOTE, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2]),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Pre-LPF", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),
+
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 4", offs:[0x00, 0x10], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
@@ -607,7 +662,7 @@ public class Integra7Parameters
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 18", offs:[0x00, 0x48], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 19", offs:[0x00, 0x4c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 20", offs:[0x00, 0x50], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
-            
+
             new(type:NUM, path:"Studio Set Common Reverb/Reverb Type", offs:[0x00, 0x00], imin:0, imax:6, omin:0, omax:6, bytes:1, res:USED, nib:false, unit:"", repr:REVERB_TYPE),
             new(type:NUM, path:"Studio Set Common Reverb/Reverb Level", offs:[0x00, 0x01], imin:0, imax:127, omin:0, omax:127, bytes:1, res:USED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Reverb/Reverb Output Assign", offs:[0x00, 0x02], imin:0, imax:3, omin:0, omax:3, bytes:1, res:USED, nib:false, unit:"", repr:ABCD),

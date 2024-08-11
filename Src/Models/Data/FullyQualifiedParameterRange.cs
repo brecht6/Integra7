@@ -37,9 +37,15 @@ public class FullyQualifiedParameterRange
         byte [] firstParameterAddr = _firstPar.Address;
         byte [] totalAddr = ByteUtils.AddressWithOffset(startAddr, offsetAddr, firstParameterAddr);
         byte[] data = [];
-        for (int i = 0; i < Range.Count; i++)
+        ParserContext ctx = new ParserContext();
+        ctx.InitializeFromExistingData(_range);
+        for (int i = 0; i < _range.Count; i++)
         {
-            data = ByteUtils.Flatten(data, Range[i].GetSysexDataFragment());
+            FullyQualifiedParameter p = _range[i];
+            if (p.ValidInContext(ctx))
+            {
+                data = ByteUtils.Flatten(data, p.GetSysexDataFragment());
+            }
         }
         integra7Api.MakeDataTransmission(totalAddr, data);
     }
@@ -51,25 +57,35 @@ public class FullyQualifiedParameterRange
         byte[] firstParameterAddr = _firstPar.Address;
         byte[] totalAddr = ByteUtils.AddressWithOffset(startAddr, offsetAddr, firstParameterAddr);
         List<Integra7ParameterSpec> allRelevantPars = parameters.GetParametersFromTo(_firstPar.Path, _lastPar.Path);
-        long size = 0;
         _range.Clear();
         for (int i = 0; i < allRelevantPars.Count; i++)
         {
-            size += allRelevantPars[i].Bytes;
+            // range must contain all possible FullyQualifiedParameters between the first and last one for parsing.
+            // This includes all copies needed for data dependencies.
             _range.Add(new FullyQualifiedParameter(_start, _offset, allRelevantPars[i]));
         }
-
+        // size, however, must not count duplicates needed for data dependencies multiple times since only one of them
+        // will be actually used during parsing (based on which value was read for its master control)
+        long size = ParameterListSysexSizeCalculator.CalculateSysexSize(allRelevantPars);
         byte[] reply = integra7Api.MakeDataRequest(totalAddr, size);
         ParseFromSysexReply(reply, parameters, _firstPar);
     }
 
     public void ParseFromSysexReply(byte[] reply, Integra7Parameters parameters, Integra7ParameterSpec? firstParameterInSysexReply = null)
     {
+        ParserContext ctx = new ParserContext();
         for (int i = 0; i < _range.Count; i++)
         {
             FullyQualifiedParameter p = _range[i];
-            p.ParseFromSysexReply(reply, parameters, firstParameterInSysexReply);
-            p.DebugLog();
+            if (p.ValidInContext(ctx))
+            {
+                p.ParseFromSysexReply(reply, parameters, firstParameterInSysexReply);
+                if (p.ParSpec.Store)
+                {
+                    ctx.Register(p.ParSpec.Path, p.StringValue);
+                }
+                p.DebugLog();
+            }
         }
     }
 }

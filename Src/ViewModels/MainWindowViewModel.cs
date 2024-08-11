@@ -442,9 +442,6 @@ public partial class MainWindowViewModel : ObservableObject
     {
         Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING));
         UpdateConnected(Integra7);
-        if (Connected) {
-            RescanButtonEnabled = false;
-        }
     }
 
     private void UpdateConnected(IIntegra7Api integra7)
@@ -458,6 +455,7 @@ public partial class MainWindowViewModel : ObservableObject
         {
             MidiDevices = "Could not find " + INTEGRA_CONNECTION_STRING;
         }
+        RescanButtonEnabled = !Connected;
     }
 
     [ObservableProperty]
@@ -499,10 +497,10 @@ public partial class MainWindowViewModel : ObservableObject
         s?.DebugLog();
         */
 
-        /*
         DomainStudioSetCommonChorus dsscc = new DomainStudioSetCommonChorus(Integra7, _i7startAddresses, _i7parameters);
         dsscc.ReadFromIntegra();
-        */
+        dsscc.WriteToIntegra();
+
     }
 
 

@@ -89,10 +89,13 @@ public class DomainBase
 
     public string LookupSingleParameterDisplayedValue(string parameterName)
     {
+        ParserContext ctx = new ParserContext();
+        ctx.InitializeFromExistingData(_domainParameters);
+
         for (int i = 0; i < _domainParameters.Count; i++)
         {
             FullyQualifiedParameter p = _domainParameters[i];
-            if (p.ParSpec.Path == parameterName)
+            if (p.ValidInContext(ctx) && p.ParSpec.Path == parameterName)
             {
                 return p.StringValue;
             }
@@ -103,10 +106,13 @@ public class DomainBase
     public void ModifySingleParameterDisplayedValue(string parameterName, string displayedValue)
     {
         bool found = false;
+        ParserContext ctx = new ParserContext();
+        ctx.InitializeFromExistingData(_domainParameters);
+
         for (int i = 0; i < _domainParameters.Count && !found; i++)
         {
             FullyQualifiedParameter p = _domainParameters[i];
-            if (p.ParSpec.Path == parameterName)
+            if (p.ValidInContext(ctx) && p.ParSpec.Path == parameterName)
             {
                 found = true;
                 if (p.IsNumeric)
@@ -144,18 +150,32 @@ public class DomainBase
 
                 p.DebugLog();
             }
+
+            if (!found)
+            {
+                // did you try to update a parameter that simply does not exist?
+                // or did you try to update a data dependent parameter while the master parameter was set to a
+                // value that makes this parameter inaccessible?
+                Debug.Assert(false, $"Parameter {parameterName} does not exist in the current context.");
+            }
         }
     }
 
-    List<string> GetParameterNames(bool IncludeReserved = false)
+    List<string> GetParameterNames(bool IncludeReserved = false, bool IncludeInvalidIncontext = false)
     {
         List<string> names = [];
+        ParserContext ctx = new ParserContext();
+        ctx.InitializeFromExistingData(_domainParameters);
+
         for (int i = 0; i < _domainParameters.Count; i++)
         {
             Integra7ParameterSpec p = _domainParameters[i].ParSpec;
-            if (p.Reserved && IncludeReserved || !p.Reserved)
+            if (_domainParameters[i].ValidInContext(ctx) || IncludeInvalidIncontext)
             {
-                names.Add(p.Path);
+                if (p.Reserved && IncludeReserved || !p.Reserved)
+                {
+                    names.Add(p.Path);
+                }
             }
         }
         return names;

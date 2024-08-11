@@ -39,6 +39,25 @@ public class FullyQualifiedParameter
         _stringValue = stringValue;
     }
 
+    public bool ValidInContext(ParserContext ctx)
+    {
+        if (ParSpec.MasterCtrl != "")
+        {
+            if (ctx.Contains(ParSpec.MasterCtrl))
+            {
+                string value = ctx.Lookup(ParSpec.MasterCtrl);
+                return ParSpec.MasterCtrlDispValue == value;
+            }
+            else
+            {
+                Debug.Assert(false, $"Cannot parse {ParSpec.Path} without context {ParSpec.MasterCtrl}");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public void RetrieveFromIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
     {
         byte[] startAddr = startAddresses.Lookup(_start).Address;
@@ -68,10 +87,9 @@ public class FullyQualifiedParameter
         const int SYSEX_DATA_REPLY_HEADER_LENGTH = 11;
         List<Integra7ParameterSpec> parametersInSysexReply = parameters.GetParametersFromTo(firstParameterInSysexReply.Path, _parspec.Path);
         int dataToSkip = SYSEX_DATA_REPLY_HEADER_LENGTH;
-        for (int i = 0; i < parametersInSysexReply.Count - 1; i++)
-        {
-            dataToSkip += parametersInSysexReply[i].Bytes;
-        }
+        int gap = ParameterListSysexSizeCalculator.CalculateSysexGapBetweenFirstAndLast(parametersInSysexReply);
+        dataToSkip += gap;
+
         byte[] parResult = ByteUtils.Slice(reply, dataToSkip, _parspec.Bytes);
         if (_numeric)
         {

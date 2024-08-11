@@ -84,13 +84,22 @@ public class FullyQualifiedParameter
                 _rawNumericValue = ByteUtils.Bytes7ToInt(parResult);
             }
 
-            if (_parspec.Repr != null)
-            {
-                _stringValue = _parspec.Repr[(int)_rawNumericValue];
-            }
-            else if (_parspec.IMin != _parspec.OMin || _parspec.IMax != _parspec.OMax)
+            if (_parspec.IMin != _parspec.OMin || _parspec.IMax != _parspec.OMax)
             {
                 _stringValue = $"{(long)Mapping.linlin(_rawNumericValue, _parspec.IMin, _parspec.IMax, _parspec.OMin, _parspec.OMax)}";
+            }
+
+            if (_parspec.Repr != null)
+            {
+                bool mappedNibbledValue = _parspec.PerNibble && (_parspec.IMin != _parspec.OMin || _parspec.IMax != _parspec.OMax);
+                if (mappedNibbledValue)
+                {
+                    _stringValue = _parspec.Repr[int.Parse(_stringValue)];
+                }
+                else
+                {
+                    _stringValue = _parspec.Repr[(int)_rawNumericValue];
+                }
             }
             else
             {

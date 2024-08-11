@@ -350,6 +350,66 @@ public class Integra7Parameters
         [15] = "half", [16] = "whole triplet", [17] = "dotted half", [18] = "whole", [19] = "double whole triplet", 
         [20] = "dotted whole", [21] = "double whole",
     };
+    public readonly IDictionary<int, string> CHORUS_PRE_DELAY = new Dictionary<int, string> {
+        [0] = "0.0", [1] = "0.1", [2] = "0.2", [3] = "0.3", [4] = "0.4",
+        [5] = "0.5", [6] = "0.6", [7] = "0.7", [8] = "0.8", [9] = "0.9",
+        [10] = "1.0", [11] = "1.1", [12] = "1.2", [13] = "1.3", [14] = "1.4",
+        [15] = "1.5", [16] = "1.6", [17] = "1.7", [18] = "1.8", [19] = "1.9",
+        [20] = "2.0", [21] = "2.1", [22] = "2.2", [23] = "2.3", [24] = "2.4",
+        [25] = "2.5", [26] = "2.6", [27] = "2.7", [28] = "2.8", [29] = "2.9",
+        [30] = "3.0", [31] = "3.1", [32] = "3.2", [33] = "3.3", [34] = "3.4",
+        [35] = "3.5", [36] = "3.6", [37] = "3.7", [38] = "3.8", [39] = "3.9",
+        [40] = "4.0", [41] = "4.1", [42] = "4.2", [43] = "4.3", [44] = "4.4",
+        [45] = "4.5", [46] = "4.6", [47] = "4.7", [48] = "4.8", [49] = "4.9",
+        [50] = "5.0", [51] = "5.5", [52] = "6.0", [53] = "6.5", [54] = "7.0",
+        [55] = "7.5", [56] = "8.0", [57] = "8.5", [58] = "9.0", [59] = "9.5",
+        [60] = "10", [61] = "11", [62] = "12", [63] = "13", [64] = "14",
+        [65] = "15", [66] = "16", [67] = "17", [68] = "18", [69] = "10",
+        [70] = "20", [71] = "21", [72] = "22", [73] = "23", [74] = "24",
+        [75] = "25", [76] = "26", [77] = "27", [78] = "28", [79] = "29",
+        [80] = "30", [81] = "31", [82] = "32", [83] = "33", [84] = "34",
+        [85] = "35", [86] = "36", [87] = "37", [88] = "38", [89] = "39",
+        [90] = "40", [91] = "41", [92] = "42", [93] = "43", [94] = "44",
+        [95] = "45", [96] = "46", [97] = "47", [98] = "48", [99] = "49",
+        [100] = "50", [101] = "52", [102] = "54", [103] = "56", [104] = "58",
+        [105] = "60", [106] = "62", [107] = "64", [108] = "66", [109] = "68",
+        [110] = "70", [111] = "72", [112] = "74", [113] = "76", [114] = "78",
+        [115] = "80", [116] = "82", [117] = "84", [118] = "86", [119] = "88",
+        [120] = "90", [121] = "92", [122] = "94", [123] = "96", [124] = "98",
+        [125] = "100"
+    };
+    public readonly IDictionary<int, string> CHORUS_DELAY_NOTE = new Dictionary<int, string>{
+        [0] = "64th triplet", [1] = "64th", [2] = "32th triplet", [3] = "32th", [4] = "16th triplet", 
+        [5] = "dotted 32th", [6] = "16th", [7] = "8th triplet", [8] = "dotted 16th", [9] = "8th", 
+        [10] = "4th triplet", [11] = "dotted 8th", [12] = "4th", [13] = "half triplet", [14] = "dotted 4th", 
+        [15] = "half", [16] = "whole triplet", [17] = "dotted half", [18] = "whole", [19] = "double whole triplet", 
+        [20] = "dotted whole", [21] = "double whole",
+    };
+    public readonly IDictionary<int, string> HZ_NOTE = new Dictionary<int, string>{
+        [0] = "Hz", [1] = "Note"
+    };
+    public readonly IDictionary<int, string> CHORUS_RATE_HZ = new Dictionary<int, string>{
+        [1] = "0.05", [2] = "0.10", [3] = "0.15", [4] = "0.20", [5] = "0.25", [6] = "0.30", [7] = "0.35", [8] = "0.40", [9] = "0.45", [10] = "0.50", 
+        [11] = "0.55", [12] = "0.60", [13] = "0.65", [14] = "0.70", [15] = "0.75", [16] = "0.80", [17] = "0.85", [18] = "0.90", [19] = "0.95", [20] = "1.00", 
+        [21] = "1.05", [22] = "1.10", [23] = "1.15", [24] = "1.20", [25] = "1.25", [26] = "1.30", [27] = "1.35", [28] = "1.40", [29] = "1.45", [30] = "1.50", 
+        [31] = "1.55", [32] = "1.60", [33] = "1.65", [34] = "1.70", [35] = "1.75", [36] = "1.80", [37] = "1.85", [38] = "1.90", [39] = "1.95", [40] = "2.00", 
+        [41] = "2.05", [42] = "2.10", [43] = "2.15", [44] = "2.20", [45] = "2.25", [46] = "2.30", [47] = "2.35", [48] = "2.40", [49] = "2.45", [50] = "2.50", 
+        [51] = "2.55", [52] = "2.60", [53] = "2.65", [54] = "2.70", [55] = "2.75", [56] = "2.80", [57] = "2.85", [58] = "2.90", [59] = "2.95", [60] = "3.00", 
+        [61] = "3.05", [62] = "3.10", [63] = "3.15", [64] = "3.20", [65] = "3.25", [66] = "3.30", [67] = "3.35", [68] = "3.40", [69] = "3.45", [70] = "3.50", 
+        [71] = "3.55", [72] = "3.60", [73] = "3.65", [74] = "3.70", [75] = "3.75", [76] = "3.80", [77] = "3.85", [78] = "3.90", [79] = "3.95", [80] = "4.00", 
+        [81] = "4.05", [82] = "4.10", [83] = "4.15", [84] = "4.20", [85] = "4.25", [86] = "4.30", [87] = "4.35", [88] = "4.40", [89] = "4.45", [90] = "4.50", 
+        [91] = "4.55", [92] = "4.60", [93] = "4.65", [94] = "4.70", [95] = "4.75", [96] = "4.80", [97] = "4.85", [98] = "4.90", [99] = "4.95", [100] = "5.00", 
+        [101] = "5.05", [102] = "5.10", [103] = "5.15", [104] = "5.20", [105] = "5.25", [106] = "5.30", [107] = "5.35", [108] = "5.40", [109] = "5.45", [110] = "5.50", 
+        [111] = "5.55", [112] = "5.60", [113] = "5.65", [114] = "5.70", [115] = "5.75", [116] = "5.80", [117] = "5.85", [118] = "5.90", [119] = "5.95", [120] = "6.00", 
+        [121] = "6.05", [122] = "6.10", [123] = "6.15", [124] = "6.20", [125] = "6.25", [126] = "6.30", [127] = "6.35", [128] = "6.40", [129] = "6.45", [130] = "6.50", 
+        [131] = "6.55", [132] = "6.60", [133] = "6.65", [134] = "6.70", [135] = "6.75", [136] = "6.80", [137] = "6.85", [138] = "6.90", [139] = "6.95", [140] = "7.00", 
+        [141] = "7.05", [142] = "7.10", [143] = "7.15", [144] = "7.20", [145] = "7.25", [146] = "7.30", [147] = "7.35", [148] = "7.40", [149] = "7.45", [150] = "7.50", 
+        [151] = "7.55", [152] = "7.60", [153] = "7.65", [154] = "7.70", [155] = "7.75", [156] = "7.80", [157] = "7.85", [158] = "7.90", [159] = "7.95", [160] = "8.00", 
+        [161] = "8.05", [162] = "8.10", [163] = "8.15", [164] = "8.20", [165] = "8.25", [166] = "8.30", [167] = "8.35", [168] = "8.40", [169] = "8.45", [170] = "8.50", 
+        [171] = "8.55", [172] = "8.60", [173] = "8.65", [174] = "8.70", [175] = "8.75", [176] = "8.80", [177] = "8.85", [178] = "8.90", [179] = "8.95", [180] = "9.00", 
+        [181] = "9.05", [182] = "9.10", [183] = "9.15", [184] = "9.20", [185] = "9.25", [186] = "9.30", [187] = "9.35", [188] = "9.40", [189] = "9.45", [190] = "9.50", 
+        [191] = "9.55", [192] = "9.60", [193] = "9.65", [194] = "9.70", [195] = "9.75", [196] = "9.80", [197] = "9.85", [198] = "9.90", [199] = "9.95", [200] = "10.00", 
+    };
     public readonly IDictionary<int, string> PCM_WAVEFORMS = new Dictionary<int, string> {};
     public const bool USED = false;
     public const bool RESERVED = true;
@@ -412,6 +472,19 @@ public class Integra7Parameters
             }
         }
         return result;
+    }
+
+    private void CheckProgrammingErrorDuplicatePaths(IList<Integra7ParameterSpec> database)
+    {
+        HashSet<string> PathsEncountered = [];
+        foreach (Integra7ParameterSpec s in database)
+        {
+            if (PathsEncountered.Contains(s.Path))
+            {
+                Debug.WriteLine($"Path {s.Path} is used multiple times. Please fix.");
+            }
+            PathsEncountered.Add(s.Path);
+        }
     }
 
     public Integra7Parameters(bool testing=false)
@@ -655,17 +728,30 @@ public class Integra7Parameters
             /* OFF */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2/Reserved", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[0]),
             /* CHO */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2/Cutoff Freq", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"Hz", repr:_200_8000Hz, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1]),            
             /* DELa*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2/Delay Left ms", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"ms", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], mst2:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", mstval2:DELAY_MSEC_NOTE[0]),
-            /* DELb*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2/Delay Left (not used)", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], mst2:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", mstval2:DELAY_MSEC_NOTE[1]),
+            /* DELb*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2/Reserved2", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], mst2:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", mstval2:DELAY_MSEC_NOTE[1]),
             /* GM2 */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2/Level", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),
 
-            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
-            /*
-            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null),
+            //new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
+            /* OFF */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3/Reserved", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[0]),
+            /* CHO */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3/Pre-Delay", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"ms", repr:CHORUS_PRE_DELAY, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1]),            
+            /* DELa*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3/Reserved2", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"ms", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], mst2:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", mstval2:DELAY_MSEC_NOTE[0]),
+            /* DELb*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3/Delay Left note", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:CHORUS_DELAY_NOTE, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], mst2:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", mstval2:DELAY_MSEC_NOTE[1]),
+            /* GM2 */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3/Feedback", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),
 
-            */
+            //new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 4", offs:[0x00, 0x10], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
+            /* OFF */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 4/Reserved", offs:[0x00, 0x10], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[0]),
+            /* CHO */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 4/Rate (Hz-note)", offs:[0x00, 0x10], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:HZ_NOTE, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1], store:true),
+            /* DEL */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 4/Delay Right (ms-note)", offs:[0x00, 0x10], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:DELAY_MSEC_NOTE, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], store:true),
+            /* GM2 */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 4/Delay", offs:[0x00, 0x10], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),
 
-            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 4", offs:[0x00, 0x10], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
-            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
+            //new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
+            /* OFF */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5/Reserved", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[0]),
+            /* CHOa */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5/Rate Hz", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"Hz", repr:CHORUS_RATE_HZ, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1], mst2:"Studio Set Common Chorus/Chorus Parameter 4/Rate (Hz-note)", mstval2:HZ_NOTE[0]),
+            /* CHOb */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5/Reserved2", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1], mst2:"Studio Set Common Chorus/Chorus Parameter 4/Rate (Hz-note)", mstval2:HZ_NOTE[1]),
+            /* DELa*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5/Delay Right ms", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"ms", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], mst2:"Studio Set Common Chorus/Chorus Parameter 4/Delay Right (ms-note)", mstval2:DELAY_MSEC_NOTE[0]),
+            /* DELb*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5/Reserved3", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], mst2:"Studio Set Common Chorus/Chorus Parameter 4/Delay Right (ms-note)", mstval2:DELAY_MSEC_NOTE[1]),
+            /* GM2 */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5/Rate", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),
+
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 6", offs:[0x00, 0x18], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 7", offs:[0x00, 0x1c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 8", offs:[0x00, 0x20], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
@@ -775,11 +861,11 @@ public class Integra7Parameters
             new(type:NUM, path:"Studio Set Part/Velocity Fade Width Lower", offs:[0x00, 0x23], imin:0, imax:127, omin:0, omax:127, bytes:1, res:USED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Part/Velocity Fade Width Upper", offs:[0x00, 0x24], imin:0, imax:127, omin:0, omax:127, bytes:1, res:USED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Part/Mute Switch", offs:[0x00, 0x25], imin:0, imax:1, omin:0, omax:1, bytes:1, res:USED, nib:false, unit:"", repr:OFF_MUTE),
-            new(type:NUM, path:"Studio Set Part/Reserved1", offs:[0x00, 0x26], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"Studio Set Part/Reserved5", offs:[0x00, 0x26], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Part/Part Chorus Send Level", offs:[0x00, 0x27], imin:0, imax:127, omin:0, omax:127, bytes:1, res:USED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Part/Part Reverb Send Level", offs:[0x00, 0x28], imin:0, imax:127, omin:0, omax:127, bytes:1, res:USED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Part/Part Output Assign", offs:[0x00, 0x29], imin:0, imax:11, omin:0, omax:11, bytes:1, res:USED, nib:false, unit:"", repr:ABCD1_8),
-            new(type:NUM, path:"Studio Set Part/Reserved2", offs:[0x00, 0x2a], imin:0, imax:3, omin:0, omax:3, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"Studio Set Part/Reserved6", offs:[0x00, 0x2a], imin:0, imax:3, omin:0, omax:3, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Part/Part Scale Tune Type", offs:[0x00, 0x2b], imin:0, imax:8, omin:0, omax:8, bytes:1, res:USED, nib:false, unit:"", repr:SCALE_TYPE),
             new(type:NUM, path:"Studio Set Part/Part Scale Tune Key", offs:[0x00, 0x2c], imin:0, imax:11, omin:0, omax:11, bytes:1, res:USED, nib:false, unit:"", repr:SCALE_KEY),
             new(type:NUM, path:"Studio Set Part/Part Scale Tune for C", offs:[0x00, 0x2d], imin:0, imax:127, omin:-64, omax:63, bytes:1, res:USED, nib:false, unit:"", repr:null),
@@ -806,14 +892,14 @@ public class Integra7Parameters
             new(type:NUM, path:"Studio Set Part/Receive Hold-1", offs:[0x00, 0x42], imin:0, imax:1, omin:0, omax:1, bytes:1, res:USED, nib:false, unit:"", repr:OFF_ON),
             new(type:NUM, path:"Studio Set Part/Velocity Curve Type", offs:[0x00, 0x43], imin:0, imax:4, omin:0, omax:4, bytes:1, res:USED, nib:false, unit:"", repr:VELO_CURVE),
             new(type:NUM, path:"Studio Set Part/Motional Surround L-R", offs:[0x00, 0x44], imin:0, imax:127, omin:-64, omax:63, bytes:1, res:USED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"Studio Set Part/Reserved3", offs:[0x00, 0x45], imin:0, imax:127, omin:-64, omax:63, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"Studio Set Part/Reserved7", offs:[0x00, 0x45], imin:0, imax:127, omin:-64, omax:63, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Part/Motional Surround F-B", offs:[0x00, 0x46], imin:0, imax:127, omin:-64, omax:63, bytes:1, res:USED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"Studio Set Part/Reserved4", offs:[0x00, 0x47], imin:0, imax:127, omin:-64, omax:63, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"Studio Set Part/Reserved8", offs:[0x00, 0x47], imin:0, imax:127, omin:-64, omax:63, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Part/Motional Surround Width", offs:[0x00, 0x48], imin:0, imax:32, omin:0, omax:32, bytes:1, res:USED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Part/Motional Surround Ambience Send Level", offs:[0x00, 0x49], imin:0, imax:127, omin:0, omax:127, bytes:1, res:USED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"Studio Set Part/Reserved5", offs:[0x00, 0x4a], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"Studio Set Part/Reserved6", offs:[0x00, 0x4b], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"Studio Set Part/Reserved7", offs:[0x00, 0x4c], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"Studio Set Part/Reserved9", offs:[0x00, 0x4a], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"Studio Set Part/Reserved10", offs:[0x00, 0x4b], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"Studio Set Part/Reserved11", offs:[0x00, 0x4c], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
 
             new(type:NUM, path:"Studio Set Part EQ/EQ Switch", offs:[0x00, 0x00], imin:0, imax:1, omin:0, omax:1, bytes:1, res:USED, nib:false, unit:"", repr:OFF_ON),
             new(type:NUM, path:"Studio Set Part EQ/EQ Low Freq", offs:[0x00, 0x00], imin:0, imax:1, omin:200, omax:400, bytes:1, res:USED, nib:false, unit:"Hz", repr:null),
@@ -1488,40 +1574,40 @@ public class Integra7Parameters
             new(type:NUM, path:"PCM Drum Kit Common 2/Reserved13", offs:[0x00, 0x0c], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"PCM Drum Kit Common 2/Reserved14", offs:[0x00, 0x0d], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"PCM Drum Kit Common 2/Reserved15", offs:[0x00, 0x0e], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved16", offs:[0x00, 0x0f], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Phrase Number", offs:[0x00, 0x10], imin:0, imax:255, omin:0, omax:255, bytes:2, res:USED, nib:true, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved17", offs:[0x00, 0x12], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved18", offs:[0x00, 0x13], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved19", offs:[0x00, 0x14], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved20", offs:[0x00, 0x15], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved21", offs:[0x00, 0x16], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved22", offs:[0x00, 0x17], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved23", offs:[0x00, 0x18], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved24", offs:[0x00, 0x19], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved25", offs:[0x00, 0x1a], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved26", offs:[0x00, 0x1b], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved27", offs:[0x00, 0x1c], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved28", offs:[0x00, 0x1d], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved29", offs:[0x00, 0x1e], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved30", offs:[0x00, 0x1f], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved31", offs:[0x00, 0x20], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved32", offs:[0x00, 0x21], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved33", offs:[0x00, 0x22], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved34", offs:[0x00, 0x23], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved35", offs:[0x00, 0x24], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved36", offs:[0x00, 0x25], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved37", offs:[0x00, 0x26], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved38", offs:[0x00, 0x27], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved39", offs:[0x00, 0x28], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved40", offs:[0x00, 0x29], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved41", offs:[0x00, 0x2a], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved42", offs:[0x00, 0x2b], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved43", offs:[0x00, 0x2c], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved44", offs:[0x00, 0x2d], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved45", offs:[0x00, 0x2e], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved46", offs:[0x00, 0x2f], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved47", offs:[0x00, 0x30], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/TFX Switch", offs:[0x00, 0x31], imin:0, imax:1, omin:0, omax:1, bytes:1, res:USED, nib:false, unit:"", repr:OFF_ON),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved16", offs:[0x00, 0x0f], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Phrase Number", offs:[0x00, 0x10], imin:0, imax:255, omin:0, omax:255, bytes:2, res:USED, nib:true, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved17", offs:[0x00, 0x12], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved18", offs:[0x00, 0x13], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved19", offs:[0x00, 0x14], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved20", offs:[0x00, 0x15], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved21", offs:[0x00, 0x16], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved22", offs:[0x00, 0x17], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved23", offs:[0x00, 0x18], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved24", offs:[0x00, 0x19], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved25", offs:[0x00, 0x1a], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved26", offs:[0x00, 0x1b], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved27", offs:[0x00, 0x1c], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved28", offs:[0x00, 0x1d], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved29", offs:[0x00, 0x1e], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved30", offs:[0x00, 0x1f], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved31", offs:[0x00, 0x20], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved32", offs:[0x00, 0x21], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved33", offs:[0x00, 0x22], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved34", offs:[0x00, 0x23], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved35", offs:[0x00, 0x24], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved36", offs:[0x00, 0x25], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved37", offs:[0x00, 0x26], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved38", offs:[0x00, 0x27], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved39", offs:[0x00, 0x28], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved40", offs:[0x00, 0x29], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved41", offs:[0x00, 0x2a], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved42", offs:[0x00, 0x2b], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved43", offs:[0x00, 0x2c], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved44", offs:[0x00, 0x2d], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved45", offs:[0x00, 0x2e], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved46", offs:[0x00, 0x2f], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/Reserved47", offs:[0x00, 0x30], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Drum Kit Common 2/TFX Switch", offs:[0x00, 0x31], imin:0, imax:1, omin:0, omax:1, bytes:1, res:USED, nib:false, unit:"", repr:OFF_ON),
 
             new(type:ASC, path:"SuperNATURAL Synth Tone Common/Tone Name", offs:[0x00, 0x00], imin:32, imax:127, omin:32, omax:127, bytes:12, res:USED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"SuperNATURAL Synth Tone Common/Tone Level", offs:[0x00, 0x0c], imin:0, imax:127, omin:0, omax:127, bytes:1, res:USED, nib:false, unit:"", repr:null),
@@ -1950,6 +2036,9 @@ public class Integra7Parameters
             new(type:NUM, path:"SuperNATURAL Drum Kit Note/Output Assign", offs:[0x00, 0x12], imin:0, imax:6, omin:0, omax:6, bytes:1, res:USED, nib:false, unit:"", repr:PARTIAL_OUTPUT_ASSIGN),
 
         };
+#if DEBUG
+        CheckProgrammingErrorDuplicatePaths(_parameters);
+#endif
     }
 }
 

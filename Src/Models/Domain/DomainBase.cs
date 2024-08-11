@@ -163,14 +163,13 @@ public class DomainBase
 
                 p.DebugLog();
             }
-
-            if (!found)
-            {
-                // did you try to update a parameter that simply does not exist?
-                // or did you try to update a data dependent parameter while the master parameter was set to a
-                // value that makes this parameter inaccessible?
-                Debug.Assert(false, $"Parameter {parameterName} does not exist or is not valid in the current context.");
-            }
+        }
+        if (!found)
+        {
+            // did you try to update a parameter that simply does not exist?
+            // or did you try to update a data dependent parameter while the master parameter was set to a
+            // value that makes this parameter inaccessible?
+            Debug.Assert(false, $"Parameter {parameterName} does not exist or is not valid in the current context.");
         }
     }
 

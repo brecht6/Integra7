@@ -463,14 +463,13 @@ public partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private void DebugCode()
-    {   /*
+    {   
+        /*
         DomainSetup dse = new DomainSetup(Integra7, _i7startAddresses, _i7parameters);
         dse.ReadFromIntegra();
         dse.ModifySingleParameterDisplayedValue("Setup/Studio Set BS MSB", "85");
         dse.WriteToIntegra();
-        */
 
-        /*
         DomainSystem dsy = new DomainSystem(Integra7, _i7startAddresses, _i7parameters);
         FullyQualifiedParameter? q = dsy.ReadFromIntegra("System Common/Master Tune");
         q?.DebugLog();
@@ -487,9 +486,7 @@ public partial class MainWindowViewModel : ObservableObject
         dsy.WriteToIntegra("System Common/Master Level", "127");
         r = dsy.ReadFromIntegra("System Common/Master Level");
         r?.DebugLog();
-        */
 
-        /*
         DomainStudioSetCommon dssc = new DomainStudioSetCommon(Integra7, _i7startAddresses, _i7parameters);
         dssc.ReadFromIntegra();
         dssc.WriteToIntegra("Studio Set Common/Studio Set Name", "Integra Preview");
@@ -499,7 +496,7 @@ public partial class MainWindowViewModel : ObservableObject
 
         DomainStudioSetCommonChorus dsscc = new DomainStudioSetCommonChorus(Integra7, _i7startAddresses, _i7parameters);
         dsscc.ReadFromIntegra();
-        dsscc.WriteToIntegra();
+        
 
     }
 

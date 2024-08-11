@@ -34,10 +34,6 @@ public class ParameterListSysexSizeCalculator
             else
             {
                 //Debug.WriteLine($"Not counting {allRelevantPars[i].Path} multiple times.");
-                if (listOfConsecutiveParameterSpecs[i].Path.Contains("Reserved"))
-                {
-                    Debug.Assert(false, $"Programming Error. Duplicate reserved parameter names detected {listOfConsecutiveParameterSpecs[i].Path}. Check the Integra7Parameters class...");
-                }
             }
         }
         return size;

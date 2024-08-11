@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -187,7 +188,8 @@ public class FullyQualifiedParameter
         }
         if (IsNumeric)
         {
-            Debug.WriteLine($"[DebugLog] {Wrn} parameter {ParSpec.Path} at parameter address {address} has value raw {RawNumericValue} (meaning: {StringValue}{unit})");
+            long mapped = (long)Math.Round(Mapping.linlin(RawNumericValue, ParSpec.IMin, ParSpec.IMax, ParSpec.OMin, ParSpec.OMax));
+            Debug.WriteLine($"[DebugLog] {Wrn} parameter {ParSpec.Path} at parameter address {address} has value raw {RawNumericValue}, mapped {mapped}, (meaning: {StringValue}{unit})");
         }
         else
         {

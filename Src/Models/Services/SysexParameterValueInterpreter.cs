@@ -31,14 +31,7 @@ public class SysexParameterValueInterpreter
             if (parspec.Repr != null)
             {
                 bool mappedNibbledValue = parspec.PerNibble && (parspec.IMin != parspec.OMin || parspec.IMax != parspec.OMax);
-                if (mappedNibbledValue)
-                {
-                    stringValue = parspec.Repr[int.Parse(stringValue)];
-                }
-                else
-                {
-                    stringValue = parspec.Repr[(int)rawNumericValue];
-                }
+                stringValue = parspec.Repr[int.Parse(stringValue)];
             }
         }
         else

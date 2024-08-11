@@ -59,19 +59,19 @@ public class TestSysexParameterValueInterpreter
     [Test]
     public void Test_NotNibbled_WithMapped_WithRepr()
     {
-        // not used in practice; for now look up raw value instead of mapped value (which effectively ignores the mapping)
+        // not yet used in practice; look up mapped value in repr table
         IDictionary<int, string> LUT = new Dictionary<int, string>
         {
-            [0x64] = "YIPPEE"
+            [0] = "YIPPEE"
         };
 
-        byte[] parData = [0x00, 0x64];
+        byte[] parData = [0x00, 0x40];
         Integra7ParameterSpec testspec = new(type: NUM, path: "System Common/Master Level", offs: [0x00, 0x05], imin: 0, imax: 127, omin: -64, omax: 63, bytes: 1, res: USED, nib: false, unit: "", repr: LUT);
         long n;
         string s;
         SysexParameterValueInterpreter.Interpret(parData, testspec, out n, out s);
-        Assert.That(n, Is.EqualTo(0x64));
-        Assert.That(s, Is.EqualTo(LUT[0x064]));
+        Assert.That(n, Is.EqualTo(0x40));
+        Assert.That(s, Is.EqualTo(LUT[0]));
     }
 
     [Test]

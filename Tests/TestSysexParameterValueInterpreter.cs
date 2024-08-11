@@ -143,6 +143,24 @@ public class TestSysexParameterValueInterpreter
     }
 
     [Test]
+    public void Test_WithNibbled_WithMapped_WithRepr_RoundingError()
+    {
+        IDictionary<int, string> LUT = new Dictionary<int, string>
+        {
+            [5] = "ROUNDING ERROR",
+            [6] = "CORRECT"
+        };
+        byte[] parData = ByteUtils.IntToNibbled(32774, 4);
+        Integra7ParameterSpec testspec = new(type: NUM, path: "blah", offs: [0x00, 0x05], imin: 12768, imax: 52768, omin: -20000, omax: 20000,
+                                             bytes: 4, res: USED, nib: true, unit: "", repr: LUT);
+        long n;
+        string s;
+        SysexParameterValueInterpreter.Interpret(parData, testspec, out n, out s);
+        Assert.That(n, Is.EqualTo(32774)); // raw value is always unmapped
+        Assert.That(s, Is.EqualTo(LUT[6])); // nibbled+mapped looks up mapped value in repr table (without call to Round in "Interpret" this results in LUT[5])
+    }
+
+    [Test]
     public void Test_Ascii()
     {
         byte[] parData = Encoding.ASCII.GetBytes("Integra Preview ");

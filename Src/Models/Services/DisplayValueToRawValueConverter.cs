@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Linq;
 using Integra7AuralAlchemist.Models.Data;
@@ -28,11 +29,11 @@ public class DisplayValueToRawValueConverter
                 // need to unmap mapped value to raw value
                 if (p.ParSpec.Repr != null)
                 {
-                    p.RawNumericValue = (long)Mapping.linlin(p.RawNumericValue, p.ParSpec.OMin, p.ParSpec.OMax, p.ParSpec.IMin, p.ParSpec.IMax, true);
+                    p.RawNumericValue = (long)Math.Round(Mapping.linlin(p.RawNumericValue, p.ParSpec.OMin, p.ParSpec.OMax, p.ParSpec.IMin, p.ParSpec.IMax, true));
                 }
                 else
                 {
-                    p.RawNumericValue = (long)Mapping.linlin(long.Parse(displayValue), p.ParSpec.OMin, p.ParSpec.OMax, p.ParSpec.IMin, p.ParSpec.IMax, true);
+                    p.RawNumericValue = (long)Math.Round(Mapping.linlin(long.Parse(displayValue), p.ParSpec.OMin, p.ParSpec.OMax, p.ParSpec.IMin, p.ParSpec.IMax, true));
                 }
             }
             else

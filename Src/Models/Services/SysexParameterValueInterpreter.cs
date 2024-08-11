@@ -1,3 +1,6 @@
+using System;
+using System.Diagnostics;
+using System.Reflection.PortableExecutable;
 using Integra7AuralAlchemist.Models.Data;
 
 namespace Integra7AuralAlchemist.Models.Services;
@@ -21,7 +24,7 @@ public class SysexParameterValueInterpreter
 
             if (parspec.IMin != parspec.OMin || parspec.IMax != parspec.OMax)
             {
-                stringValue = $"{(long)Mapping.linlin(rawNumericValue, parspec.IMin, parspec.IMax, parspec.OMin, parspec.OMax)}";
+                stringValue = $"{(long)Math.Round(Mapping.linlin(rawNumericValue, parspec.IMin, parspec.IMax, parspec.OMin, parspec.OMax))}";
             }
             else
             {
@@ -30,8 +33,16 @@ public class SysexParameterValueInterpreter
 
             if (parspec.Repr != null)
             {
-                bool mappedNibbledValue = parspec.PerNibble && (parspec.IMin != parspec.OMin || parspec.IMax != parspec.OMax);
-                stringValue = parspec.Repr[int.Parse(stringValue)];
+                int key = int.Parse(stringValue);
+                if (parspec.Repr.ContainsKey(key)) 
+                {
+                    stringValue = parspec.Repr[key];
+                } else
+                {
+                    //Debug.Assert(false, $"mapped value {key} for par {parspec.Path} not found in {parspec.Repr.Keys}");
+                    Debug.WriteLine($"ERROR: mapped value {key} for par {parspec.Path} not found in {parspec.Repr.Keys}");
+                }
+
             }
         }
         else

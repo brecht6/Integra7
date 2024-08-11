@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Reflection.PortableExecutable;
 using Integra7AuralAlchemist.Models.Data;
 
 namespace Integra7AuralAlchemist.Models.Services;

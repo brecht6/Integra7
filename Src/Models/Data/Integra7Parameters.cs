@@ -343,6 +343,13 @@ public class Integra7Parameters
     public readonly IDictionary<int, string> DELAY_MSEC_NOTE = new Dictionary<int, string> {
         [0] = "msec", [1] = "Note"
     };
+    public readonly IDictionary<int, string> DELAY_NOTE_VALUE = new Dictionary<int, string> {
+        [0] = "64th triplet", [1] = "64th", [2] = "32th triplet", [3] = "32th", [4] = "16th triplet", 
+        [5] = "dotted 32th", [6] = "16th",  [7] = "8th triplet", [8] = "dotted 16th", [9] = "8th", 
+        [10] = "4th triplet", [11] = "dotted 8th", [12] = "4th", [13] = "half triplet", [14] = "dotted 4th", 
+        [15] = "half", [16] = "whole triplet", [17] = "dotted half", [18] = "whole", [19] = "double whole triplet", 
+        [20] = "dotted whole", [21] = "double whole",
+    };
     public readonly IDictionary<int, string> PCM_WAVEFORMS = new Dictionary<int, string> {};
     public const bool USED = false;
     public const bool RESERVED = true;
@@ -450,7 +457,8 @@ public class Integra7Parameters
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Pre-LPF", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),
         
         During parsing the displayvalue of the mst: control will be looked up in the ParserContext, and only if it is equal to the mstval:, it is relevant for the current situation.
-        * The path of parameters whi
+        
+        In some cases, the dependencies are 2 levels deep. For such cases, there's also an mst2 and mst2val which can be specified (see e.g. )
         
         Note also that for nibbled values that are also mapped, a representation lookup table must be defined in terms of the *mapped* value 
         (such values occur in the data dependent parameters)
@@ -637,14 +645,25 @@ public class Integra7Parameters
             new(type:NUM, path:"Studio Set Common Chorus/Reserved", offs:[0x00, 0x02], imin:0, imax:3, omin:0, omax:3, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Output Select", offs:[0x00, 0x03], imin:0, imax:2, omin:0, omax:2, bytes:1, res:USED, nib:false, unit:"", repr:MAIN_REV),
 
-            //new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Reserved", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null),
-            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Reserved", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[0]),
-            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Filter Type", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:OFF_LPF_HPF, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1]),
-            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:DELAY_MSEC_NOTE, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2]),
-            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Pre-LPF", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),
+            //new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null),
+            /* OFF */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Reserved", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[0]),
+            /* CHO */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Filter Type", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:OFF_LPF_HPF, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1]),
+            /* DEL */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:DELAY_MSEC_NOTE, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], store:true),
+            /* GM2 */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Pre-LPF", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),            
 
-            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
+            //new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
+            /* OFF */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2/Reserved", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[0]),
+            /* CHO */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2/Cutoff Freq", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"Hz", repr:_200_8000Hz, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1]),            
+            /* DELa*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2/Delay Left ms", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"ms", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], mst2:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", mstval2:DELAY_MSEC_NOTE[0]),
+            /* DELb*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2/Delay Left (not used)", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], mst2:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", mstval2:DELAY_MSEC_NOTE[1]),
+            /* GM2 */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2/Level", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),
+
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
+            /*
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null),
+
+            */
+
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 4", offs:[0x00, 0x10], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 6", offs:[0x00, 0x18], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),

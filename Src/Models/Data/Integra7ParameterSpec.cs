@@ -36,8 +36,13 @@ public class Integra7ParameterSpec
     public string MasterCtrlDispValue { get => _masterCtrlDispValue; }
     private bool _store = false;
     public bool Store { get => _store; }
+    private string _masterCtrlPath2 = "";
+    public string MasterCtrl2 { get => _masterCtrlPath2; }
+    private string _masterCtrlDispValue2  = "";
+    public string MasterCtrlDispValue2 { get => _masterCtrlDispValue2; }
 
-    public Integra7ParameterSpec(SpecType type, string path, byte[] offs, int imin, int imax, float omin, float omax, int bytes, bool res, bool nib, string unit, IDictionary<int, string>? repr, string mst = "", string mstval = "", bool store = false)
+
+    public Integra7ParameterSpec(SpecType type, string path, byte[] offs, int imin, int imax, float omin, float omax, int bytes, bool res, bool nib, string unit, IDictionary<int, string>? repr, string mst = "", string mstval = "", bool store = false, string mst2 = "", string mstval2 = "")
     {
         _type = type; // numeric or ascii?
         _path = path; // name of parameter
@@ -54,6 +59,8 @@ public class Integra7ParameterSpec
         _masterCtrlPath = mst; // a path of a master control who's value determines if this spec is valid
         _masterCtrlDispValue = mstval; // the displayed value that the master control must have for this spec to be valid
         _store = store; // a boolean to indicate that the displayed value of this parameter should be recorded in a context table during parsing (used for master controls)
+        _masterCtrlPath2 = mst2; // second level of depencency
+        _masterCtrlDispValue2 = mstval2; // second level of dependency
     }
 
     public bool IsSameAs(Integra7ParameterSpec other)
@@ -68,7 +75,7 @@ public class Integra7ParameterSpec
             _bytes == other._bytes && 
             _reserved == other._reserved && 
             _perNibble == other._perNibble;
-            // no need to check repr
+            // no real need to check repr, mst, mstval, mst2, mstval2 (in fact, just path probably should be enough)
     }
 
 }

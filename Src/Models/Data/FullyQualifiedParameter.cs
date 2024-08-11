@@ -46,7 +46,32 @@ public class FullyQualifiedParameter
             if (ctx.Contains(ParSpec.MasterCtrl))
             {
                 string value = ctx.Lookup(ParSpec.MasterCtrl);
-                return ParSpec.MasterCtrlDispValue == value;
+                bool StillValid = ParSpec.MasterCtrlDispValue == value;
+                if (StillValid)
+                {
+                    if (ParSpec.MasterCtrl2 != "")
+                    {
+                        // StillValid, but a second level dependency also must be fulfilled
+                        if (ctx.Contains(ParSpec.MasterCtrl2))
+                        {
+                            string value2 = ctx.Lookup(ParSpec.MasterCtrl2);
+                            return value2 == ParSpec.MasterCtrlDispValue2;
+                        }
+                        else
+                        {
+                            Debug.Assert(false, $"Cannot parse {ParSpec.Path} without context {ParSpec.MasterCtrl2}. Did you forget to set store==true in {ParSpec.MasterCtrl}?");
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return true; // StillValid and no need to check second level dependency
+                    }
+                }
+                else
+                {
+                    return false; // no longer valid, no need to check deeper
+                }
             }
             else
             {

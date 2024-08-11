@@ -51,7 +51,7 @@ public class MidiIn : IMidiIn
     {
         _replyReady.Reset();
         _replyData = new byte[e.Length];
-        Debug.WriteLineIf(e.Length == 0, "WHY?! BROKEN");
+        Debug.Assert(e.Length != 0);
         Array.Copy(e.Data, _replyData, e.Length);
         _replyReady.Set();
         if (Verbose)

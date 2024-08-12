@@ -72,7 +72,8 @@ public class Integra7ParameterDatabaseAnalyzer
                     }
                     if (ByteUtils.Bytes7ToInt(s.Address) != prevAddress + prevBytes)
                     {
-                        Debug.WriteLine($"{s.Path}: something seems fishy with the offset address. It doesn't correspond to previous address + previous #bytes). Please check.");
+                        if (prevMstVal == s.MasterCtrlDispValue)
+                            Debug.WriteLine($"{s.Path}: something seems fishy with the offset address. It doesn't correspond to previous address + previous #bytes). Please check.");
                     }
                     previousCommonPrefix = newCommonPrefix;
                     prevAddress = newAddress;

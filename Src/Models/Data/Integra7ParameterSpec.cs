@@ -35,7 +35,7 @@ public class Integra7ParameterSpec
     private string _masterCtrlDispValue  = "";
     public string MasterCtrlDispValue { get => _masterCtrlDispValue; }
     private bool _store = false;
-    public bool Store { get => _store; }
+    public bool Store { get => _store; set => _store = value; }
     private string _masterCtrlPath2 = "";
     public string MasterCtrl2 { get => _masterCtrlPath2; }
     private string _masterCtrlDispValue2  = "";

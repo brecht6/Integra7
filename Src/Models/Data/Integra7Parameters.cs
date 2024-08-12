@@ -1731,6 +1731,33 @@ public class Integra7Parameters
         }
     }
 
+    private void MarkAllMasterParametersAsStoreTrue(IList<Integra7ParameterSpec> database)
+    {
+        HashSet<string> ControlsRequiringStoreTrue = [];
+        // pass one: collect all master controls
+        foreach (Integra7ParameterSpec s in database)
+        {
+            if (s.MasterCtrl != "")
+            {
+                ControlsRequiringStoreTrue.Add(s.MasterCtrl);
+            }
+            if (s.MasterCtrl2 != "")
+            {
+                ControlsRequiringStoreTrue.Add(s.MasterCtrl2);
+            }
+        }
+
+        // pass two: update all master controls
+        foreach (Integra7ParameterSpec s in database)
+        {
+            if (ControlsRequiringStoreTrue.Contains(s.Path))
+            {
+                s.Store = true;
+            }
+        }
+
+    }
+
     public Integra7Parameters(bool testing = false)
     {
         const Integra7ParameterSpec.SpecType NUM = Integra7ParameterSpec.SpecType.NUMERIC;
@@ -1759,7 +1786,7 @@ public class Integra7Parameters
         So chorus type is a master parameter, and the changing parameters depend on the chorus type displayed value.
         
         Here's how to model the chorus type master parameter:
-        Note the "store:true" entry.
+        Note the "store:true" entry. (In the actual code, the store:true will be set automatically by analyzing the database).
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Type", offs:[0x00, 0x00], imin:0, imax:3, omin:0, omax:3, bytes:1, res:USED, nib:false, unit:"", repr:CHORUS_TYPE, store:true),
 
         And here's how the changing chorus parameter 1 entries should be added:
@@ -1974,7 +2001,7 @@ public class Integra7Parameters
             new(type:NUM, path:"Studio Set Common/Reserved30", offs:[0x00, 0x52], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common/Reserved31", offs:[0x00, 0x53], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
 
-            new(type:NUM, path:"Studio Set Common Chorus/Chorus Type", offs:[0x00, 0x00], imin:0, imax:3, omin:0, omax:3, bytes:1, res:USED, nib:false, unit:"", repr:CHORUS_TYPE, store:true),
+            new(type:NUM, path:"Studio Set Common Chorus/Chorus Type", offs:[0x00, 0x00], imin:0, imax:3, omin:0, omax:3, bytes:1, res:USED, nib:false, unit:"", repr:CHORUS_TYPE),
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Level", offs:[0x00, 0x01], imin:0, imax:127, omin:0, omax:127, bytes:1, res:USED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Chorus/Reserved", offs:[0x00, 0x02], imin:0, imax:3, omin:0, omax:3, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Chorus/Chorus Output Select", offs:[0x00, 0x03], imin:0, imax:2, omin:0, omax:2, bytes:1, res:USED, nib:false, unit:"", repr:MAIN_REV),
@@ -1985,7 +2012,7 @@ public class Integra7Parameters
             /* CHO */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Filter Type", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:OFF_LPF_HPF,
                             mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1]),
             /* DEL */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:DELAY_MSEC_NOTE,
-                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], store:true),
+                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2]),
             /* GM2 */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Pre-LPF", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null,
                             mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),            
 
@@ -2021,9 +2048,9 @@ public class Integra7Parameters
             /* OFF */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 4/Reserved", offs:[0x00, 0x10], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null,
                             mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[0]),
             /* CHO */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 4/Rate (Hz-note)", offs:[0x00, 0x10], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:HZ_NOTE,
-                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1], store:true),
+                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1]),
             /* DEL */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 4/Delay Right (ms-note)", offs:[0x00, 0x10], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:DELAY_MSEC_NOTE,
-                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], store:true),
+                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2]),
             /* GM2 */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 4/Delay", offs:[0x00, 0x10], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null,
                             mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),
 
@@ -2058,8 +2085,8 @@ public class Integra7Parameters
                             mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2],
                             mst2:"Studio Set Common Chorus/Chorus Parameter 4/Delay Right (ms-note)", mstval2:DELAY_MSEC_NOTE[0]),
             /* DELb*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 6/Rate note", offs:[0x00, 0x18], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:CHORUS_DELAY_NOTE,
-                            mst:"Studio Set Common Chorus/Chorus Type",
-                            mstval:CHORUS_TYPE[2], mst2:"Studio Set Common Chorus/Chorus Parameter 4/Delay Right (ms-note)", mstval2:DELAY_MSEC_NOTE[1]),
+                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], 
+                            mst2:"Studio Set Common Chorus/Chorus Parameter 4/Delay Right (ms-note)", mstval2:DELAY_MSEC_NOTE[1]),
             /* GM2 */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 6/Depth", offs:[0x00, 0x18], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null,
                             mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),
 
@@ -3349,6 +3376,7 @@ public class Integra7Parameters
 #if DEBUG
         CheckProgrammingErrorDuplicatePaths(_parameters);
 #endif
+        MarkAllMasterParametersAsStoreTrue(_parameters);
     }
 }
 

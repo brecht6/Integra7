@@ -514,7 +514,8 @@ public partial class MainWindowViewModel : ObservableObject
         dsspeq0.ReadFromIntegra();
         */
 
-
+        DomainPCMSynthToneCommon dpcmsynthtonecommon0 = new DomainPCMSynthToneCommon(0, Integra7, _i7startAddresses, _i7parameters);
+        dpcmsynthtonecommon0.ReadFromIntegra();
 
     }
 

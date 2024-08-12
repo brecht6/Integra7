@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Integra7AuralAlchemist.Models.Data;
 
 namespace Integra7AuralAlchemist.Models.Services;
@@ -10,6 +11,9 @@ public class Integra7ParameterDatabaseAnalyzer
     public static void CheckProgrammingErrorDuplicatePaths(IList<Integra7ParameterSpec> database)
     {
         HashSet<string> PathsEncountered = [];
+        string previousCommonPrefix = "";
+        long prevAddress = 0;
+
         foreach (Integra7ParameterSpec s in database)
         {
             if (PathsEncountered.Contains(s.Path))
@@ -24,6 +28,35 @@ public class Integra7ParameterDatabaseAnalyzer
             if (!s.Path.Contains("Reserved") && s.Reserved)
             {
                 Debug.WriteLine($"Path {s.Path} probably shouldn't have its Reserved flag turned on (otherwise, use Reserved in its name). Please fix.");
+            }
+            if (previousCommonPrefix != "")
+            {
+                int noOfSlash = s.Path.Count(c => c == '/');
+                string newCommonPrefix = String.Join("/", s.Path.Split("/")[..noOfSlash]);
+                if (newCommonPrefix == previousCommonPrefix)
+                {
+                    long newAddress = ByteUtils.Bytes7ToInt(s.Address);
+                    if ((newAddress <= prevAddress && s.MasterCtrl == "") || (newAddress < prevAddress && s.MasterCtrl != ""))
+                    {
+                        Debug.WriteLine($"Successive offsets/addresses should increase at {s.Path}. Please check.");
+                    }
+                    previousCommonPrefix = newCommonPrefix;
+                    prevAddress = newAddress;
+                }
+                else
+                {
+                    int noOfSlash2 = s.Path.Count(c => c == '/');
+                    previousCommonPrefix = String.Join("/", s.Path.Split("/")[..noOfSlash2]);
+                    long address = ByteUtils.Bytes7ToInt(s.Address);
+                    prevAddress = address;
+                }
+            }
+            else
+            {
+                int noOfSlash = s.Path.Count(c => c == '/');
+                previousCommonPrefix = String.Join("/", s.Path.Split("/")[..noOfSlash]);
+                long address = ByteUtils.Bytes7ToInt(s.Address);
+                prevAddress = address;
             }
         }
     }

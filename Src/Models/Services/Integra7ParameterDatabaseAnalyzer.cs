@@ -17,6 +17,7 @@ public class Integra7ParameterDatabaseAnalyzer
         string prevMstVal = "";
         string prevMst2 = "";
         string prevMstVal2 = "";
+        long prevBytes = 0;
 
         foreach (Integra7ParameterSpec s in database)
         {
@@ -33,6 +34,20 @@ public class Integra7ParameterDatabaseAnalyzer
             {
                 Debug.WriteLine($"Path {s.Path} probably shouldn't have its Reserved flag turned on (otherwise, use Reserved in its name). Please fix.");
             }
+            if (s.MasterCtrl != "")
+            {
+                if (!PathsEncountered.Contains(s.MasterCtrl))
+                {
+                    Debug.WriteLine($"Path {s.Path} refers to a non-existing mst:{s.MasterCtrl}. Please fix. Parameters can only depend on parameters that came before them.");
+                }
+            }
+            if (s.MasterCtrl2 != "")
+            {
+                if (!PathsEncountered.Contains(s.MasterCtrl2))
+                {
+                    Debug.WriteLine($"Path {s.Path} refers to a non-existing mst2:{s.MasterCtrl2}. Please fix. Parameters can only depend on parameters that came before them.");
+                }
+            }
             if (previousCommonPrefix != "")
             {
                 int noOfSlash = s.Path.Count(c => c == '/');
@@ -46,7 +61,18 @@ public class Integra7ParameterDatabaseAnalyzer
                     }
                     if (s.MasterCtrl == prevMst && s.MasterCtrlDispValue == prevMstVal && s.MasterCtrl2 == prevMst2 && s.MasterCtrlDispValue2 == prevMstVal2)
                     {
-                        Debug.WriteLine($"No two parameters should have exact same mst:{prevMst}, mstval:{prevMstVal}, mst2:{prevMst2}, mstval2:{prevMstVal2}. Please fix.");
+                        if (prevMst != "" && prevMst2 == "")
+                        {
+                            Debug.WriteLine($"{s.Path}: No two parameters should have exact same mst:{prevMst}, mstval:{prevMstVal}. Please fix.");
+                        }
+                        if (prevMst != "" && prevMst2 != "")
+                        {
+                            Debug.WriteLine($"{s.Path}: No two parameters should have exact same mst:{prevMst}, mstval:{prevMstVal}, mst2:{prevMst2}, mstval2:{prevMstVal2}. Please fix.");
+                        }
+                    }
+                    if (ByteUtils.Bytes7ToInt(s.Address) != prevAddress + prevBytes)
+                    {
+                        Debug.WriteLine($"{s.Path}: something seems fishy with the offset address. It doesn't correspond to previous address + previous #bytes). Please check.");
                     }
                     previousCommonPrefix = newCommonPrefix;
                     prevAddress = newAddress;
@@ -54,6 +80,7 @@ public class Integra7ParameterDatabaseAnalyzer
                     prevMstVal = s.MasterCtrlDispValue;
                     prevMst2 = s.MasterCtrl2;
                     prevMstVal2 = s.MasterCtrlDispValue2;
+                    prevBytes = s.Bytes;
                 }
                 else
                 {
@@ -65,6 +92,7 @@ public class Integra7ParameterDatabaseAnalyzer
                     prevMstVal = s.MasterCtrlDispValue;
                     prevMst2 = s.MasterCtrl2;
                     prevMstVal2 = s.MasterCtrlDispValue2;
+                    prevBytes = s.Bytes;
                 }
             }
             else
@@ -77,6 +105,7 @@ public class Integra7ParameterDatabaseAnalyzer
                 prevMstVal = s.MasterCtrlDispValue;
                 prevMst2 = s.MasterCtrl2;
                 prevMstVal2 = s.MasterCtrlDispValue2;
+                prevBytes = s.Bytes;
             }
         }
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using Integra7AuralAlchemist.Models.Services;
 
 namespace Integra7AuralAlchemist.Models.Data;
@@ -32,10 +33,10 @@ public class FullyQualifiedParameterRange
 
     public void WriteToIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
     {
-        byte [] startAddr = startAddresses.Lookup(_start).Address;
-        byte [] offsetAddr = startAddresses.Lookup(_offset).Address;
-        byte [] firstParameterAddr = _firstPar.Address;
-        byte [] totalAddr = ByteUtils.AddressWithOffset(startAddr, offsetAddr, firstParameterAddr);
+        byte[] startAddr = startAddresses.Lookup(_start).Address;
+        byte[] offsetAddr = startAddresses.Lookup(_offset).Address;
+        byte[] firstParameterAddr = _firstPar.Address;
+        byte[] totalAddr = ByteUtils.AddressWithOffset(startAddr, offsetAddr, firstParameterAddr);
         byte[] data = [];
         ParserContext ctx = new ParserContext();
         ctx.InitializeFromExistingData(_range);
@@ -68,7 +69,14 @@ public class FullyQualifiedParameterRange
         // will be actually used during parsing (based on which value was read for its master control)
         long size = ParameterListSysexSizeCalculator.CalculateSysexSize(allRelevantPars);
         byte[] reply = integra7Api.MakeDataRequest(totalAddr, size);
-        ParseFromSysexReply(reply, parameters, _firstPar);
+        if (reply.Length > 0)
+        {
+            ParseFromSysexReply(reply, parameters, _firstPar);
+        }
+        else
+        {
+            Debug.WriteLine("Unfortunately, no reply received after making a sysex data request. This may indicate a bug in the program.");
+        }
     }
 
     public void ParseFromSysexReply(byte[] reply, Integra7Parameters parameters, Integra7ParameterSpec? firstParameterInSysexReply = null)

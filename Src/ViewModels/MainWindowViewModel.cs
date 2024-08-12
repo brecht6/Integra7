@@ -501,13 +501,15 @@ public partial class MainWindowViewModel : ObservableObject
 
         DomainStudioSetMasterEQ dssme = new DomainStudioSetMasterEQ(Integra7, _i7startAddresses, _i7parameters);
         dssme.ReadFromIntegra();
-        */
-
-        DomainStudioSetMIDI dssmi0 = new DomainStudioSetMIDI(0, Integra7, _i7startAddresses, _i7parameters);
+   
+        DomainStudioSetMIDI dssmi0 = new DomainStudioSetMIDI(0, Integra7, _i7startAddresses, _i7parameters);DomainStudioSetPart
         dssmi0.ReadFromIntegra();
         DomainStudioSetMIDI dssmi1 = new DomainStudioSetMIDI(1, Integra7, _i7startAddresses, _i7parameters);
         dssmi1.ReadFromIntegra();
+        */
 
+        DomainStudioSetPart dsspa0 = new DomainStudioSetPart(0, Integra7, _i7startAddresses, _i7parameters);
+        dsspa0.ReadFromIntegra();
 
     }
 

@@ -492,11 +492,13 @@ public partial class MainWindowViewModel : ObservableObject
 
         DomainStudioSetCommonChorus dsscc = new DomainStudioSetCommonChorus(Integra7, _i7startAddresses, _i7parameters);
         dsscc.ReadFromIntegra();
-        */
 
         DomainStudioSetCommonReverb dsscr = new DomainStudioSetCommonReverb(Integra7, _i7startAddresses, _i7parameters);
         dsscr.ReadFromIntegra();
+        */
 
+        DomainStudioSetCommonMotionalSurround dsscms = new DomainStudioSetCommonMotionalSurround(Integra7, _i7startAddresses, _i7parameters);
+        dsscms.ReadFromIntegra();
 
     }
 

@@ -186,7 +186,7 @@ public partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty]
     private bool rescanButtonEnabled = true;
-    
+
     Integra7Preset GetSelectedPreset(byte Channel)
     {
         switch (Channel)
@@ -460,7 +460,7 @@ public partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private void DebugCode()
-    {   
+    {
         /*
         DomainSetup dse = new DomainSetup(Integra7, _i7startAddresses, _i7parameters);
         dse.ReadFromIntegra();
@@ -489,11 +489,14 @@ public partial class MainWindowViewModel : ObservableObject
         dssc.WriteToIntegra("Studio Set Common/Studio Set Name", "Integra Preview");
         FullyQualifiedParameter? s = dssc.ReadFromIntegra("Studio Set Common/Studio Set Name");
         s?.DebugLog();
-        */
 
         DomainStudioSetCommonChorus dsscc = new DomainStudioSetCommonChorus(Integra7, _i7startAddresses, _i7parameters);
         dsscc.ReadFromIntegra();
-        
+        */
+
+        DomainStudioSetCommonReverb dsscr = new DomainStudioSetCommonReverb(Integra7, _i7startAddresses, _i7parameters);
+        dsscr.ReadFromIntegra();
+
 
     }
 

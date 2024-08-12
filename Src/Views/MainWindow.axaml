@@ -18,14 +18,14 @@
         <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding MidiDevices}" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="20">
-            <Button IsEnabled="{Binding RescanButtonEnabled}" Command="{Binding RescanMidiDevicesCommand}" >Rescan Midi Devices</Button>
-            <Button Command="{Binding PlayNoteCommand}" IsEnabled="{Binding Connected}" >Play Note</Button>
+            <Button IsEnabled="{Binding RescanButtonEnabled}" Command="{Binding RescanMidiDevicesCommand}">Rescan Midi Devices</Button>
+            <Button Command="{Binding PlayNoteCommand}" IsEnabled="{Binding Connected}">Play Note</Button>
             <Button Command="{Binding PanicCommand}" IsEnabled="{Binding Connected}" Background="Red" Foreground="White">
                 Panic!
             </Button>
-            <Button Command="{Binding DebugCodeCommand}">Trigger Debug Code</Button>
+            <Button Command="{Binding DebugCodeCommand}" IsEnabled="{Binding Connected}">Trigger Debug Code</Button>
         </StackPanel>
-        
+
         <TabControl HorizontalContentAlignment="Left" TabStripPlacement="Left" Grid.Row="3" Grid.Column="0" SelectedIndex="{Binding CurrentPartSelection, Mode=TwoWay}">
             <TabItem Header="Part 1">
                 <local:PresetSelector Presets="{Binding PresetsCh0}" SelectedPreset="{Binding SelectedPresetCh0, Mode=TwoWay}" />

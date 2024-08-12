@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Integra7AuralAlchemist.Models.Data;
 
 namespace Integra7AuralAlchemist.Views;

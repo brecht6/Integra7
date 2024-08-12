@@ -11,10 +11,7 @@ using Avalonia;
 using DynamicData;
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
-using Avalonia.Controls;
-using System.Diagnostics;
 using System.Collections.Generic;
-using Avalonia.Collections;
 using Integra7AuralAlchemist.Models.Domain;
 
 namespace Integra7AuralAlchemist.ViewModels;

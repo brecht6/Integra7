@@ -13,6 +13,10 @@ public class Integra7ParameterDatabaseAnalyzer
         HashSet<string> PathsEncountered = [];
         string previousCommonPrefix = "";
         long prevAddress = 0;
+        string prevMst = "";
+        string prevMstVal = "";
+        string prevMst2 = "";
+        string prevMstVal2 = "";
 
         foreach (Integra7ParameterSpec s in database)
         {
@@ -40,8 +44,16 @@ public class Integra7ParameterDatabaseAnalyzer
                     {
                         Debug.WriteLine($"Successive offsets/addresses should increase at {s.Path}. Please check.");
                     }
+                    if (s.MasterCtrl == prevMst && s.MasterCtrlDispValue == prevMstVal && s.MasterCtrl2 == prevMst2 && s.MasterCtrlDispValue2 == prevMstVal2)
+                    {
+                        Debug.WriteLine($"No two parameters should have exact same mst:{prevMst}, mstval:{prevMstVal}, mst2:{prevMst2}, mstval2:{prevMstVal2}. Please fix.");
+                    }
                     previousCommonPrefix = newCommonPrefix;
                     prevAddress = newAddress;
+                    prevMst = s.MasterCtrl;
+                    prevMstVal = s.MasterCtrlDispValue;
+                    prevMst2 = s.MasterCtrl2;
+                    prevMstVal2 = s.MasterCtrlDispValue2;
                 }
                 else
                 {
@@ -49,6 +61,10 @@ public class Integra7ParameterDatabaseAnalyzer
                     previousCommonPrefix = String.Join("/", s.Path.Split("/")[..noOfSlash2]);
                     long address = ByteUtils.Bytes7ToInt(s.Address);
                     prevAddress = address;
+                    prevMst = s.MasterCtrl;
+                    prevMstVal = s.MasterCtrlDispValue;
+                    prevMst2 = s.MasterCtrl2;
+                    prevMstVal2 = s.MasterCtrlDispValue2;
                 }
             }
             else
@@ -57,6 +73,10 @@ public class Integra7ParameterDatabaseAnalyzer
                 previousCommonPrefix = String.Join("/", s.Path.Split("/")[..noOfSlash]);
                 long address = ByteUtils.Bytes7ToInt(s.Address);
                 prevAddress = address;
+                prevMst = s.MasterCtrl;
+                prevMstVal = s.MasterCtrlDispValue;
+                prevMst2 = s.MasterCtrl2;
+                prevMstVal2 = s.MasterCtrlDispValue2;
             }
         }
     }

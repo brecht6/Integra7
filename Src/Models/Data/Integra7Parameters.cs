@@ -2312,7 +2312,7 @@ public class Integra7Parameters
             new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 8", offs:[0x00, 0x1f], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 9", offs:[0x00, 0x23], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 10", offs:[0x00, 0x27], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
-            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 11", offs:[0x00, 0x28], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
+            new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 11", offs:[0x00, 0x2b], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 12", offs:[0x00, 0x2f], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 13", offs:[0x00, 0x33], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
             new(type:NUM, path:"Studio Set Common Reverb/Reverb Parameter 14", offs:[0x00, 0x37], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
@@ -2946,7 +2946,7 @@ public class Integra7Parameters
 
             new(type:ASC, path:"PCM Drum Kit Partial/Partial Name", offs:[0x00, 0x00], imin:32, imax:127, omin:32, omax:127, bytes:12, res:USED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"PCM Drum Kit Partial/Assign Type", offs:[0x00, 0x0c], imin:0, imax:1, omin:0, omax:1, bytes:1, res:USED, nib:false, unit:"", repr:MULTI_SINGLE),
-            new(type:NUM, Path:"PCM Drum Kit Partial/Mute Group", offs:[0x00, 0x0d], imin:0, imax:31, omin:0, omax:31, bytes:1, res:USED, nib:false, unit:"", repr:OFF_1_31)
+            new(type:NUM, path:"PCM Drum Kit Partial/Mute Group", offs:[0x00, 0x0d], imin:0, imax:31, omin:0, omax:31, bytes:1, res:USED, nib:false, unit:"", repr:OFF_1_31),
             new(type:NUM, path:"PCM Drum Kit Partial/Partial Level", offs:[0x00, 0x0e], imin:0, imax:127, omin:0, omax:127, bytes:1, res:USED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"PCM Drum Kit Partial/Partial Coarse Tune", offs:[0x00, 0x0f], imin:0, imax:127, omin:0, omax:127, bytes:1, res:USED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"PCM Drum Kit Partial/Partial Fine Tune", offs:[0x00, 0x10], imin:14, imax:114, omin:-50, omax:50, bytes:1, res:USED, nib:false, unit:"", repr:null),

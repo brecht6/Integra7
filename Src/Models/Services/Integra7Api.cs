@@ -23,8 +23,8 @@ public class Integra7Api : IIntegra7Api
     private IMidiOut? _midiOut;
     private IMidiIn? _midiIn;
     private byte _deviceId = 0;
-    public byte DeviceId() 
-    { 
+    public byte DeviceId()
+    {
         return _deviceId;
     }
 
@@ -44,6 +44,7 @@ public class Integra7Api : IIntegra7Api
     public bool CheckIdentity()
     {
         byte[] data = Integra7SysexHelpers.IDENTITY_REQUEST;
+        _midiIn?.DiscardUnhandledPreviousReply();
         _midiOut?.SafeSend(data);
         byte[] reply = _midiIn?.GetReply() ?? [];
         return Integra7SysexHelpers.CheckIdentityReply(reply, out _deviceId);

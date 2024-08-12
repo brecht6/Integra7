@@ -1797,8 +1797,8 @@ public class Integra7Parameters
         
         */
 
-        _parameters = new List<Integra7ParameterSpec>
-        {
+        _parameters =
+        [
             new(type:NUM, path:"Setup/Sound Mode", offs:[0x00, 0x00], imin:1, imax:4, omin:1, omax:4, bytes:1, res:USED, nib: false, unit:"", repr:SoundModes),
             new(type:NUM, path:"Setup/Reserved1", offs:[0x00, 0x01], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib: false, unit:"", repr:null),
             new(type:NUM, path:"Setup/Reserved2", offs:[0x00, 0x02], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib: false, unit:"", repr:null),
@@ -3330,7 +3330,7 @@ public class Integra7Parameters
             new(type:NUM, path:"SuperNATURAL Drum Kit Note/Stereo Width", offs:[0x00, 0x11], imin:0, imax:127, omin:0, omax:127, bytes:1, res:USED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"SuperNATURAL Drum Kit Note/Output Assign", offs:[0x00, 0x12], imin:0, imax:6, omin:0, omax:6, bytes:1, res:USED, nib:false, unit:"", repr:PARTIAL_OUTPUT_ASSIGN),
 
-        };
+        ];
 #if DEBUG
         Integra7ParameterDatabaseAnalyzer.CheckProgrammingErrorDuplicatePaths(_parameters);
 #endif

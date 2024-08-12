@@ -15,6 +15,11 @@ public class MidiOut : IMidiOut
     private readonly IMidiAccess2? _midiAccessManager = null;
     private IMidiOutput? _access = null;
     private IMidiPortDetails? _midiPortDetails = null;
+#if DEBUG
+    public bool Verbose { get; set; } = true;
+#else
+    public bool Verbose { get; set; } = false;
+#endif
     public MidiOut(string Name)
     {
         _midiAccessManager = MidiAccessManager.Default as IMidiAccess2;
@@ -39,6 +44,10 @@ public class MidiOut : IMidiOut
                 _access = _midiAccessManager?.OpenOutputAsync(_midiPortDetails?.Id).Result;
             }
             _access?.Send(data, 0, data.Length, 0);
+            if (Verbose)
+            {
+                ByteStreamDisplay.Display("Sent: ", data);
+            }
         }
         catch (System.ArgumentException)
         {

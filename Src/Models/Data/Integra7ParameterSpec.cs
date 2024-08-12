@@ -75,7 +75,7 @@ public class Integra7ParameterSpec
             _bytes == other._bytes && 
             _reserved == other._reserved && 
             _perNibble == other._perNibble;
-            // no real need to check repr, mst, mstval, mst2, mstval2 (in fact, just path probably should be enough)
+            // no real need to check repr, mst, mstval, mst2, mstval2 (in fact, just path should be enough since we are not supposed to specify duplicate paths)
     }
 
 }

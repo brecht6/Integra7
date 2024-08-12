@@ -1,4 +1,3 @@
-// Studio Set MIDI/Phase Lock
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
 

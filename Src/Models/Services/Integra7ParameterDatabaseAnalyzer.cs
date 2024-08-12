@@ -17,6 +17,14 @@ public class Integra7ParameterDatabaseAnalyzer
                 Debug.WriteLine($"Path {s.Path} is used multiple times. Please fix.");
             }
             PathsEncountered.Add(s.Path);
+            if (s.Path.Contains("Reserved") && !s.Reserved)
+            {
+                Debug.WriteLine($"Path {s.Path} is named reserved but doesn't have Reserved flag. Please fix.");
+            }
+            if (!s.Path.Contains("Reserved") && s.Reserved)
+            {
+                Debug.WriteLine($"Path {s.Path} probably shouldn't have its Reserved flag turned on (otherwise, use Reserved in its name). Please fix.");
+            }
         }
     }
 

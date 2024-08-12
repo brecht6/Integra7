@@ -1775,13 +1775,30 @@ public class Integra7Parameters
         
         During parsing the displayvalue of the mst: control will be looked up in the ParserContext, and only if it is equal to the mstval:, it is relevant for the current situation.
         
-        In some cases, the dependencies are 2 levels deep. For such cases, there's also an mst2 and mst2val which can be specified (see e.g. )
-        
-        Note also that for nibbled values that are also mapped, a representation lookup table must be defined in terms of the *mapped* value 
-        (such values occur in the data dependent parameters)
-        for all other parameters, the representation lookup tables are defined in terms of their raw (de-nibbled) values
+        In a number of cases, a parameter C depends on another parameter B which itself depends on parameter A. The dependencies then become 2 levels deep.
+        For such cases, there's an mst2 and mst2val which can be specified (see e.g. "Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)". 
+        The parameter B uses mst and mstval to indicate its exact depencency on parameter A.
+        The parameter B also uses store = true to indicate that it serves as master parameter for C.
+        Parameter C then specifies mst, mstval to specify the exact dependency on A (which perhaps it could have inherited automatically from parameter B, but that's not how things are currently implemented),
+        and mst2, mst2val to exactly specify the additional dependency on B.
 
-        Final Note: each reserved parameter should have a unique name.
+        An example of two-level dependencies:
+
+        // "Studio Set Common Chorus/Chorus Type" is a parameter A: it serves a master parameter for the next one which is indicated by specifying "store:true"
+        new(type:NUM, path:"Studio Set Common Chorus/Chorus Type", offs:[0x00, 0x00], imin:0, imax:3, omin:0, omax:3, bytes:1, res:USED, nib:false, unit:"", repr:CHORUS_TYPE, store:true),
+        
+        // "Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)" is a parameter B. It only exists if A has a certain value (mst, mstval) 
+        // but it also is a master parameter for yet another parameter which is indicated by specifying store:true
+        new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:DELAY_MSEC_NOTE, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], store:true),
+        
+        // "Studio Set Common Chorus/Chorus Parameter 2/Delay Left ms" is a parameter C. It only exists if A has a certain value (mst, mstval) and if B has a certain value (mst2, mst2val).
+        new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2/Delay Left ms", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"ms", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], mst2:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", mstval2:DELAY_MSEC_NOTE[0]),
+
+        Other things...
+
+        For values have both a mapping and a represenation lookup table, the representation lookup table must be defined in terms of the *mapped* values, not the "raw" values.
+
+        Each parameter must have a unique path.
         
         */
 

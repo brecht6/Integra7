@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Integra7AuralAlchemist.Models.Data;
@@ -31,15 +30,15 @@ public class Integra7ParameterSpec
     private IDictionary<int, string>? _repr;
     public IDictionary<int, string>? Repr { get => _repr; }
     private string _masterCtrlPath = "";
-    public string MasterCtrl { get => _masterCtrlPath; }
+    public string MasterCtrl { get => _masterCtrlPath; set => _masterCtrlPath = value; }
     private string _masterCtrlDispValue  = "";
-    public string MasterCtrlDispValue { get => _masterCtrlDispValue; }
+    public string MasterCtrlDispValue { get => _masterCtrlDispValue; set => _masterCtrlDispValue = value; }
     private bool _store = false;
     public bool Store { get => _store; set => _store = value; }
     private string _masterCtrlPath2 = "";
-    public string MasterCtrl2 { get => _masterCtrlPath2; }
+    public string MasterCtrl2 { get => _masterCtrlPath2; set => _masterCtrlPath2 = value; }
     private string _masterCtrlDispValue2  = "";
-    public string MasterCtrlDispValue2 { get => _masterCtrlDispValue2; }
+    public string MasterCtrlDispValue2 { get => _masterCtrlDispValue2; set => _masterCtrlDispValue2 = value; }
 
 
     public Integra7ParameterSpec(SpecType type, string path, byte[] offs, int imin, int imax, float omin, float omax, int bytes, bool res, bool nib, string unit, IDictionary<int, string>? repr, string mst = "", string mstval = "", bool store = false, string mst2 = "", string mstval2 = "")

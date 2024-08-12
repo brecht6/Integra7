@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Avalonia.Platform;
+using Integra7AuralAlchemist.Models.Services;
 namespace Integra7AuralAlchemist.Models.Data;
 
 
@@ -1718,45 +1719,6 @@ public class Integra7Parameters
         return result;
     }
 
-    private void CheckProgrammingErrorDuplicatePaths(IList<Integra7ParameterSpec> database)
-    {
-        HashSet<string> PathsEncountered = [];
-        foreach (Integra7ParameterSpec s in database)
-        {
-            if (PathsEncountered.Contains(s.Path))
-            {
-                Debug.WriteLine($"Path {s.Path} is used multiple times. Please fix.");
-            }
-            PathsEncountered.Add(s.Path);
-        }
-    }
-
-    private void MarkAllMasterParametersAsStoreTrue(IList<Integra7ParameterSpec> database)
-    {
-        HashSet<string> ControlsRequiringStoreTrue = [];
-        // pass one: collect all master controls
-        foreach (Integra7ParameterSpec s in database)
-        {
-            if (s.MasterCtrl != "")
-            {
-                ControlsRequiringStoreTrue.Add(s.MasterCtrl);
-            }
-            if (s.MasterCtrl2 != "")
-            {
-                ControlsRequiringStoreTrue.Add(s.MasterCtrl2);
-            }
-        }
-
-        // pass two: update all master controls
-        foreach (Integra7ParameterSpec s in database)
-        {
-            if (ControlsRequiringStoreTrue.Contains(s.Path))
-            {
-                s.Store = true;
-            }
-        }
-
-    }
 
     public Integra7Parameters(bool testing = false)
     {
@@ -1802,6 +1764,8 @@ public class Integra7Parameters
         
         During parsing the displayvalue of the mst: control will be looked up in the ParserContext, and only if it is equal to the mstval:, it is relevant for the current situation.
         
+        Some advanced rambling:
+
         In a number of cases, a parameter C depends on another parameter B which itself depends on parameter A. The dependencies then become 2 levels deep.
         For such cases, there's an mst2 and mst2val which can be specified (see e.g. "Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)". 
         The parameter B uses mst and mstval to indicate its exact depencency on parameter A.
@@ -1810,20 +1774,24 @@ public class Integra7Parameters
         and mst2, mst2val to exactly specify the additional dependency on B.
 
         An example of two-level dependencies:
-
         // "Studio Set Common Chorus/Chorus Type" is a parameter A: it serves a master parameter for the next one which is indicated by specifying "store:true"
         new(type:NUM, path:"Studio Set Common Chorus/Chorus Type", offs:[0x00, 0x00], imin:0, imax:3, omin:0, omax:3, bytes:1, res:USED, nib:false, unit:"", repr:CHORUS_TYPE, store:true),
-        
         // "Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)" is a parameter B. It only exists if A has a certain value (mst, mstval) 
         // but it also is a master parameter for yet another parameter which is indicated by specifying store:true
         new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", offs:[0x00, 0x04], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:DELAY_MSEC_NOTE, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], store:true),
-        
         // "Studio Set Common Chorus/Chorus Parameter 2/Delay Left ms" is a parameter C. It only exists if A has a certain value (mst, mstval) and if B has a certain value (mst2, mst2val).
         new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 2/Delay Left ms", offs:[0x00, 0x08], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"ms", repr:null, mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], mst2:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", mstval2:DELAY_MSEC_NOTE[0]),
 
-        Other things...
+        In practice:
 
-        For values have both a mapping and a represenation lookup table, the representation lookup table must be defined in terms of the *mapped* values, not the "raw" values.
+        When adding parameters, you don't need to worry about two-level dependencies.
+        The code will analyze the dependencies and automatically insert two-level dependencies where needed.
+        While adding new parameters, only use mst: and mstval: to indicate that a parameter depends on another one.
+
+        Other things:
+
+        For values have both a mapping and a represenation lookup table, the representation lookup table must be defined in terms of the *mapped* values, 
+        not the "raw" values.
 
         Each parameter must have a unique path.
         
@@ -2036,11 +2004,9 @@ public class Integra7Parameters
             /* CHO */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3/Pre-Delay", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"ms", repr:CHORUS_PRE_DELAY,
                             mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1]),            
             /* DELa*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3/Reserved2", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"ms", repr:null,
-                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2],
-                            mst2:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", mstval2:DELAY_MSEC_NOTE[0]),
+                            mst:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", mstval:DELAY_MSEC_NOTE[0]),
             /* DELb*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3/Delay Left note", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:CHORUS_DELAY_NOTE,
-                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2],
-                            mst2:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", mstval2:DELAY_MSEC_NOTE[1]),
+                            mst:"Studio Set Common Chorus/Chorus Parameter 1/Delay Left (ms-note)", mstval:DELAY_MSEC_NOTE[1]),
             /* GM2 */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 3/Feedback", offs:[0x00, 0x0c], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null,
                             mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),
 
@@ -2058,17 +2024,13 @@ public class Integra7Parameters
             /* OFF */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5/Reserved", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null,
                             mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[0]),
             /* CHOa*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5/Rate Hz", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"Hz", repr:CHORUS_RATE_HZ,
-                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1],
-                            mst2:"Studio Set Common Chorus/Chorus Parameter 4/Rate (Hz-note)", mstval2:HZ_NOTE[0]),
+                            mst:"Studio Set Common Chorus/Chorus Parameter 4/Rate (Hz-note)", mstval:HZ_NOTE[0]),
             /* CHOb*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5/Reserved2", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null,
-                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1],
-                            mst2:"Studio Set Common Chorus/Chorus Parameter 4/Rate (Hz-note)", mstval2:HZ_NOTE[1]),
+                            mst:"Studio Set Common Chorus/Chorus Parameter 4/Rate (Hz-note)", mstval:HZ_NOTE[1]),
             /* DELa*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5/Delay Right ms", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"ms", repr:null,
-                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2],
-                            mst2:"Studio Set Common Chorus/Chorus Parameter 4/Delay Right (ms-note)", mstval2:DELAY_MSEC_NOTE[0]),
+                            mst:"Studio Set Common Chorus/Chorus Parameter 4/Delay Right (ms-note)", mstval:DELAY_MSEC_NOTE[0]),
             /* DELb*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5/Reserved3", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null,
-                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2],
-                            mst2:"Studio Set Common Chorus/Chorus Parameter 4/Delay Right (ms-note)", mstval2:DELAY_MSEC_NOTE[1]),
+                            mst:"Studio Set Common Chorus/Chorus Parameter 4/Delay Right (ms-note)", mstval:DELAY_MSEC_NOTE[1]),
             /* GM2 */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 5/Rate", offs:[0x00, 0x14], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null,
                             mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),
 
@@ -2076,17 +2038,13 @@ public class Integra7Parameters
             /* OFF */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 6/Reserved", offs:[0x00, 0x18], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null,
                             mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[0]),
             /* CHOa*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 6/Reserved2", offs:[0x00, 0x18], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"Hz", repr:null,
-                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1],
-                            mst2:"Studio Set Common Chorus/Chorus Parameter 4/Rate (Hz-note)", mstval2:HZ_NOTE[0]),
+                            mst:"Studio Set Common Chorus/Chorus Parameter 4/Rate (Hz-note)", mstval:HZ_NOTE[0]),
             /* CHOb*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 6/Rate note", offs:[0x00, 0x18], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:CHORUS_DELAY_NOTE,
-                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[1],
-                            mst2:"Studio Set Common Chorus/Chorus Parameter 4/Rate (Hz-note)", mstval2:HZ_NOTE[1]),
+                            mst:"Studio Set Common Chorus/Chorus Parameter 4/Rate (Hz-note)", mstval:HZ_NOTE[1]),
             /* DELa*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 6/Reserved3", offs:[0x00, 0x18], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"ms", repr:null,
-                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2],
-                            mst2:"Studio Set Common Chorus/Chorus Parameter 4/Delay Right (ms-note)", mstval2:DELAY_MSEC_NOTE[0]),
+                            mst:"Studio Set Common Chorus/Chorus Parameter 4/Delay Right (ms-note)", mstval:DELAY_MSEC_NOTE[0]),
             /* DELb*/ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 6/Rate note", offs:[0x00, 0x18], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:CHORUS_DELAY_NOTE,
-                            mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[2], 
-                            mst2:"Studio Set Common Chorus/Chorus Parameter 4/Delay Right (ms-note)", mstval2:DELAY_MSEC_NOTE[1]),
+                            mst:"Studio Set Common Chorus/Chorus Parameter 4/Delay Right (ms-note)", mstval:DELAY_MSEC_NOTE[1]),
             /* GM2 */ new(type:NUM, path:"Studio Set Common Chorus/Chorus Parameter 6/Depth", offs:[0x00, 0x18], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null,
                             mst:"Studio Set Common Chorus/Chorus Type", mstval:CHORUS_TYPE[3]),
 
@@ -3374,9 +3332,11 @@ public class Integra7Parameters
 
         };
 #if DEBUG
-        CheckProgrammingErrorDuplicatePaths(_parameters);
+        Integra7ParameterDatabaseAnalyzer.CheckProgrammingErrorDuplicatePaths(_parameters);
 #endif
-        MarkAllMasterParametersAsStoreTrue(_parameters);
+
+        Integra7ParameterDatabaseAnalyzer.MarkAllMasterParametersAsStoreTrue(_parameters);
+        Integra7ParameterDatabaseAnalyzer.FillInSecondaryDependencies(_parameters);
     }
 }
 

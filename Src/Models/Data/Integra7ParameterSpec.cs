@@ -31,17 +31,25 @@ public class Integra7ParameterSpec
     public IDictionary<int, string>? Repr { get => _repr; }
     private string _masterCtrlPath = "";
     public string MasterCtrl { get => _masterCtrlPath; set => _masterCtrlPath = value; }
-    private string _masterCtrlDispValue  = "";
+    private string _masterCtrlDispValue = "";
     public string MasterCtrlDispValue { get => _masterCtrlDispValue; set => _masterCtrlDispValue = value; }
     private bool _store = false;
     public bool Store { get => _store; set => _store = value; }
     private string _masterCtrlPath2 = "";
     public string MasterCtrl2 { get => _masterCtrlPath2; set => _masterCtrlPath2 = value; }
-    private string _masterCtrlDispValue2  = "";
+    private string _masterCtrlDispValue2 = "";
     public string MasterCtrlDispValue2 { get => _masterCtrlDispValue2; set => _masterCtrlDispValue2 = value; }
+    private float _imin2 = float.NaN;
+    public float IMin2 { get => _imin2; }
+    private float _imax2 = float.NaN;
+    public float IMax2 { get => _imax2; }
+    private float _omin2 = float.NaN;
+    public float OMin2 { get => _omin2; }
+    private float _omax2 = float.NaN;
+    public float OMax2 { get => _omax2; }
 
 
-    public Integra7ParameterSpec(SpecType type, string path, byte[] offs, int imin, int imax, float omin, float omax, int bytes, bool res, bool nib, string unit, IDictionary<int, string>? repr, string mst = "", string mstval = "", bool store = false, string mst2 = "", string mstval2 = "")
+    public Integra7ParameterSpec(SpecType type, string path, byte[] offs, int imin, int imax, float omin, float omax, int bytes, bool res, bool nib, string unit, IDictionary<int, string>? repr, string mst = "", string mstval = "", bool store = false, string mst2 = "", string mstval2 = "", float imin2 = float.NaN, float imax2 = float.NaN, float omin2 = float.NaN, float omax2 = float.NaN)
     {
         _type = type; // numeric or ascii?
         _path = path; // name of parameter
@@ -60,21 +68,17 @@ public class Integra7ParameterSpec
         _store = store; // a boolean to indicate that the displayed value of this parameter should be recorded in a context table during parsing (used for master controls)
         _masterCtrlPath2 = mst2; // second level of depencency
         _masterCtrlDispValue2 = mstval2; // second level of dependency
+        _imin2 = imin2; // second level of output mapping, used in combination with generic chorus, reverb, mfx parameters
+        _imax2 = imax2; // second level of output mapping, used in combination with generic chorus, reverb, mfx parameters
+        _omin2 = omin2; // second level of output mapping, used in combination with generic chorus, reverb, mfx parameters
+        _omax2 = omax2; // second level of output mapping, used in combination with generic chorus, reverb, mfx parameters
     }
 
     public bool IsSameAs(Integra7ParameterSpec other)
     {
-        return _type == other._type &&
-            _path == other._path && 
-            _address == other._address &&
-            _imin == other._imin && 
-            _imax == other._imax && 
-            _omin == other._omin &&
-            _omax == other._omax &&
-            _bytes == other._bytes && 
-            _reserved == other._reserved && 
-            _perNibble == other._perNibble;
-            // no real need to check repr, mst, mstval, mst2, mstval2 (in fact, just path should be enough since we are not supposed to specify duplicate paths)
+        return _path == other._path;
+        // no need to check repr, mst, mstval, mst2, mstval2
+        // just path should be enough since we are not supposed to specify duplicate paths
     }
 
 }

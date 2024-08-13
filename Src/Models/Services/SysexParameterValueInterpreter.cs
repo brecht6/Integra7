@@ -21,9 +21,14 @@ public class SysexParameterValueInterpreter
                 rawNumericValue = ByteUtils.Bytes7ToInt(parResult);
             }
 
-            if (parspec.IMin != parspec.OMin || parspec.IMax != parspec.OMax)
+            if (parspec.IMin != parspec.OMin || parspec.IMax != parspec.OMax || parspec.IMin2 != parspec.OMin2 || parspec.IMax2 != parspec.OMax2)
             {
-                stringValue = $"{(long)Math.Round(Mapping.linlin(rawNumericValue, parspec.IMin, parspec.IMax, parspec.OMin, parspec.OMax))}";
+                double mapped = Mapping.linlin(rawNumericValue, parspec.IMin, parspec.IMax, parspec.OMin, parspec.OMax);
+                if (!float.IsNaN(parspec.IMin2) && !float.IsNaN(parspec.IMax2) && !float.IsNaN(parspec.OMin2) && !float.IsNaN(parspec.OMax2))
+                {
+                    mapped = Mapping.linlin(mapped, parspec.IMin2, parspec.IMax2, parspec.OMin2, parspec.OMax2);
+                }
+                stringValue = $"{Math.Round(mapped, 2)}";
             }
             else
             {
@@ -33,10 +38,11 @@ public class SysexParameterValueInterpreter
             if (parspec.Repr != null)
             {
                 int key = int.Parse(stringValue);
-                if (parspec.Repr.ContainsKey(key)) 
+                if (parspec.Repr.ContainsKey(key))
                 {
                     stringValue = parspec.Repr[key];
-                } else
+                }
+                else
                 {
                     //Debug.Assert(false, $"mapped value {key} for par {parspec.Path} not found in {parspec.Repr.Keys}");
                     Debug.WriteLine($"ERROR: mapped value {key} for par {parspec.Path} not found in {parspec.Repr.Keys}");

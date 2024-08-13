@@ -188,8 +188,12 @@ public class FullyQualifiedParameter
         }
         if (IsNumeric)
         {
-            long mapped = (long)Math.Round(Mapping.linlin(RawNumericValue, ParSpec.IMin, ParSpec.IMax, ParSpec.OMin, ParSpec.OMax));
-            Debug.WriteLine($"[DebugLog] {Wrn} parameter {ParSpec.Path} at parameter address {address} has value raw {RawNumericValue}, mapped {mapped}, (meaning: {StringValue}{unit})");
+            double mapped = Mapping.linlin(RawNumericValue, ParSpec.IMin, ParSpec.IMax, ParSpec.OMin, ParSpec.OMax);
+            if (!float.IsNaN(ParSpec.IMin2) && !float.IsNaN(ParSpec.IMax2) && !float.IsNaN(ParSpec.OMin2) && !float.IsNaN(ParSpec.OMax2))
+            {
+                mapped = Mapping.linlin(mapped, ParSpec.IMin2, ParSpec.IMax2, ParSpec.OMin2, ParSpec.OMax2);
+            }
+            Debug.WriteLine($"[DebugLog] {Wrn} parameter {ParSpec.Path} at parameter address {address} has value raw {RawNumericValue}, mapped {Math.Round(mapped, 2)}, (meaning: {StringValue}{unit})");
         }
         else
         {

@@ -24,16 +24,26 @@ public class DisplayValueToRawValueConverter
                 p.RawNumericValue = key.First(); // if a repr is present, and a mapping is present this is still a "mapped value"
             }
 
-            if (p.ParSpec.IMin != p.ParSpec.OMin || p.ParSpec.IMax != p.ParSpec.OMax)
+            if (p.ParSpec.IMin != p.ParSpec.OMin || p.ParSpec.IMax != p.ParSpec.OMax || p.ParSpec.IMin2 != p.ParSpec.OMin2 || p.ParSpec.IMax2 != p.ParSpec.OMax2)
             {
                 // need to unmap mapped value to raw value
                 if (p.ParSpec.Repr != null)
                 {
-                    p.RawNumericValue = (long)Math.Round(Mapping.linlin(p.RawNumericValue, p.ParSpec.OMin, p.ParSpec.OMax, p.ParSpec.IMin, p.ParSpec.IMax, true));
+                    double unmapped = p.RawNumericValue;
+                    if (!float.IsNaN(p.ParSpec.IMin2) && !float.IsNaN(p.ParSpec.IMax2) && !float.IsNaN(p.ParSpec.OMin2) && !float.IsNaN(p.ParSpec.OMax2))
+                    {
+                        unmapped = Mapping.linlin(unmapped, p.ParSpec.OMin2, p.ParSpec.OMax2, p.ParSpec.IMin2, p.ParSpec.IMax2, true);
+                    }
+                    p.RawNumericValue = (long)Math.Round(Mapping.linlin(unmapped, p.ParSpec.OMin, p.ParSpec.OMax, p.ParSpec.IMin, p.ParSpec.IMax, true));
                 }
                 else
                 {
-                    p.RawNumericValue = (long)Math.Round(Mapping.linlin(long.Parse(displayValue), p.ParSpec.OMin, p.ParSpec.OMax, p.ParSpec.IMin, p.ParSpec.IMax, true));
+                    double unmapped = long.Parse(displayValue);
+                    if (!float.IsNaN(p.ParSpec.IMin2) && !float.IsNaN(p.ParSpec.IMax2) && !float.IsNaN(p.ParSpec.OMin2) && !float.IsNaN(p.ParSpec.OMax2))
+                    {
+                        unmapped = Mapping.linlin(unmapped, p.ParSpec.OMin2, p.ParSpec.OMax2, p.ParSpec.IMin2, p.ParSpec.IMax2, true);
+                    }
+                    p.RawNumericValue = (long)Math.Round(Mapping.linlin(unmapped, p.ParSpec.OMin, p.ParSpec.OMax, p.ParSpec.IMin, p.ParSpec.IMax, true));
                 }
             }
             else

@@ -75,7 +75,7 @@ public class FullyQualifiedParameterRange
         }
         else
         {
-            Debug.WriteLine("Unfortunately, no reply received after making a sysex data request. This may indicate a bug in the program.");
+            Debug.WriteLine("Unfortunately, no reply received after making a sysex data request. This may indicate a bug in the program, e.g. requesting parameters for a PCM synth tone if no PCM synth patch is active.");
         }
     }
 

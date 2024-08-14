@@ -108,6 +108,20 @@ public class Integra7ParameterDatabaseAnalyzer
                 prevMstVal2 = s.MasterCtrlDispValue2;
                 prevBytes = s.Bytes;
             }
+
+            if (!s.Reserved)
+            {
+                if (s.OMin == -20000) // generic parameter
+                {
+                    if (s.Repr == null) // no repr to determine ui limits
+                    {
+                        if (float.IsNaN(s.IMin2)) // no omin2 to determine ui limit
+                        {
+                            Debug.WriteLine($"{s.Path} does not specify a usable ui limit. Please add imin2, imax2, omin2, omax2 or repr");
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -139,7 +153,7 @@ public class Integra7ParameterDatabaseAnalyzer
 
     public static void FillInSecondaryDependencies(IList<Integra7ParameterSpec> database)
     {
-        IDictionary<string, Tuple<string, string> > ParametersDependingOnOtherParameter = new Dictionary<string, Tuple<string, string>>();
+        IDictionary<string, Tuple<string, string>> ParametersDependingOnOtherParameter = new Dictionary<string, Tuple<string, string>>();
         // pass one: collect all parameters that depend on another parameter
         foreach (Integra7ParameterSpec s in database)
         {
@@ -163,9 +177,9 @@ public class Integra7ParameterDatabaseAnalyzer
                 // a depends on b, and b depends on c
                 Tuple<string, string> c = ParametersDependingOnOtherParameter[b.Item1];
                 twoLevelDep.Add(new Tuple<string, Tuple<string, string>, Tuple<string, string>>(
-                    a, 
-                    new Tuple<string, string>(b.Item1,b.Item2), 
-                    new Tuple<string, string>(c.Item1,c.Item2)));
+                    a,
+                    new Tuple<string, string>(b.Item1, b.Item2),
+                    new Tuple<string, string>(c.Item1, c.Item2)));
                 if (ParametersDependingOnOtherParameter.ContainsKey(c.Item1))
                 {
                     Debug.Assert(false, "3-level deep dependencies not supported!");
@@ -175,13 +189,13 @@ public class Integra7ParameterDatabaseAnalyzer
         // pass three, update database with the two level dependencies
         foreach (Integra7ParameterSpec s in database)
         {
-            foreach (Tuple<string, Tuple<string, string>, Tuple<string, string> > abc in twoLevelDep)
+            foreach (Tuple<string, Tuple<string, string>, Tuple<string, string>> abc in twoLevelDep)
             {
                 if (s.Path == abc.Item1)
                 {
                     string b = abc.Item2.Item1;
                     string b_disp = abc.Item2.Item2;
-                    string c  = abc.Item3.Item1;
+                    string c = abc.Item3.Item1;
                     string c_disp = abc.Item3.Item2;
                     s.MasterCtrl = c;
                     s.MasterCtrlDispValue = c_disp;

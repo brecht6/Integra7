@@ -21,6 +21,36 @@ public class Integra7ParameterDatabaseAnalyzer
 
         foreach (Integra7ParameterSpec s in database)
         {
+            string[] el = s.Path.Split('/');
+            foreach (string e in el)
+            {
+                if (e == "")
+                {
+                    Debug.WriteLine($"double slash found in {el}. Please fix.");
+                }
+                else
+                {
+                    if (e[0] == ' ' || e[^1] == ' ')
+                    {
+                        Debug.WriteLine($"Extra spaces found in path for {s.Path}. Please fix.");
+                    }
+                }
+                if (s.MasterCtrl != "")
+                {
+                    if (s.MasterCtrl[0] == ' ' || s.MasterCtrl[^1] == ' ')
+                    {
+                        Debug.WriteLine($"Extra spaces found in mst:path for {s.Path}. Please fix.");
+                    }
+                }
+                if (s.MasterCtrl2 != "")
+                {
+                    if (s.MasterCtrl2[0] == ' ' || s.MasterCtrl2[^1] == ' ')
+                    {
+                        Debug.WriteLine($"Extra spaces found in mst2:path for {s.Path}. Please fix.");
+                    }
+                }
+            }
+
             if (PathsEncountered.Contains(s.Path))
             {
                 Debug.WriteLine($"Path {s.Path} is used multiple times. Please fix.");
@@ -180,6 +210,7 @@ public class Integra7ParameterDatabaseAnalyzer
                     a,
                     new Tuple<string, string>(b.Item1, b.Item2),
                     new Tuple<string, string>(c.Item1, c.Item2)));
+                Debug.WriteLine($"{a} depends on {b.Item1}[{b.Item2}] and {c.Item1}[{c.Item2}]");
                 if (ParametersDependingOnOtherParameter.ContainsKey(c.Item1))
                 {
                     Debug.Assert(false, "3-level deep dependencies not supported!");

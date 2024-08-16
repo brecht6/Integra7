@@ -4064,7 +4064,6 @@ public class Integra7Parameters
                             bytes:4, res:RESERVED, nib:true, unit:"", repr:null,
                             mst:"PCM Synth Tone Common MFX/MFX Parameter 4/Delay Right (ms-note)", mstval:DELAY_MSEC_NOTE[1]),
 
-
             /* mdly*/ new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 5/Modulation Delay Right ms",
                             offs:[0x00, 0x21], imin:12768, imax:52768, omin:-20000, omax:20000,
                             bytes:4, res:USED, nib:true, unit:"ms", repr:null,
@@ -4073,8 +4072,6 @@ public class Integra7Parameters
                             offs:[0x00, 0x21], imin:12768, imax:52768, omin:-20000, omax:20000,
                             bytes:4, res:RESERVED, nib:true, unit:"", repr:null,
                             mst:"PCM Synth Tone Common MFX/MFX Parameter 4/Modulation Delay Right (ms-note)", mstval:DELAY_MSEC_NOTE[1]),
-
-
 
             /* 3del*/ new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 5/3-Tap Pan Delay Right ms",
                             offs:[0x00, 0x21], imin:12768, imax:52768, omin:-20000, omax:20000,

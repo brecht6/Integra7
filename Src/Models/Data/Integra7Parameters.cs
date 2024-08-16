@@ -3818,7 +3818,7 @@ public class Integra7Parameters
                             mst:"PCM Synth Tone Common MFX/MFX Type", mstval:MFX_TYPE[62]),
             /* e2fl*/ new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 4/Enhancer->Flanger Flanger Rate (Hz-note)",
                             offs:[0x00, 0x1d], imin:12768, imax:52768, omin:-20000, omax:20000,
-                            bytes:4, res:USED, nib:true, unit:"ms", repr:CHORUS_PRE_DELAY,
+                            bytes:4, res:USED, nib:true, unit:"ms", repr:HZ_NOTE,
                             mst:"PCM Synth Tone Common MFX/MFX Type", mstval:MFX_TYPE[63]),
 
             /* e2dl*/ new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 4/Enhancer->Delay Delay Time ms",
@@ -3867,7 +3867,7 @@ public class Integra7Parameters
                             offs:[0x00, 0x21], imin:12768, imax:52768, omin:-20000, omax:20000,
                             bytes:4, res:USED, nib:true, unit:"", repr:MID_Q,
                             mst:"PCM Synth Tone Common MFX/MFX Type", mstval:MFX_TYPE[1]),
-            /* spec*/ new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 5/Spectrum Band5 (3150Hz)",
+            /* spec*/ new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 5/Spectrum Band5 (2000Hz)",
                             offs:[0x00, 0x21], imin:12768, imax:52768, omin:-20000, omax:20000,
                             imin2:0, imax2:30, omin2:-15, omax2:15,
                             bytes:4, res:USED, nib:true, unit:"dB", repr:null,
@@ -4008,7 +4008,7 @@ public class Integra7Parameters
             /* sfln*/ new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 5/Step Flanger Rate note (Reserved)",
                             offs:[0x00, 0x21], imin:12768, imax:52768, omin:-20000, omax:20000,
                             bytes:4, res:RESERVED, nib:true, unit:"", repr:null,
-                            mst:"PCM Synth Tone Common MFX/MFX Parameter 4/Step Flanger Rate (Hz-note)", mstval:HZ_NOTE[0]),
+                            mst:"PCM Synth Tone Common MFX/MFX Parameter 4/Step Flanger Rate (Hz-note)", mstval:HZ_NOTE[1]),
 
             /* hexa*/ new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 5/Hexa-Chorus Depth",
                             offs:[0x00, 0x21], imin:12768, imax:52768, omin:-20000, omax:20000,

@@ -4263,11 +4263,11 @@ public class Integra7Parameters
                             offs:[0x00, 0x21], imin:12768, imax:52768, omin:-20000, omax:20000,
                             imin2:1, imax2:200, omin2:0.05f, omax2:10.0f,
                             bytes:4, res:USED, nib:true, unit:"Hz", repr:null,
-                            mst:"PCM Synth Tone Common MFX/MFX Parameter 4/Enhancer->Flanger Flanger Rate (Hz-note)", mstval:DELAY_MSEC_NOTE[0]),
+                            mst:"PCM Synth Tone Common MFX/MFX Parameter 4/Enhancer->Flanger Flanger Rate (Hz-note)", mstval:HZ_NOTE[0]),
             /* e2fl*/ new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 5/Enhancer->Flanger Flanger Rate note (Reserved)",
                             offs:[0x00, 0x21], imin:12768, imax:52768, omin:-20000, omax:20000,
                             bytes:4, res:RESERVED, nib:true, unit:"", repr:null,
-                            mst:"PCM Synth Tone Common MFX/MFX Parameter 4/Enhancer->Flanger Flanger Rate (Hz-note)", mstval:DELAY_MSEC_NOTE[1]),
+                            mst:"PCM Synth Tone Common MFX/MFX Parameter 4/Enhancer->Flanger Flanger Rate (Hz-note)", mstval:HZ_NOTE[1]),
 
             /* e2dl*/ new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 5/Enhancer->Delay Delay Time ms (Reserved)",
                             offs:[0x00, 0x21], imin:12768, imax:52768, omin:-20000, omax:20000,

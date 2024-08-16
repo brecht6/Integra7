@@ -3700,7 +3700,7 @@ public class Integra7Parameters
                             offs:[0x00, 0x1d], imin:12768, imax:52768, omin:-20000, omax:20000,
                             bytes:4, res:USED, nib:true, unit:"", repr:CHORUS_DELAY_NOTE,
                             mst:"PCM Synth Tone Common MFX/MFX Parameter 2/Reverse Delay Rev Delay Time (ms-note)", mstval:DELAY_MSEC_NOTE[1]),
-            /* tdel*/ new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 4 /Time Ctrl. Delay Time Acceleration",
+            /* tdel*/ new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 4/Time Ctrl. Delay Time Acceleration",
                             offs:[0x00, 0x1d], imin:12768, imax:52768, omin:-20000, omax:20000,
                             bytes:4, res:USED, nib:true, unit:"", repr:null,
                             mst:"PCM Synth Tone Common MFX/MFX Type", mstval:MFX_TYPE[40]),

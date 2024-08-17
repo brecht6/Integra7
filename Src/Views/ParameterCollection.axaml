@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dataTemplates="using:Integra7AuralAlchemist.DataTemplates"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="800"
@@ -24,11 +25,10 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <Border Padding="10">
-                                <TextBlock Text="{Binding ParSpec.Name}: " />
+                                <TextBlock Text="{Binding ParSpec.NameAndUnit}: " />
                             </Border>
-                            <TextBox Height="20"
-                                     FontWeight="Bold"
-                                     Text="{Binding StringValue}" />
+                            <ContentControl Content="{Binding}"
+                                            ContentTemplate="{x:Static dataTemplates:DataTemplateProvider.ParameterValueTemplate}" />
                         </StackPanel>
                     </DataTemplate>
                 </ItemsRepeater.ItemTemplate>

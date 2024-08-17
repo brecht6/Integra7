@@ -412,10 +412,14 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void PlayNote()
     {
-        byte currentTab = (byte)CurrentPartSelection;
-        Integra7?.NoteOn(currentTab, 65, 100);
+        byte zeroBasedMidiChannel = 0;
+        if (CurrentPartSelection > 0 && CurrentPartSelection < 17)
+        {
+            zeroBasedMidiChannel = (byte)(CurrentPartSelection - 1);
+        }
+        Integra7?.NoteOn(zeroBasedMidiChannel, 65, 100);
         Thread.Sleep(1000);
-        Integra7?.NoteOff(currentTab, 65);
+        Integra7?.NoteOff(zeroBasedMidiChannel, 65);
     }
 
     [RelayCommand]

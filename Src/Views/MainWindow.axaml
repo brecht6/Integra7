@@ -9,10 +9,17 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel />
     </Design.DataContext>
+    <Window.Styles>
+        <Style Selector="TabItem">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Padding" Value="3,0,3,0" />
+            <Setter Property="MinHeight" Value="40" />
+        </Style>
+    </Window.Styles>
     <Grid ColumnDefinitions="*" RowDefinitions="Auto,Auto,Auto,800">
 
         <Border Grid.Row="0" Height="32">
-            <TextBlock Text="Integra-7 Aural Alchemist" VerticalAlignment="Center" Margin="10 0"/>
+            <TextBlock Text="Integra-7 Aural Alchemist" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 0"/>
         </Border>
 
         <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding MidiDevices}" HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -27,6 +34,9 @@
         </StackPanel>
 
         <TabControl HorizontalContentAlignment="Left" TabStripPlacement="Left" Grid.Row="3" Grid.Column="0" SelectedIndex="{Binding CurrentPartSelection, Mode=TwoWay}">
+            <TabItem Header="Common" FontSize="14">
+
+            </TabItem>
             <TabItem Header="Part 1">
                 <local:PresetSelector Presets="{Binding PresetsCh0}" SelectedPreset="{Binding SelectedPresetCh0, Mode=TwoWay}" />
             </TabItem>
@@ -74,6 +84,9 @@
             </TabItem>
             <TabItem Header="Part 16">
                 <local:PresetSelector Presets="{Binding PresetsCh15}" SelectedPreset="{Binding SelectedPresetCh15, Mode=TwoWay}" />
+            </TabItem>
+            <TabItem Header="Part Ext">
+
             </TabItem>
         </TabControl>
     </Grid>

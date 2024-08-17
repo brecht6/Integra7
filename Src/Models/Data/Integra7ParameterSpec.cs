@@ -47,6 +47,7 @@ public class Integra7ParameterSpec
     public float OMin2 { get => _omin2; }
     private float _omax2 = float.NaN;
     public float OMax2 { get => _omax2; }
+    public string Name { get => Path.Split('/')[^1]; }
 
 
     public Integra7ParameterSpec(SpecType type, string path, byte[] offs, int imin, int imax, float omin, float omax, int bytes, bool res, bool nib, string unit, IDictionary<int, string>? repr, string mst = "", string mstval = "", bool store = false, string mst2 = "", string mstval2 = "", float imin2 = float.NaN, float imax2 = float.NaN, float omin2 = float.NaN, float omax2 = float.NaN)

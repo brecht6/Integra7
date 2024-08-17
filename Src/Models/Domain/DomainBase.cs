@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using Integra7AuralAlchemist.Models.Data;
@@ -159,6 +160,25 @@ public class DomainBase
             }
         }
         return names;
+    }
+
+    public List<FullyQualifiedParameter> GetRelevantParameters(bool IncludeReserved = false, bool IncludeInvalidIncontext = false)
+    {
+        ParserContext ctx = new ParserContext();
+        ctx.InitializeFromExistingData(_domainParameters);
+        List<FullyQualifiedParameter> pars = [];
+        for (int i = 0; i < _domainParameters.Count; i++)
+        {
+            Integra7ParameterSpec p = _domainParameters[i].ParSpec;
+            if (_domainParameters[i].ValidInContext(ctx) || IncludeInvalidIncontext)
+            {
+                if (p.Reserved && IncludeReserved || !p.Reserved)
+                {
+                    pars.Add(_domainParameters[i]);
+                }
+            }
+        }
+        return pars;
     }
 
 }

@@ -332,6 +332,12 @@ public partial class MainWindowViewModel : ObservableObject
     private readonly ReadOnlyObservableCollection<Integra7Preset> _presetsCh15;
     public ReadOnlyObservableCollection<Integra7Preset> PresetsCh15 => _presetsCh15;
 
+
+    private SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonParameters =  new SourceCache<FullyQualifiedParameter, string>(x => x.ParSpec.Path);
+    private DomainStudioSetCommon? _studioSetCommon = null;
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonParameters;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> CommonStudioSetParameters => _studioSetCommonParameters;
+
     private ReadOnlyObservableCollection<Integra7Preset> GetPresetsCollection(byte Channel)
     {
         switch (Channel)
@@ -451,6 +457,10 @@ public partial class MainWindowViewModel : ObservableObject
         if (Connected)
         {
             MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING + " with device id " + integra7.DeviceId().ToString("x2");
+            _studioSetCommon = new DomainStudioSetCommon(integra7, _i7startAddresses, _i7parameters);
+            _studioSetCommon.ReadFromIntegra();
+            List<FullyQualifiedParameter> p = _studioSetCommon.GetRelevantParameters(false, false);
+            _sourceCacheStudioSetCommonParameters.AddOrUpdate(p);
         }
         else
         {
@@ -627,6 +637,10 @@ public partial class MainWindowViewModel : ObservableObject
                                     .Subscribe();
         _cleanUp[15] = _sourceCacheCh15.Connect()
                                     .Bind(out _presetsCh15)
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[16] = _sourceCacheStudioSetCommonParameters.Connect()
+                                    .Bind(out _studioSetCommonParameters)
                                     .DisposeMany()
                                     .Subscribe();
     }

@@ -2086,7 +2086,7 @@ public class Integra7Parameters
             new(type:NUM, path:"Studio Set Common/Tone Control 2 Source", offs:[0x00, 0x3a], imin:0, imax:97, omin:0, omax:97, bytes:1, res:USED, nib:false, unit:"", repr:CONTROL_SOURCE),
             new(type:NUM, path:"Studio Set Common/Tone Control 3 Source", offs:[0x00, 0x3b], imin:0, imax:97, omin:0, omax:97, bytes:1, res:USED, nib:false, unit:"", repr:CONTROL_SOURCE),
             new(type:NUM, path:"Studio Set Common/Tone Control 4 Source", offs:[0x00, 0x3c], imin:0, imax:97, omin:0, omax:97, bytes:1, res:USED, nib:false, unit:"", repr:CONTROL_SOURCE),
-            new(type:NUM, path:"Studio Set Common/Studio Set Tempo", offs:[0x00, 0x3d], imin:0, imax:0x0f0f, omin:20, omax:250, bytes:2, res:USED, nib:true, unit:"bpm", repr:null),
+            new(type:NUM, path:"Studio Set Common/Studio Set Tempo", offs:[0x00, 0x3d], imin:20, imax:250, omin:20, omax:250, bytes:2, res:USED, nib:true, unit:"bpm", repr:null),
             new(type:NUM, path:"Studio Set Common/Solo Part", offs:[0x00, 0x3f], imin:0, imax:16, omin:0, omax:16, bytes:1, res:USED, nib:false, unit:"", repr:OFF_1_16),
             new(type:NUM, path:"Studio Set Common/Reverb Switch", offs:[0x00, 0x40], imin:0, imax:1, omin:0, omax:1, bytes:1, res:USED, nib:false, unit:"", repr:OFF_ON),
             new(type:NUM, path:"Studio Set Common/Chorus Switch", offs:[0x00, 0x41], imin:0, imax:1, omin:0, omax:1, bytes:1, res:USED, nib:false, unit:"", repr:OFF_ON),

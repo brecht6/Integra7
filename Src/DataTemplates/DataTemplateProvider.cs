@@ -1,10 +1,12 @@
-
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Layout;
 using Integra7AuralAlchemist.Models.Data;
+using ReactiveUI;
+
+
 
 namespace Integra7AuralAlchemist.DataTemplates;
 
@@ -15,17 +17,51 @@ public static class DataTemplateProvider
         if (!p.IsNumeric)
         {
             TextBox b = new() { Text = p.StringValue };
+            b.PropertyChanged += (s, e) =>
+            {
+                if (e.Property.Name == "Text")
+                {
+                    //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
+                    MessageBus.Current.SendMessage<UpdateMessageSpec>(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
+                }
+            };
             return b;
         }
         if (p.ParSpec.Repr != null)
         {
-            ComboBox c = new();
-            foreach (var el in p.ParSpec.Repr)
+            if (p.ParSpec.Repr.Count == 2 && p.ParSpec.Repr[0].ToUpper() == "OFF" && p.ParSpec.Repr[1].ToUpper() == "ON")
             {
-                c.Items.Add(el.Value);
+                CheckBox c = new();
+                c.IsChecked = p.StringValue == p.ParSpec.Repr[1];
+                c.IsCheckedChanged += (s, e) =>
+                {
+                    if (s is CheckBox checkBox)
+                    {
+                        string msg = "OFF";
+                        if ((bool)checkBox.IsChecked)
+                        {
+                            msg = "ON";
+                        }
+                        MessageBus.Current.SendMessage<UpdateMessageSpec>(new UpdateMessageSpec(p, msg), "ui2hw");
+                    }
+                };
+                return c;
             }
-            c.SelectedItem = p.StringValue;
-            return c;
+            else
+            {
+                ComboBox c = new();
+                foreach (var el in p.ParSpec.Repr)
+                {
+                    c.Items.Add(el.Value);
+                }
+                c.SelectedItem = p.StringValue;
+                c.SelectionChanged += (s, e) =>
+                {
+                    //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.RemovedItems[0]}\" to \"{e.AddedItems[0]}\"");
+                    MessageBus.Current.SendMessage<UpdateMessageSpec>(new UpdateMessageSpec(p, $"{e.AddedItems[0]}"), "ui2hw");
+                };
+                return c;
+            }
         }
         if (!float.IsNaN(p.ParSpec.OMin2) && !float.IsNaN(p.ParSpec.OMax2))
         {
@@ -33,14 +69,20 @@ public static class DataTemplateProvider
             {
                 Minimum = p.ParSpec.OMin2,
                 Maximum = p.ParSpec.OMax2,
-                Width = 127,
+                Width = 256,
                 Orientation = Orientation.Horizontal,
                 IsSnapToTickEnabled = true,
                 Ticks = p.ParSpec.Ticks,
                 Value = long.Parse(p.StringValue),
             };
+            s.ValueChanged += (s, e) =>
+            {
+                //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
+                MessageBus.Current.SendMessage<UpdateMessageSpec>(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
+            };
             TextBlock v = new()
             {
+                VerticalAlignment = VerticalAlignment.Center,
                 [!TextBlock.TextProperty] = new Binding
                 {
                     Source = s,
@@ -57,6 +99,7 @@ public static class DataTemplateProvider
             {
                 TextBlock u = new()
                 {
+                    VerticalAlignment = VerticalAlignment.Center,
                     Text = " [" + p.ParSpec.Unit + "]"
                 };
                 pan.Children.Add(u);
@@ -69,14 +112,20 @@ public static class DataTemplateProvider
             {
                 Minimum = p.ParSpec.OMin,
                 Maximum = p.ParSpec.OMax,
-                Width = 127,
+                Width = 256,
                 Orientation = Orientation.Horizontal,
                 IsSnapToTickEnabled = true,
                 Ticks = p.ParSpec.Ticks,
                 Value = Math.Round(double.Parse(p.StringValue)),
             };
+            s.ValueChanged += (s, e) =>
+            {
+                //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
+                MessageBus.Current.SendMessage<UpdateMessageSpec>(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
+            };
             TextBlock v = new()
             {
+                VerticalAlignment = VerticalAlignment.Center,
                 [!TextBlock.TextProperty] = new Binding
                 {
                     Source = s,
@@ -93,6 +142,7 @@ public static class DataTemplateProvider
             {
                 TextBlock u = new()
                 {
+                    VerticalAlignment = VerticalAlignment.Center,
                     Text = " [" + p.ParSpec.Unit + "]"
                 };
                 pan.Children.Add(u);
@@ -105,14 +155,20 @@ public static class DataTemplateProvider
             {
                 Minimum = 0,
                 Maximum = 127,
-                Width = 127,
+                Width = 256,
                 Orientation = Orientation.Horizontal,
                 Value = long.Parse(p.StringValue),
                 IsSnapToTickEnabled = true,
                 Ticks = p.ParSpec.Ticks,
             };
+            s.ValueChanged += (s, e) =>
+            {
+                //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
+                MessageBus.Current.SendMessage<UpdateMessageSpec>(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
+            };
             TextBlock v = new()
             {
+                VerticalAlignment = VerticalAlignment.Center,
                 [!TextBlock.TextProperty] = new Binding
                 {
                     Source = s,
@@ -129,6 +185,7 @@ public static class DataTemplateProvider
             {
                 TextBlock u = new()
                 {
+                    VerticalAlignment = VerticalAlignment.Center,
                     Text = " [" + p.ParSpec.Unit + "]"
                 };
                 pan.Children.Add(u);

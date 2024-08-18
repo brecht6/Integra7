@@ -13,6 +13,7 @@ using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
 using System.Collections.Generic;
 using Integra7AuralAlchemist.Models.Domain;
+using System.Diagnostics;
 
 namespace Integra7AuralAlchemist.ViewModels;
 
@@ -333,7 +334,7 @@ public partial class MainWindowViewModel : ObservableObject
     public ReadOnlyObservableCollection<Integra7Preset> PresetsCh15 => _presetsCh15;
 
 
-    private SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonParameters =  new SourceCache<FullyQualifiedParameter, string>(x => x.ParSpec.Path);
+    private SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonParameters = new SourceCache<FullyQualifiedParameter, string>(x => x.ParSpec.Path);
     private DomainStudioSetCommon? _studioSetCommon = null;
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonParameters;
     public ReadOnlyObservableCollection<FullyQualifiedParameter> CommonStudioSetParameters => _studioSetCommonParameters;
@@ -643,6 +644,12 @@ public partial class MainWindowViewModel : ObservableObject
                                     .Bind(out _studioSetCommonParameters)
                                     .DisposeMany()
                                     .Subscribe();
+        MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Subscribe(m => UpdateIntegraFromUi(m));
+    }
+
+    public void UpdateIntegraFromUi(UpdateMessageSpec m)
+    {
+        Debug.WriteLine($"In viewmodel: received request to modify {m.Par.ParSpec.Path} to value {m.DisplayValue}");
     }
 
 #pragma warning restore CA1822 // Mark members as static

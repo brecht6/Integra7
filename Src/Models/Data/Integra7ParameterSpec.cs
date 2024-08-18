@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using Avalonia.Collections;
+using Integra7AuralAlchemist.Models.Services;
 
 namespace Integra7AuralAlchemist.Models.Data;
 
@@ -48,6 +51,44 @@ public class Integra7ParameterSpec
     private float _omax2 = float.NaN;
     public float OMax2 { get => _omax2; }
     public string Name { get => Path.Split('/')[^1]; }
+    public AvaloniaList<double> Ticks
+    {
+        get
+        {
+            if (Type == SpecType.ASCII)
+            {
+                return [];
+            }
+
+            if (!float.IsNaN(_imin2) && !float.IsNaN(_imax2) && !float.IsNaN(_omin2) && !float.IsNaN(_omax2))
+            {
+                AvaloniaList<double> ticks = [];
+                for (long i = (long)_imin2; i < (long)(_imax2 + 1); i++)
+                {
+                    ticks.Add(Math.Round(Mapping.linlin(i, _imin2, _imax2, _omin2, _omax2), 2));
+                }
+                return ticks;
+            }
+            else if (_omin2 == -20000 && _omax2 == 20000)
+            {
+                AvaloniaList<double> ticks = [];
+                for (long i = (long)0; i < (long)(127 + 1); i++)
+                {
+                    ticks.Add(i);
+                }
+                return ticks;
+            }
+            else
+            {
+                AvaloniaList<double> ticks = [];
+                for (long i = (long)_omin; i < (long)(_omax + 1); i++)
+                {
+                    ticks.Add(i);
+                }
+                return ticks;
+            }
+        }
+    }
 
     public Integra7ParameterSpec(SpecType type, string path, byte[] offs, int imin, int imax, float omin, float omax, int bytes, bool res, bool nib, string unit, IDictionary<int, string>? repr, string mst = "", string mstval = "", bool store = false, string mst2 = "", string mstval2 = "", float imin2 = float.NaN, float imax2 = float.NaN, float omin2 = float.NaN, float omax2 = float.NaN)
     {

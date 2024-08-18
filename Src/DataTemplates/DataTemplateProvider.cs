@@ -36,7 +36,7 @@ public static class DataTemplateProvider
                 Width = 127,
                 Orientation = Orientation.Horizontal,
                 IsSnapToTickEnabled = true,
-                TickFrequency = 1,
+                Ticks = p.ParSpec.Ticks,
                 Value = long.Parse(p.StringValue),
             };
             TextBlock v = new()
@@ -72,7 +72,7 @@ public static class DataTemplateProvider
                 Width = 127,
                 Orientation = Orientation.Horizontal,
                 IsSnapToTickEnabled = true,
-                TickFrequency = 1,
+                Ticks = p.ParSpec.Ticks,
                 Value = Math.Round(double.Parse(p.StringValue)),
             };
             TextBlock v = new()
@@ -109,7 +109,7 @@ public static class DataTemplateProvider
                 Orientation = Orientation.Horizontal,
                 Value = long.Parse(p.StringValue),
                 IsSnapToTickEnabled = true,
-                TickFrequency = 1,
+                Ticks = p.ParSpec.Ticks,
             };
             TextBlock v = new()
             {

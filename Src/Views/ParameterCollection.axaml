@@ -23,13 +23,18 @@
                 </ItemsRepeater.Layout>
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Border Padding="10">
+                        <Grid ColumnDefinitions="270,Auto"
+                              RowDefinitions="Auto">
+                            <Border Grid.Column="0"
+                                    Grid.Row="0"
+                                    Padding="10">
                                 <TextBlock Text="{Binding ParSpec.Name}: " />
                             </Border>
-                            <ContentControl Content="{Binding}"
+                            <ContentControl Grid.Column="1"
+                                            Grid.Row="0"
+                                            Content="{Binding}"
                                             ContentTemplate="{x:Static dataTemplates:DataTemplateProvider.ParameterValueTemplate}" />
-                        </StackPanel>
+                        </Grid>
                     </DataTemplate>
                 </ItemsRepeater.ItemTemplate>
             </ItemsRepeater>

@@ -7,7 +7,7 @@ namespace Integra7AuralAlchemist.Views;
 
 public partial class ParameterCollection : UserControl
 {
-    // add an argument "Presets" to the user control
+    // add an argument "Parameters" to the user control
     public static readonly StyledProperty<ReadOnlyObservableCollection<FullyQualifiedParameter>> ParametersProperty =
         AvaloniaProperty.Register<PresetSelector, ReadOnlyObservableCollection<FullyQualifiedParameter>>(nameof(Parameters));
     public ReadOnlyObservableCollection<FullyQualifiedParameter> Parameters

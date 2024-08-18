@@ -2,10 +2,9 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using Avalonia.Data;
 using Avalonia.Layout;
-using Avalonia.OpenGL;
 using Integra7AuralAlchemist.Models.Data;
-using ReactiveUI;
 
 namespace Integra7AuralAlchemist.DataTemplates;
 
@@ -36,9 +35,33 @@ public static class DataTemplateProvider
                 Maximum = p.ParSpec.OMax2,
                 Width = 127,
                 Orientation = Orientation.Horizontal,
-                Value = long.Parse(p.StringValue)
+                IsSnapToTickEnabled = true,
+                TickFrequency = 1,
+                Value = long.Parse(p.StringValue),
             };
-            return s;
+            TextBlock v = new()
+            {
+                [!TextBlock.TextProperty] = new Binding
+                {
+                    Source = s,
+                    Path = nameof(s.Value)
+                }
+            };
+            StackPanel pan = new()
+            {
+                Orientation = Orientation.Horizontal,
+            };
+            pan.Children.Add(s);
+            pan.Children.Add(v);
+            if (p.ParSpec.Unit != "")
+            {
+                TextBlock u = new()
+                {
+                    Text = " [" + p.ParSpec.Unit + "]"
+                };
+                pan.Children.Add(u);
+            }
+            return pan;
         }
         if (p.ParSpec.OMin != -20000)
         {
@@ -48,9 +71,33 @@ public static class DataTemplateProvider
                 Maximum = p.ParSpec.OMax,
                 Width = 127,
                 Orientation = Orientation.Horizontal,
-                Value = Math.Round(double.Parse(p.StringValue))
+                IsSnapToTickEnabled = true,
+                TickFrequency = 1,
+                Value = Math.Round(double.Parse(p.StringValue)),
             };
-            return s;
+            TextBlock v = new()
+            {
+                [!TextBlock.TextProperty] = new Binding
+                {
+                    Source = s,
+                    Path = nameof(s.Value)
+                }
+            };
+            StackPanel pan = new()
+            {
+                Orientation = Orientation.Horizontal,
+            };
+            pan.Children.Add(s);
+            pan.Children.Add(v);
+            if (p.ParSpec.Unit != "")
+            {
+                TextBlock u = new()
+                {
+                    Text = " [" + p.ParSpec.Unit + "]"
+                };
+                pan.Children.Add(u);
+            }
+            return pan;
         }
         else
         {
@@ -61,8 +108,33 @@ public static class DataTemplateProvider
                 Width = 127,
                 Orientation = Orientation.Horizontal,
                 Value = long.Parse(p.StringValue),
+                IsSnapToTickEnabled = true,
+                TickFrequency = 1,
             };
-            return s;
+            TextBlock v = new()
+            {
+                [!TextBlock.TextProperty] = new Binding
+                {
+                    Source = s,
+                    Path = nameof(s.Value)
+                }
+            };
+            StackPanel pan = new()
+            {
+                Orientation = Orientation.Horizontal,
+            };
+            pan.Children.Add(s);
+            pan.Children.Add(v);
+            if (p.ParSpec.Unit != "")
+            {
+                TextBlock u = new()
+                {
+                    Text = " [" + p.ParSpec.Unit + "]"
+                };
+                pan.Children.Add(u);
+            }
+
+            return pan;
         }
     }
 

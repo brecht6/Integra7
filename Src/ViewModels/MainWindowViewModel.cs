@@ -352,7 +352,7 @@ public partial class MainWindowViewModel : ReactiveObject
     private SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonParameters = new SourceCache<FullyQualifiedParameter, string>(x => x.ParSpec.Path);
     private Integra7Domain? _integra7Communicator = null;
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonParameters;
-    public ReadOnlyObservableCollection<FullyQualifiedParameter> CommonStudioSetParameters => _studioSetCommonParameters;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonParameters => _studioSetCommonParameters;
 
     private ReadOnlyObservableCollection<Integra7Preset> GetPresetsCollection(byte Channel)
     {

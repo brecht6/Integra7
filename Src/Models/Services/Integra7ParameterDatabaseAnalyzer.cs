@@ -210,7 +210,7 @@ public class Integra7ParameterDatabaseAnalyzer
                     a,
                     new Tuple<string, string>(b.Item1, b.Item2),
                     new Tuple<string, string>(c.Item1, c.Item2)));
-                Debug.WriteLine($"{a} depends on {b.Item1}[{b.Item2}] and {c.Item1}[{c.Item2}]");
+                //Debug.WriteLine($"{a} depends on {b.Item1}[{b.Item2}] and {c.Item1}[{c.Item2}]");
                 if (ParametersDependingOnOtherParameter.ContainsKey(c.Item1))
                 {
                     Debug.Assert(false, "3-level deep dependencies not supported!");

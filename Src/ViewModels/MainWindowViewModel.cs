@@ -14,6 +14,7 @@ using Avalonia.Platform;
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
 using Integra7AuralAlchemist.Models.Domain;
+using DynamicData.Binding;
 
 
 namespace Integra7AuralAlchemist.ViewModels;
@@ -662,6 +663,7 @@ public partial class MainWindowViewModel : ReactiveObject
                                     .Subscribe();
         _cleanUp[16] = _sourceCacheStudioSetCommonParameters.Connect()
                                     .Filter(parameterFilterPredicate)
+                                    .Sort(SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
                                     .Bind(out _studioSetCommonParameters)
                                     .DisposeMany()
                                     .Subscribe();

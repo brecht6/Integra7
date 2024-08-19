@@ -14,6 +14,7 @@ using Integra7AuralAlchemist.Models.Services;
 using System.Collections.Generic;
 using Integra7AuralAlchemist.Models.Domain;
 using System.Diagnostics;
+using System.Reactive.Linq;
 
 namespace Integra7AuralAlchemist.ViewModels;
 
@@ -530,10 +531,10 @@ public partial class MainWindowViewModel : ObservableObject
 
         DomainPCMSynthToneCommon dpcmsynthtonecommon0 = new DomainPCMSynthToneCommon(0, Integra7, _i7startAddresses, _i7parameters);
         dpcmsynthtonecommon0.ReadFromIntegra();
-        */
 
         DomainPCMSynthToneCommonMFX dpcmsynthtonecommonmfx0 = new DomainPCMSynthToneCommonMFX(0, Integra7, _i7startAddresses, _i7parameters);
         dpcmsynthtonecommonmfx0.ReadFromIntegra();
+        */
 
     }
 
@@ -644,7 +645,7 @@ public partial class MainWindowViewModel : ObservableObject
                                     .Bind(out _studioSetCommonParameters)
                                     .DisposeMany()
                                     .Subscribe();
-        MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Subscribe(m => UpdateIntegraFromUi(m));
+        MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(250)).Subscribe(m => UpdateIntegraFromUi(m));
     }
 
     public void UpdateIntegraFromUi(UpdateMessageSpec m)

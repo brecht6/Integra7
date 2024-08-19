@@ -31,14 +31,14 @@ public static class DataTemplateProvider
         {
             if (p.ParSpec.Repr.Count == 2 && p.ParSpec.Repr[0].ToUpper() == "OFF" && p.ParSpec.Repr[1].ToUpper() == "ON")
             {
-                CheckBox c = new();
+                ToggleSwitch c = new();
                 c.IsChecked = p.StringValue == p.ParSpec.Repr[1];
                 c.IsCheckedChanged += (s, e) =>
                 {
                     if (s is CheckBox checkBox)
                     {
                         string msg = "OFF";
-                        if ((bool)checkBox.IsChecked)
+                        if (checkBox?.IsChecked ?? false)
                         {
                             msg = "ON";
                         }

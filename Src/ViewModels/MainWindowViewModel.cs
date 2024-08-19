@@ -1,30 +1,30 @@
-﻿using ReactiveUI;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System.Linq;
-using System;
-using System.Threading;
-using System.Collections.ObjectModel;
-using Avalonia.Platform;
-using System.IO;
-using Avalonia;
+﻿using Avalonia;
 using DynamicData;
-using Integra7AuralAlchemist.Models.Data;
-using Integra7AuralAlchemist.Models.Services;
+using ReactiveUI;
+using ReactiveUI.SourceGenerators;
+using System;
+using System.IO;
+using System.Threading;
+using System.Linq;
 using System.Collections.Generic;
-using Integra7AuralAlchemist.Models.Domain;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reactive.Linq;
+using Avalonia.Platform;
+using Integra7AuralAlchemist.Models.Data;
+using Integra7AuralAlchemist.Models.Services;
+using Integra7AuralAlchemist.Models.Domain;
+
 
 namespace Integra7AuralAlchemist.ViewModels;
 
 
-public partial class MainWindowViewModel : ObservableObject
+public partial class MainWindowViewModel : ReactiveObject
 {
 #pragma warning disable CA1822 // Mark members as static
 #pragma warning disable CS8618 // Non-nullable field 'xxx' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the field as nullable.
-    private Integra7StartAddresses _i7startAddresses = new Integra7StartAddresses();
-    private Integra7Parameters _i7parameters = new Integra7Parameters();
+    private Integra7StartAddresses _i7startAddresses = new();
+    private Integra7Parameters _i7parameters = new();
     private Integra7Preset _selectedPreset0;
     private Integra7Preset _selectedPreset1;
     private Integra7Preset _selectedPreset2;
@@ -186,8 +186,22 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
-    [ObservableProperty]
-    private bool rescanButtonEnabled = true;
+    [Reactive]
+    private string _searchTextStudioSetCommon;
+    /*    public string SearchTextStudioSetCommon
+    {
+        get => _searchTextStudioSetCommon;
+        set => this.RaiseAndSetIfChanged(ref _searchTextStudioSetCommon, value);
+    }
+    */
+
+    Func<FullyQualifiedParameter, bool> _parameterFilter(string text) => par =>
+    {
+        return string.IsNullOrEmpty(text) || par.ParSpec.Path.ToLower().Contains(text.ToLower());
+    };
+
+    [Reactive]
+    private bool _rescanButtonEnabled = true;
 
     Integra7Preset GetSelectedPreset(byte Channel)
     {
@@ -411,13 +425,13 @@ public partial class MainWindowViewModel : ObservableObject
     private const string INTEGRA_CONNECTION_STRING = "INTEGRA-7";
     private IIntegra7Api? Integra7 { get; set; } = null;
 
-    [ObservableProperty]
-    private bool connected = false;
+    [Reactive]
+    private bool _connected = false;
 
-    [ObservableProperty]
-    private string midiDevices = "No Midi Devices Detected";
+    [Reactive]
+    private string _midiDevices = "No Midi Devices Detected";
 
-    [RelayCommand]
+    [ReactiveCommand]
     private void PlayNote()
     {
         byte zeroBasedMidiChannel = 0;
@@ -430,13 +444,13 @@ public partial class MainWindowViewModel : ObservableObject
         Integra7?.NoteOff(zeroBasedMidiChannel, 65);
     }
 
-    [RelayCommand]
+    [ReactiveCommand]
     private void Panic()
     {
         Integra7?.AllNotesOff();
     }
 
-    [RelayCommand]
+    [ReactiveCommand]
     private void ChangePreset(byte MidiChannel)
     {
         Integra7Preset CurrentSelection = GetSelectedPreset(MidiChannel);
@@ -446,7 +460,7 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
-    [RelayCommand]
+    [ReactiveCommand]
     private void RescanMidiDevices()
     {
         Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING));
@@ -456,7 +470,7 @@ public partial class MainWindowViewModel : ObservableObject
     private void UpdateConnected(IIntegra7Api integra7)
     {
         Connected = integra7.ConnectionOk();
-        if (Connected)
+        if (_connected)
         {
             MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING + " with device id " + integra7.DeviceId().ToString("x2");
             _studioSetCommon = new DomainStudioSetCommon(integra7, _i7startAddresses, _i7parameters);
@@ -468,13 +482,13 @@ public partial class MainWindowViewModel : ObservableObject
         {
             MidiDevices = "Could not find " + INTEGRA_CONNECTION_STRING;
         }
-        RescanButtonEnabled = !Connected;
+        RescanButtonEnabled = !_connected;
     }
 
-    [ObservableProperty]
-    private int currentPartSelection = 0;
+    [Reactive]
+    private int _currentPartSelection = 0;
 
-    [RelayCommand]
+    [ReactiveCommand]
     private void DebugCode()
     {
         /*
@@ -538,7 +552,6 @@ public partial class MainWindowViewModel : ObservableObject
 
     }
 
-
     private async void LoadPresets()
     {
         var uri = @"avares://" + "Integra7AuralAlchemist/" + "Assets/Presets.csv";
@@ -575,6 +588,12 @@ public partial class MainWindowViewModel : ObservableObject
         {
             SetSelectedPreset(i, GetSourceCache(i).Items.First());
         }
+
+        var parameterFilterPredicate = this.WhenAnyValue(x => x.SearchTextStudioSetCommon)
+                                            .Throttle(TimeSpan.FromMilliseconds(250))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+
         _cleanUp[0] = _sourceCacheCh0.Connect()
                                 .Bind(out _presetsCh0)
                                 .DisposeMany()
@@ -642,9 +661,11 @@ public partial class MainWindowViewModel : ObservableObject
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[16] = _sourceCacheStudioSetCommonParameters.Connect()
+                                    .Filter(parameterFilterPredicate)
                                     .Bind(out _studioSetCommonParameters)
                                     .DisposeMany()
                                     .Subscribe();
+
         MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(250)).Subscribe(m => UpdateIntegraFromUi(m));
     }
 

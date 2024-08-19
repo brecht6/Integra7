@@ -44,16 +44,16 @@
                     Orientation="Horizontal"
                     Spacing="20">
             <Button IsEnabled="{Binding RescanButtonEnabled}"
-                    Command="{Binding RescanMidiDevicesCommand}">Rescan Midi Devices</Button>
-            <Button Command="{Binding PlayNoteCommand}"
+                    Command="{Binding RescanMidiDevices}">Rescan Midi Devices</Button>
+            <Button Command="{Binding PlayNote}"
                     IsEnabled="{Binding Connected}">Play Note</Button>
-            <Button Command="{Binding PanicCommand}"
+            <Button Command="{Binding Panic}"
                     IsEnabled="{Binding Connected}"
                     Background="Red"
                     Foreground="White">                
                 Panic!
             </Button>
-            <Button Command="{Binding DebugCodeCommand}"
+            <Button Command="{Binding DebugCode}"
                     IsEnabled="{Binding Connected}">Trigger Debug Code</Button>
         </StackPanel>
         <TabControl HorizontalContentAlignment="Left"
@@ -63,7 +63,8 @@
                     SelectedIndex="{Binding CurrentPartSelection, Mode=TwoWay}">
             <TabItem Header="Common"
                      FontSize="14">
-                <local:ParameterCollection Parameters="{Binding CommonStudioSetParameters}" />
+                <local:ParameterCollection Parameters="{Binding CommonStudioSetParameters}"
+                                           SearchText="{Binding SearchTextStudioSetCommon, Mode=TwoWay}" />
             </TabItem>
             <TabItem Header="Part 1">
                 <local:PresetSelector Presets="{Binding PresetsCh0}"

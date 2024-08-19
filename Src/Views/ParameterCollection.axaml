@@ -11,10 +11,17 @@
              x:DataType="vm:MainWindowViewModel"
              x:Name="ParameterCollectionControl">
     <Grid ColumnDefinitions="*"
-          RowDefinitions="750"
+          RowDefinitions="Auto, 750"
           Margin="20">
+        <TextBox Grid.Column="0"
+                 Grid.Row="0"
+                 Watermark="Filter Parameters..."
+                 Background="#6c6c6c"
+                 Width="600"
+                 HorizontalAlignment="Left"
+                 Text="{Binding #ParameterCollectionControl.SearchText}" />
         <ScrollViewer Grid.Column="0"
-                      Grid.Row="0"
+                      Grid.Row="1"
                       VerticalScrollBarVisibility="Visible">
             <ItemsRepeater ItemsSource="{Binding #ParameterCollectionControl.Parameters}">
                 <ItemsRepeater.Layout>

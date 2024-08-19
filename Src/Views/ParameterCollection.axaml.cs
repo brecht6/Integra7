@@ -9,13 +9,19 @@ public partial class ParameterCollection : UserControl
 {
     // add an argument "Parameters" to the user control
     public static readonly StyledProperty<ReadOnlyObservableCollection<FullyQualifiedParameter>> ParametersProperty =
-        AvaloniaProperty.Register<PresetSelector, ReadOnlyObservableCollection<FullyQualifiedParameter>>(nameof(Parameters));
+        AvaloniaProperty.Register<ParameterCollection, ReadOnlyObservableCollection<FullyQualifiedParameter>>(nameof(Parameters));
     public ReadOnlyObservableCollection<FullyQualifiedParameter> Parameters
     {
-        get => (ReadOnlyObservableCollection<FullyQualifiedParameter>)GetValue(ParametersProperty);
+        get => GetValue(ParametersProperty);
         set => SetValue(ParametersProperty, value);
     }
 
+    public static readonly StyledProperty<string> SearchTextProperty = AvaloniaProperty.Register<ParameterCollection, string>(nameof(SearchText));
+    public string SearchText
+    {
+        get => GetValue(SearchTextProperty);
+        set => SetValue(SearchTextProperty, value);
+    }
     public ParameterCollection()
     {
         InitializeComponent();

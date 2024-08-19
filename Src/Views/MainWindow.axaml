@@ -63,8 +63,12 @@
                     SelectedIndex="{Binding CurrentPartSelection, Mode=TwoWay}">
             <TabItem Header="Common"
                      FontSize="14">
-                <local:ParameterCollection Parameters="{Binding CommonStudioSetParameters}"
-                                           SearchText="{Binding SearchTextStudioSetCommon, Mode=TwoWay}" />
+                <TabControl TabStripPlacement="Top">
+                    <TabItem Header="Studio Set Common">
+                        <local:ParameterCollection Parameters="{Binding CommonStudioSetParameters}"
+                                                   SearchText="{Binding SearchTextStudioSetCommon, Mode=TwoWay}" />
+                    </TabItem>
+                </TabControl>
             </TabItem>
             <TabItem Header="Part 1">
                 <local:PresetSelector Presets="{Binding PresetsCh0}"

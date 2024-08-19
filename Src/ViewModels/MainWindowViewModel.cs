@@ -432,7 +432,7 @@ public partial class MainWindowViewModel : ReactiveObject
     private string _midiDevices = "No Midi Devices Detected";
 
     [ReactiveCommand]
-    private void PlayNote()
+    public void PlayNote()
     {
         byte zeroBasedMidiChannel = 0;
         if (CurrentPartSelection > 0 && CurrentPartSelection < 17)
@@ -445,13 +445,13 @@ public partial class MainWindowViewModel : ReactiveObject
     }
 
     [ReactiveCommand]
-    private void Panic()
+    public void Panic()
     {
         Integra7?.AllNotesOff();
     }
 
     [ReactiveCommand]
-    private void ChangePreset(byte MidiChannel)
+    public void ChangePreset(byte MidiChannel)
     {
         Integra7Preset CurrentSelection = GetSelectedPreset(MidiChannel);
         if (CurrentSelection != null)
@@ -461,7 +461,7 @@ public partial class MainWindowViewModel : ReactiveObject
     }
 
     [ReactiveCommand]
-    private void RescanMidiDevices()
+    public void RescanMidiDevices()
     {
         Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING));
         UpdateConnected(Integra7);
@@ -489,7 +489,7 @@ public partial class MainWindowViewModel : ReactiveObject
     private int _currentPartSelection = 0;
 
     [ReactiveCommand]
-    private void DebugCode()
+    public void DebugCode()
     {
         /*
         DomainSetup dse = new DomainSetup(Integra7, _i7startAddresses, _i7parameters);

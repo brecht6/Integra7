@@ -350,7 +350,7 @@ public partial class MainWindowViewModel : ReactiveObject
 
 
     private SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonParameters = new SourceCache<FullyQualifiedParameter, string>(x => x.ParSpec.Path);
-    private DomainStudioSetCommon? _studioSetCommon = null;
+    private Integra7Domain? _integra7Communicator = null;
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonParameters;
     public ReadOnlyObservableCollection<FullyQualifiedParameter> CommonStudioSetParameters => _studioSetCommonParameters;
 
@@ -467,15 +467,15 @@ public partial class MainWindowViewModel : ReactiveObject
         UpdateConnected(Integra7);
     }
 
-    private void UpdateConnected(IIntegra7Api integra7)
+    private void UpdateConnected(IIntegra7Api integra7Api)
     {
-        Connected = integra7.ConnectionOk();
+        Connected = integra7Api.ConnectionOk();
         if (_connected)
         {
-            MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING + " with device id " + integra7.DeviceId().ToString("x2");
-            _studioSetCommon = new DomainStudioSetCommon(integra7, _i7startAddresses, _i7parameters);
-            _studioSetCommon.ReadFromIntegra();
-            List<FullyQualifiedParameter> p = _studioSetCommon.GetRelevantParameters(false, false);
+            MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING + " with device id " + integra7Api.DeviceId().ToString("x2");
+            _integra7Communicator = new Integra7Domain(integra7Api, _i7startAddresses, _i7parameters);
+            _integra7Communicator.StudioSetCommon.ReadFromIntegra();
+            List<FullyQualifiedParameter> p = _integra7Communicator.StudioSetCommon.GetRelevantParameters(false, false);
             _sourceCacheStudioSetCommonParameters.AddOrUpdate(p);
         }
         else
@@ -671,7 +671,9 @@ public partial class MainWindowViewModel : ReactiveObject
 
     public void UpdateIntegraFromUi(UpdateMessageSpec m)
     {
-        Debug.WriteLine($"In viewmodel: received request to modify {m.Par.ParSpec.Path} to value {m.DisplayValue}");
+        FullyQualifiedParameter p = m.Par;
+        p.StringValue = m.DisplayValue;
+        _integra7Communicator?.WriteSingleParameterToIntegra(p);
     }
 
 #pragma warning restore CA1822 // Mark members as static

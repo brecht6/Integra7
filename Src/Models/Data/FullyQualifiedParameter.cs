@@ -84,22 +84,25 @@ public class FullyQualifiedParameter
         return true;
     }
 
-    public void RetrieveFromIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
+    public byte[] CompleteAddress(Integra7StartAddresses startAddresses, Integra7Parameters parameters)
     {
         byte[] startAddr = startAddresses.Lookup(_start).Address;
         byte[] offsetAddr = startAddresses.Lookup(_offset).Address;
         byte[] parameterAddr = _parspec.Address;
         byte[] totalAddr = ByteUtils.AddressWithOffset(startAddr, offsetAddr, parameterAddr);
+        return totalAddr;
+    }
+
+    public void RetrieveFromIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
+    {
+        byte[] totalAddr = CompleteAddress(startAddresses, parameters);
         byte[] reply = integra7Api.MakeDataRequest(totalAddr, _parspec.Bytes);
         ParseFromSysexReply(reply, parameters);
     }
 
     public void WriteToIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
     {
-        byte[] startAddr = startAddresses.Lookup(_start).Address;
-        byte[] offsetAddr = startAddresses.Lookup(_offset).Address;
-        byte[] firstParameterAddr = _parspec.Address;
-        byte[] totalAddr = ByteUtils.AddressWithOffset(startAddr, offsetAddr, firstParameterAddr);
+        byte[] totalAddr = CompleteAddress(startAddresses, parameters);
         byte[] data = GetSysexDataFragment();
         integra7Api.MakeDataTransmission(totalAddr, data);
     }

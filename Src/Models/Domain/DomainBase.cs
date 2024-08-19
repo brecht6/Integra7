@@ -13,6 +13,11 @@ public class DomainBase
     private readonly IIntegra7Api _integra7Api;
     private readonly Integra7StartAddresses _startAddresses;
     private readonly Integra7Parameters _parameters;
+    private readonly string _startAddressName;
+    public string StartAddressName { get => _startAddressName; }
+    private readonly string _offsetAddressName;
+    public string OffsetAddressName { get => _offsetAddressName; }
+
     private readonly List<FullyQualifiedParameter> _domainParameters = [];
 
     public DomainBase(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters, string startAddressName, string offsetAddressName, string parameterNamePrefix)
@@ -20,6 +25,9 @@ public class DomainBase
         _integra7Api = integra7Api;
         _startAddresses = startAddresses;
         _parameters = parameters;
+        _startAddressName = startAddressName;
+        _offsetAddressName = offsetAddressName;
+
         List<Integra7ParameterSpec> relevant = parameters.GetParametersWithPrefix(parameterNamePrefix);
         for (int i = 0; i < relevant.Count; i++)
         {

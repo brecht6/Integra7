@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
 using Integra7AuralAlchemist.Models.Services;
 
 namespace Integra7AuralAlchemist.Models.Data;
 
-public class FullyQualifiedParameter
+public class FullyQualifiedParameter : INotifyPropertyChanged
 {
     private readonly string _start;
     public string Start { get => _start; }
@@ -20,7 +21,21 @@ public class FullyQualifiedParameter
     private long _rawNumericValue = 0;
     public long RawNumericValue { get => _rawNumericValue; set => _rawNumericValue = value; }
     private string _stringValue = "";
-    public string StringValue { get => _stringValue; set => _stringValue = value; }
+
+    public string StringValue
+    {
+        get => _stringValue;
+
+        set
+        {
+            Debug.Write($"changing _stringValue from {_stringValue} to {value}.");
+            _stringValue = value;
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StringValue)));
+        }
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public FullyQualifiedParameter(string start, string offset, Integra7ParameterSpec parspec)
     {

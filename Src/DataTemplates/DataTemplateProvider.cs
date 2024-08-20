@@ -73,8 +73,15 @@ public static class DataTemplateProvider
                 Orientation = Orientation.Horizontal,
                 IsSnapToTickEnabled = true,
                 Ticks = p.ParSpec.Ticks,
-                Value = long.Parse(p.StringValue),
             };
+            if (double.TryParse(p.StringValue, out double LValue))
+            {
+                s.Value = Math.Round(LValue, 2);
+            }
+            else
+            {
+                s.Value = p.ParSpec.OMin2;
+            }
             s.ValueChanged += (s, e) =>
             {
                 //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
@@ -116,8 +123,15 @@ public static class DataTemplateProvider
                 Orientation = Orientation.Horizontal,
                 IsSnapToTickEnabled = true,
                 Ticks = p.ParSpec.Ticks,
-                Value = Math.Round(double.Parse(p.StringValue)),
             };
+            if (double.TryParse(p.StringValue, out double LValue))
+            {
+                s.Value = Math.Round(LValue, 2);
+            }
+            else
+            {
+                s.Value = p.ParSpec.OMin;
+            }
             s.ValueChanged += (s, e) =>
             {
                 //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
@@ -157,10 +171,17 @@ public static class DataTemplateProvider
                 Maximum = 127,
                 Width = 256,
                 Orientation = Orientation.Horizontal,
-                Value = long.Parse(p.StringValue),
                 IsSnapToTickEnabled = true,
                 Ticks = p.ParSpec.Ticks,
             };
+            if (long.TryParse(p.StringValue, out long LValue))
+            {
+                s.Value = LValue;
+            }
+            else
+            {
+                s.Value = 0;
+            }
             s.ValueChanged += (s, e) =>
             {
                 //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");

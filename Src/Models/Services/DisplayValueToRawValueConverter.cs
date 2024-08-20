@@ -38,7 +38,7 @@ public class DisplayValueToRawValueConverter
                 }
                 else
                 {
-                    double unmapped = long.Parse(displayValue);
+                    double unmapped = double.Parse(displayValue);
                     if (!float.IsNaN(p.ParSpec.IMin2) && !float.IsNaN(p.ParSpec.IMax2) && !float.IsNaN(p.ParSpec.OMin2) && !float.IsNaN(p.ParSpec.OMax2))
                     {
                         unmapped = Mapping.linlin(unmapped, p.ParSpec.OMin2, p.ParSpec.OMax2, p.ParSpec.IMin2, p.ParSpec.IMax2, true);

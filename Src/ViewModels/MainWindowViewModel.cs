@@ -8,14 +8,12 @@ using System.Threading;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Reactive.Linq;
 using Avalonia.Platform;
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
 using Integra7AuralAlchemist.Models.Domain;
 using DynamicData.Binding;
-
 
 namespace Integra7AuralAlchemist.ViewModels;
 
@@ -189,16 +187,19 @@ public partial class MainWindowViewModel : ReactiveObject
 
     [Reactive]
     private string _searchTextStudioSetCommon;
-    /*    public string SearchTextStudioSetCommon
-    {
-        get => _searchTextStudioSetCommon;
-        set => this.RaiseAndSetIfChanged(ref _searchTextStudioSetCommon, value);
-    }
-    */
+    [Reactive]
+    private string _searchTextStudioSetCommonChorus;
+    [Reactive]
+    private string _refreshCommonChorusNeeded;
+
 
     Func<FullyQualifiedParameter, bool> _parameterFilter(string text) => par =>
     {
-        return string.IsNullOrEmpty(text) || par.ParSpec.Path.ToLower().Contains(text.ToLower());
+        return !par.ParSpec.Reserved && (string.IsNullOrEmpty(text) || par.ParSpec.Path.ToLower().Contains(text.ToLower()));
+    };
+    Func<FullyQualifiedParameter, bool> _allpassFilter(bool dummy) => par =>
+    {
+        return true;
     };
 
     [Reactive]
@@ -349,11 +350,16 @@ public partial class MainWindowViewModel : ReactiveObject
     private readonly ReadOnlyObservableCollection<Integra7Preset> _presetsCh15;
     public ReadOnlyObservableCollection<Integra7Preset> PresetsCh15 => _presetsCh15;
 
-
-    private SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonParameters = new SourceCache<FullyQualifiedParameter, string>(x => x.ParSpec.Path);
     private Integra7Domain? _integra7Communicator = null;
+
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonParameters = new(x => x.ParSpec.Path);
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonParameters;
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonParameters => _studioSetCommonParameters;
+
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonChorusParameters = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonChorusParameters;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonChorusParameters => _studioSetCommonChorusParameters;
+
 
     private ReadOnlyObservableCollection<Integra7Preset> GetPresetsCollection(byte Channel)
     {
@@ -475,9 +481,14 @@ public partial class MainWindowViewModel : ReactiveObject
         {
             MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING + " with device id " + integra7Api.DeviceId().ToString("x2");
             _integra7Communicator = new Integra7Domain(integra7Api, _i7startAddresses, _i7parameters);
+
             _integra7Communicator.StudioSetCommon.ReadFromIntegra();
-            List<FullyQualifiedParameter> p = _integra7Communicator.StudioSetCommon.GetRelevantParameters(false, false);
-            _sourceCacheStudioSetCommonParameters.AddOrUpdate(p);
+            List<FullyQualifiedParameter> p_ssc = _integra7Communicator.StudioSetCommon.GetRelevantParameters(false, false);
+            _sourceCacheStudioSetCommonParameters.AddOrUpdate(p_ssc);
+
+            _integra7Communicator.StudioSetCommonChorus.ReadFromIntegra();
+            List<FullyQualifiedParameter> p_sscc = _integra7Communicator.StudioSetCommonChorus.GetRelevantParameters(true, true);
+            _sourceCacheStudioSetCommonChorusParameters.AddOrUpdate(p_sscc);
         }
         else
         {
@@ -589,11 +600,19 @@ public partial class MainWindowViewModel : ReactiveObject
         {
             SetSelectedPreset(i, GetSourceCache(i).Items.First());
         }
-
-        var parameterFilterPredicate = this.WhenAnyValue(x => x.SearchTextStudioSetCommon)
-                                            .Throttle(TimeSpan.FromMilliseconds(250))
+        const int THROTTLE = 250;
+        var parFilterStudioSetCommon = this.WhenAnyValue(x => x.SearchTextStudioSetCommon)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
                                             .DistinctUntilChanged()
                                             .Select(_parameterFilter);
+
+        var parFilterStudioSetCommonChorus = this.WhenAnyValue(x => x.SearchTextStudioSetCommonChorus)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+
+        var refreshCommonChorus = this.WhenAnyValue(x => x.RefreshCommonChorusNeeded)
+                          .Select(_parameterFilter);
 
         _cleanUp[0] = _sourceCacheCh0.Connect()
                                 .Bind(out _presetsCh0)
@@ -662,20 +681,79 @@ public partial class MainWindowViewModel : ReactiveObject
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[16] = _sourceCacheStudioSetCommonParameters.Connect()
-                                    .Filter(parameterFilterPredicate)
-                                    .Sort(SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
-                                    .Bind(out _studioSetCommonParameters)
+                                    .Filter(parFilterStudioSetCommon)
+                                    .SortAndBind(
+                                        out _studioSetCommonParameters,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+
+        _cleanUp[17] = _sourceCacheStudioSetCommonChorusParameters.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetCommonChorus)
+                                    .FilterOnObservable(par => ((par.ParSpec.MasterCtrl != "") && (par.ParSpec.MasterCtrl is string parentId))
+                                            ? _sourceCacheStudioSetCommonChorusParameters
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.MasterCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.MasterCtrl2 != "") && (par.ParSpec.MasterCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetCommonChorusParameters
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.MasterCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .SortAndBind(
+                                        out _studioSetCommonChorusParameters,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+
+        _cleanUp[18] = _sourceCacheStudioSetCommonChorusParameters.Connect()
+                                    .Filter(refreshCommonChorus)
+                                    .FilterOnObservable(par => ((par.ParSpec.MasterCtrl != "") && (par.ParSpec.MasterCtrl is string parentId))
+                                            ? _sourceCacheStudioSetCommonChorusParameters
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.MasterCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.MasterCtrl2 != "") && (par.ParSpec.MasterCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetCommonChorusParameters
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.MasterCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .SortAndBind(
+                                        out _studioSetCommonChorusParameters,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
                                     .DisposeMany()
                                     .Subscribe();
 
         MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(250)).Subscribe(m => UpdateIntegraFromUi(m));
     }
 
-    public void UpdateIntegraFromUi(UpdateMessageSpec m)
+    public void UpdateIntegraFromUi(UpdateMessageSpec s)
     {
-        FullyQualifiedParameter p = m.Par;
-        p.StringValue = m.DisplayValue;
+        FullyQualifiedParameter p = s.Par;
+        p.StringValue = s.DisplayValue;
         _integra7Communicator?.WriteSingleParameterToIntegra(p);
+        if (p.ParSpec.Store)
+        {
+            _integra7Communicator.GetDomain(p).ReadFromIntegra();
+            ForceUiRefresh(p);
+        }
+    }
+
+    private void ForceUiRefresh(FullyQualifiedParameter p)
+    {
+        if (!p.ParSpec.Store) // only refresh ui after modifying master control
+            return;
+
+        if (p.Offset == "Offset/Studio Set Common Chorus")
+        {
+            // force re-evaluation of the dynamic data filters after the parameters were read from integra-7
+            // this feels like a very ugly hack, but i currently do not know how to do it properly
+            // i tried tons of other stuff, but nothing seemed to work
+            // ... shiver ...
+            RefreshCommonChorusNeeded = ".";
+            RefreshCommonChorusNeeded = SearchTextStudioSetCommonChorus;
+        }
     }
 
 #pragma warning restore CA1822 // Mark members as static

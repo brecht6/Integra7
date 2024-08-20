@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
 
@@ -17,6 +18,11 @@ public class Integra7Domain
     public DomainBase StudioSetCommon
     {
         get => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common")];
+    }
+
+    public DomainBase StudioSetCommonChorus
+    {
+        get => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common Chorus")];
     }
 
     private const int NO_OF_PARTS = 16;
@@ -92,6 +98,18 @@ public class Integra7Domain
         }
         DomainBase b = _parameterMapper[key];
         b.WriteToIntegra(p.ParSpec.Path, p.StringValue);
+    }
+
+    public DomainBase GetDomain(FullyQualifiedParameter p)
+    {
+        Tuple<string, string> key = new(p.Start, p.Offset);
+        if (!_parameterMapper.ContainsKey(key))
+        {
+
+            Debug.WriteLine($"Error. Integra7 doesn't know parameters with start address {p.Start} and offset address {p.Offset}. Please extend or fix.");
+            return _parameterMapper.First().Value;
+        }
+        return _parameterMapper[key];
     }
 
 

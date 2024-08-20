@@ -64,9 +64,13 @@
             <TabItem Header="Common"
                      FontSize="14">
                 <TabControl TabStripPlacement="Top">
-                    <TabItem Header="Studio Set Common">
+                    <TabItem Header="Common">
                         <local:ParameterCollection Parameters="{Binding StudioSetCommonParameters}"
                                                    SearchText="{Binding SearchTextStudioSetCommon, Mode=TwoWay}" />
+                    </TabItem>
+                    <TabItem Header="Chorus">
+                        <local:ParameterCollection Parameters="{Binding StudioSetCommonChorusParameters}"
+                                                   SearchText="{Binding SearchTextStudioSetCommonChorus, Mode=TwoWay}" />
                     </TabItem>
                 </TabControl>
             </TabItem>

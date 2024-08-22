@@ -17,19 +17,19 @@ public class TestIntegra7ParameterDatabaseAnalyzer
     }
 
     [Test]
-    public void Test_MarkMasterControls()
+    public void Test_MarkParentControls()
     {
         IList<Integra7ParameterSpec> db = [
             new(type:NUM, path:"a", offs:[0x00, 0x00], imin:1, imax:4, omin:1, omax:4, bytes:1, res:USED, nib: false, unit:"", repr:null),
             new(type:NUM, path:"b", offs:[0x00, 0x00], imin:1, imax:4, omin:1, omax:4, bytes:1, res:USED, nib: false, unit:"", repr:null,
-                    mst:"a", mstval:"23"),
+                    par:"a", parval:"23"),
             new(type:NUM, path:"c", offs:[0x00, 0x00], imin:1, imax:4, omin:1, omax:4, bytes:1, res:USED, nib: false, unit:"", repr:null,
-                    mst:"b", mstval:"1"),
+                    par:"b", parval:"1"),
         ];
-        Integra7ParameterDatabaseAnalyzer.MarkAllMasterParametersAsStoreTrue(db);
-        Assert.That(db[0].Store, Is.EqualTo(true)); // a is master parameter for b
-        Assert.That(db[1].Store, Is.EqualTo(true)); // b is master parameter for c
-        Assert.That(db[2].Store, Is.EqualTo(false)); // c is not a master parameter
+        Integra7ParameterDatabaseAnalyzer.MarkAllParentParametersAsIsParentTrue(db);
+        Assert.That(db[0].IsParent, Is.EqualTo(true)); // a is parent parameter for b
+        Assert.That(db[1].IsParent, Is.EqualTo(true)); // b is parent parameter for c
+        Assert.That(db[2].IsParent, Is.EqualTo(false)); // c is not a parent parameter
     }
 
     [Test]
@@ -38,21 +38,21 @@ public class TestIntegra7ParameterDatabaseAnalyzer
         IList<Integra7ParameterSpec> db = [
             new(type:NUM, path:"a", offs:[0x00, 0x00], imin:1, imax:4, omin:1, omax:4, bytes:1, res:USED, nib: false, unit:"", repr:null),
             new(type:NUM, path:"b", offs:[0x00, 0x00], imin:1, imax:4, omin:1, omax:4, bytes:1, res:USED, nib: false, unit:"", repr:null,
-                    mst:"a", mstval:"23"),
+                    par:"a", parval:"23"),
             new(type:NUM, path:"c", offs:[0x00, 0x00], imin:1, imax:4, omin:1, omax:4, bytes:1, res:USED, nib: false, unit:"", repr:null,
-                    mst:"b", mstval:"1"),
+                    par:"b", parval:"1"),
         ];
         Integra7ParameterDatabaseAnalyzer.FillInSecondaryDependencies(db);
-        Assert.That(db[0].MasterCtrl, Is.EqualTo(""));
-        Assert.That(db[0].MasterCtrlDispValue, Is.EqualTo(""));
-        Assert.That(db[1].MasterCtrl, Is.EqualTo("a"));
-        Assert.That(db[1].MasterCtrlDispValue, Is.EqualTo("23"));
-        Assert.That(db[1].MasterCtrl2, Is.EqualTo(""));
-        Assert.That(db[1].MasterCtrlDispValue2, Is.EqualTo(""));
-        Assert.That(db[2].MasterCtrl, Is.EqualTo("a"));
-        Assert.That(db[2].MasterCtrlDispValue, Is.EqualTo("23"));
-        Assert.That(db[2].MasterCtrl2, Is.EqualTo("b"));
-        Assert.That(db[2].MasterCtrlDispValue2, Is.EqualTo("1"));
+        Assert.That(db[0].ParentCtrl, Is.EqualTo(""));
+        Assert.That(db[0].ParentCtrlDispValue, Is.EqualTo(""));
+        Assert.That(db[1].ParentCtrl, Is.EqualTo("a"));
+        Assert.That(db[1].ParentCtrlDispValue, Is.EqualTo("23"));
+        Assert.That(db[1].ParentCtrl2, Is.EqualTo(""));
+        Assert.That(db[1].ParentCtrlDispValue2, Is.EqualTo(""));
+        Assert.That(db[2].ParentCtrl, Is.EqualTo("a"));
+        Assert.That(db[2].ParentCtrlDispValue, Is.EqualTo("23"));
+        Assert.That(db[2].ParentCtrl2, Is.EqualTo("b"));
+        Assert.That(db[2].ParentCtrlDispValue2, Is.EqualTo("1"));
     }
 
 }

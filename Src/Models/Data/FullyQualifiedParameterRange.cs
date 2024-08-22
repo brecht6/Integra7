@@ -88,7 +88,7 @@ public class FullyQualifiedParameterRange
             if (p.ValidInContext(ctx))
             {
                 p.ParseFromSysexReply(reply, parameters, firstParameterInSysexReply);
-                if (p.ParSpec.Store)
+                if (p.ParSpec.IsParent)
                 {
                     ctx.Register(p.ParSpec.Path, p.StringValue);
                 }

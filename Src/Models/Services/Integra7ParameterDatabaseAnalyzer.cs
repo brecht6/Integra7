@@ -13,10 +13,10 @@ public class Integra7ParameterDatabaseAnalyzer
         HashSet<string> PathsEncountered = [];
         string previousCommonPrefix = "";
         long prevAddress = 0;
-        string prevMst = "";
-        string prevMstVal = "";
-        string prevMst2 = "";
-        string prevMstVal2 = "";
+        string prevParent = "";
+        string prevParentVal = "";
+        string prevParent2 = "";
+        string prevParentVal2 = "";
         long prevBytes = 0;
 
         foreach (Integra7ParameterSpec s in database)
@@ -35,18 +35,18 @@ public class Integra7ParameterDatabaseAnalyzer
                         Debug.WriteLine($"Extra spaces found in path for {s.Path}. Please fix.");
                     }
                 }
-                if (s.MasterCtrl != "")
+                if (s.ParentCtrl != "")
                 {
-                    if (s.MasterCtrl[0] == ' ' || s.MasterCtrl[^1] == ' ')
+                    if (s.ParentCtrl[0] == ' ' || s.ParentCtrl[^1] == ' ')
                     {
-                        Debug.WriteLine($"Extra spaces found in mst:path for {s.Path}. Please fix.");
+                        Debug.WriteLine($"Extra spaces found in par:path for {s.Path}. Please fix.");
                     }
                 }
-                if (s.MasterCtrl2 != "")
+                if (s.ParentCtrl2 != "")
                 {
-                    if (s.MasterCtrl2[0] == ' ' || s.MasterCtrl2[^1] == ' ')
+                    if (s.ParentCtrl2[0] == ' ' || s.ParentCtrl2[^1] == ' ')
                     {
-                        Debug.WriteLine($"Extra spaces found in mst2:path for {s.Path}. Please fix.");
+                        Debug.WriteLine($"Extra spaces found in par2:path for {s.Path}. Please fix.");
                     }
                 }
             }
@@ -64,18 +64,18 @@ public class Integra7ParameterDatabaseAnalyzer
             {
                 Debug.WriteLine($"Path {s.Path} probably shouldn't have its Reserved flag turned on (otherwise, use Reserved in its name). Please fix.");
             }
-            if (s.MasterCtrl != "")
+            if (s.ParentCtrl != "")
             {
-                if (!PathsEncountered.Contains(s.MasterCtrl))
+                if (!PathsEncountered.Contains(s.ParentCtrl))
                 {
-                    Debug.WriteLine($"Path {s.Path} refers to a non-existing mst:{s.MasterCtrl}. Please fix. Parameters can only depend on parameters that came before them.");
+                    Debug.WriteLine($"Path {s.Path} refers to a non-existing par:{s.ParentCtrl}. Please fix. Parameters can only depend on parameters that came before them.");
                 }
             }
-            if (s.MasterCtrl2 != "")
+            if (s.ParentCtrl2 != "")
             {
-                if (!PathsEncountered.Contains(s.MasterCtrl2))
+                if (!PathsEncountered.Contains(s.ParentCtrl2))
                 {
-                    Debug.WriteLine($"Path {s.Path} refers to a non-existing mst2:{s.MasterCtrl2}. Please fix. Parameters can only depend on parameters that came before them.");
+                    Debug.WriteLine($"Path {s.Path} refers to a non-existing par2:{s.ParentCtrl2}. Please fix. Parameters can only depend on parameters that came before them.");
                 }
             }
             if (previousCommonPrefix != "")
@@ -85,32 +85,32 @@ public class Integra7ParameterDatabaseAnalyzer
                 if (newCommonPrefix == previousCommonPrefix)
                 {
                     long newAddress = ByteUtils.Bytes7ToInt(s.Address);
-                    if ((newAddress <= prevAddress && s.MasterCtrl == "") || (newAddress < prevAddress && s.MasterCtrl != ""))
+                    if ((newAddress <= prevAddress && s.ParentCtrl == "") || (newAddress < prevAddress && s.ParentCtrl != ""))
                     {
                         Debug.WriteLine($"Successive offsets/addresses should increase at {s.Path}. Please check.");
                     }
-                    if (s.MasterCtrl == prevMst && s.MasterCtrlDispValue == prevMstVal && s.MasterCtrl2 == prevMst2 && s.MasterCtrlDispValue2 == prevMstVal2)
+                    if (s.ParentCtrl == prevParent && s.ParentCtrlDispValue == prevParentVal && s.ParentCtrl2 == prevParent2 && s.ParentCtrlDispValue2 == prevParentVal2)
                     {
-                        if (prevMst != "" && prevMst2 == "")
+                        if (prevParent != "" && prevParent2 == "")
                         {
-                            Debug.WriteLine($"{s.Path}: No two parameters should have exact same mst:{prevMst}, mstval:{prevMstVal}. Please fix.");
+                            Debug.WriteLine($"{s.Path}: No two parameters should have exact same par:{prevParent}, parval:{prevParentVal}. Please fix.");
                         }
-                        if (prevMst != "" && prevMst2 != "")
+                        if (prevParent != "" && prevParent2 != "")
                         {
-                            Debug.WriteLine($"{s.Path}: No two parameters should have exact same mst:{prevMst}, mstval:{prevMstVal}, mst2:{prevMst2}, mstval2:{prevMstVal2}. Please fix.");
+                            Debug.WriteLine($"{s.Path}: No two parameters should have exact same par:{prevParent}, parval:{prevParentVal}, par2:{prevParent2}, parval2:{prevParentVal2}. Please fix.");
                         }
                     }
                     if (ByteUtils.Bytes7ToInt(s.Address) != prevAddress + prevBytes)
                     {
-                        if (prevMstVal == s.MasterCtrlDispValue)
+                        if (prevParentVal == s.ParentCtrlDispValue)
                             Debug.WriteLine($"{s.Path}: something seems fishy with the offset address. It doesn't correspond to previous address + previous #bytes). Please check.");
                     }
                     previousCommonPrefix = newCommonPrefix;
                     prevAddress = newAddress;
-                    prevMst = s.MasterCtrl;
-                    prevMstVal = s.MasterCtrlDispValue;
-                    prevMst2 = s.MasterCtrl2;
-                    prevMstVal2 = s.MasterCtrlDispValue2;
+                    prevParent = s.ParentCtrl;
+                    prevParentVal = s.ParentCtrlDispValue;
+                    prevParent2 = s.ParentCtrl2;
+                    prevParentVal2 = s.ParentCtrlDispValue2;
                     prevBytes = s.Bytes;
                 }
                 else
@@ -119,10 +119,10 @@ public class Integra7ParameterDatabaseAnalyzer
                     previousCommonPrefix = String.Join("/", s.Path.Split("/")[..noOfSlash2]);
                     long address = ByteUtils.Bytes7ToInt(s.Address);
                     prevAddress = address;
-                    prevMst = s.MasterCtrl;
-                    prevMstVal = s.MasterCtrlDispValue;
-                    prevMst2 = s.MasterCtrl2;
-                    prevMstVal2 = s.MasterCtrlDispValue2;
+                    prevParent = s.ParentCtrl;
+                    prevParentVal = s.ParentCtrlDispValue;
+                    prevParent2 = s.ParentCtrl2;
+                    prevParentVal2 = s.ParentCtrlDispValue2;
                     prevBytes = s.Bytes;
                 }
             }
@@ -132,10 +132,10 @@ public class Integra7ParameterDatabaseAnalyzer
                 previousCommonPrefix = String.Join("/", s.Path.Split("/")[..noOfSlash]);
                 long address = ByteUtils.Bytes7ToInt(s.Address);
                 prevAddress = address;
-                prevMst = s.MasterCtrl;
-                prevMstVal = s.MasterCtrlDispValue;
-                prevMst2 = s.MasterCtrl2;
-                prevMstVal2 = s.MasterCtrlDispValue2;
+                prevParent = s.ParentCtrl;
+                prevParentVal = s.ParentCtrlDispValue;
+                prevParent2 = s.ParentCtrl2;
+                prevParentVal2 = s.ParentCtrlDispValue2;
                 prevBytes = s.Bytes;
             }
 
@@ -155,28 +155,28 @@ public class Integra7ParameterDatabaseAnalyzer
         }
     }
 
-    public static void MarkAllMasterParametersAsStoreTrue(IList<Integra7ParameterSpec> database)
+    public static void MarkAllParentParametersAsIsParentTrue(IList<Integra7ParameterSpec> database)
     {
-        HashSet<string> ParametersRequiringStoreTrue = [];
-        // pass one: collect all master parameters
+        HashSet<string> ParametersRequiringIsParentTrue = [];
+        // pass one: collect all parent parameters
         foreach (Integra7ParameterSpec s in database)
         {
-            if (s.MasterCtrl != "")
+            if (s.ParentCtrl != "")
             {
-                ParametersRequiringStoreTrue.Add(s.MasterCtrl);
+                ParametersRequiringIsParentTrue.Add(s.ParentCtrl);
             }
-            if (s.MasterCtrl2 != "")
+            if (s.ParentCtrl2 != "")
             {
-                ParametersRequiringStoreTrue.Add(s.MasterCtrl2);
+                ParametersRequiringIsParentTrue.Add(s.ParentCtrl2);
             }
         }
 
-        // pass two: mark all master parameters as master parameters
+        // pass two: mark all parent parameters as parent parameters
         foreach (Integra7ParameterSpec s in database)
         {
-            if (ParametersRequiringStoreTrue.Contains(s.Path))
+            if (ParametersRequiringIsParentTrue.Contains(s.Path))
             {
-                s.Store = true;
+                s.IsParent = true;
             }
         }
     }
@@ -187,13 +187,13 @@ public class Integra7ParameterDatabaseAnalyzer
         // pass one: collect all parameters that depend on another parameter
         foreach (Integra7ParameterSpec s in database)
         {
-            if (s.MasterCtrl != "")
+            if (s.ParentCtrl != "")
             {
-                ParametersDependingOnOtherParameter[s.Path] = new Tuple<string, string>(s.MasterCtrl, s.MasterCtrlDispValue);
+                ParametersDependingOnOtherParameter[s.Path] = new Tuple<string, string>(s.ParentCtrl, s.ParentCtrlDispValue);
             }
-            if (s.MasterCtrl2 != "")
+            if (s.ParentCtrl2 != "")
             {
-                ParametersDependingOnOtherParameter[s.Path] = new Tuple<string, string>(s.MasterCtrl2, s.MasterCtrlDispValue2);
+                ParametersDependingOnOtherParameter[s.Path] = new Tuple<string, string>(s.ParentCtrl2, s.ParentCtrlDispValue2);
             }
         }
 
@@ -228,10 +228,10 @@ public class Integra7ParameterDatabaseAnalyzer
                     string b_disp = abc.Item2.Item2;
                     string c = abc.Item3.Item1;
                     string c_disp = abc.Item3.Item2;
-                    s.MasterCtrl = c;
-                    s.MasterCtrlDispValue = c_disp;
-                    s.MasterCtrl2 = b;
-                    s.MasterCtrlDispValue2 = b_disp;
+                    s.ParentCtrl = c;
+                    s.ParentCtrlDispValue = c_disp;
+                    s.ParentCtrl2 = b;
+                    s.ParentCtrlDispValue2 = b_disp;
                 }
             }
         }

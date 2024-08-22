@@ -16,7 +16,7 @@ public class ParameterListSysexSizeCalculator
         HashSet<string> avoidDoubleCounting = []; // data dependencies make everything harder
         for (int i = 0; i < listOfConsecutiveParameterSpecs.Count; i++)
         {
-            bool dataDependentParameter = listOfConsecutiveParameterSpecs[i].MasterCtrl != "";
+            bool dataDependentParameter = listOfConsecutiveParameterSpecs[i].ParentCtrl != "";
             string commonPrefix = ""; // common prefix is how the system recognizes parameters that are "duplicates"
             if (dataDependentParameter)
             {

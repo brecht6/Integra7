@@ -57,25 +57,25 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
 
     public bool ValidInContext(ParserContext ctx)
     {
-        if (ParSpec.MasterCtrl != "")
+        if (ParSpec.ParentCtrl != "")
         {
-            if (ctx.Contains(ParSpec.MasterCtrl))
+            if (ctx.Contains(ParSpec.ParentCtrl))
             {
-                string value = ctx.Lookup(ParSpec.MasterCtrl);
-                bool StillValid = ParSpec.MasterCtrlDispValue == value;
+                string value = ctx.Lookup(ParSpec.ParentCtrl);
+                bool StillValid = ParSpec.ParentCtrlDispValue == value;
                 if (StillValid)
                 {
-                    if (ParSpec.MasterCtrl2 != "")
+                    if (ParSpec.ParentCtrl2 != "")
                     {
                         // StillValid, but a second level dependency also must be fulfilled
-                        if (ctx.Contains(ParSpec.MasterCtrl2))
+                        if (ctx.Contains(ParSpec.ParentCtrl2))
                         {
-                            string value2 = ctx.Lookup(ParSpec.MasterCtrl2);
-                            return value2 == ParSpec.MasterCtrlDispValue2;
+                            string value2 = ctx.Lookup(ParSpec.ParentCtrl2);
+                            return value2 == ParSpec.ParentCtrlDispValue2;
                         }
                         else
                         {
-                            Debug.Assert(false, $"Cannot parse {ParSpec.Path} without context {ParSpec.MasterCtrl2}. Did you forget to set store==true in {ParSpec.MasterCtrl}?");
+                            Debug.Assert(false, $"Cannot parse {ParSpec.Path} without context {ParSpec.ParentCtrl2}. Did you forget to set isparent==true in {ParSpec.ParentCtrl}?");
                             return false;
                         }
                     }
@@ -91,7 +91,7 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
             }
             else
             {
-                Debug.Assert(false, $"Cannot parse {ParSpec.Path} without context {ParSpec.MasterCtrl}");
+                Debug.Assert(false, $"Cannot parse {ParSpec.Path} without context {ParSpec.ParentCtrl}");
                 return false;
             }
         }

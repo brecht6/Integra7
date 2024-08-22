@@ -32,16 +32,16 @@ public class Integra7ParameterSpec
     public string Unit { get => _unit; }
     private IDictionary<int, string>? _repr;
     public IDictionary<int, string>? Repr { get => _repr; }
-    private string _masterCtrlPath = "";
-    public string MasterCtrl { get => _masterCtrlPath; set => _masterCtrlPath = value; }
-    private string _masterCtrlDispValue = "";
-    public string MasterCtrlDispValue { get => _masterCtrlDispValue; set => _masterCtrlDispValue = value; }
-    private bool _store = false;
-    public bool Store { get => _store; set => _store = value; }
-    private string _masterCtrlPath2 = "";
-    public string MasterCtrl2 { get => _masterCtrlPath2; set => _masterCtrlPath2 = value; }
-    private string _masterCtrlDispValue2 = "";
-    public string MasterCtrlDispValue2 { get => _masterCtrlDispValue2; set => _masterCtrlDispValue2 = value; }
+    private string _parentCtrlPath = "";
+    public string ParentCtrl { get => _parentCtrlPath; set => _parentCtrlPath = value; }
+    private string _parentCtrlDispValue = "";
+    public string ParentCtrlDispValue { get => _parentCtrlDispValue; set => _parentCtrlDispValue = value; }
+    private bool _isParentCtrl = false;
+    public bool IsParent { get => _isParentCtrl; set => _isParentCtrl = value; }
+    private string _parentCtrlPath2 = "";
+    public string ParentCtrl2 { get => _parentCtrlPath2; set => _parentCtrlPath2 = value; }
+    private string _parentCtrlDispValue2 = "";
+    public string ParentCtrlDispValue2 { get => _parentCtrlDispValue2; set => _parentCtrlDispValue2 = value; }
     private float _imin2 = float.NaN;
     public float IMin2 { get => _imin2; }
     private float _imax2 = float.NaN;
@@ -90,7 +90,7 @@ public class Integra7ParameterSpec
         }
     }
 
-    public Integra7ParameterSpec(SpecType type, string path, byte[] offs, int imin, int imax, float omin, float omax, int bytes, bool res, bool nib, string unit, IDictionary<int, string>? repr, string mst = "", string mstval = "", bool store = false, string mst2 = "", string mstval2 = "", float imin2 = float.NaN, float imax2 = float.NaN, float omin2 = float.NaN, float omax2 = float.NaN)
+    public Integra7ParameterSpec(SpecType type, string path, byte[] offs, int imin, int imax, float omin, float omax, int bytes, bool res, bool nib, string unit, IDictionary<int, string>? repr, string par = "", string parval = "", bool isparent = false, string par2 = "", string parval2 = "", float imin2 = float.NaN, float imax2 = float.NaN, float omin2 = float.NaN, float omax2 = float.NaN)
     {
         _type = type; // numeric or ascii?
         _path = path; // name of parameter
@@ -104,11 +104,11 @@ public class Integra7ParameterSpec
         _perNibble = nib; // boolean to indicate if this parameter value is transmitted as a series of nibbles
         _unit = unit; // string to indicate a unit
         _repr = repr; // lookup table string -> int for discrete raw values mapping 
-        _masterCtrlPath = mst; // a path of a master control who's value determines if this spec is valid
-        _masterCtrlDispValue = mstval; // the displayed value that the master control must have for this spec to be valid
-        _store = store; // a boolean to indicate that the displayed value of this parameter should be recorded in a context table during parsing (used for master controls)
-        _masterCtrlPath2 = mst2; // second level of depencency
-        _masterCtrlDispValue2 = mstval2; // second level of dependency
+        _parentCtrlPath = par; // a path of a parent control who's value determines if this spec is valid
+        _parentCtrlDispValue = parval; // the displayed value that the parent control must have for this spec to be valid
+        _isParentCtrl = isparent; // a boolean to indicate that the displayed value of this parameter should be recorded in a context table during parsing (used for parent controls)
+        _parentCtrlPath2 = par2; // second level of depencency
+        _parentCtrlDispValue2 = parval2; // second level of dependency
         _imin2 = imin2; // second level of output mapping, used in combination with generic chorus, reverb, mfx parameters
         _imax2 = imax2; // second level of output mapping, used in combination with generic chorus, reverb, mfx parameters
         _omin2 = omin2; // second level of output mapping, used in combination with generic chorus, reverb, mfx parameters
@@ -118,7 +118,7 @@ public class Integra7ParameterSpec
     public bool IsSameAs(Integra7ParameterSpec other)
     {
         return _path == other._path;
-        // no need to check repr, mst, mstval, mst2, mstval2
+        // no need to check repr, par, parval, par2, parval2
         // just path should be enough since we are not supposed to specify duplicate paths
     }
 

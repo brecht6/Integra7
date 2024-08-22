@@ -29,9 +29,9 @@ public class ParserContext
     public void InitializeFromExistingData(List<FullyQualifiedParameter> pars)
     {
         Clear();
-        foreach(FullyQualifiedParameter p in pars)
+        foreach (FullyQualifiedParameter p in pars)
         {
-            if (p.ParSpec.Store)
+            if (p.ParSpec.IsParent)
             {
                 Register(p.ParSpec.Path, p.StringValue);
             }

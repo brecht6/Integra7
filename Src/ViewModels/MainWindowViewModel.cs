@@ -691,15 +691,15 @@ public partial class MainWindowViewModel : ReactiveObject
         _cleanUp[17] = _sourceCacheStudioSetCommonChorusParameters.Connect()
                                     .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
                                     .Filter(parFilterStudioSetCommonChorus)
-                                    .FilterOnObservable(par => ((par.ParSpec.MasterCtrl != "") && (par.ParSpec.MasterCtrl is string parentId))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
                                             ? _sourceCacheStudioSetCommonChorusParameters
                                                 .Watch(parentId)
-                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.MasterCtrlDispValue)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
                                             : Observable.Return(true))
-                                    .FilterOnObservable(par => ((par.ParSpec.MasterCtrl2 != "") && (par.ParSpec.MasterCtrl2 is string parentId2))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
                                             ? _sourceCacheStudioSetCommonChorusParameters
                                                 .Watch(parentId2)
-                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.MasterCtrlDispValue2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
                                             : Observable.Return(true))
                                     .SortAndBind(
                                         out _studioSetCommonChorusParameters,
@@ -709,15 +709,15 @@ public partial class MainWindowViewModel : ReactiveObject
 
         _cleanUp[18] = _sourceCacheStudioSetCommonChorusParameters.Connect()
                                     .Filter(refreshCommonChorus)
-                                    .FilterOnObservable(par => ((par.ParSpec.MasterCtrl != "") && (par.ParSpec.MasterCtrl is string parentId))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
                                             ? _sourceCacheStudioSetCommonChorusParameters
                                                 .Watch(parentId)
-                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.MasterCtrlDispValue)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
                                             : Observable.Return(true))
-                                    .FilterOnObservable(par => ((par.ParSpec.MasterCtrl2 != "") && (par.ParSpec.MasterCtrl2 is string parentId2))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
                                             ? _sourceCacheStudioSetCommonChorusParameters
                                                 .Watch(parentId2)
-                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.MasterCtrlDispValue2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
                                             : Observable.Return(true))
                                     .SortAndBind(
                                         out _studioSetCommonChorusParameters,
@@ -734,7 +734,7 @@ public partial class MainWindowViewModel : ReactiveObject
         FullyQualifiedParameter p = s.Par;
         p.StringValue = s.DisplayValue;
         _integra7Communicator?.WriteSingleParameterToIntegra(p);
-        if (p.ParSpec.Store)
+        if (p.ParSpec.IsParent)
         {
             _integra7Communicator?.GetDomain(p).ReadFromIntegra();
             ForceUiRefresh(p);
@@ -744,7 +744,7 @@ public partial class MainWindowViewModel : ReactiveObject
     public void UpdateUiFromIntegra(UpdateFromSysexSpec s)
     {
         List<UpdateMessageSpec> parameters = SysexDataTransmissionParser.ConvertSysexToParameterUpdates(s.SysexMsg, _integra7Communicator);
-        bool ParentControlModified = parameters.Any(spec => spec.Par.ParSpec.Store);
+        bool ParentControlModified = parameters.Any(spec => spec.Par.ParSpec.IsParent);
         if (!ParentControlModified)
         {
             // update only the affected parameters

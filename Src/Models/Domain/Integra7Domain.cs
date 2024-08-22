@@ -15,6 +15,10 @@ public class Integra7Domain
     private Dictionary<Tuple<string, string>, DomainBase> _parameterMapper; // (start addr name, offset addr name) -> DomainBase
     private Dictionary<long, List<FullyQualifiedParameter>> _sysexAddressMapper; // (long)address -> (DomainBase, parameter name)
 
+    public DomainBase Setup
+    {
+        get => _parameterMapper[new Tuple<string, string>("Setup", "Offset/Setup Sound Mode")];
+    }
     public DomainBase StudioSetCommon
     {
         get => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common")];

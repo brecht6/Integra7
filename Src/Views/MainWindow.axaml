@@ -64,6 +64,10 @@
             <TabItem Header="Common"
                      FontSize="14">
                 <TabControl TabStripPlacement="Top">
+                    <TabItem Header="Setup">
+                        <local:ParameterCollection Parameters="{Binding SetupParameters}"
+                                                   SearchText="{Binding SearchTextSetup, Mode=TwoWay}" />
+                    </TabItem>
                     <TabItem Header="Common">
                         <local:ParameterCollection Parameters="{Binding StudioSetCommonParameters}"
                                                    SearchText="{Binding SearchTextStudioSetCommon, Mode=TwoWay}" />

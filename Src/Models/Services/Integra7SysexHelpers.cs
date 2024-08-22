@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace Integra7AuralAlchemist.Models.Services;
@@ -39,6 +40,26 @@ public class Integra7SysexHelpers
         }
         deviceId = 0;
         return false;
+    }
+
+    public static bool CheckIsDataSetMsg(byte[] reply)
+    {
+        // device id will be ignored
+        byte[] expectedHeader = ByteUtils.Flatten([EXCLUSIVE_STATUS, ROLAND_ID, [0x10], MODEL_ID, COMMAND_DATASET]);
+        int len = expectedHeader.Length;
+        byte[] header = ByteUtils.Slice(reply, 0, len);
+        return header[0] == EXCLUSIVE_STATUS[0] && header[1] == ROLAND_ID[0] && header[3..6].SequenceEqual(MODEL_ID) && header[6] == COMMAND_DATASET[0];
+    }
+
+    public static byte[] ExtractPayload(byte[] reply)
+    {
+        // device id will be ignored
+        byte[] expectedHeader = ByteUtils.Flatten([EXCLUSIVE_STATUS, ROLAND_ID, [0x10], MODEL_ID, COMMAND_DATASET]);
+        int len = expectedHeader.Length;
+        int trimIdx = Array.IndexOf(reply, END_OF_SYSEX[0]);
+        byte[] trimmedSysexReply = ByteUtils.Slice(reply, 0, trimIdx); // this already removes teh END_OF_SYSEX byte
+        byte[] payload = ByteUtils.Slice(trimmedSysexReply, len, trimmedSysexReply.Length - len - 1); // -1 to remove the checksum
+        return payload;
     }
 
     public static byte[] MakeDataRequest(byte deviceId, byte[] address, long size)

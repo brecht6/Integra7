@@ -1,6 +1,4 @@
-using System.IO;
-using Integra7AuralAlchemist.Models.Data;
-using ReactiveUI;
+namespace Integra7AuralAlchemist.Models.Data;
 
 public class UpdateMessageSpec
 {
@@ -14,4 +12,10 @@ public class UpdateMessageSpec
         _par = par;
         _displayvalue = displayvalue;
     }
+}
+
+public class UpdateFromSysexSpec(byte[] sysexMsg)
+{
+    private readonly byte[] _sysexMsg = sysexMsg;
+    public byte[] SysexMsg { get => _sysexMsg; }
 }

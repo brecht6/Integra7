@@ -13,7 +13,7 @@ public class Integra7Domain
     private Integra7Parameters _integra7Parameters;
     private IIntegra7Api _integra7Api;
     private Dictionary<Tuple<string, string>, DomainBase> _parameterMapper; // (start addr name, offset addr name) -> DomainBase
-    private Dictionary<long, FullyQualifiedParameter> _sysexAddressMapper; // (long)address -> (DomainBase, parameter name)
+    private Dictionary<long, List<FullyQualifiedParameter>> _sysexAddressMapper; // (long)address -> (DomainBase, parameter name)
 
     public DomainBase StudioSetCommon
     {
@@ -83,9 +83,32 @@ public class Integra7Domain
             foreach (FullyQualifiedParameter p in ps)
             {
                 long CompleteAddress = ByteUtils.Bytes7ToInt(p.CompleteAddress(i7startAddresses, i7parameters));
-                _sysexAddressMapper[CompleteAddress] = p;
+                if (_sysexAddressMapper.ContainsKey(CompleteAddress))
+                    _sysexAddressMapper[CompleteAddress].Add(p);
+                else
+                    _sysexAddressMapper[CompleteAddress] = [p];
             }
         }
+    }
+
+    public FullyQualifiedParameter? LookupAddress(byte[] address)
+    {
+        long completeAddress = ByteUtils.Bytes7ToInt(address);
+        if (_sysexAddressMapper.ContainsKey(completeAddress))
+        {
+            List<FullyQualifiedParameter> ps = _sysexAddressMapper[completeAddress];
+            foreach (FullyQualifiedParameter par in ps)
+            {
+                DomainBase b = GetDomain(par);
+                ParserContext ctx = new();
+                ctx.InitializeFromExistingData(b.GetRelevantParameters());
+                if (par.ValidInContext(ctx))
+                {
+                    return par;
+                }
+            }
+        }
+        return null;
     }
 
     public void WriteSingleParameterToIntegra(FullyQualifiedParameter p)

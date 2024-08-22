@@ -726,6 +726,7 @@ public partial class MainWindowViewModel : ReactiveObject
                                     .Subscribe();
 
         MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(250)).Subscribe(m => UpdateIntegraFromUi(m));
+        MessageBus.Current.Listen<UpdateFromSysexSpec>("hw2ui").Throttle(TimeSpan.FromMilliseconds(250)).Subscribe(m => UpdateUiFromIntegra(m));
     }
 
     public void UpdateIntegraFromUi(UpdateMessageSpec s)
@@ -735,16 +736,35 @@ public partial class MainWindowViewModel : ReactiveObject
         _integra7Communicator?.WriteSingleParameterToIntegra(p);
         if (p.ParSpec.Store)
         {
-            _integra7Communicator.GetDomain(p).ReadFromIntegra();
+            _integra7Communicator?.GetDomain(p).ReadFromIntegra();
             ForceUiRefresh(p);
+        }
+    }
+
+    public void UpdateUiFromIntegra(UpdateFromSysexSpec s)
+    {
+        List<UpdateMessageSpec> parameters = SysexDataTransmissionParser.ConvertSysexToParameterUpdates(s.SysexMsg, _integra7Communicator);
+        bool ParentControlModified = parameters.Any(spec => spec.Par.ParSpec.Store);
+        if (!ParentControlModified)
+        {
+            // update only the affected parameters
+            foreach (UpdateMessageSpec spec in parameters)
+            {
+                _integra7Communicator?.GetDomain(spec.Par).ModifySingleParameterDisplayedValue(spec.Par.ParSpec.Path, spec.DisplayValue);
+                ForceUiRefresh(parameters.First().Par);
+            }
+        }
+        else
+        {
+            // need to resync all parameters instead of just updating the modified parameters
+            FullyQualifiedParameter firstInList = parameters.First().Par; // all affected parameters belong to same startaddress/offset address anyway
+            _integra7Communicator?.GetDomain(firstInList).ReadFromIntegra();
+            ForceUiRefresh(firstInList);
         }
     }
 
     private void ForceUiRefresh(FullyQualifiedParameter p)
     {
-        if (!p.ParSpec.Store) // only refresh ui after modifying master control
-            return;
-
         if (p.Offset == "Offset/Studio Set Common Chorus")
         {
             // force re-evaluation of the dynamic data filters after the parameters were read from integra-7

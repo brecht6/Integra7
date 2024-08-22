@@ -1,10 +1,10 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
-
 using Commons.Music.Midi;
+using Integra7AuralAlchemist.Models.Data;
+using ReactiveUI;
 
 namespace Integra7AuralAlchemist.Models.Services;
 public interface IMidiIn
@@ -61,7 +61,7 @@ public class MidiIn : IMidiIn
         }
         if (!_manualReplyHandling)
         {
-            Debug.WriteLine("This reply must be broadcast.");
+            MessageBus.Current.SendMessage<UpdateFromSysexSpec>(new UpdateFromSysexSpec(e.Data), "hw2ui");
         }
         _manualReplyHandling = false;
     }

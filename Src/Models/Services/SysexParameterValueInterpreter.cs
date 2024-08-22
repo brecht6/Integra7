@@ -6,9 +6,15 @@ namespace Integra7AuralAlchemist.Models.Services;
 
 public class SysexParameterValueInterpreter
 {
-    public static void Interpret(byte[] parResult, Integra7ParameterSpec parspec, out long rawNumericValue, out string stringValue)
+    public static void Interpret(byte[] parResult, Integra7ParameterSpec? parspec, out long rawNumericValue, out string stringValue)
     {
         rawNumericValue = 0;
+
+        if (parspec is null)
+        {
+            stringValue = "";
+            return ;
+        }
 
         if (parspec.Type == Integra7ParameterSpec.SpecType.NUMERIC)
         {

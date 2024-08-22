@@ -19,11 +19,14 @@ public class SysexDataTransmissionParser
                 byte[] address = ByteUtils.Slice(payload, currentLocation, currentLocation + 4);
                 currentLocation += 4; // skip address
                 FullyQualifiedParameter? p = i7?.LookupAddress(address);
-                int bytes = p.ParSpec.Bytes;
-                byte[] parResult = ByteUtils.Slice(payload, currentLocation, bytes);
-                SysexParameterValueInterpreter.Interpret(parResult, p.ParSpec, out long rawVal, out string displayValue);
-                result.Add(new UpdateMessageSpec(p, displayValue));
-                currentLocation += bytes /* skip parameter data */;
+                int? bytes = p?.ParSpec.Bytes;
+                byte[] parResult = ByteUtils.Slice(payload, currentLocation, bytes ?? 0);
+                if (p is not null)
+                {
+                    SysexParameterValueInterpreter.Interpret(parResult, p?.ParSpec, out long rawVal, out string displayValue);
+                    result.Add(new UpdateMessageSpec(p, displayValue));
+                }
+                currentLocation += bytes ?? 0 /* skip parameter data */;
             }
         }
         return result;

@@ -751,7 +751,7 @@ public partial class MainWindowViewModel : ReactiveObject
             // this feels like a very ugly hack, but i currently do not know how to do it properly
             // i tried tons of other stuff, but nothing seemed to work
             // ... shiver ...
-            RefreshCommonChorusNeeded = ".";
+            RefreshCommonChorusNeeded = "."; // RefreshCommonChorusNeeded must not have any .Throttle clauses
             RefreshCommonChorusNeeded = SearchTextStudioSetCommonChorus;
         }
     }

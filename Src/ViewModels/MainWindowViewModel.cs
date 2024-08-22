@@ -691,6 +691,7 @@ public partial class MainWindowViewModel : ReactiveObject
                                     .Subscribe();
 
         _cleanUp[17] = _sourceCacheStudioSetCommonChorusParameters.Connect()
+                                    .Filter(refreshCommonChorus)
                                     .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
                                     .Filter(parFilterStudioSetCommonChorus)
                                     .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
@@ -703,24 +704,7 @@ public partial class MainWindowViewModel : ReactiveObject
                                                 .Watch(parentId2)
                                                 .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
                                             : Observable.Return(true))
-                                    .SortAndBind(
-                                        out _studioSetCommonChorusParameters,
-                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
-                                    .DisposeMany()
-                                    .Subscribe();
-
-        _cleanUp[18] = _sourceCacheStudioSetCommonChorusParameters.Connect()
-                                    .Filter(refreshCommonChorus)
-                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
-                                            ? _sourceCacheStudioSetCommonChorusParameters
-                                                .Watch(parentId)
-                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
-                                            : Observable.Return(true))
-                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
-                                            ? _sourceCacheStudioSetCommonChorusParameters
-                                                .Watch(parentId2)
-                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
-                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .SortAndBind(
                                         out _studioSetCommonChorusParameters,
                                         SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))

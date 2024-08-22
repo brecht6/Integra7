@@ -617,73 +617,89 @@ public partial class MainWindowViewModel : ReactiveObject
                           .Select(_parameterFilter);
 
         _cleanUp[0] = _sourceCacheCh0.Connect()
-                                .Bind(out _presetsCh0)
-                                .DisposeMany()
-                                .Subscribe();
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .Bind(out _presetsCh0)
+                                    .DisposeMany()
+                                    .Subscribe();
 
         _cleanUp[1] = _sourceCacheCh1.Connect()
-                            .Bind(out _presetsCh1)
-                            .DisposeMany()
-                            .Subscribe();
-
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .Bind(out _presetsCh1)
+                                    .DisposeMany()
+                                    .Subscribe();
         _cleanUp[2] = _sourceCacheCh2.Connect()
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .Bind(out _presetsCh2)
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[3] = _sourceCacheCh3.Connect()
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .Bind(out _presetsCh3)
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[4] = _sourceCacheCh4.Connect()
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .Bind(out _presetsCh4)
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[5] = _sourceCacheCh5.Connect()
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .Bind(out _presetsCh5)
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[6] = _sourceCacheCh6.Connect()
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .Bind(out _presetsCh6)
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[7] = _sourceCacheCh7.Connect()
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .Bind(out _presetsCh7)
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[8] = _sourceCacheCh8.Connect()
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .Bind(out _presetsCh8)
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[9] = _sourceCacheCh9.Connect()
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .Bind(out _presetsCh9)
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[10] = _sourceCacheCh10.Connect()
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .Bind(out _presetsCh10)
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[11] = _sourceCacheCh11.Connect()
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .Bind(out _presetsCh11)
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[12] = _sourceCacheCh12.Connect()
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .Bind(out _presetsCh12)
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[13] = _sourceCacheCh13.Connect()
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .Bind(out _presetsCh13)
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[14] = _sourceCacheCh14.Connect()
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .Bind(out _presetsCh14)
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[15] = _sourceCacheCh15.Connect()
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .Bind(out _presetsCh15)
                                     .DisposeMany()
                                     .Subscribe();
         _cleanUp[16] = _sourceCacheStudioSetCommonParameters.Connect()
                                     .Filter(parFilterStudioSetCommon)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
                                     .SortAndBind(
                                         out _studioSetCommonParameters,
                                         SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
@@ -755,7 +771,7 @@ public partial class MainWindowViewModel : ReactiveObject
         {
             // force re-evaluation of the dynamic data filters after the parameters were read from integra-7
             // this feels like a very ugly hack, but i currently do not know how to do it properly
-            // i tried tons of other stuff, but nothing seemed to work
+            // i tried tons of other stuff (like: "this.RaisePropertyChanged(nameof(RefreshCommonChorusNeeded))"), but nothing seems to work
             // ... shiver ...
             RefreshCommonChorusNeeded = "."; // RefreshCommonChorusNeeded must not have any .Throttle clauses
             RefreshCommonChorusNeeded = SearchTextStudioSetCommonChorus;

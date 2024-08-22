@@ -14,6 +14,7 @@ using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
 using Integra7AuralAlchemist.Models.Domain;
 using DynamicData.Binding;
+using System.Diagnostics;
 
 namespace Integra7AuralAlchemist.ViewModels;
 
@@ -195,7 +196,8 @@ public partial class MainWindowViewModel : ReactiveObject
 
     Func<FullyQualifiedParameter, bool> _parameterFilter(string text) => par =>
     {
-        return !par.ParSpec.Reserved && (string.IsNullOrEmpty(text) || par.ParSpec.Path.ToLower().Contains(text.ToLower()));
+        bool ReturnValue = !par.ParSpec.Reserved && (string.IsNullOrEmpty(text) || par.ParSpec.Name.Contains(text, StringComparison.CurrentCultureIgnoreCase));
+        return ReturnValue;
     };
     Func<FullyQualifiedParameter, bool> _allpassFilter(bool dummy) => par =>
     {

@@ -44,7 +44,7 @@ public class Integra7Api : IIntegra7Api
     public bool CheckIdentity()
     {
         byte[] data = Integra7SysexHelpers.IDENTITY_REQUEST;
-        _midiIn?.DiscardUnhandledPreviousReply();
+        _midiIn?.AnnounceIntentionToManuallyHandleReply();
         _midiOut?.SafeSend(data);
         byte[] reply = _midiIn?.GetReply() ?? [];
         return Integra7SysexHelpers.CheckIdentityReply(reply, out _deviceId);
@@ -53,7 +53,7 @@ public class Integra7Api : IIntegra7Api
     public byte[] MakeDataRequest(byte[] address, long size)
     {
         byte[] data = Integra7SysexHelpers.MakeDataRequest(DeviceId(), address, size);
-        _midiIn?.DiscardUnhandledPreviousReply();
+        _midiIn?.AnnounceIntentionToManuallyHandleReply();
         _midiOut?.SafeSend(data);
         byte[] reply = _midiIn?.GetReply() ?? [];
         return reply;

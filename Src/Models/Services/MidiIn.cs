@@ -10,7 +10,7 @@ namespace Integra7AuralAlchemist.Models.Services;
 public interface IMidiIn
 {
     public byte[] GetReply();
-    public void DiscardUnhandledPreviousReply();
+    public void AnnounceIntentionToManuallyHandleReply();
 }
 
 
@@ -19,6 +19,7 @@ public class MidiIn : IMidiIn
     private readonly IMidiAccess2? _midiAccessManager = null;
     private IMidiInput? _access = null;
     private IMidiPortDetails? _midiPortDetails = null;
+    private bool _manualReplyHandling = false;
     private event EventHandler<MidiReceivedEventArgs> _lastEventHandler;
     private static ManualResetEvent _replyReady = new ManualResetEvent(false);
     private byte[] _replyData = [];
@@ -58,6 +59,11 @@ public class MidiIn : IMidiIn
         {
             ByteStreamDisplay.Display("Received: ", e.Data);
         }
+        if (!_manualReplyHandling)
+        {
+            Debug.WriteLine("This reply must be broadcast.");
+        }
+        _manualReplyHandling = false;
     }
 
     public byte[] GetReply()
@@ -75,8 +81,9 @@ public class MidiIn : IMidiIn
         }
     }
 
-    public void DiscardUnhandledPreviousReply()
+    public void AnnounceIntentionToManuallyHandleReply()
     {
         _replyReady.Reset();
+        _manualReplyHandling = true;
     }
 }

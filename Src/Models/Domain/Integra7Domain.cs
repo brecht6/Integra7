@@ -46,6 +46,10 @@ public class Integra7Domain
     {
         return _parameterMapper[new Tuple<string, string>("Temporary Studio Set", $"Offset/Studio Set MIDI Channel {zeroBasedPartNo + 1}")];
     }
+    public DomainBase StudioSetPart(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string>("Temporary Studio Set", $"Offset/Studio Set Part {zeroBasedPartNo + 1}")];
+    }
     public DomainBase System
     {
         get => _parameterMapper[new Tuple<string, string>("System", "Offset/System Common")];
@@ -151,11 +155,15 @@ public class Integra7Domain
 
     public DomainBase GetDomain(FullyQualifiedParameter p)
     {
-        Tuple<string, string> key = new(p.Start, p.Offset);
+        return GetDomain(p.Start, p.Offset);
+    }
+
+    public DomainBase GetDomain(string StartAddressName, string OffsetAddressName)
+    {
+        Tuple<string, string> key = new(StartAddressName, OffsetAddressName);
         if (!_parameterMapper.ContainsKey(key))
         {
-
-            Debug.WriteLine($"Error. Integra7 doesn't know parameters with start address {p.Start} and offset address {p.Offset}. Please extend or fix.");
+            Debug.WriteLine($"Error. Integra7 doesn't know parameters with start address {StartAddressName} and offset address {OffsetAddressName}. Please extend or fix.");
             return _parameterMapper.First().Value;
         }
         return _parameterMapper[key];

@@ -241,6 +241,71 @@ public partial class MainWindowViewModel : ReactiveObject
     [Reactive]
     private string _searchTextStudioSetMidi15;
 
+    [Reactive]
+    private string _searchTextStudioSetPart0;
+    [Reactive]
+    private string _searchTextStudioSetPart1;
+    [Reactive]
+    private string _searchTextStudioSetPart2;
+    [Reactive]
+    private string _searchTextStudioSetPart3;
+    [Reactive]
+    private string _searchTextStudioSetPart4;
+    [Reactive]
+    private string _searchTextStudioSetPart5;
+    [Reactive]
+    private string _searchTextStudioSetPart6;
+    [Reactive]
+    private string _searchTextStudioSetPart7;
+    [Reactive]
+    private string _searchTextStudioSetPart8;
+    [Reactive]
+    private string _searchTextStudioSetPart9;
+    [Reactive]
+    private string _searchTextStudioSetPart10;
+    [Reactive]
+    private string _searchTextStudioSetPart11;
+    [Reactive]
+    private string _searchTextStudioSetPart12;
+    [Reactive]
+    private string _searchTextStudioSetPart13;
+    [Reactive]
+    private string _searchTextStudioSetPart14;
+    [Reactive]
+    private string _searchTextStudioSetPart15;
+
+    [Reactive]
+    public string _refreshStudioSetPart0;
+    [Reactive]
+    public string _refreshStudioSetPart1;
+    [Reactive]
+    public string _refreshStudioSetPart2;
+    [Reactive]
+    public string _refreshStudioSetPart3;
+    [Reactive]
+    public string _refreshStudioSetPart4;
+    [Reactive]
+    public string _refreshStudioSetPart5;
+    [Reactive]
+    public string _refreshStudioSetPart6;
+    [Reactive]
+    public string _refreshStudioSetPart7;
+    [Reactive]
+    public string _refreshStudioSetPart8;
+    [Reactive]
+    public string _refreshStudioSetPart9;
+    [Reactive]
+    public string _refreshStudioSetPart10;
+    [Reactive]
+    public string _refreshStudioSetPart11;
+    [Reactive]
+    public string _refreshStudioSetPart12;
+    [Reactive]
+    public string _refreshStudioSetPart13;
+    [Reactive]
+    public string _refreshStudioSetPart14;
+    [Reactive]
+    public string _refreshStudioSetPart15;
 
     Func<FullyQualifiedParameter, bool> _parameterFilter(string text) => par =>
     {
@@ -479,6 +544,56 @@ public partial class MainWindowViewModel : ReactiveObject
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters15;
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters15 => _studioSetMidiParameters15;
 
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters0 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters0;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters0 => _studioSetPartParameters0;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters1 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters1;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters1 => _studioSetPartParameters1;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters2 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters2;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters2 => _studioSetPartParameters2;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters3 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters3;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters3 => _studioSetPartParameters3;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters4 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters4;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters4 => _studioSetPartParameters4;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters5 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters5;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters5 => _studioSetPartParameters5;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters6 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters6;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters6 => _studioSetPartParameters6;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters7 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters7;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters7 => _studioSetPartParameters7;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters8 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters8;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters8 => _studioSetPartParameters8;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters9 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters9;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters9 => _studioSetPartParameters9;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters10 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters10;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters10 => _studioSetPartParameters10;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters11 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters11;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters11 => _studioSetPartParameters11;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters12 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters12;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters12 => _studioSetPartParameters12;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters13 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters13;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters13 => _studioSetPartParameters13;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters14 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters14;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters14 => _studioSetPartParameters14;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters15 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters15;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters15 => _studioSetPartParameters15;
+
+
     private SourceCache<Integra7Preset, int> GetSourceCache(byte Channel)
     {
         switch (Channel)
@@ -635,6 +750,55 @@ public partial class MainWindowViewModel : ReactiveObject
             _integra7Communicator.StudioSetMidi(15).ReadFromIntegra();
             List<FullyQualifiedParameter> p_mid15 = _integra7Communicator.StudioSetMidi(15).GetRelevantParameters(true, true);
             _sourceCacheStudioSetMidiParameters15.AddOrUpdate(p_mid15);
+
+            _integra7Communicator.StudioSetPart(0).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part0 = _integra7Communicator.StudioSetPart(0).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters0.AddOrUpdate(p_part0);
+            _integra7Communicator.StudioSetPart(1).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part1 = _integra7Communicator.StudioSetPart(1).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters1.AddOrUpdate(p_part1);
+            _integra7Communicator.StudioSetPart(2).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part2 = _integra7Communicator.StudioSetPart(2).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters2.AddOrUpdate(p_part2);
+            _integra7Communicator.StudioSetPart(3).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part3 = _integra7Communicator.StudioSetPart(3).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters3.AddOrUpdate(p_part3);
+            _integra7Communicator.StudioSetPart(4).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part4 = _integra7Communicator.StudioSetPart(4).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters4.AddOrUpdate(p_part4);
+            _integra7Communicator.StudioSetPart(5).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part5 = _integra7Communicator.StudioSetPart(5).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters5.AddOrUpdate(p_part5);
+            _integra7Communicator.StudioSetPart(6).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part6 = _integra7Communicator.StudioSetPart(6).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters6.AddOrUpdate(p_part6);
+            _integra7Communicator.StudioSetPart(7).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part7 = _integra7Communicator.StudioSetPart(7).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters7.AddOrUpdate(p_part7);
+            _integra7Communicator.StudioSetPart(8).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part8 = _integra7Communicator.StudioSetPart(8).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters8.AddOrUpdate(p_part8);
+            _integra7Communicator.StudioSetPart(9).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part9 = _integra7Communicator.StudioSetPart(9).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters9.AddOrUpdate(p_part9);
+            _integra7Communicator.StudioSetPart(10).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part10 = _integra7Communicator.StudioSetPart(10).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters10.AddOrUpdate(p_part10);
+            _integra7Communicator.StudioSetPart(11).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part11 = _integra7Communicator.StudioSetPart(11).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters11.AddOrUpdate(p_part11);
+            _integra7Communicator.StudioSetPart(12).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part12 = _integra7Communicator.StudioSetPart(12).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters12.AddOrUpdate(p_part12);
+            _integra7Communicator.StudioSetPart(13).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part13 = _integra7Communicator.StudioSetPart(13).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters13.AddOrUpdate(p_part13);
+            _integra7Communicator.StudioSetPart(14).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part14 = _integra7Communicator.StudioSetPart(14).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters14.AddOrUpdate(p_part14);
+            _integra7Communicator.StudioSetPart(15).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_part15 = _integra7Communicator.StudioSetPart(15).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetPartParameters15.AddOrUpdate(p_part15);
         }
         else
         {
@@ -857,6 +1021,103 @@ public partial class MainWindowViewModel : ReactiveObject
         var parFilterStudioSetMidiParameters15 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi15)
                                             .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
                                             .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+
+        var parFilterStudioSetPartParameters0 = this.WhenAnyValue(x => x.SearchTextStudioSetPart0)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetPartParameters1 = this.WhenAnyValue(x => x.SearchTextStudioSetPart1)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetPartParameters2 = this.WhenAnyValue(x => x.SearchTextStudioSetPart2)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetPartParameters3 = this.WhenAnyValue(x => x.SearchTextStudioSetPart3)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetPartParameters4 = this.WhenAnyValue(x => x.SearchTextStudioSetPart4)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetPartParameters5 = this.WhenAnyValue(x => x.SearchTextStudioSetPart5)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetPartParameters6 = this.WhenAnyValue(x => x.SearchTextStudioSetPart6)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetPartParameters7 = this.WhenAnyValue(x => x.SearchTextStudioSetPart7)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetPartParameters8 = this.WhenAnyValue(x => x.SearchTextStudioSetPart8)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetPartParameters9 = this.WhenAnyValue(x => x.SearchTextStudioSetPart9)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetPartParameters10 = this.WhenAnyValue(x => x.SearchTextStudioSetPart10)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetPartParameters11 = this.WhenAnyValue(x => x.SearchTextStudioSetPart11)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetPartParameters12 = this.WhenAnyValue(x => x.SearchTextStudioSetPart12)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetPartParameters13 = this.WhenAnyValue(x => x.SearchTextStudioSetPart13)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetPartParameters14 = this.WhenAnyValue(x => x.SearchTextStudioSetPart14)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetPartParameters15 = this.WhenAnyValue(x => x.SearchTextStudioSetPart15)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart0 = this.WhenAnyValue(x => x.RefreshStudioSetPart0)
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart1 = this.WhenAnyValue(x => x.RefreshStudioSetPart1)
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart2 = this.WhenAnyValue(x => x.RefreshStudioSetPart2)
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart3 = this.WhenAnyValue(x => x.RefreshStudioSetPart3)
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart4 = this.WhenAnyValue(x => x.RefreshStudioSetPart4)
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart5 = this.WhenAnyValue(x => x.RefreshStudioSetPart5)
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart6 = this.WhenAnyValue(x => x.RefreshStudioSetPart6)
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart7 = this.WhenAnyValue(x => x.RefreshStudioSetPart7)
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart8 = this.WhenAnyValue(x => x.RefreshStudioSetPart8)
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart9 = this.WhenAnyValue(x => x.RefreshStudioSetPart9)
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart10 = this.WhenAnyValue(x => x.RefreshStudioSetPart10)
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart11 = this.WhenAnyValue(x => x.RefreshStudioSetPart11)
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart12 = this.WhenAnyValue(x => x.RefreshStudioSetPart12)
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart13 = this.WhenAnyValue(x => x.RefreshStudioSetPart13)
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart14 = this.WhenAnyValue(x => x.RefreshStudioSetPart14)
+                                            .Select(_parameterFilter);
+        var refreshFilterStudioSetPart15 = this.WhenAnyValue(x => x.RefreshStudioSetPart15)
                                             .Select(_parameterFilter);
 
         _cleanUp[0] = _sourceCacheCh0.Connect()
@@ -1197,9 +1458,331 @@ public partial class MainWindowViewModel : ReactiveObject
                                     .DisposeMany()
                                     .Subscribe();
 
+        _cleanUp[38] = _sourceCacheStudioSetPartParameters0.Connect()
+                                    .Filter(refreshFilterStudioSetPart0)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters0)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters0
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters0
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters0,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[39] = _sourceCacheStudioSetPartParameters1.Connect()
+                                    .Filter(refreshFilterStudioSetPart1)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters1)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters1
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters1
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters1,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[40] = _sourceCacheStudioSetPartParameters2.Connect()
+                                    .Filter(refreshFilterStudioSetPart2)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters2)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters2
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters2
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters2,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[41] = _sourceCacheStudioSetPartParameters3.Connect()
+                                    .Filter(refreshFilterStudioSetPart3)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters3)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters3
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters3
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters3,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[42] = _sourceCacheStudioSetPartParameters4.Connect()
+                                    .Filter(refreshFilterStudioSetPart4)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters4)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters4
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters4
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters4,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[43] = _sourceCacheStudioSetPartParameters5.Connect()
+                                    .Filter(refreshFilterStudioSetPart5)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters5)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters5
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters5
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters5,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[44] = _sourceCacheStudioSetPartParameters6.Connect()
+                                    .Filter(refreshFilterStudioSetPart6)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters6)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters6
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters6
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters6,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[45] = _sourceCacheStudioSetPartParameters7.Connect()
+                                    .Filter(refreshFilterStudioSetPart7)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters7)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters7
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters7
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters7,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[46] = _sourceCacheStudioSetPartParameters8.Connect()
+                                    .Filter(refreshFilterStudioSetPart8)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters8)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters8
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters8
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters8,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[47] = _sourceCacheStudioSetPartParameters9.Connect()
+                                    .Filter(refreshFilterStudioSetPart9)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters9)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters9
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters9
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters9,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[48] = _sourceCacheStudioSetPartParameters10.Connect()
+                                    .Filter(refreshFilterStudioSetPart10)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters10)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters10
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters10
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters10,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[49] = _sourceCacheStudioSetPartParameters11.Connect()
+                                    .Filter(refreshFilterStudioSetPart11)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters11)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters11
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters11
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters11,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[50] = _sourceCacheStudioSetPartParameters12.Connect()
+                                    .Filter(refreshFilterStudioSetPart12)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters12)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters12
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters12
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters12,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[51] = _sourceCacheStudioSetPartParameters13.Connect()
+                                    .Filter(refreshFilterStudioSetPart13)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters13)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters13
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters13
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters13,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+
+        _cleanUp[52] = _sourceCacheStudioSetPartParameters14.Connect()
+                                    .Filter(refreshFilterStudioSetPart14)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters14)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters14
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters14
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters14,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[53] = _sourceCacheStudioSetPartParameters15.Connect()
+                                    .Filter(refreshFilterStudioSetPart15)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetPartParameters15)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetPartParameters15
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetPartParameters15
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetPartParameters15,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
 
         MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(250)).Subscribe(m => UpdateIntegraFromUi(m));
         MessageBus.Current.Listen<UpdateFromSysexSpec>("hw2ui").Throttle(TimeSpan.FromMilliseconds(250)).Subscribe(m => UpdateUiFromIntegra(m));
+        MessageBus.Current.Listen<UpdateResyncPart>().Throttle(TimeSpan.FromMilliseconds(250)).Subscribe(m => ResyncPart(m.PartNo));
     }
 
     public void UpdateIntegraFromUi(UpdateMessageSpec s)
@@ -1243,10 +1826,14 @@ public partial class MainWindowViewModel : ReactiveObject
             }
         }
     }
-
     private void ForceUiRefresh(FullyQualifiedParameter p)
     {
-        if (p.Offset == "Offset/Studio Set Common Chorus")
+        ForceUiRefresh(p.Offset);
+    }
+
+    private void ForceUiRefresh(string OffsetAddressName)
+    {
+        if (OffsetAddressName == "Offset/Studio Set Common Chorus")
         {
             // force re-evaluation of the dynamic data filters after the parameters were read from integra-7
             // this feels like a very ugly hack, but i currently do not know how to do it properly
@@ -1255,13 +1842,102 @@ public partial class MainWindowViewModel : ReactiveObject
             RefreshCommonChorusNeeded = "."; // RefreshCommonChorusNeeded must not have any .Throttle clauses
             RefreshCommonChorusNeeded = SearchTextStudioSetCommonChorus;
         }
-
-        if (p.Offset == "Offset/Studio Set Common Reverb")
+        else if (OffsetAddressName == "Offset/Studio Set Common Reverb")
         {
             RefreshCommonReverbNeeded = ".";
             RefreshCommonReverbNeeded = SearchTextStudioSetCommonReverb;
         }
+        else if (OffsetAddressName == "Offset/Studio Set Part 0")
+        {
+            RefreshStudioSetPart0 = ".";
+            RefreshStudioSetPart0 = SearchTextStudioSetPart0;
+        }
+        else if (OffsetAddressName == "Offset/Studio Set Part 1")
+        {
+            RefreshStudioSetPart1 = ".";
+            RefreshStudioSetPart1 = SearchTextStudioSetPart1;
+        }
+        else if (OffsetAddressName == "Offset/Studio Set Part 2")
+        {
+            RefreshStudioSetPart2 = ".";
+            RefreshStudioSetPart2 = SearchTextStudioSetPart2;
+        }
+        else if (OffsetAddressName == "Offset/Studio Set Part 3")
+        {
+            RefreshStudioSetPart3 = ".";
+            RefreshStudioSetPart3 = SearchTextStudioSetPart3;
+        }
+        else if (OffsetAddressName == "Offset/Studio Set Part 4")
+        {
+            RefreshStudioSetPart4 = ".";
+            RefreshStudioSetPart4 = SearchTextStudioSetPart4;
+        }
+        else if (OffsetAddressName == "Offset/Studio Set Part 5")
+        {
+            RefreshStudioSetPart5 = ".";
+            RefreshStudioSetPart5 = SearchTextStudioSetPart5;
+        }
+        else if (OffsetAddressName == "Offset/Studio Set Part 6")
+        {
+            RefreshStudioSetPart6 = ".";
+            RefreshStudioSetPart6 = SearchTextStudioSetPart6;
+        }
+        else if (OffsetAddressName == "Offset/Studio Set Part 7")
+        {
+            RefreshStudioSetPart7 = ".";
+            RefreshStudioSetPart7 = SearchTextStudioSetPart7;
+        }
+        else if (OffsetAddressName == "Offset/Studio Set Part 8")
+        {
+            RefreshStudioSetPart8 = ".";
+            RefreshStudioSetPart8 = SearchTextStudioSetPart8;
+        }
+        else if (OffsetAddressName == "Offset/Studio Set Part 9")
+        {
+            RefreshStudioSetPart9 = ".";
+            RefreshStudioSetPart9 = SearchTextStudioSetPart9;
+        }
+        else if (OffsetAddressName == "Offset/Studio Set Part 10")
+        {
+            RefreshStudioSetPart10 = ".";
+            RefreshStudioSetPart10 = SearchTextStudioSetPart10;
+        }
+        else if (OffsetAddressName == "Offset/Studio Set Part 11")
+        {
+            RefreshStudioSetPart11 = ".";
+            RefreshStudioSetPart11 = SearchTextStudioSetPart11;
+        }
+        else if (OffsetAddressName == "Offset/Studio Set Part 12")
+        {
+            RefreshStudioSetPart12 = ".";
+            RefreshStudioSetPart12 = SearchTextStudioSetPart12;
+        }
+        else if (OffsetAddressName == "Offset/Studio Set Part 13")
+        {
+            RefreshStudioSetPart13 = ".";
+            RefreshStudioSetPart13 = SearchTextStudioSetPart13;
+        }
+        else if (OffsetAddressName == "Offset/Studio Set Part 14")
+        {
+            RefreshStudioSetPart14 = ".";
+            RefreshStudioSetPart14 = SearchTextStudioSetPart14;
+        }
+        else if (OffsetAddressName == "Offset/Studio Set Part 15")
+        {
+            RefreshStudioSetPart15 = ".";
+            RefreshStudioSetPart15 = SearchTextStudioSetPart15;
+        }
     }
+    public void ResyncPart(byte part)
+    {
+        DomainBase midiPart = _integra7Communicator.StudioSetMidi(part);
+        midiPart.ReadFromIntegra();
+        ForceUiRefresh(midiPart.OffsetAddressName);
+        DomainBase setPart = _integra7Communicator.StudioSetPart(part);
+        setPart.ReadFromIntegra();
+        ForceUiRefresh(setPart.OffsetAddressName);
+    }
+
 
 #pragma warning restore CA1822 // Mark members as static
 #pragma warning restore CS8618 // nullable must be assigned in constructor

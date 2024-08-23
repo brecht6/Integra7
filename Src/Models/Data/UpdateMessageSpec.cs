@@ -19,3 +19,9 @@ public class UpdateFromSysexSpec(byte[] sysexMsg)
     private readonly byte[] _sysexMsg = sysexMsg;
     public byte[] SysexMsg { get => _sysexMsg; }
 }
+
+public class UpdateResyncPart(byte partNo)
+{
+    private readonly byte _partNo = partNo;
+    public byte PartNo { get => _partNo; }
+}

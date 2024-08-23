@@ -784,10 +784,18 @@ public partial class MainWindowViewModel : ReactiveObject
         }
         else
         {
-            // need to resync all parameters instead of just updating the modified parameters
-            FullyQualifiedParameter firstInList = parameters.First().Par; // all affected parameters belong to same startaddress/offset address anyway
-            _integra7Communicator?.GetDomain(firstInList).ReadFromIntegra();
-            ForceUiRefresh(firstInList);
+            // need to resync all relevant parameters instead of just updating the modified parameters
+            HashSet<string> alreadyEncountered = [];
+            foreach (UpdateMessageSpec spec in parameters)
+            {
+                string domainName = spec.Par.Start + spec.Par.Offset;
+                if (!alreadyEncountered.Contains(domainName))
+                {
+                    alreadyEncountered.Add(domainName);
+                    _integra7Communicator?.GetDomain(spec.Par).ReadFromIntegra();
+                    ForceUiRefresh(spec.Par);
+                }
+            }
         }
     }
 

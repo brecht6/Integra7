@@ -50,7 +50,7 @@ public class DisplayValueToRawValueConverter
             {
                 if (p.ParSpec.Repr == null) // otherwise p.RawNumericValue is already found in the previous paragraph
                 {
-                    p.RawNumericValue = long.Parse(displayValue);
+                    p.RawNumericValue = (long)Math.Round(double.Parse(displayValue));
                 }
             }
             p.StringValue = displayValue;

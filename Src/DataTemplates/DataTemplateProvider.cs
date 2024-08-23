@@ -174,9 +174,9 @@ public static class DataTemplateProvider
                 IsSnapToTickEnabled = true,
                 Ticks = p.ParSpec.Ticks,
             };
-            if (long.TryParse(p.StringValue, out long LValue))
+            if (double.TryParse(p.StringValue, out double LValue))
             {
-                s.Value = LValue;
+                s.Value = (long)Math.Round(LValue);
             }
             else
             {

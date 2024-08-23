@@ -80,6 +80,10 @@
                         <local:ParameterCollection Parameters="{Binding StudioSetCommonChorusParameters}"
                                                    SearchText="{Binding SearchTextStudioSetCommonChorus, Mode=TwoWay}" />
                     </TabItem>
+                    <TabItem Header="Reverb">
+                        <local:ParameterCollection Parameters="{Binding StudioSetCommonReverbParameters}"
+                                                   SearchText="{Binding SearchTextStudioSetCommonReverb, Mode=TwoWay}" />
+                    </TabItem>
                 </TabControl>
             </TabItem>
             <TabItem Header="Part 1">

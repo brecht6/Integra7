@@ -196,6 +196,10 @@ public partial class MainWindowViewModel : ReactiveObject
     private string _searchTextStudioSetCommonChorus;
     [Reactive]
     private string _refreshCommonChorusNeeded;
+    [Reactive]
+    private string _searchTextStudioSetCommonReverb;
+    [Reactive]
+    private string _refreshCommonReverbNeeded;
 
 
     Func<FullyQualifiedParameter, bool> _parameterFilter(string text) => par =>
@@ -374,6 +378,10 @@ public partial class MainWindowViewModel : ReactiveObject
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonChorusParameters;
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonChorusParameters => _studioSetCommonChorusParameters;
 
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonReverbParameters = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonReverbParameters;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonReverbParameters => _studioSetCommonReverbParameters;
+
 
     private ReadOnlyObservableCollection<Integra7Preset> GetPresetsCollection(byte Channel)
     {
@@ -512,6 +520,10 @@ public partial class MainWindowViewModel : ReactiveObject
             List<FullyQualifiedParameter> p_sscc = _integra7Communicator.StudioSetCommonChorus.GetRelevantParameters(true, true);
             _sourceCacheStudioSetCommonChorusParameters.AddOrUpdate(p_sscc);
 
+            _integra7Communicator.StudioSetCommonReverb.ReadFromIntegra();
+            List<FullyQualifiedParameter> p_sscr = _integra7Communicator.StudioSetCommonReverb.GetRelevantParameters(true, true);
+            _sourceCacheStudioSetCommonReverbParameters.AddOrUpdate(p_sscr);
+
         }
         else
         {
@@ -644,8 +656,16 @@ public partial class MainWindowViewModel : ReactiveObject
                                             .DistinctUntilChanged()
                                             .Select(_parameterFilter);
 
+        var parFilterStudioSetCommonReverb = this.WhenAnyValue(x => x.SearchTextStudioSetCommonReverb)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+
         var refreshCommonChorus = this.WhenAnyValue(x => x.RefreshCommonChorusNeeded)
-                          .Select(_parameterFilter);
+                                            .Select(_parameterFilter);
+
+        var refreshCommonReverb = this.WhenAnyValue(x => x.RefreshCommonReverbNeeded)
+                                            .Select(_parameterFilter);
 
         _cleanUp[0] = _sourceCacheCh0.Connect()
                                     .ObserveOn(RxApp.MainThreadScheduler)
@@ -777,6 +797,27 @@ public partial class MainWindowViewModel : ReactiveObject
                                     .DisposeMany()
                                     .Subscribe();
 
+        _cleanUp[20] = _sourceCacheStudioSetCommonReverbParameters.Connect()
+                                    .Filter(refreshCommonReverb)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetCommonReverb)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetCommonReverbParameters
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetCommonReverbParameters
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetCommonReverbParameters,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+
         MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(250)).Subscribe(m => UpdateIntegraFromUi(m));
         MessageBus.Current.Listen<UpdateFromSysexSpec>("hw2ui").Throttle(TimeSpan.FromMilliseconds(250)).Subscribe(m => UpdateUiFromIntegra(m));
     }
@@ -833,6 +874,12 @@ public partial class MainWindowViewModel : ReactiveObject
             // ... shiver ...
             RefreshCommonChorusNeeded = "."; // RefreshCommonChorusNeeded must not have any .Throttle clauses
             RefreshCommonChorusNeeded = SearchTextStudioSetCommonChorus;
+        }
+
+        if (p.Offset == "Offset/Studio Set Common Reverb")
+        {
+            RefreshCommonReverbNeeded = ".";
+            RefreshCommonReverbNeeded = SearchTextStudioSetCommonReverb;
         }
     }
 

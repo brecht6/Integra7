@@ -109,6 +109,14 @@
                             <local:ParameterCollection Parameters="{Binding StudioSetPartParameters0}"
                                                        SearchText="{Binding SearchTextStudioSetPart0, Mode=TwoWay}" />
                         </TabItem>
+                        <TabItem Header="Set EQ">
+                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters0}"
+                                                       SearchText="{Binding SearchTextStudioSetPartEQ0, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="PCM Synth Tone">
+                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters0}"
+                                                       SearchText="{Binding SearchTextStudioSetPartEQ0, Mode=TwoWay}" />
+                        </TabItem>
                     </TabControl>
                 </StackPanel>
             </TabItem>
@@ -127,6 +135,14 @@
                             <local:ParameterCollection Parameters="{Binding StudioSetPartParameters1}"
                                                        SearchText="{Binding SearchTextStudioSetPart1, Mode=TwoWay}" />
                         </TabItem>
+                        <TabItem Header="Set EQ">
+                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters1}"
+                                                       SearchText="{Binding SearchTextStudioSetPartEQ1, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="PCM Synth Tone">
+                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters1}"
+                                                       SearchText="{Binding SearchTextPCMSynthToneCommon1, Mode=TwoWay}" />
+                        </TabItem>
                     </TabControl>
                 </StackPanel>
             </TabItem>
@@ -142,9 +158,17 @@
                                                        SearchText="{Binding SearchTextStudioSetMidi2, Mode=TwoWay}" />
                         </TabItem>
                     </TabControl>
-                    <TabItem Header="Set Part">
+                    <TabItem Header="Part">
                         <local:ParameterCollection Parameters="{Binding StudioSetPartParameters2}"
                                                    SearchText="{Binding SearchTextStudioSetPart2, Mode=TwoWay}" />
+                    </TabItem>
+                    <TabItem Header="Set EQ">
+                        <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters2}"
+                                                   SearchText="{Binding SearchTextStudioSetPartEQ2, Mode=TwoWay}" />
+                    </TabItem>
+                    <TabItem Header="PCM Synth Tone">
+                        <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters2}"
+                                                   SearchText="{Binding SearchTextPCMSynthToneCommon2, Mode=TwoWay}" />
                     </TabItem>
                 </StackPanel>
             </TabItem>
@@ -162,6 +186,14 @@
                         <TabItem Header="Set Part">
                             <local:ParameterCollection Parameters="{Binding StudioSetPartParameters3}"
                                                        SearchText="{Binding SearchTextStudioSetPart3, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="Set EQ">
+                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters3}"
+                                                       SearchText="{Binding SearchTextStudioSetPartEQ3, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="PCM Synth Tone">
+                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters3}"
+                                                       SearchText="{Binding SearchTextPCMSynthToneCommon3, Mode=TwoWay}" />
                         </TabItem>
                     </TabControl>
                 </StackPanel>
@@ -181,6 +213,14 @@
                             <local:ParameterCollection Parameters="{Binding StudioSetPartParameters4}"
                                                        SearchText="{Binding SearchTextStudioSetPart4, Mode=TwoWay}" />
                         </TabItem>
+                        <TabItem Header="Set EQ">
+                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters4}"
+                                                       SearchText="{Binding SearchTextStudioSetPartEQ4, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="PCM Synth Tone">
+                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters4}"
+                                                       SearchText="{Binding SearchTextPCMSynthToneCommon4, Mode=TwoWay}" />
+                        </TabItem>
                     </TabControl>
                 </StackPanel>
             </TabItem>
@@ -198,6 +238,14 @@
                         <TabItem Header="Set Part">
                             <local:ParameterCollection Parameters="{Binding StudioSetPartParameters5}"
                                                        SearchText="{Binding SearchTextStudioSetPart5, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="Set EQ">
+                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters5}"
+                                                       SearchText="{Binding SearchTextStudioSetPartEQ5, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="PCM Synth Tone">
+                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters5}"
+                                                       SearchText="{Binding SearchTextPCMSynthToneCommon5, Mode=TwoWay}" />
                         </TabItem>
                     </TabControl>
                 </StackPanel>
@@ -217,6 +265,14 @@
                             <local:ParameterCollection Parameters="{Binding StudioSetPartParameters6}"
                                                        SearchText="{Binding SearchTextStudioSetPart6, Mode=TwoWay}" />
                         </TabItem>
+                        <TabItem Header="Set EQ">
+                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters6}"
+                                                       SearchText="{Binding SearchTextStudioSetPartEQ6, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="PCM Synth Tone">
+                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters6}"
+                                                       SearchText="{Binding SearchTextPCMSynthToneCommon6, Mode=TwoWay}" />
+                        </TabItem>
                     </TabControl>
                 </StackPanel>
             </TabItem>
@@ -234,6 +290,14 @@
                         <TabItem Header="Set Part">
                             <local:ParameterCollection Parameters="{Binding StudioSetPartParameters7}"
                                                        SearchText="{Binding SearchTextStudioSetPart7, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="Set EQ">
+                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters7}"
+                                                       SearchText="{Binding SearchTextStudioSetPartEQ7, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="PCM Synth Tone">
+                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters7}"
+                                                       SearchText="{Binding SearchTextPCMSynthToneCommon7, Mode=TwoWay}" />
                         </TabItem>
                     </TabControl>
                 </StackPanel>
@@ -253,6 +317,14 @@
                             <local:ParameterCollection Parameters="{Binding StudioSetPartParameters8}"
                                                        SearchText="{Binding SearchTextStudioSetPart8, Mode=TwoWay}" />
                         </TabItem>
+                        <TabItem Header="Set EQ">
+                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters8}"
+                                                       SearchText="{Binding SearchTextStudioSetPartEQ8, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="PCM Synth Tone">
+                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters8}"
+                                                       SearchText="{Binding SearchTextPCMSynthToneCommon8, Mode=TwoWay}" />
+                        </TabItem>
                     </TabControl>
                 </StackPanel>
             </TabItem>
@@ -270,6 +342,14 @@
                         <TabItem Header="Set Part">
                             <local:ParameterCollection Parameters="{Binding StudioSetPartParameters9}"
                                                        SearchText="{Binding SearchTextStudioSetPart9, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="Set EQ">
+                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters9}"
+                                                       SearchText="{Binding SearchTextStudioSetPartEQ9, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="PCM Synth Tone">
+                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters9}"
+                                                       SearchText="{Binding SearchTextPCMSynthToneCommon9, Mode=TwoWay}" />
                         </TabItem>
                     </TabControl>
                 </StackPanel>
@@ -289,6 +369,14 @@
                             <local:ParameterCollection Parameters="{Binding StudioSetPartParameters10}"
                                                        SearchText="{Binding SearchTextStudioSetPart10, Mode=TwoWay}" />
                         </TabItem>
+                        <TabItem Header="Set EQ">
+                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters10}"
+                                                       SearchText="{Binding SearchTextStudioSetPartEQ10, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="PCM Synth Tone">
+                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters10}"
+                                                       SearchText="{Binding SearchTextPCMSynthToneCommon10, Mode=TwoWay}" />
+                        </TabItem>
                     </TabControl>
                 </StackPanel>
             </TabItem>
@@ -306,6 +394,14 @@
                         <TabItem Header="Set Part">
                             <local:ParameterCollection Parameters="{Binding StudioSetPartParameters11}"
                                                        SearchText="{Binding SearchTextStudioSetPart11, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="Set EQ">
+                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters11}"
+                                                       SearchText="{Binding SearchTextStudioSetPartEQ11, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="PCM Synth Tone">
+                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters11}"
+                                                       SearchText="{Binding SearchTextPCMSynthToneCommon11, Mode=TwoWay}" />
                         </TabItem>
                     </TabControl>
                 </StackPanel>
@@ -326,6 +422,14 @@
                                                        SearchText="{Binding SearchTextStudioSetPart12, Mode=TwoWay}" />
                         </TabItem>
                     </TabControl>
+                    <TabItem Header="Set EQ">
+                        <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters12}"
+                                                   SearchText="{Binding SearchTextStudioSetPartEQ12, Mode=TwoWay}" />
+                    </TabItem>
+                    <TabItem Header="PCM Synth Tone">
+                        <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters12}"
+                                                   SearchText="{Binding SearchTextPCMSynthToneCommon12, Mode=TwoWay}" />
+                    </TabItem>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Part 14">
@@ -342,6 +446,14 @@
                         <TabItem Header="Set Part">
                             <local:ParameterCollection Parameters="{Binding StudioSetPartParameters13}"
                                                        SearchText="{Binding SearchTextStudioSetPart13, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="Set EQ">
+                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters13}"
+                                                       SearchText="{Binding SearchTextStudioSetPartEQ13, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="PCM Synth Tone">
+                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters13}"
+                                                       SearchText="{Binding SearchTextPCMSynthToneCommon13, Mode=TwoWay}" />
                         </TabItem>
                     </TabControl>
                 </StackPanel>
@@ -361,6 +473,14 @@
                             <local:ParameterCollection Parameters="{Binding StudioSetPartParameters14}"
                                                        SearchText="{Binding SearchTextStudioSetPart14, Mode=TwoWay}" />
                         </TabItem>
+                        <TabItem Header="Set EQ">
+                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters14}"
+                                                       SearchText="{Binding SearchTextStudioSetPartEQ14, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="PCM Synth Tone">
+                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters14}"
+                                                       SearchText="{Binding SearchTextPCMSynthToneCommon14, Mode=TwoWay}" />
+                        </TabItem>
                     </TabControl>
                 </StackPanel>
             </TabItem>
@@ -378,6 +498,14 @@
                         <TabItem Header="Set Part">
                             <local:ParameterCollection Parameters="{Binding StudioSetPartParameters15}"
                                                        SearchText="{Binding SearchTextStudioSetPart15, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="Set EQ">
+                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters15}"
+                                                       SearchText="{Binding SearchTextStudioSetPartEQ15, Mode=TwoWay}" />
+                        </TabItem>
+                        <TabItem Header="PCM Synth Tone">
+                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters15}"
+                                                       SearchText="{Binding SearchTextPCMSynthToneCommon15, Mode=TwoWay}" />
                         </TabItem>
                     </TabControl>
                 </StackPanel>

@@ -128,9 +128,11 @@ public class Integra7Api : IIntegra7Api
 
     public void ChangePreset(byte Channel, int Msb, int Lsb, int Pc)
     {
+        /*
         BankSelectMsb(Channel, Msb);
         BankSelectLsb(Channel, Lsb);
         ProgramChange(Channel, Pc - 1);
+        */
         MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(Channel));
     }
 }

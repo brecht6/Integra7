@@ -50,6 +50,14 @@ public class Integra7Domain
     {
         return _parameterMapper[new Tuple<string, string>("Temporary Studio Set", $"Offset/Studio Set Part {zeroBasedPartNo + 1}")];
     }
+    public DomainBase StudioSetPartEQ(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string>("Temporary Studio Set", $"Offset/Studio Set Part EQ {zeroBasedPartNo + 1}")];
+    }
+    public DomainBase PCMSynthToneCommon(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string>($"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/PCM Synth Tone Common")];
+    }
     public DomainBase System
     {
         get => _parameterMapper[new Tuple<string, string>("System", "Offset/System Common")];

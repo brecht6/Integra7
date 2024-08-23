@@ -14,7 +14,7 @@ using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
 using Integra7AuralAlchemist.Models.Domain;
 using DynamicData.Binding;
-using System.Diagnostics;
+
 
 namespace Integra7AuralAlchemist.ViewModels;
 
@@ -189,6 +189,8 @@ public partial class MainWindowViewModel : ReactiveObject
     [Reactive]
     private string _searchTextSetup;
     [Reactive]
+    private string _searchSystem;
+    [Reactive]
     private string _searchTextStudioSetCommon;
     [Reactive]
     private string _searchTextStudioSetCommonChorus;
@@ -360,6 +362,10 @@ public partial class MainWindowViewModel : ReactiveObject
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _setupParameters;
     public ReadOnlyObservableCollection<FullyQualifiedParameter> SetupParameters => _setupParameters;
 
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheSystem = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _systemParameters;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> SystemParameters => _systemParameters;
+
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonParameters = new(x => x.ParSpec.Path);
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonParameters;
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonParameters => _studioSetCommonParameters;
@@ -494,6 +500,10 @@ public partial class MainWindowViewModel : ReactiveObject
             List<FullyQualifiedParameter> p_s = _integra7Communicator.Setup.GetRelevantParameters(false, false);
             _sourceCacheSetupParameters.AddOrUpdate(p_s);
 
+            _integra7Communicator.System.ReadFromIntegra();
+            List<FullyQualifiedParameter> s_s = _integra7Communicator.System.GetRelevantParameters(false, false);
+            _sourceCacheSystem.AddOrUpdate(s_s);
+
             _integra7Communicator.StudioSetCommon.ReadFromIntegra();
             List<FullyQualifiedParameter> p_ssc = _integra7Communicator.StudioSetCommon.GetRelevantParameters(false, false);
             _sourceCacheStudioSetCommonParameters.AddOrUpdate(p_ssc);
@@ -619,6 +629,11 @@ public partial class MainWindowViewModel : ReactiveObject
                                             .DistinctUntilChanged()
                                             .Select(_parameterFilter);
 
+        var parFilterSystem = this.WhenAnyValue(x => x.SearchSystem)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+
         var parFilterStudioSetCommon = this.WhenAnyValue(x => x.SearchTextStudioSetCommon)
                                             .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
                                             .DistinctUntilChanged()
@@ -723,7 +738,16 @@ public partial class MainWindowViewModel : ReactiveObject
                                     .DisposeMany()
                                     .Subscribe();
 
-        _cleanUp[17] = _sourceCacheStudioSetCommonParameters.Connect()
+        _cleanUp[17] = _sourceCacheSystem.Connect()
+                                    .Filter(parFilterSystem)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _systemParameters,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+
+        _cleanUp[18] = _sourceCacheStudioSetCommonParameters.Connect()
                                     .Filter(parFilterStudioSetCommon)
                                     .ObserveOn(RxApp.MainThreadScheduler)
                                     .SortAndBind(
@@ -732,7 +756,7 @@ public partial class MainWindowViewModel : ReactiveObject
                                     .DisposeMany()
                                     .Subscribe();
 
-        _cleanUp[18] = _sourceCacheStudioSetCommonChorusParameters.Connect()
+        _cleanUp[19] = _sourceCacheStudioSetCommonChorusParameters.Connect()
                                     .Filter(refreshCommonChorus)
                                     .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
                                     .Filter(parFilterStudioSetCommonChorus)

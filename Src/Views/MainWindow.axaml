@@ -68,6 +68,10 @@
                         <local:ParameterCollection Parameters="{Binding SetupParameters}"
                                                    SearchText="{Binding SearchTextSetup, Mode=TwoWay}" />
                     </TabItem>
+                    <TabItem Header="System">
+                        <local:ParameterCollection Parameters="{Binding SystemParameters}"
+                                                   SearchText="{Binding SearchTextSetup, Mode=TwoWay}" />
+                    </TabItem>
                     <TabItem Header="Common">
                         <local:ParameterCollection Parameters="{Binding StudioSetCommonParameters}"
                                                    SearchText="{Binding SearchTextStudioSetCommon, Mode=TwoWay}" />

@@ -204,6 +204,10 @@ public partial class MainWindowViewModel : ReactiveObject
     private string _searchTextStudioSetCommonMotionalSurround;
     [Reactive]
     private string _refreshCommonMotionalSurroundNeeded;
+    [Reactive]
+    private string _searchTextStudioSetCommonMasterEQ;
+    [Reactive]
+    public string _refreshCommonMasterEQNeeded;
 
 
     Func<FullyQualifiedParameter, bool> _parameterFilter(string text) => par =>
@@ -390,6 +394,10 @@ public partial class MainWindowViewModel : ReactiveObject
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonMotionalSurroundParameters;
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonMotionalSurroundParameters => _studioSetCommonMotionalSurroundParameters;
 
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonMasterEQParameters = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonMasterEQParameters;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonMasterEQParameters => _studioSetCommonMasterEQParameters;
+
     private SourceCache<Integra7Preset, int> GetSourceCache(byte Channel)
     {
         switch (Channel)
@@ -494,6 +502,9 @@ public partial class MainWindowViewModel : ReactiveObject
             List<FullyQualifiedParameter> p_ssms = _integra7Communicator.StudioSetCommonMotionalSurround.GetRelevantParameters(true, true);
             _sourceCacheStudioSetCommonMotionalSurroundParameters.AddOrUpdate(p_ssms);
 
+            _integra7Communicator.StudioSetCommonMasterEQ.ReadFromIntegra();
+            List<FullyQualifiedParameter> p_meq = _integra7Communicator.StudioSetCommonMasterEQ.GetRelevantParameters(true, true);
+            _sourceCacheStudioSetCommonMasterEQParameters.AddOrUpdate(p_meq);
         }
         else
         {
@@ -644,6 +655,15 @@ public partial class MainWindowViewModel : ReactiveObject
 
         var refreshCommonMotionalSurround = this.WhenAnyValue(x => x.RefreshCommonMotionalSurroundNeeded)
                                             .Select(_parameterFilter);
+
+        var parFilterStudioSetCommonMasterEQParameters = this.WhenAnyValue(x => x.SearchTextStudioSetCommonMasterEQ)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+
+        var refreshCommonMasterEQ = this.WhenAnyValue(x => x.RefreshCommonMasterEQNeeded)
+                                            .Select(_parameterFilter);
+
 
         _cleanUp[0] = _sourceCacheCh0.Connect()
                                     .ObserveOn(RxApp.MainThreadScheduler)
@@ -813,6 +833,27 @@ public partial class MainWindowViewModel : ReactiveObject
                                     .ObserveOn(RxApp.MainThreadScheduler)
                                     .SortAndBind(
                                         out _studioSetCommonMotionalSurroundParameters,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+
+        _cleanUp[21] = _sourceCacheStudioSetCommonMasterEQParameters.Connect()
+                                    .Filter(refreshCommonMasterEQ)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetCommonMasterEQParameters)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetCommonMasterEQParameters
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetCommonMasterEQParameters
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetCommonMasterEQParameters,
                                         SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
                                     .DisposeMany()
                                     .Subscribe();

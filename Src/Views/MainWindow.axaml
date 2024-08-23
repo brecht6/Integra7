@@ -88,6 +88,10 @@
                         <local:ParameterCollection Parameters="{Binding StudioSetCommonMotionalSurroundParameters}"
                                                    SearchText="{Binding SearchTextStudioSetCommonMotionalSurround, Mode=TwoWay}" />
                     </TabItem>
+                    <TabItem Header="Master EQ">
+                        <local:ParameterCollection Parameters="{Binding StudioSetCommonMasterEQParameters}"
+                                                   SearchText="{Binding SearchTextStudioSetCommonMasterEQ, Mode=TwoWay}" />
+                    </TabItem>
                 </TabControl>
             </TabItem>
             <TabItem Header="Part 1">

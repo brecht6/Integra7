@@ -84,6 +84,10 @@
                         <local:ParameterCollection Parameters="{Binding StudioSetCommonReverbParameters}"
                                                    SearchText="{Binding SearchTextStudioSetCommonReverb, Mode=TwoWay}" />
                     </TabItem>
+                    <TabItem Header="Motional Surround">
+                        <local:ParameterCollection Parameters="{Binding StudioSetCommonMotionalSurroundParameters}"
+                                                   SearchText="{Binding SearchTextStudioSetCommonMotionalSurround, Mode=TwoWay}" />
+                    </TabItem>
                 </TabControl>
             </TabItem>
             <TabItem Header="Part 1">

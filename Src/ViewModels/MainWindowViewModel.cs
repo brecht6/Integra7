@@ -200,6 +200,10 @@ public partial class MainWindowViewModel : ReactiveObject
     private string _searchTextStudioSetCommonReverb;
     [Reactive]
     private string _refreshCommonReverbNeeded;
+    [Reactive]
+    private string _searchTextStudioSetCommonMotionalSurround;
+    [Reactive]
+    private string _refreshCommonMotionalSurroundNeeded;
 
 
     Func<FullyQualifiedParameter, bool> _parameterFilter(string text) => par =>
@@ -382,6 +386,9 @@ public partial class MainWindowViewModel : ReactiveObject
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonReverbParameters;
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonReverbParameters => _studioSetCommonReverbParameters;
 
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonMotionalSurroundParameters = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonMotionalSurroundParameters;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonMotionalSurroundParameters => _studioSetCommonMotionalSurroundParameters;
 
     private ReadOnlyObservableCollection<Integra7Preset> GetPresetsCollection(byte Channel)
     {
@@ -524,6 +531,10 @@ public partial class MainWindowViewModel : ReactiveObject
             List<FullyQualifiedParameter> p_sscr = _integra7Communicator.StudioSetCommonReverb.GetRelevantParameters(true, true);
             _sourceCacheStudioSetCommonReverbParameters.AddOrUpdate(p_sscr);
 
+            _integra7Communicator.StudioSetCommonMotionalSurround.ReadFromIntegra();
+            List<FullyQualifiedParameter> p_ssms = _integra7Communicator.StudioSetCommonMotionalSurround.GetRelevantParameters(true, true);
+            _sourceCacheStudioSetCommonMotionalSurroundParameters.AddOrUpdate(p_ssms);
+
         }
         else
         {
@@ -656,15 +667,23 @@ public partial class MainWindowViewModel : ReactiveObject
                                             .DistinctUntilChanged()
                                             .Select(_parameterFilter);
 
+        var refreshCommonChorus = this.WhenAnyValue(x => x.RefreshCommonChorusNeeded)
+                                            .Select(_parameterFilter);
+
         var parFilterStudioSetCommonReverb = this.WhenAnyValue(x => x.SearchTextStudioSetCommonReverb)
                                             .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
                                             .DistinctUntilChanged()
                                             .Select(_parameterFilter);
 
-        var refreshCommonChorus = this.WhenAnyValue(x => x.RefreshCommonChorusNeeded)
+        var refreshCommonReverb = this.WhenAnyValue(x => x.RefreshCommonReverbNeeded)
                                             .Select(_parameterFilter);
 
-        var refreshCommonReverb = this.WhenAnyValue(x => x.RefreshCommonReverbNeeded)
+        var parFilterStudioSetCommonMotionalSurroundParameters = this.WhenAnyValue(x => x.SearchTextStudioSetCommonMotionalSurround)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+
+        var refreshCommonMotionalSurround = this.WhenAnyValue(x => x.RefreshCommonMotionalSurroundNeeded)
                                             .Select(_parameterFilter);
 
         _cleanUp[0] = _sourceCacheCh0.Connect()
@@ -814,6 +833,27 @@ public partial class MainWindowViewModel : ReactiveObject
                                     .ObserveOn(RxApp.MainThreadScheduler)
                                     .SortAndBind(
                                         out _studioSetCommonReverbParameters,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+
+        _cleanUp[21] = _sourceCacheStudioSetCommonMotionalSurroundParameters.Connect()
+                                    .Filter(refreshCommonMotionalSurround)
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetCommonMotionalSurroundParameters)
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheStudioSetCommonMotionalSurroundParameters
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                    .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheStudioSetCommonMotionalSurroundParameters
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetCommonMotionalSurroundParameters,
                                         SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
                                     .DisposeMany()
                                     .Subscribe();

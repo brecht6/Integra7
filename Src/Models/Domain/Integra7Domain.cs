@@ -34,6 +34,10 @@ public class Integra7Domain
         get => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common Reverb")];
     }
 
+    public DomainBase StudioSetCommonMotionalSurround
+    {
+        get => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common Motional Surround")];
+    }
     public DomainBase System
     {
         get => _parameterMapper[new Tuple<string, string>("System", "Offset/System Common")];

@@ -388,48 +388,7 @@ public partial class MainWindowViewModel : ReactiveObject
 
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonMotionalSurroundParameters = new(x => x.ParSpec.Path);
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonMotionalSurroundParameters;
-    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonMotionalSurroundParameters => _studioSetCommonMotionalSurroundParameters;
-
-    private ReadOnlyObservableCollection<Integra7Preset> GetPresetsCollection(byte Channel)
-    {
-        switch (Channel)
-        {
-            case 0:
-                return _presetsCh0;
-            case 1:
-                return _presetsCh1;
-            case 2:
-                return _presetsCh2;
-            case 3:
-                return _presetsCh3;
-            case 4:
-                return _presetsCh4;
-            case 5:
-                return _presetsCh5;
-            case 6:
-                return _presetsCh6;
-            case 7:
-                return _presetsCh7;
-            case 8:
-                return _presetsCh8;
-            case 9:
-                return _presetsCh9;
-            case 10:
-                return _presetsCh10;
-            case 11:
-                return _presetsCh11;
-            case 12:
-                return _presetsCh12;
-            case 13:
-                return _presetsCh13;
-            case 14:
-                return _presetsCh14;
-            case 15:
-                return _presetsCh15;
-            default:
-                return _presetsCh0;
-        }
-    }
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonMotionalSurroundParameters => _studioSetCommonMotionalSurroundParameters
 
     private SourceCache<Integra7Preset, int> GetSourceCache(byte Channel)
     {

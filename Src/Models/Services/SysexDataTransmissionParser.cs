@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Domain;
@@ -14,10 +15,10 @@ public class SysexDataTransmissionParser
             byte[] payload = Integra7SysexHelpers.ExtractPayload(sysexMsg);
 
             int currentLocation = 0;
+            byte[] address = ByteUtils.Slice(payload, currentLocation, 4);
+            currentLocation += 4; // skip address
             while (currentLocation < payload.Length)
             {
-                byte[] address = ByteUtils.Slice(payload, currentLocation, currentLocation + 4);
-                currentLocation += 4; // skip address
                 FullyQualifiedParameter? p = i7?.LookupAddress(address);
                 int? bytes = p?.ParSpec.Bytes;
                 byte[] parResult = ByteUtils.Slice(payload, currentLocation, bytes ?? 0);
@@ -27,6 +28,7 @@ public class SysexDataTransmissionParser
                     result.Add(new UpdateMessageSpec(p, displayValue));
                 }
                 currentLocation += bytes ?? 0 /* skip parameter data */;
+                address = ByteUtils.IntToBytes7_4(ByteUtils.Bytes7ToInt(address) + bytes ?? 0);
             }
         }
         return result;

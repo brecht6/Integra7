@@ -95,68 +95,196 @@
                 </TabControl>
             </TabItem>
             <TabItem Header="Part 1">
-                <local:PresetSelector Presets="{Binding PresetsCh0}"
-                                      SelectedPreset="{Binding SelectedPresetCh0, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh0}"
+                                          SelectedPreset="{Binding SelectedPresetCh0, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters0}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi0, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part 2">
-                <local:PresetSelector Presets="{Binding PresetsCh1}"
-                                      SelectedPreset="{Binding SelectedPresetCh1, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh1}"
+                                          SelectedPreset="{Binding SelectedPresetCh1, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters1}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi1, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part 3">
-                <local:PresetSelector Presets="{Binding PresetsCh2}"
-                                      SelectedPreset="{Binding SelectedPresetCh2, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh2}"
+                                          SelectedPreset="{Binding SelectedPresetCh2, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters2}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi2, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part 4">
-                <local:PresetSelector Presets="{Binding PresetsCh3}"
-                                      SelectedPreset="{Binding SelectedPresetCh3, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh3}"
+                                          SelectedPreset="{Binding SelectedPresetCh3, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters3}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi3, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part 5">
-                <local:PresetSelector Presets="{Binding PresetsCh4}"
-                                      SelectedPreset="{Binding SelectedPresetCh4, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh4}"
+                                          SelectedPreset="{Binding SelectedPresetCh4, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters4}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi4, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part 6">
-                <local:PresetSelector Presets="{Binding PresetsCh5}"
-                                      SelectedPreset="{Binding SelectedPresetCh5, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh5}"
+                                          SelectedPreset="{Binding SelectedPresetCh5, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters5}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi5, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part 7">
-                <local:PresetSelector Presets="{Binding PresetsCh6}"
-                                      SelectedPreset="{Binding SelectedPresetCh6, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh6}"
+                                          SelectedPreset="{Binding SelectedPresetCh6, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters6}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi6, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part 8">
-                <local:PresetSelector Presets="{Binding PresetsCh7}"
-                                      SelectedPreset="{Binding SelectedPresetCh7, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh7}"
+                                          SelectedPreset="{Binding SelectedPresetCh7, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters7}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi7, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part 9">
-                <local:PresetSelector Presets="{Binding PresetsCh8}"
-                                      SelectedPreset="{Binding SelectedPresetCh8, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh8}"
+                                          SelectedPreset="{Binding SelectedPresetCh8, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters8}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi8, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part 10">
-                <local:PresetSelector Presets="{Binding PresetsCh9}"
-                                      SelectedPreset="{Binding SelectedPresetCh9, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh9}"
+                                          SelectedPreset="{Binding SelectedPresetCh9, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters9}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi9, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part 11">
-                <local:PresetSelector Presets="{Binding PresetsCh10}"
-                                      SelectedPreset="{Binding SelectedPresetCh10, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh10}"
+                                          SelectedPreset="{Binding SelectedPresetCh10, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters10}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi10, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part 12">
-                <local:PresetSelector Presets="{Binding PresetsCh11}"
-                                      SelectedPreset="{Binding SelectedPresetCh11, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh11}"
+                                          SelectedPreset="{Binding SelectedPresetCh11, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters11}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi11, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part 13">
-                <local:PresetSelector Presets="{Binding PresetsCh12}"
-                                      SelectedPreset="{Binding SelectedPresetCh12, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh12}"
+                                          SelectedPreset="{Binding SelectedPresetCh12, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters12}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi12, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part 14">
-                <local:PresetSelector Presets="{Binding PresetsCh13}"
-                                      SelectedPreset="{Binding SelectedPresetCh13, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh13}"
+                                          SelectedPreset="{Binding SelectedPresetCh13, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters13}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi13, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part 15">
-                <local:PresetSelector Presets="{Binding PresetsCh14}"
-                                      SelectedPreset="{Binding SelectedPresetCh14, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh14}"
+                                          SelectedPreset="{Binding SelectedPresetCh14, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters14}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi14, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part 16">
-                <local:PresetSelector Presets="{Binding PresetsCh15}"
-                                      SelectedPreset="{Binding SelectedPresetCh15, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <local:PresetSelector Presets="{Binding PresetsCh15}"
+                                          SelectedPreset="{Binding SelectedPresetCh15, Mode=TwoWay}" />
+                    <TabControl TabStripPlacement="Top">
+                        <TabItem Header="Midi">
+                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters15}"
+                                                       SearchText="{Binding SearchTextStudioSetMidi15, Mode=TwoWay}" />
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Part Ext" />
         </TabControl>

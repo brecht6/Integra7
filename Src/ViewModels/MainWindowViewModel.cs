@@ -208,6 +208,38 @@ public partial class MainWindowViewModel : ReactiveObject
     private string _searchTextStudioSetCommonMasterEQ;
     [Reactive]
     public string _refreshCommonMasterEQNeeded;
+    [Reactive]
+    private string _searchTextStudioSetMidi0;
+    [Reactive]
+    private string _searchTextStudioSetMidi1;
+    [Reactive]
+    private string _searchTextStudioSetMidi2;
+    [Reactive]
+    private string _searchTextStudioSetMidi3;
+    [Reactive]
+    private string _searchTextStudioSetMidi4;
+    [Reactive]
+    private string _searchTextStudioSetMidi5;
+    [Reactive]
+    private string _searchTextStudioSetMidi6;
+    [Reactive]
+    private string _searchTextStudioSetMidi7;
+    [Reactive]
+    private string _searchTextStudioSetMidi8;
+    [Reactive]
+    private string _searchTextStudioSetMidi9;
+    [Reactive]
+    private string _searchTextStudioSetMidi10;
+    [Reactive]
+    private string _searchTextStudioSetMidi11;
+    [Reactive]
+    private string _searchTextStudioSetMidi12;
+    [Reactive]
+    private string _searchTextStudioSetMidi13;
+    [Reactive]
+    private string _searchTextStudioSetMidi14;
+    [Reactive]
+    private string _searchTextStudioSetMidi15;
 
 
     Func<FullyQualifiedParameter, bool> _parameterFilter(string text) => par =>
@@ -398,6 +430,55 @@ public partial class MainWindowViewModel : ReactiveObject
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonMasterEQParameters;
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonMasterEQParameters => _studioSetCommonMasterEQParameters;
 
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters0 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters0;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters0 => _studioSetMidiParameters0;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters1 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters1;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters1 => _studioSetMidiParameters1;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters2 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters2;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters2 => _studioSetMidiParameters2;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters3 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters3;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters3 => _studioSetMidiParameters3;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters4 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters4;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters4 => _studioSetMidiParameters4;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters5 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters5;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters5 => _studioSetMidiParameters5;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters6 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters6;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters6 => _studioSetMidiParameters6;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters7 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters7;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters7 => _studioSetMidiParameters7;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters8 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters8;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters8 => _studioSetMidiParameters8;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters9 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters9;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters9 => _studioSetMidiParameters9;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters10 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters10;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters10 => _studioSetMidiParameters10;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters11 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters11;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters11 => _studioSetMidiParameters11;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters12 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters12;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters12 => _studioSetMidiParameters12;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters13 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters13;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters13 => _studioSetMidiParameters13;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters14 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters14;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters14 => _studioSetMidiParameters14;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters15 = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters15;
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters15 => _studioSetMidiParameters15;
+
     private SourceCache<Integra7Preset, int> GetSourceCache(byte Channel)
     {
         switch (Channel)
@@ -505,6 +586,55 @@ public partial class MainWindowViewModel : ReactiveObject
             _integra7Communicator.StudioSetCommonMasterEQ.ReadFromIntegra();
             List<FullyQualifiedParameter> p_meq = _integra7Communicator.StudioSetCommonMasterEQ.GetRelevantParameters(true, true);
             _sourceCacheStudioSetCommonMasterEQParameters.AddOrUpdate(p_meq);
+
+            _integra7Communicator.StudioSetMidi(0).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid0 = _integra7Communicator.StudioSetMidi(0).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters0.AddOrUpdate(p_mid0);
+            _integra7Communicator.StudioSetMidi(1).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid1 = _integra7Communicator.StudioSetMidi(1).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters1.AddOrUpdate(p_mid1);
+            _integra7Communicator.StudioSetMidi(2).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid2 = _integra7Communicator.StudioSetMidi(2).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters2.AddOrUpdate(p_mid2);
+            _integra7Communicator.StudioSetMidi(3).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid3 = _integra7Communicator.StudioSetMidi(3).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters3.AddOrUpdate(p_mid3);
+            _integra7Communicator.StudioSetMidi(4).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid4 = _integra7Communicator.StudioSetMidi(4).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters4.AddOrUpdate(p_mid4);
+            _integra7Communicator.StudioSetMidi(5).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid5 = _integra7Communicator.StudioSetMidi(5).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters5.AddOrUpdate(p_mid5);
+            _integra7Communicator.StudioSetMidi(6).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid6 = _integra7Communicator.StudioSetMidi(6).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters6.AddOrUpdate(p_mid6);
+            _integra7Communicator.StudioSetMidi(7).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid7 = _integra7Communicator.StudioSetMidi(7).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters7.AddOrUpdate(p_mid7);
+            _integra7Communicator.StudioSetMidi(8).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid8 = _integra7Communicator.StudioSetMidi(8).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters8.AddOrUpdate(p_mid8);
+            _integra7Communicator.StudioSetMidi(9).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid9 = _integra7Communicator.StudioSetMidi(9).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters9.AddOrUpdate(p_mid9);
+            _integra7Communicator.StudioSetMidi(10).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid10 = _integra7Communicator.StudioSetMidi(10).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters10.AddOrUpdate(p_mid10);
+            _integra7Communicator.StudioSetMidi(11).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid11 = _integra7Communicator.StudioSetMidi(11).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters11.AddOrUpdate(p_mid11);
+            _integra7Communicator.StudioSetMidi(12).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid12 = _integra7Communicator.StudioSetMidi(12).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters12.AddOrUpdate(p_mid12);
+            _integra7Communicator.StudioSetMidi(13).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid13 = _integra7Communicator.StudioSetMidi(13).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters13.AddOrUpdate(p_mid13);
+            _integra7Communicator.StudioSetMidi(14).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid14 = _integra7Communicator.StudioSetMidi(14).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters14.AddOrUpdate(p_mid14);
+            _integra7Communicator.StudioSetMidi(15).ReadFromIntegra();
+            List<FullyQualifiedParameter> p_mid15 = _integra7Communicator.StudioSetMidi(15).GetRelevantParameters(true, true);
+            _sourceCacheStudioSetMidiParameters15.AddOrUpdate(p_mid15);
         }
         else
         {
@@ -664,6 +794,70 @@ public partial class MainWindowViewModel : ReactiveObject
         var refreshCommonMasterEQ = this.WhenAnyValue(x => x.RefreshCommonMasterEQNeeded)
                                             .Select(_parameterFilter);
 
+        var parFilterStudioSetMidiParameters0 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi0)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetMidiParameters1 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi1)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetMidiParameters2 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi2)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetMidiParameters3 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi3)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetMidiParameters4 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi4)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetMidiParameters5 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi5)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetMidiParameters6 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi6)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetMidiParameters7 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi7)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetMidiParameters8 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi8)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetMidiParameters9 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi9)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetMidiParameters10 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi10)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetMidiParameters11 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi11)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetMidiParameters12 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi12)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetMidiParameters13 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi13)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetMidiParameters14 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi14)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
+        var parFilterStudioSetMidiParameters15 = this.WhenAnyValue(x => x.SearchTextStudioSetMidi15)
+                                            .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                            .DistinctUntilChanged()
+                                            .Select(_parameterFilter);
 
         _cleanUp[0] = _sourceCacheCh0.Connect()
                                     .ObserveOn(RxApp.MainThreadScheduler)
@@ -857,6 +1051,152 @@ public partial class MainWindowViewModel : ReactiveObject
                                         SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
                                     .DisposeMany()
                                     .Subscribe();
+
+        _cleanUp[22] = _sourceCacheStudioSetMidiParameters0.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters0)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters0,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[23] = _sourceCacheStudioSetMidiParameters1.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters1)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters1,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[24] = _sourceCacheStudioSetMidiParameters2.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters2)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters2,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[25] = _sourceCacheStudioSetMidiParameters3.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters3)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters3,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[26] = _sourceCacheStudioSetMidiParameters4.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters4)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters4,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[27] = _sourceCacheStudioSetMidiParameters5.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters5)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters5,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[28] = _sourceCacheStudioSetMidiParameters6.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters6)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters6,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[29] = _sourceCacheStudioSetMidiParameters7.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters7)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters7,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[30] = _sourceCacheStudioSetMidiParameters8.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters8)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters8,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[31] = _sourceCacheStudioSetMidiParameters9.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters9)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters9,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[32] = _sourceCacheStudioSetMidiParameters10.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters10)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters10,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[33] = _sourceCacheStudioSetMidiParameters11.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters11)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters11,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[34] = _sourceCacheStudioSetMidiParameters12.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters12)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters12,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[35] = _sourceCacheStudioSetMidiParameters13.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters13)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters13,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[36] = _sourceCacheStudioSetMidiParameters14.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters14)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters14,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+        _cleanUp[37] = _sourceCacheStudioSetMidiParameters15.Connect()
+                                    .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                    .Filter(parFilterStudioSetMidiParameters15)
+                                    .ObserveOn(RxApp.MainThreadScheduler)
+                                    .SortAndBind(
+                                        out _studioSetMidiParameters15,
+                                        SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                    .DisposeMany()
+                                    .Subscribe();
+
 
         MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(250)).Subscribe(m => UpdateIntegraFromUi(m));
         MessageBus.Current.Listen<UpdateFromSysexSpec>("hw2ui").Throttle(TimeSpan.FromMilliseconds(250)).Subscribe(m => UpdateUiFromIntegra(m));

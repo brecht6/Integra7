@@ -42,6 +42,10 @@ public class Integra7Domain
     {
         get => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Master EQ")];
     }
+    public DomainBase StudioSetMidi(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string>("Temporary Studio Set", $"Offset/Studio Set MIDI Channel {zeroBasedPartNo + 1}")];
+    }
     public DomainBase System
     {
         get => _parameterMapper[new Tuple<string, string>("System", "Offset/System Common")];

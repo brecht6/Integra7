@@ -21,21 +21,21 @@ public partial class PartViewModel : ViewModelBase
     private List<Integra7Preset> _i7presets;
     private Integra7Preset _selectedPreset;
     private SourceCache<Integra7Preset, int> _sourceCachePresets = new SourceCache<Integra7Preset, int>(x => x.Id);
-    private readonly ReadOnlyObservableCollection<Integra7Preset> _presets;
+    private readonly ReadOnlyObservableCollection<Integra7Preset> _presets = new([]);
     public ReadOnlyObservableCollection<Integra7Preset> Presets => _presets;
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters = new(x => x.ParSpec.Path);
-    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters;
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters => _studioSetMidiParameters;
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartParameters = new(x => x.ParSpec.Path);
-    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters;
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetPartParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartParameters => _studioSetPartParameters;
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetPartEQParameters = new(x => x.ParSpec.Path);
-    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _StudioSetPartEQParameters;
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _StudioSetPartEQParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetPartEQParameters => _StudioSetPartEQParameters;
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCachePCMSynthToneCommonParameters = new(x => x.ParSpec.Path);
-    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _PCMSynthToneCommonParameters;
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _PCMSynthToneCommonParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> PCMSynthToneCommonParameters => _PCMSynthToneCommonParameters;
-    private byte _part;
+    private byte _part = 0;
 
     public bool SelectedPresetIsSynthTone
     {
@@ -43,86 +43,86 @@ public partial class PartViewModel : ViewModelBase
     }
 
     [Reactive]
-    private string _searchTextStudioSetMidi;
+    private string _searchTextStudioSetMidi = "";
     [Reactive]
-    private string _searchTextStudioSetPart;
+    private string _searchTextStudioSetPart = "";
     [Reactive]
-    public string _refreshStudioSetPart;
+    public string _refreshStudioSetPart = "";
     [Reactive]
-    private string _searchTextStudioSetPartEQ;
+    private string _searchTextStudioSetPartEQ = "";
     [Reactive]
-    public string _refreshStudioSetPartEQ;
+    public string _refreshStudioSetPartEQ = "";
     [Reactive]
-    private string _searchTextPCMSynthToneCommon;
+    private string _searchTextPCMSynthToneCommon = "";
     [Reactive]
-    public string _refreshPCMSynthToneCommon;
+    public string _refreshPCMSynthToneCommon = "";
 
     public string Header { get => _commonTab ? "Common" : $"Part {_part + 1}"; }
 
-    IDisposable _cleanupPresets;
-    IDisposable _cleanupMidiParams;
-    IDisposable _cleanupStudioSetPartParams;
-    IDisposable _cleanupStudioSetPartEQParams;
-    IDisposable _cleanupPCMSynthToneCommonParams;
+    IDisposable? _cleanupPresets = null;
+    IDisposable? _cleanupMidiParams = null;
+    IDisposable? _cleanupStudioSetPartParams = null;
+    IDisposable? _cleanupStudioSetPartEQParams = null;
+    IDisposable? _cleanupPCMSynthToneCommonParams = null;
 
     [Reactive]
-    private string _searchTextSetup;
+    private string _searchTextSetup = "";
     [Reactive]
-    private string _searchSystem;
+    private string _searchSystem = "";
     [Reactive]
-    private string _searchTextStudioSetCommon;
+    private string _searchTextStudioSetCommon = "";
     [Reactive]
-    private string _searchTextStudioSetCommonChorus;
+    private string _searchTextStudioSetCommonChorus = "";
     [Reactive]
-    private string _refreshCommonChorusNeeded;
+    private string _refreshCommonChorusNeeded = "";
     [Reactive]
-    private string _searchTextStudioSetCommonReverb;
+    private string _searchTextStudioSetCommonReverb = "";
     [Reactive]
-    private string _refreshCommonReverbNeeded;
+    private string _refreshCommonReverbNeeded = "";
     [Reactive]
-    private string _searchTextStudioSetCommonMotionalSurround;
+    private string _searchTextStudioSetCommonMotionalSurround = "";
     [Reactive]
-    private string _refreshCommonMotionalSurroundNeeded;
+    private string _refreshCommonMotionalSurroundNeeded = "";
     [Reactive]
-    private string _searchTextStudioSetCommonMasterEQ;
+    private string _searchTextStudioSetCommonMasterEQ = "";
     [Reactive]
-    public string _refreshCommonMasterEQNeeded;
+    public string _refreshCommonMasterEQNeeded = "";
 
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheSetupParameters = new(x => x.ParSpec.Path);
-    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _setupParameters;
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _setupParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> SetupParameters => _setupParameters;
 
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheSystem = new(x => x.ParSpec.Path);
-    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _systemParameters;
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _systemParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> SystemParameters => _systemParameters;
 
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonParameters = new(x => x.ParSpec.Path);
-    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonParameters;
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonParameters => _studioSetCommonParameters;
 
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonChorusParameters = new(x => x.ParSpec.Path);
-    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonChorusParameters;
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonChorusParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonChorusParameters => _studioSetCommonChorusParameters;
 
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonReverbParameters = new(x => x.ParSpec.Path);
-    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonReverbParameters;
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonReverbParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonReverbParameters => _studioSetCommonReverbParameters;
 
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonMotionalSurroundParameters = new(x => x.ParSpec.Path);
-    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonMotionalSurroundParameters;
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonMotionalSurroundParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonMotionalSurroundParameters => _studioSetCommonMotionalSurroundParameters;
 
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetCommonMasterEQParameters = new(x => x.ParSpec.Path);
-    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonMasterEQParameters;
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonMasterEQParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonMasterEQParameters => _studioSetCommonMasterEQParameters;
 
-    IDisposable _cleanupSetup;
-    IDisposable _cleanupSystem;
-    IDisposable _cleanupStudioSetCommon;
-    IDisposable _cleanupStudioSetChorus;
-    IDisposable _cleanupStudioSetReverb;
-    IDisposable _cleanupMotionalSurround;
-    IDisposable _cleanupStudioSetMasterEQ;
+    IDisposable? _cleanupSetup = null;
+    IDisposable? _cleanupSystem = null;
+    IDisposable? _cleanupStudioSetCommon = null;
+    IDisposable? _cleanupStudioSetChorus = null;
+    IDisposable? _cleanupStudioSetReverb = null;
+    IDisposable? _cleanupMotionalSurround = null;
+    IDisposable? _cleanupStudioSetMasterEQ = null;
 
     public void PreSelectConfiguredPreset(DomainBase b)
     {
@@ -143,7 +143,6 @@ public partial class PartViewModel : ViewModelBase
     public PartViewModel(ViewModelBase parent, byte zeroBasedPartNo, Integra7StartAddresses i7startAddr, Integra7Parameters i7par, IIntegra7Api i7, Integra7Domain i7dom, List<Integra7Preset> i7presets, bool commonTab = false)
     {
         const int THROTTLE = 250;
-
         _parent = parent;
         _part = zeroBasedPartNo;
         _i7startAddresses = i7startAddr;
@@ -152,6 +151,8 @@ public partial class PartViewModel : ViewModelBase
         _i7domain = i7dom;
         _i7presets = i7presets;
         _commonTab = commonTab;
+
+        _selectedPreset = _i7presets[0];
 
         if (!commonTab)
         {

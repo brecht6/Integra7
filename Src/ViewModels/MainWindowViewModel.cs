@@ -1,6 +1,4 @@
-﻿using Avalonia;
-using DynamicData;
-using ReactiveUI;
+﻿using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 using System;
 using System.IO;
@@ -13,7 +11,6 @@ using Avalonia.Platform;
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
 using Integra7AuralAlchemist.Models.Domain;
-using DynamicData.Binding;
 
 namespace Integra7AuralAlchemist.ViewModels;
 
@@ -31,8 +28,6 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private readonly ReadOnlyObservableCollection<PartViewModel> _partViewModels;
     public ReadOnlyObservableCollection<PartViewModel> PartViewModels => _partViewModels;
-    private readonly Dictionary<int, IDisposable> _cleanUp = new Dictionary<int, IDisposable>();
-
     private const string INTEGRA_CONNECTION_STRING = "INTEGRA-7";
     private IIntegra7Api? Integra7 { get; set; } = null;
 
@@ -46,9 +41,9 @@ public partial class MainWindowViewModel : ViewModelBase
     public void PlayNote()
     {
         byte zeroBasedMidiChannel = 0;
-        if (CurrentPartSelection > 0 && CurrentPartSelection < 17)
+        if (_currentPartSelection > 0 && _currentPartSelection < 17)
         {
-            zeroBasedMidiChannel = (byte)(CurrentPartSelection - 1);
+            zeroBasedMidiChannel = (byte)(_currentPartSelection - 1);
         }
         Integra7?.NoteOn(zeroBasedMidiChannel, 65, 100);
         Thread.Sleep(1000);

@@ -28,7 +28,7 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
 
         set
         {
-            Debug.Write($"changing _stringValue from {_stringValue} to {value}.");
+            //Debug.Write($"changing _stringValue from {_stringValue} to {value}.");
             _stringValue = value;
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StringValue)));

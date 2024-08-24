@@ -62,39 +62,6 @@
                     Grid.Column="0"
                     ItemsSource="{Binding PartViewModels}"
                     SelectedIndex="{Binding CurrentPartSelection, Mode=TwoWay}">
-            <!-- <TabItem Header="Common"
-                     FontSize="14">
-                <TabControl TabStripPlacement="Top">
-                    <TabItem Header="Setup">
-                        <local:ParameterCollection Parameters="{Binding SetupParameters}"
-                                                   SearchText="{Binding SearchTextSetup, Mode=TwoWay}" />
-                    </TabItem>
-                    <TabItem Header="System">
-                        <local:ParameterCollection Parameters="{Binding SystemParameters}"
-                                                   SearchText="{Binding SearchTextSetup, Mode=TwoWay}" />
-                    </TabItem>
-                    <TabItem Header="Common">
-                        <local:ParameterCollection Parameters="{Binding StudioSetCommonParameters}"
-                                                   SearchText="{Binding SearchTextStudioSetCommon, Mode=TwoWay}" />
-                    </TabItem>
-                    <TabItem Header="Chorus">
-                        <local:ParameterCollection Parameters="{Binding StudioSetCommonChorusParameters}"
-                                                   SearchText="{Binding SearchTextStudioSetCommonChorus, Mode=TwoWay}" />
-                    </TabItem>
-                    <TabItem Header="Reverb">
-                        <local:ParameterCollection Parameters="{Binding StudioSetCommonReverbParameters}"
-                                                   SearchText="{Binding SearchTextStudioSetCommonReverb, Mode=TwoWay}" />
-                    </TabItem>
-                    <TabItem Header="Motional Surround">
-                        <local:ParameterCollection Parameters="{Binding StudioSetCommonMotionalSurroundParameters}"
-                                                   SearchText="{Binding SearchTextStudioSetCommonMotionalSurround, Mode=TwoWay}" />
-                    </TabItem>
-                    <TabItem Header="Master EQ">
-                        <local:ParameterCollection Parameters="{Binding StudioSetCommonMasterEQParameters}"
-                                                   SearchText="{Binding SearchTextStudioSetCommonMasterEQ, Mode=TwoWay}" />
-                    </TabItem>
-                </TabControl>
-            </TabItem> -->
             <TabControl.ItemTemplate>
                 <!-- this is the header template -->
                 <DataTemplate>

@@ -19,6 +19,7 @@ public partial class MainWindowViewModel : ViewModelBase
 {
 #pragma warning disable CA1822 // Mark members as static
 #pragma warning disable CS8618 // Non-nullable field 'xxx' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the field as nullable.
+    const int THROTTLE = 250;
     private Integra7StartAddresses _i7startAddresses = new();
     private Integra7Parameters _i7parameters = new();
 
@@ -201,9 +202,9 @@ public partial class MainWindowViewModel : ViewModelBase
             pa.UpdateConnected();
         }
 
-        MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(250)).Subscribe(m => UpdateIntegraFromUi(m));
-        MessageBus.Current.Listen<UpdateFromSysexSpec>("hw2ui").Throttle(TimeSpan.FromMilliseconds(250)).Subscribe(m => UpdateUiFromIntegra(m));
-        MessageBus.Current.Listen<UpdateResyncPart>().Throttle(TimeSpan.FromMilliseconds(250)).Subscribe(m => ResyncPart(m.PartNo));
+        MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(THROTTLE)).Subscribe(m => UpdateIntegraFromUi(m));
+        MessageBus.Current.Listen<UpdateFromSysexSpec>("hw2ui").Throttle(TimeSpan.FromMilliseconds(THROTTLE)).Subscribe(m => UpdateUiFromIntegra(m));
+        MessageBus.Current.Listen<UpdateResyncPart>().Throttle(TimeSpan.FromMilliseconds(THROTTLE)).Subscribe(m => ResyncPart(m.PartNo));
     }
 
     public void UpdateIntegraFromUi(UpdateMessageSpec s)

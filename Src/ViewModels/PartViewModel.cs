@@ -131,7 +131,7 @@ public partial class PartViewModel : ViewModelBase
         string pcstr = b.LookupSingleParameterDisplayedValue("Studio Set Part/Tone Bank Program Number (PC)");
         foreach (Integra7Preset p in _i7presets)
         {
-            if (msbstr == $"{p.Msb}" && lsbstr == $"{p.Lsb}" && pcstr == $"{p.Pc}")
+            if (msbstr == $"{p.Msb}" && lsbstr == $"{p.Lsb}" && pcstr == $"{p.Pc - 1}") // note: seems like integra-7 sends back a one-based program change (PC)??
             {
                 _selectedPreset = p;
                 this.RaisePropertyChanged(nameof(SelectedPreset));
@@ -575,13 +575,14 @@ public partial class PartViewModel : ViewModelBase
         DomainBase setPart = _i7domain.StudioSetPart(part);
         setPart.ReadFromIntegra();
         ForceUiRefresh(setPart.StartAddressName, setPart.OffsetAddressName, "");
-
         if (_selectedPreset.ToneTypeStr == "PCMS")
         {
             DomainBase setPCMSTone = _i7domain.PCMSynthToneCommon(part);
             setPCMSTone.ReadFromIntegra();
             ForceUiRefresh(setPCMSTone.StartAddressName, setPCMSTone.OffsetAddressName, "");
         }
+        PreSelectConfiguredPreset(setPart);
         this.RaisePropertyChanged(nameof(SelectedPresetIsSynthTone));
+
     }
 }

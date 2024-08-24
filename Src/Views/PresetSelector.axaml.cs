@@ -25,6 +25,18 @@ public partial class PresetSelector : UserControl
         set => SetValue(SelectedPresetProperty, value);
     }
 
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        if (change.Property == SelectedPresetProperty)
+        {
+            if (change.NewValue is not null)
+            {
+                PresetDataGrid.ScrollIntoView(change.NewValue, null);
+            }
+        }
+        base.OnPropertyChanged(change);
+    }
+
     public PresetSelector()
     {
         InitializeComponent();

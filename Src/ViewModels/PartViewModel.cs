@@ -550,11 +550,6 @@ public partial class PartViewModel : ViewModelBase
             }
         }
     }
-    public void SetSelectedPreset(Integra7Preset selectedPreset)
-    {
-        SelectedPreset = selectedPreset;
-        ChangePreset();
-    }
 
     [ReactiveCommand]
     public void ChangePreset()

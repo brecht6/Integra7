@@ -30,7 +30,7 @@
                 </ItemsRepeater.Layout>
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate>
-                        <Grid ColumnDefinitions="270,Auto"
+                        <Grid ColumnDefinitions="270,400"
                               RowDefinitions="Auto">
                             <Border Grid.Column="0"
                                     Grid.Row="0"

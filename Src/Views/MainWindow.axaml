@@ -103,30 +103,68 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate DataType="vm:PartViewModel">
-                    <StackPanel Orientation="Horizontal"
-                                Margin="10,5,0,0"
-                                Spacing="50">
-                        <local:PresetSelector Presets="{Binding Presets}"
-                                              SelectedPreset="{Binding SelectedPreset, Mode=TwoWay}" />
-                        <TabControl TabStripPlacement="Top">
-                            <TabItem Header="Midi">
-                                <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters}"
-                                                           SearchText="{Binding SearchTextStudioSetMidi, Mode=TwoWay}" />
-                            </TabItem>
-                            <TabItem Header="Set Part">
-                                <local:ParameterCollection Parameters="{Binding StudioSetPartParameters}"
-                                                           SearchText="{Binding SearchTextStudioSetPart, Mode=TwoWay}" />
-                            </TabItem>
-                            <TabItem Header="Set EQ">
-                                <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters}"
-                                                           SearchText="{Binding SearchTextStudioSetPartEQ, Mode=TwoWay}" />
-                            </TabItem>
-                            <TabItem Header="PCM Synth Tone"
-                                     IsVisible="{Binding SelectedPresetIsSynthTone}">
-                                <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters}"
-                                                           SearchText="{Binding SearchTextPCMSynthToneCommon, Mode=TwoWay}" />
-                            </TabItem>
-                        </TabControl>
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="10,5,0,0"
+                                    Spacing="50"
+                                    IsVisible="{Binding IsCommonTab}">
+                            <TabControl TabStripPlacement="Top">
+                                <TabItem Header="Setup">
+                                    <local:ParameterCollection Parameters="{Binding SetupParameters}"
+                                                               SearchText="{Binding SearchTextSetup, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem Header="System">
+                                    <local:ParameterCollection Parameters="{Binding SystemParameters}"
+                                                               SearchText="{Binding SearchTextSetup, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem Header="Common">
+                                    <local:ParameterCollection Parameters="{Binding StudioSetCommonParameters}"
+                                                               SearchText="{Binding SearchTextStudioSetCommon, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem Header="Chorus">
+                                    <local:ParameterCollection Parameters="{Binding StudioSetCommonChorusParameters}"
+                                                               SearchText="{Binding SearchTextStudioSetCommonChorus, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem Header="Reverb">
+                                    <local:ParameterCollection Parameters="{Binding StudioSetCommonReverbParameters}"
+                                                               SearchText="{Binding SearchTextStudioSetCommonReverb, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem Header="Motional Surround">
+                                    <local:ParameterCollection Parameters="{Binding StudioSetCommonMotionalSurroundParameters}"
+                                                               SearchText="{Binding SearchTextStudioSetCommonMotionalSurround, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem Header="Master EQ">
+                                    <local:ParameterCollection Parameters="{Binding StudioSetCommonMasterEQParameters}"
+                                                               SearchText="{Binding SearchTextStudioSetCommonMasterEQ, Mode=TwoWay}" />
+                                </TabItem>
+                            </TabControl>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="10,5,0,0"
+                                    Spacing="50"
+                                    IsVisible="{Binding IsPartTab}">
+                            <local:PresetSelector Presets="{Binding Presets}"
+                                                  SelectedPreset="{Binding SelectedPreset, Mode=TwoWay}" />
+                            <TabControl TabStripPlacement="Top">
+                                <TabItem Header="Midi">
+                                    <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters}"
+                                                               SearchText="{Binding SearchTextStudioSetMidi, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem Header="Set Part">
+                                    <local:ParameterCollection Parameters="{Binding StudioSetPartParameters}"
+                                                               SearchText="{Binding SearchTextStudioSetPart, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem Header="Set EQ">
+                                    <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters}"
+                                                               SearchText="{Binding SearchTextStudioSetPartEQ, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem Header="PCM Synth Tone"
+                                         IsVisible="{Binding SelectedPresetIsSynthTone}">
+                                    <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters}"
+                                                               SearchText="{Binding SearchTextPCMSynthToneCommon, Mode=TwoWay}" />
+                                </TabItem>
+                            </TabControl>
+                        </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </TabControl.ContentTemplate>

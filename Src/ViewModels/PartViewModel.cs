@@ -580,7 +580,6 @@ public partial class PartViewModel : ViewModelBase
         DomainBase setPart = _i7domain.StudioSetPart(part);
         setPart.ReadFromIntegra();
         ForceUiRefresh(setPart.StartAddressName, setPart.OffsetAddressName, "");
-        PreSelectConfiguredPreset(setPart);
 
         if (_selectedPreset.ToneTypeStr == "PCMS")
         {

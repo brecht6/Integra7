@@ -14,8 +14,7 @@
               ItemsSource="{Binding #PresetSelectorControl.Presets}"
               HorizontalAlignment="Center"
               VerticalAlignment="Center"
-              SelectedItem="{Binding #PresetSelectorControl.SelectedPreset, Mode=TwoWay}"
-              MinHeight="800">
+              SelectedItem="{Binding #PresetSelectorControl.SelectedPreset, Mode=TwoWay}">
         <DataGrid.Styles>
             <Style Selector="DataGridCell:current /template/ Grid#FocusVisual">
                 <Setter Property="IsVisible"

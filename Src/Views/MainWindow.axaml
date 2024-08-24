@@ -27,7 +27,7 @@
         </Style>
     </Window.Styles>
     <Grid ColumnDefinitions="*"
-          RowDefinitions="Auto,Auto,Auto,800">
+          RowDefinitions="Auto,Auto,Auto,750">
         <Border Grid.Row="0"
                 Height="32">
             <TextBlock Text="Integra-7 Aural Alchemist"
@@ -75,7 +75,10 @@
                                     Margin="10,5,0,0"
                                     Spacing="50"
                                     IsVisible="{Binding IsCommonTab}">
-                            <TabControl TabStripPlacement="Top">
+                            <TabControl TabStripPlacement="Top"
+                                        MaxHeight="700"
+                                        VerticalAlignment="Top"
+                                        VerticalContentAlignment="Top">
                                 <TabItem Header="Setup">
                                     <local:ParameterCollection Parameters="{Binding SetupParameters}"
                                                                SearchText="{Binding SearchTextSetup, Mode=TwoWay}" />
@@ -111,8 +114,14 @@
                                     Spacing="50"
                                     IsVisible="{Binding IsPartTab}">
                             <local:PresetSelector Presets="{Binding Presets}"
-                                                  SelectedPreset="{Binding SelectedPreset, Mode=TwoWay}" />
-                            <TabControl TabStripPlacement="Top">
+                                                  SelectedPreset="{Binding SelectedPreset, Mode=TwoWay}"
+                                                  MaxHeight="700"
+                                                  VerticalAlignment="Top"
+                                                  VerticalContentAlignment="Top" />
+                            <TabControl TabStripPlacement="Top"
+                                        MaxHeight="700"
+                                        VerticalAlignment="Top"
+                                        VerticalContentAlignment="Top">
                                 <TabItem Header="Midi">
                                     <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters}"
                                                                SearchText="{Binding SearchTextStudioSetMidi, Mode=TwoWay}" />

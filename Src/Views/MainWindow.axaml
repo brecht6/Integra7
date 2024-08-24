@@ -60,8 +60,9 @@
                     TabStripPlacement="Left"
                     Grid.Row="3"
                     Grid.Column="0"
+                    ItemsSource="{Binding PartViewModels}"
                     SelectedIndex="{Binding CurrentPartSelection, Mode=TwoWay}">
-            <TabItem Header="Common"
+            <!-- <TabItem Header="Common"
                      FontSize="14">
                 <TabControl TabStripPlacement="Top">
                     <TabItem Header="Setup">
@@ -93,440 +94,42 @@
                                                    SearchText="{Binding SearchTextStudioSetCommonMasterEQ, Mode=TwoWay}" />
                     </TabItem>
                 </TabControl>
-            </TabItem>
-            <TabItem Header="Part 1">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh0}"
-                                          SelectedPreset="{Binding SelectedPresetCh0, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters0}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi0, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set Part">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartParameters0}"
-                                                       SearchText="{Binding SearchTextStudioSetPart0, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set EQ">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters0}"
-                                                       SearchText="{Binding SearchTextStudioSetPartEQ0, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="PCM Synth Tone"
-                                 IsVisible="{Binding SelectedPresetCh0IsSynthTone}">
-                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters0}"
-                                                       SearchText="{Binding SearchTextPCMSynthToneCommon0, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part 2">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh1}"
-                                          SelectedPreset="{Binding SelectedPresetCh1, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters1}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi1, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set Part">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartParameters1}"
-                                                       SearchText="{Binding SearchTextStudioSetPart1, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set EQ">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters1}"
-                                                       SearchText="{Binding SearchTextStudioSetPartEQ1, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="PCM Synth Tone"
-                                 IsVisible="{Binding SelectedPresetCh1IsSynthTone}">
-                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters1}"
-                                                       SearchText="{Binding SearchTextPCMSynthToneCommon1, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part 3">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh2}"
-                                          SelectedPreset="{Binding SelectedPresetCh2, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters2}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi2, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                    <TabItem Header="Part">
-                        <local:ParameterCollection Parameters="{Binding StudioSetPartParameters2}"
-                                                   SearchText="{Binding SearchTextStudioSetPart2, Mode=TwoWay}" />
-                    </TabItem>
-                    <TabItem Header="Set EQ">
-                        <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters2}"
-                                                   SearchText="{Binding SearchTextStudioSetPartEQ2, Mode=TwoWay}" />
-                    </TabItem>
-                    <TabItem Header="PCM Synth Tone"
-                             IsVisible="{Binding SelectedPresetCh2IsSynthTone}">
-                        <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters2}"
-                                                   SearchText="{Binding SearchTextPCMSynthToneCommon2, Mode=TwoWay}" />
-                    </TabItem>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part 4">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh3}"
-                                          SelectedPreset="{Binding SelectedPresetCh3, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters3}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi3, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set Part">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartParameters3}"
-                                                       SearchText="{Binding SearchTextStudioSetPart3, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set EQ">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters3}"
-                                                       SearchText="{Binding SearchTextStudioSetPartEQ3, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="PCM Synth Tone"
-                                 IsVisible="{Binding SelectedPresetCh3IsSynthTone}">
-                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters3}"
-                                                       SearchText="{Binding SearchTextPCMSynthToneCommon3, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part 5">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh4}"
-                                          SelectedPreset="{Binding SelectedPresetCh4, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters4}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi4, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set Part">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartParameters4}"
-                                                       SearchText="{Binding SearchTextStudioSetPart4, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set EQ">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters4}"
-                                                       SearchText="{Binding SearchTextStudioSetPartEQ4, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="PCM Synth Tone"
-                                 IsVisible="{Binding SelectedPresetCh4IsSynthTone}">
-                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters4}"
-                                                       SearchText="{Binding SearchTextPCMSynthToneCommon4, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part 6">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh5}"
-                                          SelectedPreset="{Binding SelectedPresetCh5, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters5}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi5, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set Part">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartParameters5}"
-                                                       SearchText="{Binding SearchTextStudioSetPart5, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set EQ">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters5}"
-                                                       SearchText="{Binding SearchTextStudioSetPartEQ5, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="PCM Synth Tone"
-                                 IsVisible="{Binding SelectedPresetCh5IsSynthTone}">
-                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters5}"
-                                                       SearchText="{Binding SearchTextPCMSynthToneCommon5, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part 7">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh6}"
-                                          SelectedPreset="{Binding SelectedPresetCh6, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters6}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi6, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set Part">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartParameters6}"
-                                                       SearchText="{Binding SearchTextStudioSetPart6, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set EQ">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters6}"
-                                                       SearchText="{Binding SearchTextStudioSetPartEQ6, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="PCM Synth Tone"
-                                 IsVisible="{Binding SelectedPresetCh6IsSynthTone}">
-                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters6}"
-                                                       SearchText="{Binding SearchTextPCMSynthToneCommon6, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part 8">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh7}"
-                                          SelectedPreset="{Binding SelectedPresetCh7, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters7}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi7, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set Part">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartParameters7}"
-                                                       SearchText="{Binding SearchTextStudioSetPart7, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set EQ">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters7}"
-                                                       SearchText="{Binding SearchTextStudioSetPartEQ7, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="PCM Synth Tone"
-                                 IsVisible="{Binding SelectedPresetCh7IsSynthTone}">
-                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters7}"
-                                                       SearchText="{Binding SearchTextPCMSynthToneCommon7, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part 9">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh8}"
-                                          SelectedPreset="{Binding SelectedPresetCh8, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters8}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi8, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set Part">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartParameters8}"
-                                                       SearchText="{Binding SearchTextStudioSetPart8, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set EQ">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters8}"
-                                                       SearchText="{Binding SearchTextStudioSetPartEQ8, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="PCM Synth Tone"
-                                 IsVisible="{Binding SelectedPresetCh8IsSynthTone}">
-                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters8}"
-                                                       SearchText="{Binding SearchTextPCMSynthToneCommon8, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part 10">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh9}"
-                                          SelectedPreset="{Binding SelectedPresetCh9, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters9}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi9, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set Part">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartParameters9}"
-                                                       SearchText="{Binding SearchTextStudioSetPart9, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set EQ">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters9}"
-                                                       SearchText="{Binding SearchTextStudioSetPartEQ9, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="PCM Synth Tone"
-                                 IsVisible="{Binding SelectedPresetCh9IsSynthTone}">
-                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters9}"
-                                                       SearchText="{Binding SearchTextPCMSynthToneCommon9, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part 11">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh10}"
-                                          SelectedPreset="{Binding SelectedPresetCh10, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters10}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi10, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set Part">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartParameters10}"
-                                                       SearchText="{Binding SearchTextStudioSetPart10, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set EQ">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters10}"
-                                                       SearchText="{Binding SearchTextStudioSetPartEQ10, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="PCM Synth Tone"
-                                 IsVisible="{Binding SelectedPresetCh10IsSynthTone}">
-                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters10}"
-                                                       SearchText="{Binding SearchTextPCMSynthToneCommon10, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part 12">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh11}"
-                                          SelectedPreset="{Binding SelectedPresetCh11, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters11}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi11, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set Part">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartParameters11}"
-                                                       SearchText="{Binding SearchTextStudioSetPart11, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set EQ">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters11}"
-                                                       SearchText="{Binding SearchTextStudioSetPartEQ11, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="PCM Synth Tone"
-                                 IsVisible="{Binding SelectedPresetCh11IsSynthTone}">
-                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters11}"
-                                                       SearchText="{Binding SearchTextPCMSynthToneCommon11, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part 13">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh12}"
-                                          SelectedPreset="{Binding SelectedPresetCh12, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters12}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi12, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set Part">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartParameters12}"
-                                                       SearchText="{Binding SearchTextStudioSetPart12, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                    <TabItem Header="Set EQ">
-                        <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters12}"
-                                                   SearchText="{Binding SearchTextStudioSetPartEQ12, Mode=TwoWay}" />
-                    </TabItem>
-                    <TabItem Header="PCM Synth Tone"
-                             IsVisible="{Binding SelectedPresetCh12IsSynthTone}">
-                        <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters12}"
-                                                   SearchText="{Binding SearchTextPCMSynthToneCommon12, Mode=TwoWay}" />
-                    </TabItem>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part 14">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh13}"
-                                          SelectedPreset="{Binding SelectedPresetCh13, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters13}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi13, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set Part">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartParameters13}"
-                                                       SearchText="{Binding SearchTextStudioSetPart13, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set EQ">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters13}"
-                                                       SearchText="{Binding SearchTextStudioSetPartEQ13, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="PCM Synth Tone"
-                                 IsVisible="{Binding SelectedPresetCh13IsSynthTone}">
-                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters13}"
-                                                       SearchText="{Binding SearchTextPCMSynthToneCommon13, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part 15">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh14}"
-                                          SelectedPreset="{Binding SelectedPresetCh14, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters14}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi14, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set Part">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartParameters14}"
-                                                       SearchText="{Binding SearchTextStudioSetPart14, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set EQ">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters14}"
-                                                       SearchText="{Binding SearchTextStudioSetPartEQ14, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="PCM Synth Tone"
-                                 IsVisible="{Binding SelectedPresetCh14IsSynthTone}">
-                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters14}"
-                                                       SearchText="{Binding SearchTextPCMSynthToneCommon14, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part 16">
-                <StackPanel Orientation="Horizontal"
-                            Margin="10,5,0,0"
-                            Spacing="50">
-                    <local:PresetSelector Presets="{Binding PresetsCh15}"
-                                          SelectedPreset="{Binding SelectedPresetCh15, Mode=TwoWay}" />
-                    <TabControl TabStripPlacement="Top">
-                        <TabItem Header="Midi">
-                            <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters15}"
-                                                       SearchText="{Binding SearchTextStudioSetMidi15, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set Part">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartParameters15}"
-                                                       SearchText="{Binding SearchTextStudioSetPart15, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="Set EQ">
-                            <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters15}"
-                                                       SearchText="{Binding SearchTextStudioSetPartEQ15, Mode=TwoWay}" />
-                        </TabItem>
-                        <TabItem Header="PCM Synth Tone"
-                                 IsVisible="{Binding SelectedPresetCh15IsSynthTone}">
-                            <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters15}"
-                                                       SearchText="{Binding SearchTextPCMSynthToneCommon15, Mode=TwoWay}" />
-                        </TabItem>
-                    </TabControl>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Part Ext" />
+            </TabItem> -->
+            <TabControl.ItemTemplate>
+                <!-- this is the header template -->
+                <DataTemplate>
+                    <TextBlock Text="{Binding Header}" />
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate DataType="vm:PartViewModel">
+                    <StackPanel Orientation="Horizontal"
+                                Margin="10,5,0,0"
+                                Spacing="50">
+                        <local:PresetSelector Presets="{Binding Presets}"
+                                              SelectedPreset="{Binding SelectedPreset, Mode=TwoWay}" />
+                        <TabControl TabStripPlacement="Top">
+                            <TabItem Header="Midi">
+                                <local:ParameterCollection Parameters="{Binding StudioSetMidiParameters}"
+                                                           SearchText="{Binding SearchTextStudioSetMidi, Mode=TwoWay}" />
+                            </TabItem>
+                            <TabItem Header="Set Part">
+                                <local:ParameterCollection Parameters="{Binding StudioSetPartParameters}"
+                                                           SearchText="{Binding SearchTextStudioSetPart, Mode=TwoWay}" />
+                            </TabItem>
+                            <TabItem Header="Set EQ">
+                                <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters}"
+                                                           SearchText="{Binding SearchTextStudioSetPartEQ, Mode=TwoWay}" />
+                            </TabItem>
+                            <TabItem Header="PCM Synth Tone"
+                                     IsVisible="{Binding SelectedPresetIsSynthTone}">
+                                <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters}"
+                                                           SearchText="{Binding SearchTextPCMSynthToneCommon, Mode=TwoWay}" />
+                            </TabItem>
+                        </TabControl>
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
         </TabControl>
     </Grid>
 </Window>

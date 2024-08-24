@@ -22,14 +22,6 @@ public partial class MainWindowViewModel : ViewModelBase
 {
 #pragma warning disable CA1822 // Mark members as static
 #pragma warning disable CS8618 // Non-nullable field 'xxx' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the field as nullable.
-    private TabType _tabType;
-    public TabType SelectedTabType
-    {
-        get => _tabType;
-        set => this.RaiseAndSetIfChanged(ref _tabType, value);
-    }
-    public TabType[] AvailableTabTypes { get; } = Enum.GetValues<TabType>();
-
     private Integra7StartAddresses _i7startAddresses = new();
     private Integra7Parameters _i7parameters = new();
 

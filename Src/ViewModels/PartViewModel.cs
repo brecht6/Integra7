@@ -156,6 +156,8 @@ public partial class PartViewModel : ViewModelBase
 
         if (!commonTab)
         {
+            _sourceCachePresets.AddOrUpdate(i7presets);
+
             _i7domain.StudioSetMidi(_part).ReadFromIntegra();
             List<FullyQualifiedParameter> p_mid = _i7domain.StudioSetMidi(_part).GetRelevantParameters(true, true);
             _sourceCacheStudioSetMidiParameters.AddOrUpdate(p_mid);
@@ -176,7 +178,6 @@ public partial class PartViewModel : ViewModelBase
             List<FullyQualifiedParameter> p_pcmstc = _i7domain.PCMSynthToneCommon(_part).GetRelevantParameters(true, true);
             _sourceCachePCMSynthToneCommonParameters.AddOrUpdate(p_pcmstc);
 
-            _sourceCachePresets.AddOrUpdate(i7presets);
             var parFilterStudioSetMidiParameters = this.WhenAnyValue(x => x.SearchTextStudioSetMidi)
                                         .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
                                         .DistinctUntilChanged()

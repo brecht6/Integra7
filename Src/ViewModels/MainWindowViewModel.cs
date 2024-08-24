@@ -186,6 +186,71 @@ public partial class MainWindowViewModel : ReactiveObject
         }
     }
 
+    public bool SelectedPresetCh0IsSynthTone
+    {
+        get => SelectedPresetCh0.ToneTypeStr == "PCMS";
+    }
+    public bool SelectedPresetCh1IsSynthTone
+    {
+        get => SelectedPresetCh1.ToneTypeStr == "PCMS";
+    }
+    public bool SelectedPresetCh2IsSynthTone
+    {
+        get => SelectedPresetCh2.ToneTypeStr == "PCMS";
+    }
+    public bool SelectedPresetCh3IsSynthTone
+    {
+        get => SelectedPresetCh3.ToneTypeStr == "PCMS";
+    }
+    public bool SelectedPresetCh4IsSynthTone
+    {
+        get => SelectedPresetCh4.ToneTypeStr == "PCMS";
+    }
+    public bool SelectedPresetCh5IsSynthTone
+    {
+        get => SelectedPresetCh5.ToneTypeStr == "PCMS";
+    }
+    public bool SelectedPresetCh6IsSynthTone
+    {
+        get => SelectedPresetCh6.ToneTypeStr == "PCMS";
+    }
+    public bool SelectedPresetCh7IsSynthTone
+    {
+        get => SelectedPresetCh7.ToneTypeStr == "PCMS";
+    }
+    public bool SelectedPresetCh8IsSynthTone
+    {
+        get => SelectedPresetCh8.ToneTypeStr == "PCMS";
+    }
+    public bool SelectedPresetCh9IsSynthTone
+    {
+        get => SelectedPresetCh9.ToneTypeStr == "PCMS";
+    }
+    public bool SelectedPresetCh10IsSynthTone
+    {
+        get => SelectedPresetCh10.ToneTypeStr == "PCMS";
+    }
+    public bool SelectedPresetCh11IsSynthTone
+    {
+        get => SelectedPresetCh11.ToneTypeStr == "PCMS";
+    }
+    public bool SelectedPresetCh12IsSynthTone
+    {
+        get => SelectedPresetCh12.ToneTypeStr == "PCMS";
+    }
+    public bool SelectedPresetCh13IsSynthTone
+    {
+        get => SelectedPresetCh13.ToneTypeStr == "PCMS";
+    }
+    public bool SelectedPresetCh14IsSynthTone
+    {
+        get => SelectedPresetCh14.ToneTypeStr == "PCMS";
+    }
+    public bool SelectedPresetCh15IsSynthTone
+    {
+        get => SelectedPresetCh15.ToneTypeStr == "PCMS";
+    }
+
     [Reactive]
     private string _searchTextSetup;
     [Reactive]
@@ -1080,99 +1145,105 @@ public partial class MainWindowViewModel : ReactiveObject
             if (GetSelectedPreset(0)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(0).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc0 = _integra7Communicator.PCMSynthToneCommon(0).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters0.AddOrUpdate(p_pcmstc0);
+
             }
+            List<FullyQualifiedParameter> p_pcmstc0 = _integra7Communicator.PCMSynthToneCommon(0).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters0.AddOrUpdate(p_pcmstc0);
+
             if (GetSelectedPreset(1)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(1).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc1 = _integra7Communicator.PCMSynthToneCommon(1).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters1.AddOrUpdate(p_pcmstc1);
             }
+            List<FullyQualifiedParameter> p_pcmstc1 = _integra7Communicator.PCMSynthToneCommon(1).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters1.AddOrUpdate(p_pcmstc1);
+
             if (GetSelectedPreset(2)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(2).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc2 = _integra7Communicator.PCMSynthToneCommon(2).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters2.AddOrUpdate(p_pcmstc2);
             }
+            List<FullyQualifiedParameter> p_pcmstc2 = _integra7Communicator.PCMSynthToneCommon(2).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters2.AddOrUpdate(p_pcmstc2);
+
             if (GetSelectedPreset(3)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(3).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc3 = _integra7Communicator.PCMSynthToneCommon(3).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters3.AddOrUpdate(p_pcmstc3);
             }
+            List<FullyQualifiedParameter> p_pcmstc3 = _integra7Communicator.PCMSynthToneCommon(3).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters3.AddOrUpdate(p_pcmstc3);
+
             if (GetSelectedPreset(4)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(4).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc4 = _integra7Communicator.PCMSynthToneCommon(4).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters4.AddOrUpdate(p_pcmstc4);
             }
+            List<FullyQualifiedParameter> p_pcmstc4 = _integra7Communicator.PCMSynthToneCommon(4).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters4.AddOrUpdate(p_pcmstc4);
+
             if (GetSelectedPreset(5)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(5).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc5 = _integra7Communicator.PCMSynthToneCommon(5).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters5.AddOrUpdate(p_pcmstc5);
             }
+            List<FullyQualifiedParameter> p_pcmstc5 = _integra7Communicator.PCMSynthToneCommon(5).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters5.AddOrUpdate(p_pcmstc5);
             if (GetSelectedPreset(6)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(6).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc6 = _integra7Communicator.PCMSynthToneCommon(6).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters6.AddOrUpdate(p_pcmstc6);
             }
+            List<FullyQualifiedParameter> p_pcmstc6 = _integra7Communicator.PCMSynthToneCommon(6).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters6.AddOrUpdate(p_pcmstc6);
             if (GetSelectedPreset(7)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(7).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc7 = _integra7Communicator.PCMSynthToneCommon(7).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters7.AddOrUpdate(p_pcmstc7);
             }
+            List<FullyQualifiedParameter> p_pcmstc7 = _integra7Communicator.PCMSynthToneCommon(7).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters7.AddOrUpdate(p_pcmstc7);
             if (GetSelectedPreset(8)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(8).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc8 = _integra7Communicator.PCMSynthToneCommon(8).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters8.AddOrUpdate(p_pcmstc8);
             }
+            List<FullyQualifiedParameter> p_pcmstc8 = _integra7Communicator.PCMSynthToneCommon(8).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters8.AddOrUpdate(p_pcmstc8);
             if (GetSelectedPreset(9)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(9).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc9 = _integra7Communicator.PCMSynthToneCommon(9).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters9.AddOrUpdate(p_pcmstc9);
             }
+            List<FullyQualifiedParameter> p_pcmstc9 = _integra7Communicator.PCMSynthToneCommon(9).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters9.AddOrUpdate(p_pcmstc9);
             if (GetSelectedPreset(10)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(10).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc10 = _integra7Communicator.PCMSynthToneCommon(10).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters10.AddOrUpdate(p_pcmstc10);
             }
+            List<FullyQualifiedParameter> p_pcmstc10 = _integra7Communicator.PCMSynthToneCommon(10).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters10.AddOrUpdate(p_pcmstc10);
             if (GetSelectedPreset(11)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(11).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc11 = _integra7Communicator.PCMSynthToneCommon(11).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters11.AddOrUpdate(p_pcmstc11);
             }
+            List<FullyQualifiedParameter> p_pcmstc11 = _integra7Communicator.PCMSynthToneCommon(11).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters11.AddOrUpdate(p_pcmstc11);
             if (GetSelectedPreset(12)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(12).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc12 = _integra7Communicator.PCMSynthToneCommon(12).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters12.AddOrUpdate(p_pcmstc12);
             }
+            List<FullyQualifiedParameter> p_pcmstc12 = _integra7Communicator.PCMSynthToneCommon(12).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters12.AddOrUpdate(p_pcmstc12);
             if (GetSelectedPreset(13)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(13).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc13 = _integra7Communicator.PCMSynthToneCommon(13).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters13.AddOrUpdate(p_pcmstc13);
             }
+            List<FullyQualifiedParameter> p_pcmstc13 = _integra7Communicator.PCMSynthToneCommon(13).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters13.AddOrUpdate(p_pcmstc13);
             if (GetSelectedPreset(14)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(14).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc14 = _integra7Communicator.PCMSynthToneCommon(14).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters14.AddOrUpdate(p_pcmstc14);
             }
+            List<FullyQualifiedParameter> p_pcmstc14 = _integra7Communicator.PCMSynthToneCommon(14).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters14.AddOrUpdate(p_pcmstc14);
             if (GetSelectedPreset(15)?.ToneTypeStr == "PCMS")
             {
                 _integra7Communicator.PCMSynthToneCommon(15).ReadFromIntegra();
-                List<FullyQualifiedParameter> p_pcmstc15 = _integra7Communicator.PCMSynthToneCommon(15).GetRelevantParameters(true, true);
-                _sourceCachePCMSynthToneCommonParameters15.AddOrUpdate(p_pcmstc15);
             }
+            List<FullyQualifiedParameter> p_pcmstc15 = _integra7Communicator.PCMSynthToneCommon(15).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonParameters15.AddOrUpdate(p_pcmstc15);
         }
         else
         {
@@ -3020,6 +3091,30 @@ public partial class MainWindowViewModel : ReactiveObject
             {
                 _integra7Communicator?.GetDomain(spec.Par).ModifySingleParameterDisplayedValue(spec.Par.ParSpec.Path, spec.DisplayValue);
                 ForceUiRefresh(parameters.First().Par);
+                if (spec.Par.ParSpec.Name.StartsWith("Tone Bank Select") || spec.Par.ParSpec.Name.StartsWith("Tone Bank Program Number"))
+                {
+                    switch (spec.Par.Offset)
+                    {
+                        // using MessageBus instead of direct call because it is automatically throttled
+                        case "Offset/Studio Set Part 1": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(0)); break;
+                        case "Offset/Studio Set Part 2": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(1)); break;
+                        case "Offset/Studio Set Part 3": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(2)); break;
+                        case "Offset/Studio Set Part 4": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(3)); break;
+                        case "Offset/Studio Set Part 5": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(4)); break;
+                        case "Offset/Studio Set Part 6": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(5)); break;
+                        case "Offset/Studio Set Part 7": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(6)); break;
+                        case "Offset/Studio Set Part 8": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(7)); break;
+                        case "Offset/Studio Set Part 9": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(8)); break;
+                        case "Offset/Studio Set Part 10": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(9)); break;
+                        case "Offset/Studio Set Part 11": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(10)); break;
+                        case "Offset/Studio Set Part 12": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(11)); break;
+                        case "Offset/Studio Set Part 13": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(12)); break;
+                        case "Offset/Studio Set Part 14": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(13)); break;
+                        case "Offset/Studio Set Part 15": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(14)); break;
+                        case "Offset/Studio Set Part 16": MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(15)); break;
+                        default: break;
+                    }
+                }
             }
         }
         else
@@ -3219,87 +3314,86 @@ public partial class MainWindowViewModel : ReactiveObject
             RefreshStudioSetPart15 = ".";
             RefreshStudioSetPart15 = SearchTextStudioSetPart15;
         }
-        else if (StartAddressName == "Temporary Tone Part 1" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 1" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon0 = ".";
             RefreshPCMSynthToneCommon0 = SearchTextPCMSynthToneCommon0;
         }
-        else if (StartAddressName == "Temporary Tone Part 2" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 2" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon1 = ".";
             RefreshPCMSynthToneCommon1 = SearchTextPCMSynthToneCommon1;
         }
-        else if (StartAddressName == "Temporary Tone Part 3" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 3" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon2 = ".";
             RefreshPCMSynthToneCommon2 = SearchTextPCMSynthToneCommon2;
         }
-        else if (StartAddressName == "Temporary Tone Part 4" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 4" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon3 = ".";
             RefreshPCMSynthToneCommon3 = SearchTextPCMSynthToneCommon3;
         }
-        else if (StartAddressName == "Temporary Tone Part 5" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 5" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon4 = ".";
             RefreshPCMSynthToneCommon4 = SearchTextPCMSynthToneCommon4;
         }
-        else if (StartAddressName == "Temporary Tone Part 6" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 6" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon5 = ".";
             RefreshPCMSynthToneCommon5 = SearchTextPCMSynthToneCommon5;
         }
-        else if (StartAddressName == "Temporary Tone Part 7" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 7" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon6 = ".";
             RefreshPCMSynthToneCommon6 = SearchTextPCMSynthToneCommon6;
         }
-        else if (StartAddressName == "Temporary Tone Part 8" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 8" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon7 = ".";
             RefreshPCMSynthToneCommon7 = SearchTextPCMSynthToneCommon7;
         }
-        else if (StartAddressName == "Temporary Tone Part 9" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 9" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon8 = ".";
             RefreshPCMSynthToneCommon8 = SearchTextPCMSynthToneCommon8;
         }
-        else if (StartAddressName == "Temporary Tone Part 10" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 10" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon9 = ".";
             RefreshPCMSynthToneCommon9 = SearchTextPCMSynthToneCommon9;
         }
-        else if (StartAddressName == "Temporary Tone Part 11" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 11" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon10 = ".";
             RefreshPCMSynthToneCommon10 = SearchTextPCMSynthToneCommon10;
         }
-        else if (StartAddressName == "Temporary Tone Part 12" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 12" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon11 = ".";
             RefreshPCMSynthToneCommon11 = SearchTextPCMSynthToneCommon11;
         }
-        else if (StartAddressName == "Temporary Tone Part 13" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 13" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon12 = ".";
             RefreshPCMSynthToneCommon12 = SearchTextPCMSynthToneCommon12;
         }
-        else if (StartAddressName == "Temporary Tone Part 14" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 14" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon13 = ".";
             RefreshPCMSynthToneCommon13 = SearchTextPCMSynthToneCommon13;
         }
-        else if (StartAddressName == "Temporary Tone Part 15" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 15" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon14 = ".";
             RefreshPCMSynthToneCommon14 = SearchTextPCMSynthToneCommon14;
         }
-        else if (StartAddressName == "Temporary Tone Part 16" && OffsetAddressName == "Offset/Temporary PCM Synth Tone")
+        else if (StartAddressName == "Temporary Tone Part 16" && OffsetAddressName == "Offset/PCM Synth Tone Common")
         {
             RefreshPCMSynthToneCommon15 = ".";
             RefreshPCMSynthToneCommon15 = SearchTextPCMSynthToneCommon15;
         }
-
     }
     public void ResyncPart(byte part)
     {
@@ -3315,6 +3409,26 @@ public partial class MainWindowViewModel : ReactiveObject
             DomainBase setPCMSTone = _integra7Communicator.PCMSynthToneCommon(part);
             setPCMSTone.ReadFromIntegra();
             ForceUiRefresh(setPCMSTone.StartAddressName, setPCMSTone.OffsetAddressName);
+            switch (part)
+            {
+                case 0: this.RaisePropertyChanged(nameof(SelectedPresetCh0IsSynthTone)); break;
+                case 1: this.RaisePropertyChanged(nameof(SelectedPresetCh1IsSynthTone)); break;
+                case 2: this.RaisePropertyChanged(nameof(SelectedPresetCh2IsSynthTone)); break;
+                case 3: this.RaisePropertyChanged(nameof(SelectedPresetCh3IsSynthTone)); break;
+                case 4: this.RaisePropertyChanged(nameof(SelectedPresetCh4IsSynthTone)); break;
+                case 5: this.RaisePropertyChanged(nameof(SelectedPresetCh5IsSynthTone)); break;
+                case 6: this.RaisePropertyChanged(nameof(SelectedPresetCh6IsSynthTone)); break;
+                case 7: this.RaisePropertyChanged(nameof(SelectedPresetCh7IsSynthTone)); break;
+                case 8: this.RaisePropertyChanged(nameof(SelectedPresetCh8IsSynthTone)); break;
+                case 9: this.RaisePropertyChanged(nameof(SelectedPresetCh9IsSynthTone)); break;
+                case 10: this.RaisePropertyChanged(nameof(SelectedPresetCh10IsSynthTone)); break;
+                case 11: this.RaisePropertyChanged(nameof(SelectedPresetCh11IsSynthTone)); break;
+                case 12: this.RaisePropertyChanged(nameof(SelectedPresetCh12IsSynthTone)); break;
+                case 13: this.RaisePropertyChanged(nameof(SelectedPresetCh13IsSynthTone)); break;
+                case 14: this.RaisePropertyChanged(nameof(SelectedPresetCh14IsSynthTone)); break;
+                case 15: this.RaisePropertyChanged(nameof(SelectedPresetCh15IsSynthTone)); break;
+                default: break;
+            }
         }
     }
 

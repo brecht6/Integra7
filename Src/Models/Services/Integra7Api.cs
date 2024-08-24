@@ -126,13 +126,36 @@ public class Integra7Api : IIntegra7Api
         _midiOut?.SafeSend(data);
     }
 
+
+    public static bool CheckIsPartOfPresetChange(byte[] reply, out byte midiChannel)
+    {
+        midiChannel = 0;
+        // check for bank select msb
+        if (reply.Length > 2 && reply[0] >= MidiEvent.CC && reply[0] <= (MidiEvent.CC + 15) && reply[1] == 0x00)
+        {
+            midiChannel = (byte)(reply[0] - MidiEvent.CC);
+            return true;
+        }
+        // ckeck for bank select lsb
+        if (reply.Length > 2 && reply[0] >= MidiEvent.CC && reply[0] <= (MidiEvent.CC + 15) && reply[1] == 0x20)
+        {
+            midiChannel = (byte)(reply[0] - MidiEvent.CC);
+            return true;
+        }
+        // check for program change
+        if (reply.Length > 1 && reply[0] >= MidiEvent.Program && reply[0] <= (MidiEvent.Program + 15))
+        {
+            midiChannel = (byte)(reply[0] - MidiEvent.Program);
+            return true;
+        }
+        return false;
+    }
+
     public void ChangePreset(byte Channel, int Msb, int Lsb, int Pc)
     {
-        /*
         BankSelectMsb(Channel, Msb);
         BankSelectLsb(Channel, Lsb);
         ProgramChange(Channel, Pc - 1);
-        */
         MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(Channel));
     }
 }

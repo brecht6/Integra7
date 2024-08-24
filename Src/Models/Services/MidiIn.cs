@@ -61,7 +61,11 @@ public class MidiIn : IMidiIn
         }
         if (!_manualReplyHandling)
         {
-            MessageBus.Current.SendMessage<UpdateFromSysexSpec>(new UpdateFromSysexSpec(e.Data), "hw2ui");
+            if (Integra7SysexHelpers.CheckIsDataSetMsg(e.Data))
+                MessageBus.Current.SendMessage<UpdateFromSysexSpec>(new UpdateFromSysexSpec(e.Data), "hw2ui");
+            else if (Integra7Api.CheckIsPartOfPresetChange(e.Data, out byte midiChannel)) {
+                MessageBus.Current.SendMessage(new UpdateResyncPart(midiChannel));
+            }
         }
         _manualReplyHandling = false;
     }

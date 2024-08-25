@@ -19,9 +19,13 @@ public class DisplayValueToRawValueConverter
                     .ToList();
                 if (key.Count == 0)
                 {
-                    Debug.Assert(false, $"cannot find {displayValue} in {p.ParSpec.Repr}");
+                    Debug.WriteLine(false, $"cannot find {displayValue} in {p.ParSpec.Repr}");
+                    p.RawNumericValue = 0;
                 }
-                p.RawNumericValue = key.First(); // if a repr is present, and a mapping is present this is still a "mapped value"
+                else
+                {
+                    p.RawNumericValue = key.First(); // if a repr is present, and a mapping is present this is still a "mapped value"
+                }
             }
 
             if (p.ParSpec.IMin != p.ParSpec.OMin || p.ParSpec.IMax != p.ParSpec.OMax || p.ParSpec.IMin2 != p.ParSpec.OMin2 || p.ParSpec.IMax2 != p.ParSpec.OMax2)

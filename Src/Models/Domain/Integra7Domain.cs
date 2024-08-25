@@ -58,6 +58,10 @@ public class Integra7Domain
     {
         return _parameterMapper[new Tuple<string, string>($"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/PCM Synth Tone Common")];
     }
+    public DomainBase PCMSynthToneCommon2(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string>($"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/PCM Synth Tone Common 2")];
+    }
     public DomainBase PCMSynthToneCommonMFX(int zeroBasedPartNo)
     {
         return _parameterMapper[new Tuple<string, string>($"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/PCM Synth Tone Common MFX")];
@@ -121,6 +125,9 @@ public class Integra7Domain
 
             DomainBase pcmsynthtone = new DomainPCMSynthToneCommon(i, integra7Api, i7startAddresses, i7parameters);
             _parameterMapper[new Tuple<string, string>(pcmsynthtone.StartAddressName, pcmsynthtone.OffsetAddressName)] = pcmsynthtone;
+
+            DomainBase pcmsynthtone2 = new DomainPCMSynthToneCommon2(i, integra7Api, i7startAddresses, i7parameters);
+            _parameterMapper[new Tuple<string, string>(pcmsynthtone2.StartAddressName, pcmsynthtone2.OffsetAddressName)] = pcmsynthtone2;
 
             DomainBase pcmsynthtonemfx = new DomainPCMSynthToneCommonMFX(i, integra7Api, i7startAddresses, i7parameters);
             _parameterMapper[new Tuple<string, string>(pcmsynthtonemfx.StartAddressName, pcmsynthtonemfx.OffsetAddressName)] = pcmsynthtonemfx;

@@ -1795,12 +1795,13 @@ public class Integra7Parameters
         [1] = "Slash"
     };
     public readonly IDictionary<int, string> PCM_WAVEFORMS = new Dictionary<int, string> { };
+    public readonly IDictionary<int, string> PARTIAL_WAVEFORMS = new Dictionary<int, string> { };
     public const bool USED = false;
     public const bool RESERVED = true;
     private IList<Integra7ParameterSpec> _parameters;
-    private async void LoadPCMWaveForms()
+    private async void LoadWaveFormHelper(string csvfile, IDictionary<int, string> Destination)
     {
-        var uri = @"avares://" + "Integra7AuralAlchemist/" + "Assets/PcmWavenumbers.csv";
+        var uri = @"avares://" + "Integra7AuralAlchemist/" + $"Assets/{csvfile}";
         var file = new StreamReader(AssetLoader.Open(new Uri(uri)));
         var data = file.ReadLine();
         char[] separators = [','];
@@ -1809,9 +1810,14 @@ public class Integra7Parameters
         {
             string[] read = data.Split(separators, StringSplitOptions.None);
             string name = read[0].Trim('"');
-            PCM_WAVEFORMS[id] = name;
+            Destination[id] = name;
             id++;
         }
+    }
+    private async void LoadPCMWaveForms()
+    {
+        LoadWaveFormHelper("PcmWavenumbers.csv", PCM_WAVEFORMS);
+        LoadWaveFormHelper("PartialWaveForms.csv", PARTIAL_WAVEFORMS);
     }
 
     public Integra7ParameterSpec Lookup(string path)
@@ -11302,8 +11308,8 @@ public class Integra7Parameters
             new(type:NUM, path:"PCM Synth Tone Partial/Partial Control 4 Switch 4", offs:[0x00, 0x26], imin:0, imax:2, omin:0, omax:2, bytes:1, res:USED, nib:false, unit:"", repr:OFF_ON_REVERSE),
             new(type:NUM, path:"PCM Synth Tone Partial/Wave Group Type", offs:[0x00, 0x27], imin:0, imax:3, omin:0, omax:3, bytes:1, res:USED, nib:false, unit:"", repr:INT_SRX_RES),
             new(type:NUM, path:"PCM Synth Tone Partial/Wave Group ID", offs:[0x00, 0x28], imin:0, imax:16384, omin:0, omax:16384, bytes:4, res:USED, nib:true, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Partial/Wave Number L (Mono)", offs:[0x00, 0x2c], imin:0, imax:16384, omin:0, omax:16384, bytes:4, res:USED, nib:true, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Partial/Wave Number R", offs:[0x00, 0x30], imin:0, imax:16384, omin:0, omax:16384, bytes:4, res:USED, nib:true, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Partial/Wave Number L (Mono)", offs:[0x00, 0x2c], imin:0, imax:16384, omin:0, omax:16384, bytes:4, res:USED, nib:true, unit:"", repr:PARTIAL_WAVEFORMS),
+            new(type:NUM, path:"PCM Synth Tone Partial/Wave Number R", offs:[0x00, 0x30], imin:0, imax:16384, omin:0, omax:16384, bytes:4, res:USED, nib:true, unit:"", repr:PARTIAL_WAVEFORMS),
             new(type:NUM, path:"PCM Synth Tone Partial/Wave Gain", offs:[0x00, 0x34], imin:0, imax:3, omin:-6, omax:12, bytes:1, res:USED, nib:false, unit:"dB", repr:null),
             new(type:NUM, path:"PCM Synth Tone Partial/Wave FXM Switch", offs:[0x00, 0x35], imin:0, imax:1, omin:0, omax:1, bytes:1, res:USED, nib:false, unit:"", repr:OFF_ON),
             new(type:NUM, path:"PCM Synth Tone Partial/Wave FXM Color", offs:[0x00, 0x36], imin:0, imax:3, omin:1, omax:4, bytes:1, res:USED, nib:false, unit:"", repr:null),

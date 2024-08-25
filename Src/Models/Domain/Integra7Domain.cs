@@ -66,12 +66,17 @@ public class Integra7Domain
     {
         return _parameterMapper[new Tuple<string, string>($"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/PCM Synth Tone Partial Mix Table")];
     }
+    public DomainBase PCMSynthTonePartial(int zeroBasedPartNo, int zeroBasedPartial)
+    {
+        return _parameterMapper[new Tuple<string, string>($"Temporary Tone Part {zeroBasedPartNo + 1}", $"Offset/PCM Synth Tone Partial {zeroBasedPartial + 1}")];
+    }
     public DomainBase System
     {
         get => _parameterMapper[new Tuple<string, string>("System", "Offset/System Common")];
     }
 
     private const int NO_OF_PARTS = 16;
+    private const int NO_OF_PARTIALS = 4;
 
 
     public Integra7Domain(IIntegra7Api integra7Api, Integra7StartAddresses i7startAddresses, Integra7Parameters i7parameters)
@@ -122,6 +127,12 @@ public class Integra7Domain
 
             DomainBase pcmsynthtonepmt = new DomainPCMSynthTonePMT(i, integra7Api, i7startAddresses, i7parameters);
             _parameterMapper[new Tuple<string, string>(pcmsynthtonepmt.StartAddressName, pcmsynthtonepmt.OffsetAddressName)] = pcmsynthtonepmt;
+
+            for (int j = 0; j < 4; j++)
+            {
+                DomainBase part = new DomainPCMSynthTonePartial(i, j, integra7Api, i7startAddresses, i7parameters);
+                _parameterMapper[new Tuple<string, string>(part.StartAddressName, part.OffsetAddressName)] = part;
+            }
         }
 
         _sysexAddressMapper = [];

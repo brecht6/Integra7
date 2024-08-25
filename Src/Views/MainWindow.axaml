@@ -134,20 +134,40 @@
                                     <local:ParameterCollection Parameters="{Binding StudioSetPartEQParameters}"
                                                                SearchText="{Binding SearchTextStudioSetPartEQ, Mode=TwoWay}" />
                                 </TabItem>
-                                <TabItem Header="PCM Synth Tone"
+                                <TabItem Header="Tone"
                                          IsVisible="{Binding SelectedPresetIsSynthTone}">
                                     <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters}"
                                                                SearchText="{Binding SearchTextPCMSynthToneCommon, Mode=TwoWay}" />
                                 </TabItem>
-                                <TabItem Header="PCM Synth MFX"
+                                <TabItem Header="MFX"
                                          IsVisible="{Binding SelectedPresetIsSynthTone}">
                                     <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonMFXParameters}"
                                                                SearchText="{Binding SearchTextPCMSynthToneCommonMFX, Mode=TwoWay}" />
                                 </TabItem>
-                                <TabItem Header="PCM Synth PMT"
+                                <TabItem Header="PMT"
                                          IsVisible="{Binding SelectedPresetIsSynthTone}">
                                     <local:ParameterCollection Parameters="{Binding PCMSynthTonePMTParameters}"
                                                                SearchText="{Binding SearchTextPCMSynthTonePMT, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem Header="Partial 1"
+                                         IsVisible="{Binding SelectedPresetIsSynthTone}">
+                                    <local:ParameterCollection Parameters="{Binding PCMSynthTonePartial0Parameters}"
+                                                               SearchText="{Binding SearchTextPCMSynthTonePartial0, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem Header="Partial 2"
+                                         IsVisible="{Binding SelectedPresetIsSynthTone}">
+                                    <local:ParameterCollection Parameters="{Binding PCMSynthTonePartial1Parameters}"
+                                                               SearchText="{Binding SearchTextPCMSynthTonePartial1, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem Header="Partial 3"
+                                         IsVisible="{Binding SelectedPresetIsSynthTone}">
+                                    <local:ParameterCollection Parameters="{Binding PCMSynthTonePartial2Parameters}"
+                                                               SearchText="{Binding SearchTextPCMSynthTonePartial2, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem Header="Partial 4"
+                                         IsVisible="{Binding SelectedPresetIsSynthTone}">
+                                    <local:ParameterCollection Parameters="{Binding PCMSynthTonePartial3Parameters}"
+                                                               SearchText="{Binding SearchTextPCMSynthTonePartial3, Mode=TwoWay}" />
                                 </TabItem>
                             </TabControl>
                         </StackPanel>

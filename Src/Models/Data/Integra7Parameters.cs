@@ -11214,11 +11214,11 @@ public class Integra7Parameters
                             par:"PCM Synth Tone Common MFX/MFX Type", parval:MFX_TYPE[67]),
 
 
-            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 28", offs:[0x00, 0x7d], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 29", offs:[0x01, 0x01], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 30", offs:[0x01, 0x05], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 31", offs:[0x01, 0x09], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 32", offs:[0x01, 0x0d], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:USED, nib:true, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 28", offs:[0x00, 0x7d], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 29", offs:[0x01, 0x01], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 30", offs:[0x01, 0x05], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 31", offs:[0x01, 0x09], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common MFX/MFX Parameter 32", offs:[0x01, 0x0d], imin:12768, imax:52768, omin:-20000, omax:20000, bytes:4, res:RESERVED, nib:true, unit:"", repr:null),
 
             new(type:NUM, path:"PCM Synth Tone Partial Mix Table/Structure Type 1 & 2", offs:[0x00, 0x00], imin:0, imax:9, omin:1, omax:10, bytes:1, res:USED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"PCM Synth Tone Partial Mix Table/Booster 1 & 2", offs:[0x00, 0x01], imin:0, imax:3, omin:0, omax:18, bytes:1, res:USED, nib:false, unit:"dB", repr:null),

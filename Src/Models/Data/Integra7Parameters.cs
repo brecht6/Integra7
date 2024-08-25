@@ -1039,44 +1039,57 @@ public class Integra7Parameters
         [2] = "OFF-IN",
         [3] = "OFF-OUT"
     };
-    public readonly IDictionary<int, string> TONE_CAT = new Dictionary<int, string>
+    public readonly IDictionary<int, string> PCM_SYNTH_TONE_CAT = new Dictionary<int, string>
     {
         [0] = "None Assigned",
         [1] = "Ac. Piano",
-        [2] = "E. Piano",
-        [3] = "Organ",
-        [4] = "Other Keyboards",
-        [5] = "Accordion/Harmonica",
-        [6] = "Bell/Mallet",
-        [7] = "Ac. Guitar",
-        [8] = "E. Guitar",
-        [9] = "Dist. Guitar",
-        [10] = "Ac. Bass",
-        [11] = "E. Bass",
-        [12] = "Synth Bass",
-        [13] = "Plucked/Stroke",
-        [14] = "Strings",
-        [15] = "Brass",
-        [16] = "Wind",
-        [17] = "Flute",
-        [18] = "Sax",
-        [19] = "Recorder",
-        [20] = "Vox/Choir",
-        [21] = "Synth Lead",
-        [22] = "Synth Brass",
-        [23] = "Synth Pad/Strings",
-        [24] = "Synth BellPad",
-        [25] = "Synth Polykey",
-        [26] = "FX",
-        [27] = "Synth Seq/Pop",
-        [28] = "Phrase",
-        [29] = "Pulsating",
-        [30] = "Beat&Groove",
-        [31] = "Hit",
-        [32] = "Sound FX",
-        [33] = "Drums",
-        [34] = "Percussion",
-        [35] = "Combination"
+        [2] = "Reserved",
+        [3] = "Reserved",
+        [4] = "E. Piano",
+        [5] = "Reserved",
+        [6] = "Organ",
+        [7] = "Reserved",
+        [8] = "Reserved",
+        [9] = "Other Keyboards",
+        [10] = "Reserved",
+        [11] = "Reserved",
+        [12] = "Accordion/Harmonica",
+        [13] = "Reserved",
+        [14] = "Bell/Mallet",
+        [15] = "Reserved",
+        [16] = "Ac. Guitar",
+        [17] = "E. Guitar",
+        [18] = "Dist. Guitar",
+        [19] = "Ac. Bass",
+        [20] = "E. Bass",
+        [21] = "Synth Bass",
+        [22] = "Plucked/Stroke",
+        [23] = "Strings",
+        [24] = "Reserved",
+        [25] = "Reserved",
+        [26] = "Brass",
+        [27] = "Reserved",
+        [28] = "Wind",
+        [29] = "Flute",
+        [30] = "Sax",
+        [31] = "Recorder",
+        [32] = "Vox/Choir",
+        [33] = "Reserved",
+        [34] = "Synth Lead",
+        [35] = "Synth Brass",
+        [36] = "Synth Pad/Strings",
+        [37] = "Synth BellPad",
+        [38] = "Synth Polykey",
+        [39] = "FX",
+        [40] = "Synth Seq/Pop",
+        [41] = "Phrase",
+        [42] = "Pulsating",
+        [43] = "Beat&Groove",
+        [44] = "Hit",
+        [45] = "Sound FX",
+        [46] = "Drums",
+        [47] = "Percussion",
+        [48] = "Combination"
     };
     public readonly IDictionary<int, string> COMP_ATT_TIME = new Dictionary<int, string>
     {
@@ -1796,17 +1809,18 @@ public class Integra7Parameters
     };
     public readonly IDictionary<int, string> PCM_WAVEFORMS = new Dictionary<int, string> { };
     public readonly IDictionary<int, string> PARTIAL_WAVEFORMS = new Dictionary<int, string> { };
+    public readonly IDictionary<int, string> PHRASE_LIST = new Dictionary<int, string> { };
     public const bool USED = false;
     public const bool RESERVED = true;
     private IList<Integra7ParameterSpec> _parameters;
-    private async void LoadWaveFormHelper(string csvfile, IDictionary<int, string> Destination)
+    private void LoadWaveFormHelper(string csvfile, IDictionary<int, string> Destination)
     {
         var uri = @"avares://" + "Integra7AuralAlchemist/" + $"Assets/{csvfile}";
         var file = new StreamReader(AssetLoader.Open(new Uri(uri)));
         var data = file.ReadLine();
         char[] separators = [','];
         int id = 0;
-        while ((data = await file.ReadLineAsync()) != null)
+        while ((data = file.ReadLine()) != null)
         {
             string[] read = data.Split(separators, StringSplitOptions.None);
             string name = read[0].Trim('"');
@@ -1814,10 +1828,11 @@ public class Integra7Parameters
             id++;
         }
     }
-    private async void LoadPCMWaveForms()
+    private void LoadPCMWaveForms()
     {
         LoadWaveFormHelper("PcmWavenumbers.csv", PCM_WAVEFORMS);
         LoadWaveFormHelper("PartialWaveForms.csv", PARTIAL_WAVEFORMS);
+        LoadWaveFormHelper("PhraseList.csv", PHRASE_LIST);
     }
 
     public Integra7ParameterSpec Lookup(string path)
@@ -11427,46 +11442,46 @@ public class Integra7Parameters
             new(type:NUM, path:"PCM Synth Tone Common 2/Reserved14", offs:[0x00, 0x0d], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"PCM Synth Tone Common 2/Reserved15", offs:[0x00, 0x0e], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"PCM Synth Tone Common 2/Reserved16", offs:[0x00, 0x0f], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Tone Category", offs:[0x00, 0x10], imin:0, imax:35, omin:0, omax:35, bytes:1, res:USED, nib:false, unit:"", repr:TONE_CAT),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Tone Phrase? (undocumented)", offs:[0x00, 0x11], imin:0, imax:255, omin:0, omax:255, bytes:2, res:USED, nib:true, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Tone Category", offs:[0x00, 0x10], imin:0, imax:35, omin:0, omax:35, bytes:1, res:USED, nib:false, unit:"", repr:PCM_SYNTH_TONE_CAT),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved17", offs:[0x00, 0x11], imin:0, imax:255, omin:0, omax:255, bytes:2, res:RESERVED, nib:true, unit:"", repr:null),
             new(type:NUM, path:"PCM Synth Tone Common 2/Phrase Octave Shift", offs:[0x00, 0x13], imin:61, imax:67, omin:-3, omax:3, bytes:1, res:USED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved17", offs:[0x00, 0x14], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved18", offs:[0x00, 0x15], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved19", offs:[0x00, 0x16], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved20", offs:[0x00, 0x17], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved21", offs:[0x00, 0x18], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved22", offs:[0x00, 0x19], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved23", offs:[0x00, 0x1a], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved24", offs:[0x00, 0x1b], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved25", offs:[0x00, 0x1c], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved26", offs:[0x00, 0x1d], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved27", offs:[0x00, 0x1e], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved28", offs:[0x00, 0x1f], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved29", offs:[0x00, 0x20], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved30", offs:[0x00, 0x21], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved31", offs:[0x00, 0x22], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved32", offs:[0x00, 0x23], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved33", offs:[0x00, 0x24], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved34", offs:[0x00, 0x25], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved35", offs:[0x00, 0x26], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved36", offs:[0x00, 0x27], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved37", offs:[0x00, 0x28], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved38", offs:[0x00, 0x29], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved39", offs:[0x00, 0x2a], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved40", offs:[0x00, 0x2b], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved41", offs:[0x00, 0x2c], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved42", offs:[0x00, 0x2d], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved43", offs:[0x00, 0x2e], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved44", offs:[0x00, 0x2f], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved45", offs:[0x00, 0x30], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved46", offs:[0x00, 0x31], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved47", offs:[0x00, 0x32], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved18", offs:[0x00, 0x14], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved19", offs:[0x00, 0x15], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved20", offs:[0x00, 0x16], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved21", offs:[0x00, 0x17], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved22", offs:[0x00, 0x18], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved23", offs:[0x00, 0x19], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved24", offs:[0x00, 0x1a], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved25", offs:[0x00, 0x1b], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved26", offs:[0x00, 0x1c], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved27", offs:[0x00, 0x1d], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved28", offs:[0x00, 0x1e], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved29", offs:[0x00, 0x1f], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved30", offs:[0x00, 0x20], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved31", offs:[0x00, 0x21], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved32", offs:[0x00, 0x22], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved33", offs:[0x00, 0x23], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved34", offs:[0x00, 0x24], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved35", offs:[0x00, 0x25], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved36", offs:[0x00, 0x26], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved37", offs:[0x00, 0x27], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved38", offs:[0x00, 0x28], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved39", offs:[0x00, 0x29], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved40", offs:[0x00, 0x2a], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved41", offs:[0x00, 0x2b], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved42", offs:[0x00, 0x2c], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved43", offs:[0x00, 0x2d], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved44", offs:[0x00, 0x2e], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved45", offs:[0x00, 0x2f], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved46", offs:[0x00, 0x30], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved47", offs:[0x00, 0x31], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved48", offs:[0x00, 0x32], imin:0, imax:1, omin:0, omax:1, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"PCM Synth Tone Common 2/TFX Switch", offs:[0x00, 0x33], imin:0, imax:1, omin:0, omax:1, bytes:1, res:USED, nib:false, unit:"", repr:OFF_ON),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved48", offs:[0x00, 0x34], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved49", offs:[0x00, 0x35], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved50", offs:[0x00, 0x36], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved51", offs:[0x00, 0x37], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
-            new(type:NUM, path:"PCM Synth Tone Common 2/Phrase Number", offs:[0x00, 0x38], imin:0, imax:127, omin:0, omax:127, bytes:4, res:USED, nib:true, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved49", offs:[0x00, 0x34], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved50", offs:[0x00, 0x35], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved51", offs:[0x00, 0x36], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Reserved52", offs:[0x00, 0x37], imin:0, imax:127, omin:0, omax:127, bytes:1, res:RESERVED, nib:false, unit:"", repr:null),
+            new(type:NUM, path:"PCM Synth Tone Common 2/Phrase Number", offs:[0x00, 0x38], imin:0, imax:243, omin:0, omax:243, bytes:4, res:USED, nib:true, unit:"", repr:PHRASE_LIST),
 
             new(type:ASC, path:"PCM Drum Kit Common/Kit Name", offs:[0x00, 0x00], imin:32, imax:127, omin:32, omax:127, bytes:12, res:USED, nib:false, unit:"", repr:null),
             new(type:NUM, path:"PCM Drum Kit Common/Kit Level", offs:[0x00, 0x0c], imin:0, imax:127, omin:0, omax:127, bytes:1, res:USED, nib:false, unit:"", repr:null),
@@ -12247,5 +12262,6 @@ public class Integra7Parameters
         Integra7ParameterDatabaseAnalyzer.FillInSecondaryDependencies(_parameters);
     }
 }
+
 
 

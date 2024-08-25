@@ -568,6 +568,7 @@ public partial class PartViewModel : ViewModelBase
             _i7domain.StudioSetPart(_part).ReadFromIntegra();
             List<FullyQualifiedParameter> p_part = _i7domain.StudioSetPart(_part).GetRelevantParameters(true, true);
             _sourceCacheStudioSetPartParameters.AddOrUpdate(p_part);
+            PreSelectConfiguredPreset(_i7domain.StudioSetPart(_part));
 
             _i7domain.StudioSetPartEQ(_part).ReadFromIntegra();
             List<FullyQualifiedParameter> p_parteq = _i7domain.StudioSetPartEQ(_part).GetRelevantParameters(true, true);

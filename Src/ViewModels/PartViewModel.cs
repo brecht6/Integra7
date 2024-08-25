@@ -35,6 +35,9 @@ public partial class PartViewModel : ViewModelBase
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCachePCMSynthToneCommonParameters = new(x => x.ParSpec.Path);
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _PCMSynthToneCommonParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> PCMSynthToneCommonParameters => _PCMSynthToneCommonParameters;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCachePCMSynthToneCommonMFXParameters = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _PCMSynthToneCommonMFXParameters = new([]);
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> PCMSynthToneCommonMFXParameters => _PCMSynthToneCommonMFXParameters;
     private byte _part = 0;
 
     public bool SelectedPresetIsSynthTone
@@ -56,6 +59,10 @@ public partial class PartViewModel : ViewModelBase
     private string _searchTextPCMSynthToneCommon = "";
     [Reactive]
     public string _refreshPCMSynthToneCommon = "";
+    [Reactive]
+    public string _searchTextPCMSynthToneCommonMFX = "";
+    [Reactive]
+    public string _refreshPCMSynthToneCommonMFX = "";
 
     public string Header { get => _commonTab ? "Common" : $"Part {_part + 1}"; }
 
@@ -64,6 +71,7 @@ public partial class PartViewModel : ViewModelBase
     IDisposable? _cleanupStudioSetPartParams = null;
     IDisposable? _cleanupStudioSetPartEQParams = null;
     IDisposable? _cleanupPCMSynthToneCommonParams = null;
+    IDisposable? _cleanupPCMSynthToneCommonMFXParams = null;
 
     [Reactive]
     private string _searchTextSetup = "";
@@ -87,6 +95,7 @@ public partial class PartViewModel : ViewModelBase
     private string _searchTextStudioSetCommonMasterEQ = "";
     [Reactive]
     public string _refreshCommonMasterEQNeeded = "";
+
 
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheSetupParameters = new(x => x.ParSpec.Path);
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _setupParameters = new([]);
@@ -154,30 +163,11 @@ public partial class PartViewModel : ViewModelBase
 
         _selectedPreset = _i7presets[0];
 
+        _sourceCachePresets.AddOrUpdate(i7presets);
+        InitializeParameterSourceCaches();
+
         if (!commonTab)
         {
-            _sourceCachePresets.AddOrUpdate(i7presets);
-
-            _i7domain.StudioSetMidi(_part).ReadFromIntegra();
-            List<FullyQualifiedParameter> p_mid = _i7domain.StudioSetMidi(_part).GetRelevantParameters(true, true);
-            _sourceCacheStudioSetMidiParameters.AddOrUpdate(p_mid);
-
-            _i7domain.StudioSetPart(_part).ReadFromIntegra();
-            List<FullyQualifiedParameter> p_part = _i7domain.StudioSetPart(_part).GetRelevantParameters(true, true);
-            _sourceCacheStudioSetPartParameters.AddOrUpdate(p_part);
-            PreSelectConfiguredPreset(_i7domain.StudioSetPart(_part));
-
-            _i7domain.StudioSetPartEQ(_part).ReadFromIntegra();
-            List<FullyQualifiedParameter> p_parteq = _i7domain.StudioSetPartEQ(_part).GetRelevantParameters(true, true);
-            _sourceCacheStudioSetPartEQParameters.AddOrUpdate(p_parteq);
-
-            if (_selectedPreset?.ToneTypeStr == "PCMS")
-            {
-                _i7domain.PCMSynthToneCommon(_part).ReadFromIntegra();
-            }
-            List<FullyQualifiedParameter> p_pcmstc = _i7domain.PCMSynthToneCommon(_part).GetRelevantParameters(true, true);
-            _sourceCachePCMSynthToneCommonParameters.AddOrUpdate(p_pcmstc);
-
             var parFilterStudioSetMidiParameters = this.WhenAnyValue(x => x.SearchTextStudioSetMidi)
                                         .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
                                         .DistinctUntilChanged()
@@ -199,6 +189,12 @@ public partial class PartViewModel : ViewModelBase
                                                 .DistinctUntilChanged()
                                                 .Select(FilterProvider.ParameterFilter);
             var refreshFilterPCMSynthToneCommon = this.WhenAnyValue(x => x.RefreshPCMSynthToneCommon)
+                                                .Select(FilterProvider.ParameterFilter);
+            var parFilterPCMSynthToneCommonMFXParameters = this.WhenAnyValue(x => x.SearchTextPCMSynthToneCommonMFX)
+                                                .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                                .DistinctUntilChanged()
+                                                .Select(FilterProvider.ParameterFilter);
+            var refreshFilterPCMSynthToneCommonMFX = this.WhenAnyValue(x => x.RefreshPCMSynthToneCommonMFX)
                                                 .Select(FilterProvider.ParameterFilter);
 
             _cleanupPresets = _sourceCachePresets.Connect()
@@ -273,6 +269,26 @@ public partial class PartViewModel : ViewModelBase
                                         .ObserveOn(RxApp.MainThreadScheduler)
                                         .SortAndBind(
                                             out _PCMSynthToneCommonParameters,
+                                            SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                        .DisposeMany()
+                                        .Subscribe();
+            _cleanupPCMSynthToneCommonMFXParams = _sourceCachePCMSynthToneCommonMFXParameters.Connect()
+                                        .Filter(refreshFilterPCMSynthToneCommonMFX)
+                                        .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                        .Filter(parFilterPCMSynthToneCommonMFXParameters)
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                                ? _sourceCachePCMSynthToneCommonMFXParameters
+                                                    .Watch(parentId)
+                                                    .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                                : Observable.Return(true))
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                                ? _sourceCachePCMSynthToneCommonMFXParameters
+                                                    .Watch(parentId2)
+                                                    .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                                : Observable.Return(true))
+                                        .ObserveOn(RxApp.MainThreadScheduler)
+                                        .SortAndBind(
+                                            out _PCMSynthToneCommonMFXParameters,
                                             SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
                                         .DisposeMany()
                                         .Subscribe();
@@ -441,49 +457,68 @@ public partial class PartViewModel : ViewModelBase
     private bool _commonTab = false;
     public bool IsCommonTab { get => _commonTab; }
     public bool IsPartTab { get => !_commonTab; }
-    public void ForceUiRefresh(string StartAddressName, string OffsetAddressName, string ParPath)
+    public void ForceUiRefresh(string StartAddressName, string OffsetAddressName, string ParPath, bool ResyncNeeded)
     {
-        if (OffsetAddressName == "Offset/Studio Set Common Chorus")
+        if (!ResyncNeeded)
         {
-            // force re-evaluation of the dynamic data filters after the parameters were read from integra-7
-            // this feels like a very ugly hack, but i currently do not know how to do it properly
-            // i tried tons of other stuff (like: "this.RaisePropertyChanged(nameof(RefreshCommonChorusNeeded))"), but nothing seems to work
-            // ... shiver ...
-            RefreshCommonChorusNeeded = "."; // RefreshCommonChorusNeeded must not have any .Throttle clauses
-            RefreshCommonChorusNeeded = SearchTextStudioSetCommonChorus;
-        }
-        else if (OffsetAddressName == "Offset/Studio Set Common Reverb")
-        {
-            RefreshCommonReverbNeeded = ".";
-            RefreshCommonReverbNeeded = SearchTextStudioSetCommonReverb;
-        }
-        else if (OffsetAddressName == $"Offset/Studio Set Part {_part + 1}")
-        {
-            RefreshStudioSetPart = ".";
-            RefreshStudioSetPart = SearchTextStudioSetPart;
-        }
-        else if (OffsetAddressName == $"Offset/Studio Set Part EQ {_part + 1}")
-        {
-            RefreshStudioSetPart = ".";
-            RefreshStudioSetPart = SearchTextStudioSetPart;
-        }
-        else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && OffsetAddressName == "Offset/PCM Synth Tone Common")
-        {
-            RefreshPCMSynthToneCommon = ".";
-            RefreshPCMSynthToneCommon = SearchTextPCMSynthToneCommon;
-        }
-
-        if (ParPath.Contains("Tone Bank Select") || ParPath.Contains("Tone Bank Program Number"))
-        {
-            if (OffsetAddressName == $"Offset/Studio Set Part {_part + 1}")
+            if (IsCommonTab)
             {
-                // using MessageBus instead of direct call because it is automatically throttled
-                MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(_part));
+                if (OffsetAddressName == "Offset/Studio Set Common Chorus")
+                {
+                    // force re-evaluation of the dynamic data filters after the parameters were read from integra-7
+                    // this feels like a very ugly hack, but i currently do not know how to do it properly
+                    // i tried tons of other stuff (like: "this.RaisePropertyChanged(nameof(RefreshCommonChorusNeeded))"), but nothing seems to work
+                    // ... shiver ...
+                    RefreshCommonChorusNeeded = "."; // RefreshCommonChorusNeeded must not have any .Throttle clauses
+                    RefreshCommonChorusNeeded = SearchTextStudioSetCommonChorus;
+                }
+                else if (OffsetAddressName == "Offset/Studio Set Common Reverb")
+                {
+                    RefreshCommonReverbNeeded = ".";
+                    RefreshCommonReverbNeeded = SearchTextStudioSetCommonReverb;
+                }
             }
+            else if (IsPartTab)
+            {
+                if (OffsetAddressName == $"Offset/Studio Set Part {_part + 1}")
+                {
+                    RefreshStudioSetPart = ".";
+                    RefreshStudioSetPart = SearchTextStudioSetPart;
+                }
+                else if (OffsetAddressName == $"Offset/Studio Set Part EQ {_part + 1}")
+                {
+                    RefreshStudioSetPart = ".";
+                    RefreshStudioSetPart = SearchTextStudioSetPart;
+                }
+                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && OffsetAddressName == "Offset/PCM Synth Tone Common")
+                {
+                    RefreshPCMSynthToneCommon = ".";
+                    RefreshPCMSynthToneCommon = SearchTextPCMSynthToneCommon;
+                }
+                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && OffsetAddressName == "Offset/PCM Synth Tone Common MFX")
+                {
+                    RefreshPCMSynthToneCommonMFX = ".";
+                    RefreshPCMSynthToneCommonMFX = SearchTextPCMSynthToneCommonMFX;
+                }
+
+                if (IsPartTab && ParPath.Contains("Tone Bank Select") || ParPath.Contains("Tone Bank Program Number"))
+                {
+                    if (OffsetAddressName == $"Offset/Studio Set Part {_part + 1}")
+                    {
+                        // using MessageBus instead of direct call because it is automatically throttled
+                        MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(_part));
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (IsPartTab && (OffsetAddressName.Contains($"Part {_part + 1}") || StartAddressName.Contains($"Part {_part + 1}")))
+                MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(_part));
         }
     }
 
-    public void UpdateConnected()
+    public void InitializeParameterSourceCaches()
     {
         if (!_commonTab)
         {
@@ -502,9 +537,12 @@ public partial class PartViewModel : ViewModelBase
             if (_selectedPreset?.ToneTypeStr == "PCMS")
             {
                 _i7domain.PCMSynthToneCommon(_part).ReadFromIntegra();
+                _i7domain.PCMSynthToneCommonMFX(_part).ReadFromIntegra();
             }
             List<FullyQualifiedParameter> p_pcmstc = _i7domain.PCMSynthToneCommon(_part).GetRelevantParameters(true, true);
             _sourceCachePCMSynthToneCommonParameters.AddOrUpdate(p_pcmstc);
+            List<FullyQualifiedParameter> p_pcmmfx = _i7domain.PCMSynthToneCommonMFX(_part).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthToneCommonMFXParameters.AddOrUpdate(p_pcmmfx);
         }
         else
         {
@@ -572,18 +610,20 @@ public partial class PartViewModel : ViewModelBase
 
         DomainBase midiPart = _i7domain.StudioSetMidi(part);
         midiPart.ReadFromIntegra();
-        ForceUiRefresh(midiPart.StartAddressName, midiPart.OffsetAddressName, "");
+        ForceUiRefresh(midiPart.StartAddressName, midiPart.OffsetAddressName, "", false /* don't cause inf loop */);
         DomainBase setPart = _i7domain.StudioSetPart(part);
         setPart.ReadFromIntegra();
-        ForceUiRefresh(setPart.StartAddressName, setPart.OffsetAddressName, "");
+        ForceUiRefresh(setPart.StartAddressName, setPart.OffsetAddressName, "", false /* don't cause inf loop */);
         if (_selectedPreset.ToneTypeStr == "PCMS")
         {
             DomainBase setPCMSTone = _i7domain.PCMSynthToneCommon(part);
             setPCMSTone.ReadFromIntegra();
-            ForceUiRefresh(setPCMSTone.StartAddressName, setPCMSTone.OffsetAddressName, "");
+            ForceUiRefresh(setPCMSTone.StartAddressName, setPCMSTone.OffsetAddressName, "", false /* don't cause inf loop */);
+            DomainBase setPCMSToneMFX = _i7domain.PCMSynthToneCommonMFX(part);
+            setPCMSToneMFX.ReadFromIntegra();
+            ForceUiRefresh(setPCMSToneMFX.StartAddressName, setPCMSToneMFX.OffsetAddressName, "", false /* don't cause inf loop */);
         }
         PreSelectConfiguredPreset(setPart);
         this.RaisePropertyChanged(nameof(SelectedPresetIsSynthTone));
-
     }
 }

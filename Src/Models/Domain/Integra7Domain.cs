@@ -58,6 +58,10 @@ public class Integra7Domain
     {
         return _parameterMapper[new Tuple<string, string>($"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/PCM Synth Tone Common")];
     }
+    public DomainBase PCMSynthToneCommonMFX(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string>($"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/PCM Synth Tone Common MFX")];
+    }
     public DomainBase System
     {
         get => _parameterMapper[new Tuple<string, string>("System", "Offset/System Common")];

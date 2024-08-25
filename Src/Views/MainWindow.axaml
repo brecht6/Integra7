@@ -139,6 +139,11 @@
                                     <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonParameters}"
                                                                SearchText="{Binding SearchTextPCMSynthToneCommon, Mode=TwoWay}" />
                                 </TabItem>
+                                <TabItem Header="PCM Synth MFX"
+                                         IsVisible="{Binding SelectedPresetIsSynthTone}">
+                                    <local:ParameterCollection Parameters="{Binding PCMSynthToneCommonMFXParameters}"
+                                                               SearchText="{Binding SearchTextPCMSynthToneCommonMFX, Mode=TwoWay}" />
+                                </TabItem>
                             </TabControl>
                         </StackPanel>
                     </StackPanel>

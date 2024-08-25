@@ -76,7 +76,7 @@ public partial class MainWindowViewModel : ViewModelBase
             {
                 foreach (PartViewModel pvm in _partViewModels)
                 {
-                    pvm.UpdateConnected();
+                    pvm.InitializeParameterSourceCaches();
                 }
             }
         }
@@ -199,7 +199,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
         foreach (PartViewModel pa in _partViewModels)
         {
-            pa.UpdateConnected();
+            pa.InitializeParameterSourceCaches();
         }
 
         MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(THROTTLE)).Subscribe(m => UpdateIntegraFromUi(m));
@@ -252,14 +252,14 @@ public partial class MainWindowViewModel : ViewModelBase
     }
     private void ForceUiRefresh(FullyQualifiedParameter p)
     {
-        ForceUiRefresh(p.Start, p.Offset, p.ParSpec.Path);
+        ForceUiRefresh(p.Start, p.Offset, p.ParSpec.Path, p.ParSpec.IsParent);
     }
 
-    private void ForceUiRefresh(string StartAddressName, string OffsetAddressName, string ParPath)
+    private void ForceUiRefresh(string StartAddressName, string OffsetAddressName, string ParPath, bool ResyncNeeded)
     {
         foreach (PartViewModel pvm in _partViewModels)
         {
-            pvm.ForceUiRefresh(StartAddressName, OffsetAddressName, ParPath);
+            pvm.ForceUiRefresh(StartAddressName, OffsetAddressName, ParPath, ResyncNeeded);
         }
     }
 

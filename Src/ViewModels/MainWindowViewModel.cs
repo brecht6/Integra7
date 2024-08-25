@@ -93,65 +93,8 @@ public partial class MainWindowViewModel : ViewModelBase
     [ReactiveCommand]
     public void DebugCode()
     {
-        /*
-        DomainSetup dse = new DomainSetup(Integra7, _i7startAddresses, _i7parameters);
-        dse.ReadFromIntegra();
-        dse.ModifySingleParameterDisplayedValue("Setup/Studio Set BS MSB", "85");
-        dse.WriteToIntegra();
-
-        DomainSystem dsy = new DomainSystem(Integra7, _i7startAddresses, _i7parameters);
-        FullyQualifiedParameter? q = dsy.ReadFromIntegra("System Common/Master Tune");
-        q?.DebugLog();
-        dsy.ReadFromIntegra();
-        string CurrentValue = dsy.LookupSingleParameterDisplayedValue("System Common/Master Tune");
-        dsy.ModifySingleParameterDisplayedValue("System Common/Master Tune", "-50");
-        dsy.WriteToIntegra();
-        FullyQualifiedParameter? p = dsy.ReadFromIntegra("System Common/Master Tune");
-        p?.DebugLog();
-        string originalVal = dsy.LookupSingleParameterDisplayedValue("System Common/Master Level");
-        dsy.WriteToIntegra("System Common/Master Level", "120");
-        FullyQualifiedParameter? r = dsy.ReadFromIntegra("System Common/Master Level");
-        r?.DebugLog();
-        dsy.WriteToIntegra("System Common/Master Level", "127");
-        r = dsy.ReadFromIntegra("System Common/Master Level");
-        r?.DebugLog();
-
-        DomainStudioSetCommon dssc = new DomainStudioSetCommon(Integra7, _i7startAddresses, _i7parameters);
-        dssc.ReadFromIntegra();
-        dssc.WriteToIntegra("Studio Set Common/Studio Set Name", "Integra Preview");
-        FullyQualifiedParameter? s = dssc.ReadFromIntegra("Studio Set Common/Studio Set Name");
-        s?.DebugLog();
-
-        DomainStudioSetCommonChorus dsscc = new DomainStudioSetCommonChorus(Integra7, _i7startAddresses, _i7parameters);
-        dsscc.ReadFromIntegra();
-
-        DomainStudioSetCommonReverb dsscr = new DomainStudioSetCommonReverb(Integra7, _i7startAddresses, _i7parameters);
-        dsscr.ReadFromIntegra();
-
-        DomainStudioSetCommonMotionalSurround dsscms = new DomainStudioSetCommonMotionalSurround(Integra7, _i7startAddresses, _i7parameters);
-        dsscms.ReadFromIntegra();
-
-        DomainStudioSetMasterEQ dssme = new DomainStudioSetMasterEQ(Integra7, _i7startAddresses, _i7parameters);
-        dssme.ReadFromIntegra();
-   
-        DomainStudioSetMIDI dssmi0 = new DomainStudioSetMIDI(0, Integra7, _i7startAddresses, _i7parameters);DomainStudioSetPart
-        dssmi0.ReadFromIntegra();
-        DomainStudioSetMIDI dssmi1 = new DomainStudioSetMIDI(1, Integra7, _i7startAddresses, _i7parameters);
-        dssmi1.ReadFromIntegra();
-
-        DomainStudioSetPart dsspa0 = new DomainStudioSetPart(0, Integra7, _i7startAddresses, _i7parameters);
-        dsspa0.ReadFromIntegra();
-
-        DomainStudioSetPartEQ dsspeq0 = new DomainStudioSetPartEQ(0, Integra7, _i7startAddresses, _i7parameters);
-        dsspeq0.ReadFromIntegra();
-
-        DomainPCMSynthToneCommon dpcmsynthtonecommon0 = new DomainPCMSynthToneCommon(0, Integra7, _i7startAddresses, _i7parameters);
-        dpcmsynthtonecommon0.ReadFromIntegra();
-
-        DomainPCMSynthToneCommonMFX dpcmsynthtonecommonmfx0 = new DomainPCMSynthToneCommonMFX(0, Integra7, _i7startAddresses, _i7parameters);
-        dpcmsynthtonecommonmfx0.ReadFromIntegra();
-        */
-
+        DomainPCMSynthTonePMT pmt = new DomainPCMSynthTonePMT(0, Integra7, _i7startAddresses, _i7parameters);
+        pmt.ReadFromIntegra();
     }
 
     private List<Integra7Preset> LoadPresets()

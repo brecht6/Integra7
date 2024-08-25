@@ -38,6 +38,9 @@ public partial class PartViewModel : ViewModelBase
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCachePCMSynthToneCommonMFXParameters = new(x => x.ParSpec.Path);
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _PCMSynthToneCommonMFXParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> PCMSynthToneCommonMFXParameters => _PCMSynthToneCommonMFXParameters;
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCachePCMSynthTonePMTParameters = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _PCMSynthTonePMTParameters = new([]);
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> PCMSynthTonePMTParameters => _PCMSynthTonePMTParameters;
     private byte _part = 0;
 
     public bool SelectedPresetIsSynthTone
@@ -63,6 +66,10 @@ public partial class PartViewModel : ViewModelBase
     public string _searchTextPCMSynthToneCommonMFX = "";
     [Reactive]
     public string _refreshPCMSynthToneCommonMFX = "";
+    [Reactive]
+    public string _searchTextPCMSynthTonePMT = "";
+    [Reactive]
+    public string _refreshPCMSynthTonePMT = "";
 
     public string Header { get => _commonTab ? "Common" : $"Part {_part + 1}"; }
 
@@ -72,6 +79,7 @@ public partial class PartViewModel : ViewModelBase
     IDisposable? _cleanupStudioSetPartEQParams = null;
     IDisposable? _cleanupPCMSynthToneCommonParams = null;
     IDisposable? _cleanupPCMSynthToneCommonMFXParams = null;
+    IDisposable? _cleanupPCMSynthTonePMTParametersParams = null;
 
     [Reactive]
     private string _searchTextSetup = "";
@@ -196,6 +204,12 @@ public partial class PartViewModel : ViewModelBase
                                                 .Select(FilterProvider.ParameterFilter);
             var refreshFilterPCMSynthToneCommonMFX = this.WhenAnyValue(x => x.RefreshPCMSynthToneCommonMFX)
                                                 .Select(FilterProvider.ParameterFilter);
+            var parFilterPCMSynthTonePMTParameters = this.WhenAnyValue(x => x.SearchTextPCMSynthTonePMT)
+                                                .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                                .DistinctUntilChanged()
+                                                .Select(FilterProvider.ParameterFilter);
+            var refreshFilterPCMSynthTonePMTParameters = this.WhenAnyValue(x => x.RefreshPCMSynthTonePMT)
+                                                .Select(FilterProvider.ParameterFilter);
 
             _cleanupPresets = _sourceCachePresets.Connect()
                                         .ObserveOn(RxApp.MainThreadScheduler)
@@ -289,6 +303,26 @@ public partial class PartViewModel : ViewModelBase
                                         .ObserveOn(RxApp.MainThreadScheduler)
                                         .SortAndBind(
                                             out _PCMSynthToneCommonMFXParameters,
+                                            SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                        .DisposeMany()
+                                        .Subscribe();
+            _cleanupPCMSynthTonePMTParametersParams = _sourceCachePCMSynthTonePMTParameters.Connect()
+                                        .Filter(refreshFilterPCMSynthTonePMTParameters)
+                                        .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                        .Filter(parFilterPCMSynthTonePMTParameters)
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                                ? _sourceCachePCMSynthTonePMTParameters
+                                                    .Watch(parentId)
+                                                    .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                                : Observable.Return(true))
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                                ? _sourceCachePCMSynthTonePMTParameters
+                                                    .Watch(parentId2)
+                                                    .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                                : Observable.Return(true))
+                                        .ObserveOn(RxApp.MainThreadScheduler)
+                                        .SortAndBind(
+                                            out _PCMSynthTonePMTParameters,
                                             SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
                                         .DisposeMany()
                                         .Subscribe();
@@ -500,6 +534,11 @@ public partial class PartViewModel : ViewModelBase
                     RefreshPCMSynthToneCommonMFX = ".";
                     RefreshPCMSynthToneCommonMFX = SearchTextPCMSynthToneCommonMFX;
                 }
+                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && OffsetAddressName == "Offset/PCM Synth Tone Partial Mix Table")
+                {
+                    RefreshPCMSynthTonePMT = ".";
+                    RefreshPCMSynthTonePMT = SearchTextPCMSynthTonePMT;
+                }
 
                 if (IsPartTab && ParPath.Contains("Tone Bank Select") || ParPath.Contains("Tone Bank Program Number"))
                 {
@@ -538,11 +577,14 @@ public partial class PartViewModel : ViewModelBase
             {
                 _i7domain.PCMSynthToneCommon(_part).ReadFromIntegra();
                 _i7domain.PCMSynthToneCommonMFX(_part).ReadFromIntegra();
+                _i7domain.PCMSynthTonePMT(_part).ReadFromIntegra();
             }
             List<FullyQualifiedParameter> p_pcmstc = _i7domain.PCMSynthToneCommon(_part).GetRelevantParameters(true, true);
             _sourceCachePCMSynthToneCommonParameters.AddOrUpdate(p_pcmstc);
             List<FullyQualifiedParameter> p_pcmmfx = _i7domain.PCMSynthToneCommonMFX(_part).GetRelevantParameters(true, true);
             _sourceCachePCMSynthToneCommonMFXParameters.AddOrUpdate(p_pcmmfx);
+            List<FullyQualifiedParameter> p_pcmpmt = _i7domain.PCMSynthTonePMT(_part).GetRelevantParameters(true, true);
+            _sourceCachePCMSynthTonePMTParameters.AddOrUpdate(p_pcmpmt);
         }
         else
         {
@@ -622,6 +664,9 @@ public partial class PartViewModel : ViewModelBase
             DomainBase setPCMSToneMFX = _i7domain.PCMSynthToneCommonMFX(part);
             setPCMSToneMFX.ReadFromIntegra();
             ForceUiRefresh(setPCMSToneMFX.StartAddressName, setPCMSToneMFX.OffsetAddressName, "", false /* don't cause inf loop */);
+            DomainBase setPCMSTonePMT = _i7domain.PCMSynthTonePMT(part);
+            setPCMSTonePMT.ReadFromIntegra();
+            ForceUiRefresh(setPCMSTonePMT.StartAddressName, setPCMSTonePMT.OffsetAddressName, "", false /* don't cause inf loop */);
         }
         PreSelectConfiguredPreset(setPart);
         this.RaisePropertyChanged(nameof(SelectedPresetIsSynthTone));

@@ -6,7 +6,7 @@ using Integra7AuralAlchemist.Views;
 
 namespace Integra7AuralAlchemist;
 
-public partial class App : Application
+public class App : Application
 {
     public override void Initialize()
     {

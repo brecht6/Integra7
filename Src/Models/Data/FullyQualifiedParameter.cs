@@ -132,9 +132,15 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
         int dataToSkip = SYSEX_DATA_REPLY_HEADER_LENGTH;
         int gap = ParameterListSysexSizeCalculator.CalculateSysexGapBetweenFirstAndLast(parametersInSysexReply);
         dataToSkip += gap;
-
-        byte[] parResult = ByteUtils.Slice(reply, dataToSkip, _parspec.Bytes);
-        SysexParameterValueInterpreter.Interpret(parResult, _parspec, out _rawNumericValue, out _stringValue);
+        if (reply.Length > dataToSkip)
+        {
+            byte[] parResult = ByteUtils.Slice(reply, dataToSkip, _parspec.Bytes);
+            SysexParameterValueInterpreter.Interpret(parResult, _parspec, out _rawNumericValue, out _stringValue);
+        }
+        else
+        {
+            Debug.WriteLine($"Sysex msg out of data while trying to parse {_parspec.Path} from sysex reply. Are we looking at the wrong reply?");
+        }
     }
 
     public byte[] GetSysexDataFragment()

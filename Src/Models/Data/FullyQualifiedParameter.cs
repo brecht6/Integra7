@@ -9,14 +9,14 @@ namespace Integra7AuralAlchemist.Models.Data;
 public class FullyQualifiedParameter : INotifyPropertyChanged
 {
     private readonly string _start;
-    public string Start { get => _start; }
+    public string Start => _start;
     private readonly string _offset;
-    public string Offset { get => _offset; }
+    public string Offset => _offset;
     private readonly Integra7ParameterSpec _parspec;
-    public Integra7ParameterSpec ParSpec { get => _parspec; }
+    public Integra7ParameterSpec ParSpec => _parspec;
 
     private bool _numeric;
-    public bool IsNumeric { get => _numeric; }
+    public bool IsNumeric => _numeric;
     private long _rawNumericValue;
     public long RawNumericValue { get => _rawNumericValue; set => _rawNumericValue = value; }
     private string _stringValue = "";

@@ -9,29 +9,29 @@ public class Integra7ParameterSpec
 {
     public enum SpecType { NUMERIC, ASCII }
     private SpecType _type;
-    public SpecType Type { get => _type; }
+    public SpecType Type => _type;
     private string _path;
-    public string Path { get => _path; }
+    public string Path => _path;
     private byte[] _address;
-    public byte[] Address { get => _address; }
+    public byte[] Address => _address;
     private int _imin;
-    public int IMin { get => _imin; }
+    public int IMin => _imin;
     private int _imax;
-    public int IMax { get => _imax; }
+    public int IMax => _imax;
     private float _omin;
-    public float OMin { get => _omin; }
+    public float OMin => _omin;
     private float _omax;
-    public float OMax { get => _omax; }
+    public float OMax => _omax;
     private int _bytes;
-    public int Bytes { get => _bytes; }
+    public int Bytes => _bytes;
     private bool _reserved;
-    public bool Reserved { get => _reserved; }
+    public bool Reserved => _reserved;
     private bool _perNibble;
-    public bool PerNibble { get => _perNibble; }
+    public bool PerNibble => _perNibble;
     private string _unit = "";
-    public string Unit { get => _unit; }
+    public string Unit => _unit;
     private IDictionary<int, string>? _repr;
-    public IDictionary<int, string>? Repr { get => _repr; }
+    public IDictionary<int, string>? Repr => _repr;
     private string _parentCtrlPath = "";
     public string ParentCtrl { get => _parentCtrlPath; set => _parentCtrlPath = value; }
     private string _parentCtrlDispValue = "";
@@ -43,14 +43,15 @@ public class Integra7ParameterSpec
     private string _parentCtrlDispValue2 = "";
     public string ParentCtrlDispValue2 { get => _parentCtrlDispValue2; set => _parentCtrlDispValue2 = value; }
     private float _imin2 = float.NaN;
-    public float IMin2 { get => _imin2; }
+    public float IMin2 => _imin2;
     private float _imax2 = float.NaN;
-    public float IMax2 { get => _imax2; }
+    public float IMax2 => _imax2;
     private float _omin2 = float.NaN;
-    public float OMin2 { get => _omin2; }
+    public float OMin2 => _omin2;
     private float _omax2 = float.NaN;
-    public float OMax2 { get => _omax2; }
-    public string Name { get => Path.Split('/')[^1]; }
+    public float OMax2 => _omax2;
+    public string Name => Path.Split('/')[^1];
+
     public AvaloniaList<double> Ticks
     {
         get

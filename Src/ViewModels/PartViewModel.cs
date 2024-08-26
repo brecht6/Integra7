@@ -65,10 +65,7 @@ public partial class PartViewModel : ViewModelBase
 
     private byte _part;
 
-    public bool SelectedPresetIsSynthTone
-    {
-        get => _selectedPreset is null ? false : _selectedPreset.ToneTypeStr == "PCMS";
-    }
+    public bool SelectedPresetIsSynthTone => _selectedPreset is null ? false : _selectedPreset.ToneTypeStr == "PCMS";
 
     [Reactive] private string _searchTextStudioSetMidi = "";
     [Reactive] private string _searchTextStudioSetPart = "";
@@ -92,7 +89,7 @@ public partial class PartViewModel : ViewModelBase
     [Reactive] private string _searchTextPCMSynthTonePartial3 = "";
     [Reactive] private string _refreshPCMSynthTonePartial3 = "";
 
-    public string Header { get => _commonTab ? "Common" : $"Part {_part + 1}"; }
+    public string Header => _commonTab ? "Common" : $"Part {_part + 1}";
 
     IDisposable? _cleanupPresets;
     IDisposable? _cleanupMidiParams;
@@ -644,8 +641,9 @@ public partial class PartViewModel : ViewModelBase
         }
     }
     private bool _commonTab;
-    public bool IsCommonTab { get => _commonTab; }
-    public bool IsPartTab { get => !_commonTab; }
+    public bool IsCommonTab => _commonTab;
+    public bool IsPartTab => !_commonTab;
+
     public void ForceUiRefresh(string StartAddressName, string OffsetAddressName, string ParPath, bool ResyncNeeded)
     {
         if (!ResyncNeeded)

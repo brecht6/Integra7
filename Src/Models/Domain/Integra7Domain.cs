@@ -15,33 +15,18 @@ public class Integra7Domain
     private Dictionary<Tuple<string, string>, DomainBase> _parameterMapper; // (start addr name, offset addr name) -> DomainBase
     private Dictionary<long, List<FullyQualifiedParameter>> _sysexAddressMapper; // (long)address -> (DomainBase, parameter name)
 
-    public DomainBase Setup
-    {
-        get => _parameterMapper[new Tuple<string, string>("Setup", "Offset/Setup Sound Mode")];
-    }
-    public DomainBase StudioSetCommon
-    {
-        get => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common")];
-    }
+    public DomainBase Setup => _parameterMapper[new Tuple<string, string>("Setup", "Offset/Setup Sound Mode")];
 
-    public DomainBase StudioSetCommonChorus
-    {
-        get => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common Chorus")];
-    }
+    public DomainBase StudioSetCommon => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common")];
 
-    public DomainBase StudioSetCommonReverb
-    {
-        get => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common Reverb")];
-    }
+    public DomainBase StudioSetCommonChorus => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common Chorus")];
 
-    public DomainBase StudioSetCommonMotionalSurround
-    {
-        get => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common Motional Surround")];
-    }
-    public DomainBase StudioSetCommonMasterEQ
-    {
-        get => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Master EQ")];
-    }
+    public DomainBase StudioSetCommonReverb => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common Reverb")];
+
+    public DomainBase StudioSetCommonMotionalSurround => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common Motional Surround")];
+
+    public DomainBase StudioSetCommonMasterEQ => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Master EQ")];
+
     public DomainBase StudioSetMidi(int zeroBasedPartNo)
     {
         return _parameterMapper[new Tuple<string, string>("Temporary Studio Set", $"Offset/Studio Set MIDI Channel {zeroBasedPartNo + 1}")];
@@ -74,10 +59,7 @@ public class Integra7Domain
     {
         return _parameterMapper[new Tuple<string, string>($"Temporary Tone Part {zeroBasedPartNo + 1}", $"Offset/PCM Synth Tone Partial {zeroBasedPartial + 1}")];
     }
-    public DomainBase System
-    {
-        get => _parameterMapper[new Tuple<string, string>("System", "Offset/System Common")];
-    }
+    public DomainBase System => _parameterMapper[new Tuple<string, string>("System", "Offset/System Common")];
 
     private const int NO_OF_PARTS = 16;
     private const int NO_OF_PARTIALS = 4;

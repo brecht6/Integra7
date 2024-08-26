@@ -12,9 +12,9 @@ public class DomainBase
     private readonly Integra7StartAddresses _startAddresses;
     private readonly Integra7Parameters _parameters;
     private readonly string _startAddressName;
-    public string StartAddressName { get => _startAddressName; }
+    public string StartAddressName => _startAddressName;
     private readonly string _offsetAddressName;
-    public string OffsetAddressName { get => _offsetAddressName; }
+    public string OffsetAddressName => _offsetAddressName;
 
     private readonly List<FullyQualifiedParameter> _domainParameters = [];
 

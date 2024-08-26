@@ -76,6 +76,7 @@ public partial class MainWindowViewModel : ViewModelBase
             {
                 foreach (PartViewModel pvm in _partViewModels)
                 {
+                    pvm.I7Domain = _integra7Communicator;
                     pvm.InitializeParameterSourceCaches();
                 }
             }
@@ -93,8 +94,6 @@ public partial class MainWindowViewModel : ViewModelBase
     [ReactiveCommand]
     public void DebugCode()
     {
-        DomainPCMSynthTonePMT pmt = new DomainPCMSynthTonePMT(0, Integra7, _i7startAddresses, _i7parameters);
-        pmt.ReadFromIntegra();
     }
 
     private List<Integra7Preset> LoadPresets()

@@ -18,6 +18,11 @@ public partial class PartViewModel : ViewModelBase
     private Integra7Parameters _i7parameters;
     private IIntegra7Api _i7Api;
     private Integra7Domain? _i7domain;
+    public Integra7Domain I7Domain
+    {
+        get => _i7domain;
+        set => _i7domain = value;
+    }
     private List<Integra7Preset> _i7presets;
     private Integra7Preset _selectedPreset;
     private SourceCache<Integra7Preset, int> _sourceCachePresets = new SourceCache<Integra7Preset, int>(x => x.Id);
@@ -756,6 +761,9 @@ public partial class PartViewModel : ViewModelBase
 
     public void InitializeParameterSourceCaches()
     {
+        if (_i7domain is null)
+            return;
+        
         if (!_commonTab)
         {
             _i7domain.StudioSetMidi(_part).ReadFromIntegra();

@@ -35,7 +35,7 @@
                             <Border Grid.Column="0"
                                     Grid.Row="0"
                                     Padding="10">
-                                <TextBlock Text="{Binding ParSpec.Name}: " />
+                                <TextBlock Text="{Binding ParSpec.Name}" />
                             </Border>
                             <ContentControl Grid.Column="1"
                                             Grid.Row="0"

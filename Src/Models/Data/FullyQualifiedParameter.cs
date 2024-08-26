@@ -29,7 +29,6 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
         {
             //Debug.Write($"changing _stringValue from {_stringValue} to {value}.");
             _stringValue = value;
-
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StringValue)));
         }
     }
@@ -61,8 +60,8 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
             if (ctx.Contains(ParSpec.ParentCtrl))
             {
                 string value = ctx.Lookup(ParSpec.ParentCtrl);
-                bool StillValid = ParSpec.ParentCtrlDispValue == value;
-                if (StillValid)
+                bool stillValid = ParSpec.ParentCtrlDispValue == value;
+                if (stillValid)
                 {
                     if (ParSpec.ParentCtrl2 != "")
                     {

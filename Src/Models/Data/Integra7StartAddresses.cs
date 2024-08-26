@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Integra7AuralAlchemist.Models.Services;
 
-
 namespace Integra7AuralAlchemist.Models.Data;
 public class Integra7StartAddresses
 {
@@ -157,7 +156,8 @@ public class Integra7StartAddresses
             }
             return final;
         }
-        else if (KeyNumber >= 77 && KeyNumber <= 108)
+
+        if (KeyNumber >= 77 && KeyNumber <= 108)
         {
             byte[] final = [0x01, 0x00, 0x00];
             for (int i = 0; i < (KeyNumber - 77); i++)

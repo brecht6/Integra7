@@ -16,10 +16,10 @@ public interface IMidiIn
 
 public class MidiIn : IMidiIn
 {
-    private readonly IMidiAccess2? _midiAccessManager = null;
-    private IMidiInput? _access = null;
-    private IMidiPortDetails? _midiPortDetails = null;
-    private bool _manualReplyHandling = false;
+    private readonly IMidiAccess2? _midiAccessManager;
+    private IMidiInput? _access;
+    private IMidiPortDetails? _midiPortDetails;
+    private bool _manualReplyHandling;
     private event EventHandler<MidiReceivedEventArgs> _lastEventHandler;
     private static ManualResetEvent _replyReady = new ManualResetEvent(false);
     private byte[] _replyData = [];
@@ -42,7 +42,7 @@ public class MidiIn : IMidiIn
                 _access.MessageReceived += _lastEventHandler;
             }
         }
-        catch (System.InvalidOperationException)
+        catch (InvalidOperationException)
         {
             _midiPortDetails = null;
         }
@@ -62,7 +62,7 @@ public class MidiIn : IMidiIn
         if (!_manualReplyHandling)
         {
             if (Integra7SysexHelpers.CheckIsDataSetMsg(e.Data))
-                MessageBus.Current.SendMessage<UpdateFromSysexSpec>(new UpdateFromSysexSpec(e.Data), "hw2ui");
+                MessageBus.Current.SendMessage(new UpdateFromSysexSpec(e.Data), "hw2ui");
             else if (Integra7Api.CheckIsPartOfPresetChange(e.Data, out byte midiChannel)) {
                 MessageBus.Current.SendMessage(new UpdateResyncPart(midiChannel));
             }
@@ -77,12 +77,10 @@ public class MidiIn : IMidiIn
             _replyReady.Reset();
             return _replyData;
         }
-        else
-        {
-            // if no reply after 5 seconds, most likely no reply will come anymore...
-            _replyReady.Reset();
-            return [];
-        }
+
+        // if no reply after 5 seconds, most likely no reply will come anymore...
+        _replyReady.Reset();
+        return [];
     }
 
     public void AnnounceIntentionToManuallyHandleReply()

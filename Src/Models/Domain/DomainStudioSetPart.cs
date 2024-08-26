@@ -1,7 +1,6 @@
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
 
-
 namespace Integra7AuralAlchemist.Models.Domain;
 
 public class DomainStudioSetPart : DomainBase

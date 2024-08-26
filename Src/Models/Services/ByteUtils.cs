@@ -12,7 +12,7 @@ public class ByteUtils
         int offset = 0;
         foreach (byte[] array in arrays)
         {
-            System.Buffer.BlockCopy(array, 0, rv, offset, array.Length);
+            Buffer.BlockCopy(array, 0, rv, offset, array.Length);
             offset += array.Length;
         }
         return rv;
@@ -64,10 +64,10 @@ public class ByteUtils
     public static byte[] AddressWithOffset(byte[] StartAddress, byte[] Offset)
     {
         Debug.Assert(StartAddress.Length >= Offset.Length);
-        long saddr = ByteUtils.Bytes7ToInt(StartAddress);
-        long offs = ByteUtils.Bytes7ToInt(Offset);
+        long saddr = Bytes7ToInt(StartAddress);
+        long offs = Bytes7ToInt(Offset);
         long sum = saddr + offs;
-        byte[] tempresult = ByteUtils.IntToBytes7_4(sum);
+        byte[] tempresult = IntToBytes7_4(sum);
         int toremove = tempresult.Length - StartAddress.Length;
         if (toremove == 0)
         {
@@ -80,7 +80,7 @@ public class ByteUtils
 
     public static byte[] AddressWithOffset(byte[] StartAddress, byte[] Offset, byte[] ParameterAddress)
     {
-        return ByteUtils.AddressWithOffset(ByteUtils.AddressWithOffset(StartAddress, Offset), ParameterAddress);
+        return AddressWithOffset(AddressWithOffset(StartAddress, Offset), ParameterAddress);
     }
 
     public static long Bytes7ToInt(byte[] data)
@@ -113,7 +113,7 @@ public class ByteUtils
         for (int i = 0; i < noOfNibbles; i++)
         {
             byte nibble = (byte)(value & 0x0f);
-            result[noOfNibbles - 1 - i] = (byte)nibble;
+            result[noOfNibbles - 1 - i] = nibble;
             value >>= 4;
         }
         return result;
@@ -132,8 +132,8 @@ public class ByteUtils
     public static byte[] Concat(byte[] data1, byte[] data2)
     {
         byte[] result = new byte[data1.Length + data2.Length];
-        System.Buffer.BlockCopy(data1, 0, result, 0, data1.Length);
-        System.Buffer.BlockCopy(data2, 0, result, data1.Length, data2.Length);
+        Buffer.BlockCopy(data1, 0, result, 0, data1.Length);
+        Buffer.BlockCopy(data2, 0, result, data1.Length, data2.Length);
         return result;
     }
 
@@ -142,7 +142,7 @@ public class ByteUtils
         Debug.Assert(from + length <= data.Length);
 
         byte[] result = new byte[length];
-        System.Buffer.BlockCopy(data, from, result, 0, length);
+        Buffer.BlockCopy(data, from, result, 0, length);
         return result;
     }
 
@@ -160,7 +160,7 @@ public class ByteUtils
         Debug.Assert(desiredLength >= data.Length);
         if (desiredLength == 0) return data;
         byte[] result = new byte[desiredLength];
-        System.Buffer.BlockCopy(data, 0, result, 0, data.Length);
+        Buffer.BlockCopy(data, 0, result, 0, data.Length);
         return result;
     }
 
@@ -173,7 +173,7 @@ public class ByteUtils
         {
             result[i] = 32; // space
         }
-        System.Buffer.BlockCopy(data, 0, result, 0, data.Length);
+        Buffer.BlockCopy(data, 0, result, 0, data.Length);
         return result;
     }
 }

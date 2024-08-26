@@ -21,12 +21,8 @@ public class Integra7SysexHelpers
     private static byte[] COMMAND_DATAREQ = [0x11];
     private static byte[] COMMAND_DATASET = [0x12];
 
-    public static byte[] IDENTITY_REQUEST = ByteUtils.Flatten([ EXCLUSIVE_STATUS, UNIVERSAL_NON_RT, SYSEX_GLOBAL_CH,
-                                       IDENTITY_GEN_INFO, IDENTITY_ID_REQ, END_OF_SYSEX ]);
-    public static byte[] IDENTITY_REPLY = ByteUtils.Flatten([EXCLUSIVE_STATUS, UNIVERSAL_NON_RT, DEVICE_ID,
-                                    IDENTITY_GEN_INFO, IDENTITY_ID_REP, ROLAND_ID,
-                                    ROLAND_DEVICE_FAMILY_CODE, ROLAND_DEVICE_FAMILY_NUMBER_CODE, ROLAND_DEVICE_FAMILY_SW_REV,
-                                    END_OF_SYSEX]);
+    public static byte[] IDENTITY_REQUEST = ByteUtils.Flatten(EXCLUSIVE_STATUS, UNIVERSAL_NON_RT, SYSEX_GLOBAL_CH, IDENTITY_GEN_INFO, IDENTITY_ID_REQ, END_OF_SYSEX);
+    public static byte[] IDENTITY_REPLY = ByteUtils.Flatten(EXCLUSIVE_STATUS, UNIVERSAL_NON_RT, DEVICE_ID, IDENTITY_GEN_INFO, IDENTITY_ID_REP, ROLAND_ID, ROLAND_DEVICE_FAMILY_CODE, ROLAND_DEVICE_FAMILY_NUMBER_CODE, ROLAND_DEVICE_FAMILY_SW_REV, END_OF_SYSEX);
 
 
 
@@ -45,7 +41,7 @@ public class Integra7SysexHelpers
     public static bool CheckIsDataSetMsg(byte[] reply)
     {
         // device id will be ignored
-        byte[] expectedHeader = ByteUtils.Flatten([EXCLUSIVE_STATUS, ROLAND_ID, [0x10], MODEL_ID, COMMAND_DATASET]);
+        byte[] expectedHeader = ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [0x10], MODEL_ID, COMMAND_DATASET);
         int len = expectedHeader.Length;
         byte[] header = ByteUtils.Slice(reply, 0, len);
         return header[0] == EXCLUSIVE_STATUS[0] && header[1] == ROLAND_ID[0] && header[3..6].SequenceEqual(MODEL_ID) && header[6] == COMMAND_DATASET[0];
@@ -54,7 +50,7 @@ public class Integra7SysexHelpers
     public static byte[] ExtractPayload(byte[] reply)
     {
         // device id will be ignored
-        byte[] expectedHeader = ByteUtils.Flatten([EXCLUSIVE_STATUS, ROLAND_ID, [0x10], MODEL_ID, COMMAND_DATASET]);
+        byte[] expectedHeader = ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [0x10], MODEL_ID, COMMAND_DATASET);
         int len = expectedHeader.Length;
         int trimIdx = Array.IndexOf(reply, END_OF_SYSEX[0]);
         byte[] trimmedSysexReply = ByteUtils.Slice(reply, 0, trimIdx); // this already removes teh END_OF_SYSEX byte
@@ -64,17 +60,15 @@ public class Integra7SysexHelpers
 
     public static byte[] MakeDataRequest(byte deviceId, byte[] address, long size)
     {
-        byte[] payload = ByteUtils.Flatten([address, ByteUtils.IntToBytes7_4(size)]);
-        byte[] data = ByteUtils.Flatten([EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID,
-                                         COMMAND_DATAREQ, payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX]);
+        byte[] payload = ByteUtils.Flatten(address, ByteUtils.IntToBytes7_4(size));
+        byte[] data = ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID, COMMAND_DATAREQ, payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX);
         return data;
     }
 
     public static byte[] MakeDataSet(byte deviceId, byte[] address, byte[] data)
     {
-        byte[] payload = ByteUtils.Flatten([address, data]);
-        byte[] msg = ByteUtils.Flatten([EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID,
-                                        COMMAND_DATASET, payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX]);
+        byte[] payload = ByteUtils.Flatten(address, data);
+        byte[] msg = ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID, COMMAND_DATASET, payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX);
         return msg;
     }
 }

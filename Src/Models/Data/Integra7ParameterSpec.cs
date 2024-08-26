@@ -7,7 +7,7 @@ namespace Integra7AuralAlchemist.Models.Data;
 
 public class Integra7ParameterSpec
 {
-    public enum SpecType { NUMERIC, ASCII };
+    public enum SpecType { NUMERIC, ASCII }
     private SpecType _type;
     public SpecType Type { get => _type; }
     private string _path;
@@ -24,9 +24,9 @@ public class Integra7ParameterSpec
     public float OMax { get => _omax; }
     private int _bytes;
     public int Bytes { get => _bytes; }
-    private bool _reserved = false;
+    private bool _reserved;
     public bool Reserved { get => _reserved; }
-    private bool _perNibble = false;
+    private bool _perNibble;
     public bool PerNibble { get => _perNibble; }
     private string _unit = "";
     public string Unit { get => _unit; }
@@ -36,7 +36,7 @@ public class Integra7ParameterSpec
     public string ParentCtrl { get => _parentCtrlPath; set => _parentCtrlPath = value; }
     private string _parentCtrlDispValue = "";
     public string ParentCtrlDispValue { get => _parentCtrlDispValue; set => _parentCtrlDispValue = value; }
-    private bool _isParentCtrl = false;
+    private bool _isParentCtrl;
     public bool IsParent { get => _isParentCtrl; set => _isParentCtrl = value; }
     private string _parentCtrlPath2 = "";
     public string ParentCtrl2 { get => _parentCtrlPath2; set => _parentCtrlPath2 = value; }
@@ -69,10 +69,11 @@ public class Integra7ParameterSpec
                 }
                 return ticks;
             }
-            else if (_omin2 == -20000 && _omax2 == 20000)
+
+            if (_omin2 == -20000 && _omax2 == 20000)
             {
                 AvaloniaList<double> ticks = [];
-                for (long i = (long)0; i < (long)(127 + 1); i++)
+                for (long i = 0; i < 127 + 1; i++)
                 {
                     ticks.Add(i);
                 }

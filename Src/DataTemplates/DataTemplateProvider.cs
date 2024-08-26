@@ -6,8 +6,6 @@ using Avalonia.Layout;
 using Integra7AuralAlchemist.Models.Data;
 using ReactiveUI;
 
-
-
 namespace Integra7AuralAlchemist.DataTemplates;
 
 public static class DataTemplateProvider
@@ -22,7 +20,7 @@ public static class DataTemplateProvider
                 if (e.Property.Name == "Text")
                 {
                     //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
-                    MessageBus.Current.SendMessage<UpdateMessageSpec>(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
+                    MessageBus.Current.SendMessage(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
                 }
             };
             return b;
@@ -42,7 +40,7 @@ public static class DataTemplateProvider
                         {
                             msg = "ON";
                         }
-                        MessageBus.Current.SendMessage<UpdateMessageSpec>(new UpdateMessageSpec(p, msg), "ui2hw");
+                        MessageBus.Current.SendMessage(new UpdateMessageSpec(p, msg), "ui2hw");
                     }
                 };
                 return c;
@@ -58,7 +56,7 @@ public static class DataTemplateProvider
                 c.SelectionChanged += (s, e) =>
                 {
                     //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.RemovedItems[0]}\" to \"{e.AddedItems[0]}\"");
-                    MessageBus.Current.SendMessage<UpdateMessageSpec>(new UpdateMessageSpec(p, $"{e.AddedItems[0]}"), "ui2hw");
+                    MessageBus.Current.SendMessage(new UpdateMessageSpec(p, $"{e.AddedItems[0]}"), "ui2hw");
                 };
                 return c;
             }
@@ -85,7 +83,7 @@ public static class DataTemplateProvider
             s.ValueChanged += (s, e) =>
             {
                 //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
-                MessageBus.Current.SendMessage<UpdateMessageSpec>(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
+                MessageBus.Current.SendMessage(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
             };
             TextBlock v = new()
             {
@@ -135,7 +133,7 @@ public static class DataTemplateProvider
             s.ValueChanged += (s, e) =>
             {
                 //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
-                MessageBus.Current.SendMessage<UpdateMessageSpec>(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
+                MessageBus.Current.SendMessage(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
             };
             TextBlock v = new()
             {
@@ -185,7 +183,7 @@ public static class DataTemplateProvider
             s.ValueChanged += (s, e) =>
             {
                 //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
-                MessageBus.Current.SendMessage<UpdateMessageSpec>(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
+                MessageBus.Current.SendMessage(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
             };
             TextBlock v = new()
             {
@@ -217,5 +215,5 @@ public static class DataTemplateProvider
     }
 
     public static FuncDataTemplate<FullyQualifiedParameter> ParameterValueTemplate { get; }
-        = new FuncDataTemplate<FullyQualifiedParameter>((person) => person is not null, BuildParameterValuePresenter);
+        = new FuncDataTemplate<FullyQualifiedParameter>(person => person is not null, BuildParameterValuePresenter);
 }

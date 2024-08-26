@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Text;
 using Integra7AuralAlchemist.Models.Data;
 
 namespace Integra7AuralAlchemist.Models.Services;
@@ -58,7 +59,7 @@ public class SysexParameterValueInterpreter
         }
         else
         {
-            stringValue = System.Text.Encoding.ASCII.GetString(parResult);
+            stringValue = Encoding.ASCII.GetString(parResult);
         }
     }
 }

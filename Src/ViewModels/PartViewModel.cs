@@ -63,71 +63,49 @@ public partial class PartViewModel : ViewModelBase
     public ReadOnlyObservableCollection<FullyQualifiedParameter> PCMSynthTonePartial3Parameters => _PCMSynthTonePartial3Parameters;
 
 
-    private byte _part = 0;
+    private byte _part;
 
     public bool SelectedPresetIsSynthTone
     {
         get => _selectedPreset is null ? false : _selectedPreset.ToneTypeStr == "PCMS";
     }
 
-    [Reactive]
-    private string _searchTextStudioSetMidi = "";
-    [Reactive]
-    private string _searchTextStudioSetPart = "";
-    [Reactive]
-    public string _refreshStudioSetPart = "";
-    [Reactive]
-    private string _searchTextStudioSetPartEQ = "";
-    [Reactive]
-    public string _refreshStudioSetPartEQ = "";
-    [Reactive]
-    private string _searchTextPCMSynthToneCommon = "";
-    [Reactive]
-    public string _refreshPCMSynthToneCommon = "";
-    [Reactive]
-    private string _searchTextPCMSynthToneCommon2 = "";
-    [Reactive]
-    public string _refreshPCMSynthToneCommon2 = "";
-    [Reactive]
-    public string _searchTextPCMSynthToneCommonMFX = "";
-    [Reactive]
-    public string _refreshPCMSynthToneCommonMFX = "";
-    [Reactive]
-    public string _searchTextPCMSynthTonePMT = "";
-    [Reactive]
-    public string _refreshPCMSynthTonePMT = "";
-    [Reactive]
-    public string _searchTextPCMSynthTonePartial0 = "";
-    [Reactive]
-    public string _refreshPCMSynthTonePartial0 = "";
-    [Reactive]
-    public string _searchTextPCMSynthTonePartial1 = "";
-    [Reactive]
-    public string _refreshPCMSynthTonePartial1 = "";
-    [Reactive]
-    public string _searchTextPCMSynthTonePartial2 = "";
-    [Reactive]
-    public string _refreshPCMSynthTonePartial2 = "";
-    [Reactive]
-    public string _searchTextPCMSynthTonePartial3 = "";
-    [Reactive]
-    public string _refreshPCMSynthTonePartial3 = "";
-
+    [Reactive] private string _searchTextStudioSetMidi = "";
+    [Reactive] private string _searchTextStudioSetPart = "";
+    [Reactive] private string _refreshStudioSetPart = "";
+    [Reactive] private string _searchTextStudioSetPartEQ = "";
+    [Reactive] private string _refreshStudioSetPartEQ = "";
+    [Reactive] private string _searchTextPCMSynthToneCommon = "";
+    [Reactive] private string _refreshPCMSynthToneCommon = "";
+    [Reactive] private string _searchTextPCMSynthToneCommon2 = "";
+    [Reactive] private string _refreshPCMSynthToneCommon2 = "";
+    [Reactive] private string _searchTextPCMSynthToneCommonMFX = "";
+    [Reactive] private string _refreshPCMSynthToneCommonMFX = "";
+    [Reactive] private string _searchTextPCMSynthTonePMT = "";
+    [Reactive] private string _refreshPCMSynthTonePMT = "";
+    [Reactive] private string _searchTextPCMSynthTonePartial0 = "";
+    [Reactive] private string _refreshPCMSynthTonePartial0 = "";
+    [Reactive] private string _searchTextPCMSynthTonePartial1 = "";
+    [Reactive] private string _refreshPCMSynthTonePartial1 = "";
+    [Reactive] private string _searchTextPCMSynthTonePartial2 = "";
+    [Reactive] private string _refreshPCMSynthTonePartial2 = "";
+    [Reactive] private string _searchTextPCMSynthTonePartial3 = "";
+    [Reactive] private string _refreshPCMSynthTonePartial3 = "";
 
     public string Header { get => _commonTab ? "Common" : $"Part {_part + 1}"; }
 
-    IDisposable? _cleanupPresets = null;
-    IDisposable? _cleanupMidiParams = null;
-    IDisposable? _cleanupStudioSetPartParams = null;
-    IDisposable? _cleanupStudioSetPartEQParams = null;
-    IDisposable? _cleanupPCMSynthToneCommonParams = null;
-    IDisposable? _cleanupPCMSynthToneCommon2Params = null;
-    IDisposable? _cleanupPCMSynthToneCommonMFXParams = null;
-    IDisposable? _cleanupPCMSynthTonePMTParametersParams = null;
-    IDisposable? _cleanupPCMSynthTonePartial0ParametersParams = null;
-    IDisposable? _cleanupPCMSynthTonePartial1ParametersParams = null;
-    IDisposable? _cleanupPCMSynthTonePartial2ParametersParams = null;
-    IDisposable? _cleanupPCMSynthTonePartial3ParametersParams = null;
+    IDisposable? _cleanupPresets;
+    IDisposable? _cleanupMidiParams;
+    IDisposable? _cleanupStudioSetPartParams;
+    IDisposable? _cleanupStudioSetPartEQParams;
+    IDisposable? _cleanupPCMSynthToneCommonParams;
+    IDisposable? _cleanupPCMSynthToneCommon2Params;
+    IDisposable? _cleanupPCMSynthToneCommonMFXParams;
+    IDisposable? _cleanupPCMSynthTonePMTParametersParams;
+    IDisposable? _cleanupPCMSynthTonePartial0ParametersParams;
+    IDisposable? _cleanupPCMSynthTonePartial1ParametersParams;
+    IDisposable? _cleanupPCMSynthTonePartial2ParametersParams;
+    IDisposable? _cleanupPCMSynthTonePartial3ParametersParams;
 
     [Reactive]
     private string _searchTextSetup = "";
@@ -181,13 +159,13 @@ public partial class PartViewModel : ViewModelBase
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetCommonMasterEQParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetCommonMasterEQParameters => _studioSetCommonMasterEQParameters;
 
-    IDisposable? _cleanupSetup = null;
-    IDisposable? _cleanupSystem = null;
-    IDisposable? _cleanupStudioSetCommon = null;
-    IDisposable? _cleanupStudioSetChorus = null;
-    IDisposable? _cleanupStudioSetReverb = null;
-    IDisposable? _cleanupMotionalSurround = null;
-    IDisposable? _cleanupStudioSetMasterEQ = null;
+    IDisposable? _cleanupSetup;
+    IDisposable? _cleanupSystem;
+    IDisposable? _cleanupStudioSetCommon;
+    IDisposable? _cleanupStudioSetChorus;
+    IDisposable? _cleanupStudioSetReverb;
+    IDisposable? _cleanupMotionalSurround;
+    IDisposable? _cleanupStudioSetMasterEQ;
 
     public void PreSelectConfiguredPreset(DomainBase b)
     {
@@ -665,7 +643,7 @@ public partial class PartViewModel : ViewModelBase
                                         .Subscribe();
         }
     }
-    private bool _commonTab = false;
+    private bool _commonTab;
     public bool IsCommonTab { get => _commonTab; }
     public bool IsPartTab { get => !_commonTab; }
     public void ForceUiRefresh(string StartAddressName, string OffsetAddressName, string ParPath, bool ResyncNeeded)
@@ -747,7 +725,7 @@ public partial class PartViewModel : ViewModelBase
                     if (OffsetAddressName == $"Offset/Studio Set Part {_part + 1}")
                     {
                         // using MessageBus instead of direct call because it is automatically throttled
-                        MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(_part));
+                        MessageBus.Current.SendMessage(new UpdateResyncPart(_part));
                     }
                 }
             }
@@ -755,7 +733,7 @@ public partial class PartViewModel : ViewModelBase
         else
         {
             if (IsPartTab && (OffsetAddressName.Contains($"Part {_part + 1}") || StartAddressName.Contains($"Part {_part + 1}")))
-                MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(_part));
+                MessageBus.Current.SendMessage(new UpdateResyncPart(_part));
         }
     }
 
@@ -810,15 +788,15 @@ public partial class PartViewModel : ViewModelBase
         else
         {
             _i7domain?.Setup.ReadFromIntegra();
-            List<FullyQualifiedParameter> p_s = _i7domain?.Setup.GetRelevantParameters(false, false);
+            List<FullyQualifiedParameter> p_s = _i7domain?.Setup.GetRelevantParameters();
             _sourceCacheSetupParameters.AddOrUpdate(p_s);
 
             _i7domain?.System.ReadFromIntegra();
-            List<FullyQualifiedParameter> s_s = _i7domain?.System.GetRelevantParameters(false, false);
+            List<FullyQualifiedParameter> s_s = _i7domain?.System.GetRelevantParameters();
             _sourceCacheSystem.AddOrUpdate(s_s);
 
             _i7domain?.StudioSetCommon.ReadFromIntegra();
-            List<FullyQualifiedParameter> p_ssc = _i7domain?.StudioSetCommon.GetRelevantParameters(false, false);
+            List<FullyQualifiedParameter> p_ssc = _i7domain?.StudioSetCommon.GetRelevantParameters();
             _sourceCacheStudioSetCommonParameters.AddOrUpdate(p_ssc);
 
             _i7domain?.StudioSetCommonChorus.ReadFromIntegra();
@@ -848,7 +826,7 @@ public partial class PartViewModel : ViewModelBase
             {
                 _selectedPreset = value;
                 ChangePreset();
-                this.RaisePropertyChanged(nameof(SelectedPreset));
+                this.RaisePropertyChanged();
             }
         }
     }
@@ -865,6 +843,9 @@ public partial class PartViewModel : ViewModelBase
 
     public void ResyncPart(byte part)
     {
+        if (_i7domain is null)
+            return;
+        
         if (part != _part)
             return;
 

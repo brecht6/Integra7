@@ -24,7 +24,7 @@ public class Integra7Api : IIntegra7Api
 {
     private IMidiOut? _midiOut;
     private IMidiIn? _midiIn;
-    private byte _deviceId = 0;
+    private byte _deviceId;
     public byte DeviceId()
     {
         return _deviceId;
@@ -156,6 +156,6 @@ public class Integra7Api : IIntegra7Api
         BankSelectMsb(Channel, Msb);
         BankSelectLsb(Channel, Lsb);
         ProgramChange(Channel, Pc - 1);
-        MessageBus.Current.SendMessage<UpdateResyncPart>(new UpdateResyncPart(Channel));
+        MessageBus.Current.SendMessage(new UpdateResyncPart(Channel));
     }
 }

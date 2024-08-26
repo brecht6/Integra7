@@ -1,16 +1,16 @@
-﻿using ReactiveUI;
-using ReactiveUI.SourceGenerators;
-using System;
-using System.IO;
-using System.Threading;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using System.Reactive.Linq;
+using System.Threading;
 using Avalonia.Platform;
 using Integra7AuralAlchemist.Models.Data;
-using Integra7AuralAlchemist.Models.Services;
 using Integra7AuralAlchemist.Models.Domain;
+using Integra7AuralAlchemist.Models.Services;
+using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 
 namespace Integra7AuralAlchemist.ViewModels;
 
@@ -25,15 +25,15 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [Reactive]
     private bool _rescanButtonEnabled = true;
-    private Integra7Domain? _integra7Communicator = null;
+    private Integra7Domain? _integra7Communicator;
 
     private readonly ReadOnlyObservableCollection<PartViewModel> _partViewModels;
     public ReadOnlyObservableCollection<PartViewModel> PartViewModels => _partViewModels;
     private const string INTEGRA_CONNECTION_STRING = "INTEGRA-7";
-    private IIntegra7Api? Integra7 { get; set; } = null;
+    private IIntegra7Api? Integra7 { get; set; }
 
     [Reactive]
-    private bool _connected = false;
+    private bool _connected;
 
     [Reactive]
     private string _midiDevices = "No Midi Devices Detected";
@@ -89,7 +89,7 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     [Reactive]
-    private int _currentPartSelection = 0;
+    private int _currentPartSelection;
 
     [ReactiveCommand]
     public void DebugCode()

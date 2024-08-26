@@ -12,7 +12,7 @@ public partial class PresetSelector : UserControl
         AvaloniaProperty.Register<PresetSelector, ReadOnlyObservableCollection<Integra7Preset>>(nameof(Presets));
     public ReadOnlyObservableCollection<Integra7Preset> Presets
     {
-        get => (ReadOnlyObservableCollection<Integra7Preset>)GetValue(PresetsProperty);
+        get => GetValue(PresetsProperty);
         set => SetValue(PresetsProperty, value);
     }
 

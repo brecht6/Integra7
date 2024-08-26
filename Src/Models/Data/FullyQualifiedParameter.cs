@@ -17,7 +17,7 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
 
     private bool _numeric;
     public bool IsNumeric { get => _numeric; }
-    private long _rawNumericValue = 0;
+    private long _rawNumericValue;
     public long RawNumericValue { get => _rawNumericValue; set => _rawNumericValue = value; }
     private string _stringValue = "";
 
@@ -71,27 +71,19 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
                             string value2 = ctx.Lookup(ParSpec.ParentCtrl2);
                             return value2 == ParSpec.ParentCtrlDispValue2;
                         }
-                        else
-                        {
-                            Debug.Assert(false, $"Cannot parse {ParSpec.Path} without context {ParSpec.ParentCtrl2}. Did you forget to set isparent==true in {ParSpec.ParentCtrl}?");
-                            return false;
-                        }
+
+                        Debug.Assert(false, $"Cannot parse {ParSpec.Path} without context {ParSpec.ParentCtrl2}. Did you forget to set isparent==true in {ParSpec.ParentCtrl}?");
+                        return false;
                     }
-                    else
-                    {
-                        return true; // StillValid and no need to check second level dependency
-                    }
+
+                    return true; // StillValid and no need to check second level dependency
                 }
-                else
-                {
-                    return false; // no longer valid, no need to check deeper
-                }
+
+                return false; // no longer valid, no need to check deeper
             }
-            else
-            {
-                Debug.Assert(false, $"Cannot parse {ParSpec.Path} without context {ParSpec.ParentCtrl}");
-                return false;
-            }
+
+            Debug.Assert(false, $"Cannot parse {ParSpec.Path} without context {ParSpec.ParentCtrl}");
+            return false;
         }
 
         return true;
@@ -173,14 +165,12 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
             }
             return sysex;
         }
-        else
+
+        if (_stringValue.Length > _parspec.Bytes)
         {
-            if (_stringValue.Length > _parspec.Bytes)
-            {
-                _stringValue = _stringValue[.._parspec.Bytes]; // clip to max length
-            }
-            return ByteUtils.PadString(Encoding.ASCII.GetBytes(_stringValue), _parspec.Bytes);
+            _stringValue = _stringValue[.._parspec.Bytes]; // clip to max length
         }
+        return ByteUtils.PadString(Encoding.ASCII.GetBytes(_stringValue), _parspec.Bytes);
     }
 
     public void CopyParsedDataFrom(FullyQualifiedParameter other)

@@ -1,6 +1,6 @@
+using System;
 using System.Linq;
 using Commons.Music.Midi;
-
 
 namespace Integra7AuralAlchemist.Models.Services;
 
@@ -12,9 +12,9 @@ public interface IMidiOut
 
 public class MidiOut : IMidiOut
 {
-    private readonly IMidiAccess2? _midiAccessManager = null;
-    private IMidiOutput? _access = null;
-    private IMidiPortDetails? _midiPortDetails = null;
+    private readonly IMidiAccess2? _midiAccessManager;
+    private IMidiOutput? _access;
+    private IMidiPortDetails? _midiPortDetails;
 #if DEBUG
     public bool Verbose { get; set; } = true;
 #else
@@ -27,7 +27,7 @@ public class MidiOut : IMidiOut
         {
             _midiPortDetails = _midiAccessManager?.Outputs.Where(x => x.Name.Contains(Name)).Last();
         }
-        catch (System.InvalidOperationException)
+        catch (InvalidOperationException)
         {
             _midiPortDetails = null;
         }
@@ -49,12 +49,12 @@ public class MidiOut : IMidiOut
                 ByteStreamDisplay.Display("Sent: ", data);
             }
         }
-        catch (System.ArgumentException)
+        catch (ArgumentException)
         {
             _midiPortDetails = null;
             _access = null;
         }
-        catch (System.NullReferenceException)
+        catch (NullReferenceException)
         {
             _midiPortDetails = null;
             _access = null;

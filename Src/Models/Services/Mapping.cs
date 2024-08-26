@@ -36,7 +36,7 @@ public class Mapping
 
         if (autoclip)
         {
-            output = Mapping.clip(output, omin, omax);
+            output = clip(output, omin, omax);
         }
 
         return output;

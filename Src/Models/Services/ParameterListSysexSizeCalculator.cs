@@ -32,7 +32,7 @@ public class ParameterListSysexSizeCalculator
             }
             else
             {
-                //Debug.WriteLine($"Not counting {allRelevantPars[i].Path} multiple times.");
+                //Debug.WriteLine($"Not counting {allRelevantPars[i].Path} multiple times.");   
             }
         }
         return size;
@@ -42,7 +42,7 @@ public class ParameterListSysexSizeCalculator
     {
         // calculate sysex size, then subtract size of last entry
         // this way of working correctly handles cases where the last parameters are duplicates for data dependency modeling
-        int size = ParameterListSysexSizeCalculator.CalculateSysexSize(listOfConsecutiveParameterSpec);
+        int size = CalculateSysexSize(listOfConsecutiveParameterSpec);
         size -= listOfConsecutiveParameterSpec.Last().Bytes;
         return size;
     }

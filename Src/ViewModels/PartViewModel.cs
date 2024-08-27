@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using DynamicData;
 using DynamicData.Binding;
@@ -25,9 +26,11 @@ public partial class PartViewModel : ViewModelBase
     }
     private List<Integra7Preset> _i7presets;
     private Integra7Preset _selectedPreset;
-    private SourceCache<Integra7Preset, int> _sourceCachePresets = new SourceCache<Integra7Preset, int>(x => x.Id);
+    
     private readonly ReadOnlyObservableCollection<Integra7Preset> _presets = new([]);
+    private SourceCache<Integra7Preset, int> _sourceCachePresets = new SourceCache<Integra7Preset, int>(x => x.Id);
     public ReadOnlyObservableCollection<Integra7Preset> Presets => _presets;
+    
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheStudioSetMidiParameters = new(x => x.ParSpec.Path);
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _studioSetMidiParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> StudioSetMidiParameters => _studioSetMidiParameters;
@@ -61,12 +64,14 @@ public partial class PartViewModel : ViewModelBase
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCachePCMSynthTonePartial3Parameters = new(x => x.ParSpec.Path);
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _PCMSynthTonePartial3Parameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> PCMSynthTonePartial3Parameters => _PCMSynthTonePartial3Parameters;
+    
 
 
     private byte _part;
 
     public bool SelectedPresetIsSynthTone => _selectedPreset is null ? false : _selectedPreset.ToneTypeStr == "PCMS";
 
+    [Reactive] private string _searchTextPreset = "";
     [Reactive] private string _searchTextStudioSetMidi = "";
     [Reactive] private string _searchTextStudioSetPart = "";
     [Reactive] private string _refreshStudioSetPart = "";
@@ -199,6 +204,10 @@ public partial class PartViewModel : ViewModelBase
 
         if (!commonTab)
         {
+            var parFilterPreset = this.WhenAnyValue(x => x.SearchTextPreset)
+                                                        .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                                        .DistinctUntilChanged()
+                                                        .Select(FilterProvider.PresetFilter);
             var parFilterStudioSetMidiParameters = this.WhenAnyValue(x => x.SearchTextStudioSetMidi)
                                         .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
                                         .DistinctUntilChanged()
@@ -264,8 +273,12 @@ public partial class PartViewModel : ViewModelBase
             var refreshFilterPCMSynthTonePartial3Parameters = this.WhenAnyValue(x => x.RefreshPCMSynthTonePartial3)
                                                 .Select(FilterProvider.ParameterFilter);
             _cleanupPresets = _sourceCachePresets.Connect()
+                                        .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
+                                        .Filter(parFilterPreset)
                                         .ObserveOn(RxApp.MainThreadScheduler)
-                                        .Bind(out _presets)
+                                        .SortAndBind(
+                                            out _presets,
+                                            SortExpressionComparer<Integra7Preset>.Ascending(t => t.Id))
                                         .DisposeMany()
                                         .Subscribe();
             _cleanupMidiParams = _sourceCacheStudioSetMidiParameters.Connect()

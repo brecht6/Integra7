@@ -113,11 +113,15 @@
                                     Margin="10,5,0,0"
                                     Spacing="50"
                                     IsVisible="{Binding IsPartTab}">
-                            <local:PresetSelector Presets="{Binding Presets}"
+                            
+                            <local:PresetSelector SearchText="{Binding SearchTextPreset, Mode=TwoWay}"
+                                                  Presets="{Binding Presets}"
                                                   SelectedPreset="{Binding SelectedPreset, Mode=TwoWay}"
-                                                  MaxHeight="700"
+                                                  Height="700"
                                                   VerticalAlignment="Top"
-                                                  VerticalContentAlignment="Top" />
+                                                  VerticalContentAlignment="Top" 
+                                                  IsVisible="{Binding IsPartTab}"/>
+                            
                             <TabControl TabStripPlacement="Top"
                                         MaxHeight="700"
                                         VerticalAlignment="Top"

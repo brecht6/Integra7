@@ -9,27 +9,40 @@
              xmlns:vm="using:Integra7AuralAlchemist.ViewModels"
              x:DataType="vm:MainWindowViewModel"
              x:Name="PresetSelectorControl">
-    <DataGrid Name="PresetDataGrid"
-              SelectionMode="Single"
-              ItemsSource="{Binding #PresetSelectorControl.Presets}"
-              HorizontalAlignment="Center"
-              VerticalAlignment="Center"
-              SelectedItem="{Binding #PresetSelectorControl.SelectedPreset, Mode=TwoWay}">
-        <DataGrid.Styles>
-            <Style Selector="DataGridCell:current /template/ Grid#FocusVisual">
-                <Setter Property="IsVisible"
-                        Value="false" />
-            </Style>
-        </DataGrid.Styles>
-        <DataGrid.Columns>
-            <DataGridTextColumn Header="Tone Type"
-                                Binding="{Binding ToneTypeStr}" />
-            <DataGridTextColumn Header="Tone Bank"
-                                Binding="{Binding ToneBankStr}" />
-            <DataGridTextColumn Header="Tone Name"
-                                Binding="{Binding Name}" />
-            <DataGridTextColumn Header="Category"
-                                Binding="{Binding CategoryStr}" />
-        </DataGrid.Columns>
-    </DataGrid>
+    
+    <StackPanel Orientation="Vertical" Spacing="10" Margin="10" Height="700">
+        
+        <TextBox Watermark="Filter Presets..."
+                 Background="#3c4043"
+                 Width="600"
+                 HorizontalAlignment="Left"
+                 Text="{Binding #PresetSelectorControl.SearchText}" />
+        
+        <DataGrid Name="PresetDataGrid"
+                  SelectionMode="Single"
+                  ItemsSource="{Binding #PresetSelectorControl.Presets}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  SelectedItem="{Binding #PresetSelectorControl.SelectedPreset, Mode=TwoWay}"
+                  Height="650">
+                  
+            <DataGrid.Styles>
+                <Style Selector="DataGridCell:current /template/ Grid#FocusVisual">
+                    <Setter Property="IsVisible"
+                            Value="false" />
+                </Style>
+            </DataGrid.Styles>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tone Type"
+                                    Binding="{Binding ToneTypeStr}" />
+                <DataGridTextColumn Header="Tone Bank"
+                                    Binding="{Binding ToneBankStr}" />
+                <DataGridTextColumn Header="Tone Name"
+                                    Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Category"
+                                    Binding="{Binding CategoryStr}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
+
 </UserControl>

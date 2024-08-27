@@ -19,6 +19,7 @@
                  Background="#3c4043"
                  Width="600"
                  HorizontalAlignment="Left"
+                 Margin="10"
                  Text="{Binding #ParameterCollectionControl.SearchText}" />
         <ScrollViewer Grid.Column="0"
                       Grid.Row="1"

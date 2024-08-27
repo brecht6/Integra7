@@ -123,7 +123,7 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
         int dataToSkip = SYSEX_DATA_REPLY_HEADER_LENGTH;
         int gap = ParameterListSysexSizeCalculator.CalculateSysexGapBetweenFirstAndLast(parametersInSysexReply);
         dataToSkip += gap;
-        if (reply.Length > dataToSkip)
+        if (reply.Length > dataToSkip + _parspec.Bytes)
         {
             byte[] parResult = ByteUtils.Slice(reply, dataToSkip, _parspec.Bytes);
             SysexParameterValueInterpreter.Interpret(parResult, _parspec, out _rawNumericValue, out _stringValue);

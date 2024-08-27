@@ -6,7 +6,7 @@ enum EnumToneType { SuperNaturalAcoustic, SuperNaturalSynth, SuperNaturalDrums, 
 enum EnumToneBank { Preset, GeneralMidi, ExSN1, ExSN2, ExSN3, ExSN4, ExSN5, ExSN6, SRX01, SRX02, SRX03, SRX04, SRX05, SRX06, SRX07, SRX08, SRX09, SRX10, SRX11, SRX12, ExPCM}
 enum EnumCategory { AcPiano, OtherKeyboards, Organ, EGuitar, DistGuitar, AcBass, EBass, AcGuitar, AccordionHarmonica, BellMallet, Percussion, PluckedStroke, Strings, VoxChoir, Brass, Sax, Wind, Flute, SynthPadStrings, Pulsating, SynthBrass, SynthPolyKey, SynthBellPad, SynthSeqPop, SynthBass, SynthLead, FX, EPiano, Hit, Drums, BeatGroove, Recorder, SoundFX, Phrase}
 
-public class Integra7Preset {
+public record Integra7Preset {
     // unique id
     private int _id { get; set; }
     public int Id => _id;

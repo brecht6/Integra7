@@ -58,6 +58,15 @@ public class Integra7SysexHelpers
         return payload;
     }
 
+    public static byte[] TrimAfterEndOfSysex(byte[] reply)
+    {
+        byte[] expectedHeader = ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [0x10], MODEL_ID, COMMAND_DATASET);
+        int len = expectedHeader.Length;
+        int trimIdx = Array.IndexOf(reply, END_OF_SYSEX[0]) + 1;
+        byte[] trimmedSysexReply = ByteUtils.Slice(reply, 0, trimIdx);
+        return trimmedSysexReply;
+    }
+
     public static byte[] MakeDataRequest(byte deviceId, byte[] address, long size)
     {
         byte[] payload = ByteUtils.Flatten(address, ByteUtils.IntToBytes7_4(size));

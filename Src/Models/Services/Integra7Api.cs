@@ -25,6 +25,7 @@ public class Integra7Api : IIntegra7Api
     private IMidiOut? _midiOut;
     private IMidiIn? _midiIn;
     private byte _deviceId;
+
     public byte DeviceId()
     {
         return _deviceId;
@@ -49,7 +50,8 @@ public class Integra7Api : IIntegra7Api
         _midiIn?.AnnounceIntentionToManuallyHandleReply();
         _midiOut?.SafeSend(data);
         byte[] reply = _midiIn?.GetReply() ?? [];
-        return Integra7SysexHelpers.CheckIdentityReply(reply, out _deviceId);
+        byte[] usefulreply = Integra7SysexHelpers.TrimAfterEndOfSysex(reply);
+        return Integra7SysexHelpers.CheckIdentityReply(usefulreply, out _deviceId);
     }
 
     public byte[] MakeDataRequest(byte[] address, long size)
@@ -136,18 +138,21 @@ public class Integra7Api : IIntegra7Api
             midiChannel = (byte)(reply[0] - MidiEvent.CC);
             return true;
         }
+
         // ckeck for bank select lsb
         if (reply.Length > 2 && reply[0] >= MidiEvent.CC && reply[0] <= (MidiEvent.CC + 15) && reply[1] == 0x20)
         {
             midiChannel = (byte)(reply[0] - MidiEvent.CC);
             return true;
         }
+
         // check for program change
         if (reply.Length > 1 && reply[0] >= MidiEvent.Program && reply[0] <= (MidiEvent.Program + 15))
         {
             midiChannel = (byte)(reply[0] - MidiEvent.Program);
             return true;
         }
+
         return false;
     }
 

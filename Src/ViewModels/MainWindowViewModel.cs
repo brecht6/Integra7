@@ -63,7 +63,6 @@ public partial class MainWindowViewModel : ViewModelBase
         Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING));
         UpdateConnected(Integra7);
     }
-
     private void UpdateConnected(IIntegra7Api integra7Api)
     {
         Connected = integra7Api.ConnectionOk();

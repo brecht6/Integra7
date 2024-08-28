@@ -36,22 +36,15 @@ public partial class PresetSelector : UserControl
         get => (Integra7Preset)GetValue(SelectedPresetProperty);
         set
         {
-            if (GetValue(SelectedPresetProperty) != value) // argh
-            {
-                SetValue(SelectedPresetProperty, value);
-            }
+            SetValue(SelectedPresetProperty, value);
+            PresetDataGrid.ScrollIntoView(value, null);
         }
+        
     }
-    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+
+    public void PresetDataGrid_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs? args)
     {
-        if (change.Property == SelectedPresetProperty)
-        {
-            if (change.OldValue is not null && change.NewValue is not null && change.OldValue != change.NewValue)
-            {
-                PresetDataGrid.ScrollIntoView(change.NewValue, null);
-            }
-        }
-        base.OnPropertyChanged(change);
+        SelectedPreset = (Integra7Preset)args.Row.DataContext;
     }
 
     public PresetSelector()

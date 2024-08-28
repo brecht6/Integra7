@@ -158,25 +158,22 @@
                                     <local:ParameterCollection Parameters="{Binding PCMSynthTonePMTParameters}"
                                                                SearchText="{Binding SearchTextPCMSynthTonePMT, Mode=TwoWay}" />
                                 </TabItem>
-                                <TabItem Header="Partial 1"
-                                         IsVisible="{Binding SelectedPresetIsSynthTone}">
-                                    <local:ParameterCollection Parameters="{Binding PCMSynthTonePartial0Parameters}"
-                                                               SearchText="{Binding SearchTextPCMSynthTonePartial0, Mode=TwoWay}" />
-                                </TabItem>
-                                <TabItem Header="Partial 2"
-                                         IsVisible="{Binding SelectedPresetIsSynthTone}">
-                                    <local:ParameterCollection Parameters="{Binding PCMSynthTonePartial1Parameters}"
-                                                               SearchText="{Binding SearchTextPCMSynthTonePartial1, Mode=TwoWay}" />
-                                </TabItem>
-                                <TabItem Header="Partial 3"
-                                         IsVisible="{Binding SelectedPresetIsSynthTone}">
-                                    <local:ParameterCollection Parameters="{Binding PCMSynthTonePartial2Parameters}"
-                                                               SearchText="{Binding SearchTextPCMSynthTonePartial2, Mode=TwoWay}" />
-                                </TabItem>
-                                <TabItem Header="Partial 4"
-                                         IsVisible="{Binding SelectedPresetIsSynthTone}">
-                                    <local:ParameterCollection Parameters="{Binding PCMSynthTonePartial3Parameters}"
-                                                               SearchText="{Binding SearchTextPCMSynthTonePartial3, Mode=TwoWay}" />
+                                <TabItem Header="Partials">
+                                    <TabControl
+                                        ItemsSource="{Binding PartialViewModels}"
+                                        TabStripPlacement="Left">
+                                        <TabControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Header}"></TextBlock>
+                                            </DataTemplate>
+                                        </TabControl.ItemTemplate>
+                                        <TabControl.ContentTemplate>
+                                            <DataTemplate DataType="vm:PartialViewModel">
+                                                <local:ParameterCollection Parameters="{Binding PCMSynthTonePartialParameters}"
+                                                    SearchText="{Binding SearchTextPCMSynthTonePartial, Mode=TwoWay}" />
+                                            </DataTemplate>
+                                        </TabControl.ContentTemplate>
+                                    </TabControl>
                                 </TabItem>
                             </TabControl>
                         </StackPanel>

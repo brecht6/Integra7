@@ -539,13 +539,13 @@ public partial class PartViewModel : ViewModelBase
     public bool IsCommonTab => _commonTab;
     public bool IsPartTab => !_commonTab;
 
-    public void ForceUiRefresh(string StartAddressName, string OffsetAddressName, string ParPath, bool ResyncNeeded)
+    public void ForceUiRefresh(string StartAddressName, string OffsetAddressName, string Offset2AddressName, string ParPath, bool ResyncNeeded)
     {
         if (!ResyncNeeded)
         {
             if (IsCommonTab)
             {
-                if (OffsetAddressName == "Offset/Studio Set Common Chorus")
+                if (Offset2AddressName == "Offset2/Studio Set Common Chorus")
                 {
                     // force re-evaluation of the dynamic data filters after the parameters were read from integra-7
                     // this feels like a very ugly hack, but i currently do not know how to do it properly
@@ -554,7 +554,7 @@ public partial class PartViewModel : ViewModelBase
                     RefreshCommonChorusNeeded = "."; // RefreshCommonChorusNeeded must not have any .Throttle clauses
                     RefreshCommonChorusNeeded = SearchTextStudioSetCommonChorus;
                 }
-                else if (OffsetAddressName == "Offset/Studio Set Common Reverb")
+                else if (Offset2AddressName == "Offset2/Studio Set Common Reverb")
                 {
                     RefreshCommonReverbNeeded = ".";
                     RefreshCommonReverbNeeded = SearchTextStudioSetCommonReverb;
@@ -562,32 +562,32 @@ public partial class PartViewModel : ViewModelBase
             }
             else if (IsPartTab)
             {
-                if (OffsetAddressName == $"Offset/Studio Set Part {_part + 1}")
+                if (Offset2AddressName == $"Offset2/Studio Set Part {_part + 1}")
                 {
                     RefreshStudioSetPart = ".";
                     RefreshStudioSetPart = SearchTextStudioSetPart;
                 }
-                else if (OffsetAddressName == $"Offset/Studio Set Part EQ {_part + 1}")
+                else if (Offset2AddressName == $"Offset2/Studio Set Part EQ {_part + 1}")
                 {
                     RefreshStudioSetPart = ".";
                     RefreshStudioSetPart = SearchTextStudioSetPart;
                 }
-                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && OffsetAddressName == "Offset/PCM Synth Tone Common")
+                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && Offset2AddressName == "Offset2/PCM Synth Tone Common")
                 {
                     RefreshPCMSynthToneCommon = ".";
                     RefreshPCMSynthToneCommon = SearchTextPCMSynthToneCommon;
                 }
-                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && OffsetAddressName == "Offset/PCM Synth Tone Common 2")
+                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && Offset2AddressName == "Offset2/PCM Synth Tone Common 2")
                 {
                     RefreshPCMSynthToneCommon2 = ".";
                     RefreshPCMSynthToneCommon2 = SearchTextPCMSynthToneCommon2;
                 }
-                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && OffsetAddressName == "Offset/PCM Synth Tone Common MFX")
+                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && Offset2AddressName == "Offset2/PCM Synth Tone Common MFX")
                 {
                     RefreshPCMSynthToneCommonMFX = ".";
                     RefreshPCMSynthToneCommonMFX = SearchTextPCMSynthToneCommonMFX;
                 }
-                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && OffsetAddressName == "Offset/PCM Synth Tone Partial Mix Table")
+                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && Offset2AddressName == "Offset2/PCM Synth Tone Partial Mix Table")
                 {
                     RefreshPCMSynthTonePMT = ".";
                     RefreshPCMSynthTonePMT = SearchTextPCMSynthTonePMT;
@@ -595,7 +595,7 @@ public partial class PartViewModel : ViewModelBase
                 
                 if (IsPartTab && ParPath.Contains("Tone Bank Select") || ParPath.Contains("Tone Bank Program Number"))
                 {
-                    if (OffsetAddressName == $"Offset/Studio Set Part {_part + 1}")
+                    if (Offset2AddressName == $"Offset2/Studio Set Part {_part + 1}")
                     {
                         // using MessageBus instead of direct call because it is automatically throttled
                         MessageBus.Current.SendMessage(new UpdateResyncPart(_part));
@@ -607,7 +607,7 @@ public partial class PartViewModel : ViewModelBase
             {
                 foreach (PartialViewModel pvm in _partialViewModels)
                 {
-                    pvm.ForceUiRefresh(StartAddressName, OffsetAddressName, ParPath, ResyncNeeded);
+                    pvm.ForceUiRefresh(StartAddressName, OffsetAddressName, Offset2AddressName, ParPath, ResyncNeeded);
                 }
             }
         }
@@ -736,24 +736,24 @@ public partial class PartViewModel : ViewModelBase
 
         DomainBase midiPart = _i7domain?.StudioSetMidi(part);
         midiPart.ReadFromIntegra();
-        ForceUiRefresh(midiPart.StartAddressName, midiPart.OffsetAddressName, "", false /* don't cause inf loop */);
+        ForceUiRefresh(midiPart.StartAddressName, midiPart.OffsetAddressName, midiPart.Offset2AddressName, "", false /* don't cause inf loop */);
         DomainBase setPart = _i7domain?.StudioSetPart(part);
         setPart.ReadFromIntegra();
-        ForceUiRefresh(setPart.StartAddressName, setPart.OffsetAddressName, "", false /* don't cause inf loop */);
+        ForceUiRefresh(setPart.StartAddressName, setPart.OffsetAddressName, setPart.Offset2AddressName, "", false /* don't cause inf loop */);
         if (_selectedPreset.ToneTypeStr == "PCMS")
         {
             DomainBase setPCMSTone = _i7domain?.PCMSynthToneCommon(part);
             setPCMSTone.ReadFromIntegra();
-            ForceUiRefresh(setPCMSTone.StartAddressName, setPCMSTone.OffsetAddressName, "", false /* don't cause inf loop */);
+            ForceUiRefresh(setPCMSTone.StartAddressName, setPCMSTone.OffsetAddressName, setPCMSTone.Offset2AddressName, "", false /* don't cause inf loop */);
             DomainBase setPCMSTone2 = _i7domain?.PCMSynthToneCommon2(part);
             setPCMSTone2.ReadFromIntegra();
-            ForceUiRefresh(setPCMSTone2.StartAddressName, setPCMSTone2.OffsetAddressName, "", false /* don't cause inf loop */);
+            ForceUiRefresh(setPCMSTone2.StartAddressName, setPCMSTone2.OffsetAddressName, setPCMSTone2.Offset2AddressName, "", false /* don't cause inf loop */);
             DomainBase setPCMSToneMFX = _i7domain?.PCMSynthToneCommonMFX(part);
             setPCMSToneMFX.ReadFromIntegra();
-            ForceUiRefresh(setPCMSToneMFX.StartAddressName, setPCMSToneMFX.OffsetAddressName, "", false /* don't cause inf loop */);
+            ForceUiRefresh(setPCMSToneMFX.StartAddressName, setPCMSToneMFX.OffsetAddressName, setPCMSToneMFX.Offset2AddressName, "", false /* don't cause inf loop */);
             DomainBase setPCMSTonePMT = _i7domain?.PCMSynthTonePMT(part);
             setPCMSTonePMT.ReadFromIntegra();
-            ForceUiRefresh(setPCMSTonePMT.StartAddressName, setPCMSTonePMT.OffsetAddressName, "", false /* don't cause inf loop */);
+            ForceUiRefresh(setPCMSTonePMT.StartAddressName, setPCMSTonePMT.OffsetAddressName, setPCMSTonePMT.Offset2AddressName, "", false /* don't cause inf loop */);
             foreach (PartialViewModel p in _partialViewModels)
             {
                 p.ResyncPart(part);

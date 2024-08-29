@@ -12,13 +12,21 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
     public string Start => _start;
     private readonly string _offset;
     public string Offset => _offset;
+    private readonly string _offset2;
+    public string Offset2 => _offset2;
     private readonly Integra7ParameterSpec _parspec;
     public Integra7ParameterSpec ParSpec => _parspec;
 
     private bool _numeric;
     public bool IsNumeric => _numeric;
     private long _rawNumericValue;
-    public long RawNumericValue { get => _rawNumericValue; set => _rawNumericValue = value; }
+
+    public long RawNumericValue
+    {
+        get => _rawNumericValue;
+        set => _rawNumericValue = value;
+    }
+
     private string _stringValue = "";
 
     public string StringValue
@@ -35,18 +43,21 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public FullyQualifiedParameter(string start, string offset, Integra7ParameterSpec parspec)
+    public FullyQualifiedParameter(string start, string offset, string offset2, Integra7ParameterSpec parspec)
     {
         _start = start;
         _offset = offset;
+        _offset2 = offset2;
         _parspec = parspec;
         _numeric = parspec.Type == Integra7ParameterSpec.SpecType.NUMERIC;
     }
 
-    public FullyQualifiedParameter(string start, string offset, Integra7ParameterSpec parspec, long rawNumericValue, string stringValue)
+    public FullyQualifiedParameter(string start, string offset, string offset2, Integra7ParameterSpec parspec,
+        long rawNumericValue, string stringValue)
     {
         _start = start;
         _offset = offset;
+        _offset2 = offset2;
         _parspec = parspec;
         _numeric = parspec.Type == Integra7ParameterSpec.SpecType.NUMERIC;
         _rawNumericValue = rawNumericValue;
@@ -72,7 +83,8 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
                             return value2 == ParSpec.ParentCtrlDispValue2;
                         }
 
-                        Debug.Assert(false, $"Cannot parse {ParSpec.Path} without context {ParSpec.ParentCtrl2}. Did you forget to set isparent==true in {ParSpec.ParentCtrl}?");
+                        Debug.Assert(false,
+                            $"Cannot parse {ParSpec.Path} without context {ParSpec.ParentCtrl2}. Did you forget to set isparent==true in {ParSpec.ParentCtrl}?");
                         return false;
                     }
 
@@ -93,33 +105,39 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
     {
         byte[] startAddr = startAddresses.Lookup(_start).Address;
         byte[] offsetAddr = startAddresses.Lookup(_offset).Address;
+        byte[] offset2Addr = startAddresses.Lookup(_offset2).Address;
         byte[] parameterAddr = _parspec.Address;
-        byte[] totalAddr = ByteUtils.AddressWithOffset(startAddr, offsetAddr, parameterAddr);
+        byte[] totalAddr = ByteUtils.AddressWithOffset(startAddr, offsetAddr, offset2Addr, parameterAddr);
         return totalAddr;
     }
 
-    public void RetrieveFromIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
+    public void RetrieveFromIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses,
+        Integra7Parameters parameters)
     {
         byte[] totalAddr = CompleteAddress(startAddresses, parameters);
         byte[] reply = integra7Api.MakeDataRequest(totalAddr, _parspec.Bytes);
         ParseFromSysexReply(reply, parameters);
     }
 
-    public void WriteToIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
+    public void WriteToIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses,
+        Integra7Parameters parameters)
     {
         byte[] totalAddr = CompleteAddress(startAddresses, parameters);
         byte[] data = GetSysexDataFragment();
         integra7Api.MakeDataTransmission(totalAddr, data);
     }
 
-    public void ParseFromSysexReply(byte[] reply, Integra7Parameters parameters, Integra7ParameterSpec? firstParameterInSysexReply = null)
+    public void ParseFromSysexReply(byte[] reply, Integra7Parameters parameters,
+        Integra7ParameterSpec? firstParameterInSysexReply = null)
     {
         if (firstParameterInSysexReply == null)
         {
             firstParameterInSysexReply = _parspec;
         }
+
         const int SYSEX_DATA_REPLY_HEADER_LENGTH = 11;
-        List<Integra7ParameterSpec> parametersInSysexReply = parameters.GetParametersFromTo(firstParameterInSysexReply.Path, _parspec.Path);
+        List<Integra7ParameterSpec> parametersInSysexReply =
+            parameters.GetParametersFromTo(firstParameterInSysexReply.Path, _parspec.Path);
         int dataToSkip = SYSEX_DATA_REPLY_HEADER_LENGTH;
         int gap = ParameterListSysexSizeCalculator.CalculateSysexGapBetweenFirstAndLast(parametersInSysexReply);
         dataToSkip += gap;
@@ -130,7 +148,8 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
         }
         else
         {
-            Debug.WriteLine($"Sysex msg out of data while trying to parse {_parspec.Path} from sysex reply. Are we looking at the wrong reply?");
+            Debug.WriteLine(
+                $"Sysex msg out of data while trying to parse {_parspec.Path} from sysex reply. Are we looking at the wrong reply?");
         }
     }
 
@@ -161,8 +180,8 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
                 {
                     Debug.Assert(false);
                 }
-
             }
+
             return sysex;
         }
 
@@ -170,6 +189,7 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
         {
             _stringValue = _stringValue[.._parspec.Bytes]; // clip to max length
         }
+
         return ByteUtils.PadString(Encoding.ASCII.GetBytes(_stringValue), _parspec.Bytes);
     }
 

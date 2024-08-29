@@ -6,7 +6,11 @@ namespace Integra7AuralAlchemist.Models.Domain;
 public class DomainStudioSetPartEQ : DomainBase
 {
     public DomainStudioSetPartEQ(int ZeroBasedPartNo, IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
-    : base(integra7Api, startAddresses, parameters, "Temporary Studio Set", $"Offset/Studio Set Part EQ {ZeroBasedPartNo + 1}", "Studio Set Part EQ/")
+    : base(integra7Api, startAddresses, parameters, 
+        startAddressName:"Temporary Studio Set", 
+        offsetAddressName:"Offset/Not Used", 
+        offset2AddressName: $"Offset2/Studio Set Part EQ {ZeroBasedPartNo + 1}", 
+        parameterNamePrefix: "Studio Set Part EQ/")
     {
     }
 }

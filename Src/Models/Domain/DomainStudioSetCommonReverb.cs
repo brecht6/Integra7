@@ -6,7 +6,11 @@ namespace Integra7AuralAlchemist.Models.Domain;
 public class DomainStudioSetCommonReverb : DomainBase
 {
     public DomainStudioSetCommonReverb(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
-    : base(integra7Api, startAddresses, parameters, "Temporary Studio Set", "Offset/Studio Set Common Reverb", "Studio Set Common Reverb/")
+    : base(integra7Api, startAddresses, parameters, 
+        startAddressName:"Temporary Studio Set", 
+        offsetAddressName:"Offset/Not Used", 
+        offset2AddressName: "Offset2/Studio Set Common Reverb", 
+        parameterNamePrefix: "Studio Set Common Reverb/")
     {
     }
 }

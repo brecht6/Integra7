@@ -6,7 +6,11 @@ namespace Integra7AuralAlchemist.Models.Domain;
 public class DomainPCMSynthTonePMT : DomainBase
 {
     public DomainPCMSynthTonePMT(int zeroBasedPart, IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
-    : base(integra7Api, startAddresses, parameters, $"Temporary Tone Part {zeroBasedPart + 1}", "Offset/PCM Synth Tone Partial Mix Table", "PCM Synth Tone Partial Mix Table/")
+    : base(integra7Api, startAddresses, parameters, 
+        startAddressName:$"Temporary Tone Part {zeroBasedPart + 1}", 
+        offsetAddressName:"Offset/Temporary PCM Synth Tone",
+        offset2AddressName: "Offset2/PCM Synth Tone Partial Mix Table", 
+        parameterNamePrefix:"PCM Synth Tone Partial Mix Table/")
     {
     }
 }

@@ -15,21 +15,26 @@ public class DomainBase
     public string StartAddressName => _startAddressName;
     private readonly string _offsetAddressName;
     public string OffsetAddressName => _offsetAddressName;
+    private readonly string _offset2AddressName;
+    public string Offset2AddressName => _offset2AddressName;
 
     private readonly List<FullyQualifiedParameter> _domainParameters = [];
 
-    public DomainBase(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters, string startAddressName, string offsetAddressName, string parameterNamePrefix)
+    public DomainBase(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters, 
+        string startAddressName, string offsetAddressName, string offset2AddressName, string parameterNamePrefix)
     {
         _integra7Api = integra7Api;
         _startAddresses = startAddresses;
         _parameters = parameters;
         _startAddressName = startAddressName;
         _offsetAddressName = offsetAddressName;
+        _offset2AddressName = offset2AddressName;
+        
 
         List<Integra7ParameterSpec> relevant = parameters.GetParametersWithPrefix(parameterNamePrefix);
         for (int i = 0; i < relevant.Count; i++)
         {
-            _domainParameters.Add(new FullyQualifiedParameter(startAddressName, offsetAddressName, relevant[i]));
+            _domainParameters.Add(new FullyQualifiedParameter(startAddressName, offsetAddressName, offset2AddressName, relevant[i]));
         }
     }
 
@@ -37,6 +42,7 @@ public class DomainBase
     {
         FullyQualifiedParameterRange r = new FullyQualifiedParameterRange(_domainParameters[0].Start,
                                                                           _domainParameters[0].Offset,
+                                                                          _domainParameters[0].Offset2,
                                                                           _domainParameters[0].ParSpec,
                                                                           _domainParameters.Last().ParSpec);
         r.RetrieveFromIntegra(_integra7Api, _startAddresses, _parameters);
@@ -50,6 +56,7 @@ public class DomainBase
     {
         FullyQualifiedParameterRange r = new FullyQualifiedParameterRange(_domainParameters[0].Start,
                                                                           _domainParameters[0].Offset,
+                                                                          _domainParameters[0].Offset2,
                                                                           _domainParameters[0].ParSpec,
                                                                           _domainParameters.Last().ParSpec);
         r.Initialize(_domainParameters);

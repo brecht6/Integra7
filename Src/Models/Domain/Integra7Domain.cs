@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using Integra7AuralAlchemist.Models.Data;
@@ -12,60 +13,93 @@ public class Integra7Domain
     private Integra7StartAddresses _integra7StartAddresses;
     private Integra7Parameters _integra7Parameters;
     private IIntegra7Api _integra7Api;
-    private Dictionary<Tuple<string, string>, DomainBase> _parameterMapper; // (start addr name, offset addr name) -> DomainBase
-    private Dictionary<long, List<FullyQualifiedParameter>> _sysexAddressMapper; // (long)address -> (DomainBase, parameter name)
 
-    public DomainBase Setup => _parameterMapper[new Tuple<string, string>("Setup", "Offset/Setup Sound Mode")];
+    private Dictionary<Tuple<string, string, string>, DomainBase>
+        _parameterMapper; // (start addr name, offset addr name, offset2 addr name) -> DomainBase
 
-    public DomainBase StudioSetCommon => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common")];
+    private Dictionary<long, List<FullyQualifiedParameter>>
+        _sysexAddressMapper; // (long)address -> (DomainBase, parameter name)
 
-    public DomainBase StudioSetCommonChorus => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common Chorus")];
+    public DomainBase Setup => _parameterMapper[new Tuple<string, string, string>(
+        "Setup", "Offset/Not Used", "Offset2/Setup Sound Mode")];
 
-    public DomainBase StudioSetCommonReverb => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common Reverb")];
+    public DomainBase StudioSetCommon => _parameterMapper[new Tuple<string, string, string>(
+        "Temporary Studio Set", "Offset/Not Used", "Offset2/Studio Set Common")];
 
-    public DomainBase StudioSetCommonMotionalSurround => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Common Motional Surround")];
+    public DomainBase StudioSetCommonChorus => _parameterMapper[new Tuple<string, string, string>(
+        "Temporary Studio Set", "Offset/Not Used", "Offset2/Studio Set Common Chorus")];
 
-    public DomainBase StudioSetCommonMasterEQ => _parameterMapper[new Tuple<string, string>("Temporary Studio Set", "Offset/Studio Set Master EQ")];
+    public DomainBase StudioSetCommonReverb => _parameterMapper[new Tuple<string, string, string>(
+        "Temporary Studio Set", "Offset/Not Used", "Offset2/Studio Set Common Reverb")];
+
+    public DomainBase StudioSetCommonMotionalSurround => _parameterMapper[new Tuple<string, string, string>(
+        "Temporary Studio Set", "Offset/Not Used", "Offset2/Studio Set Common Motional Surround")];
+
+    public DomainBase StudioSetCommonMasterEQ => _parameterMapper[new Tuple<string, string, string>(
+        "Temporary Studio Set", "Offset/Not Used", "Offset2/Studio Set Master EQ")];
 
     public DomainBase StudioSetMidi(int zeroBasedPartNo)
     {
-        return _parameterMapper[new Tuple<string, string>("Temporary Studio Set", $"Offset/Studio Set MIDI Channel {zeroBasedPartNo + 1}")];
+        return _parameterMapper[new Tuple<string, string, string>(
+            "Temporary Studio Set", "Offset/Not Used", $"Offset2/Studio Set MIDI Channel {zeroBasedPartNo + 1}")];
     }
+
     public DomainBase StudioSetPart(int zeroBasedPartNo)
     {
-        return _parameterMapper[new Tuple<string, string>("Temporary Studio Set", $"Offset/Studio Set Part {zeroBasedPartNo + 1}")];
+        return _parameterMapper[new Tuple<string, string, string>(
+            "Temporary Studio Set", "Offset/Not Used", $"Offset2/Studio Set Part {zeroBasedPartNo + 1}")];
     }
+
     public DomainBase StudioSetPartEQ(int zeroBasedPartNo)
     {
-        return _parameterMapper[new Tuple<string, string>("Temporary Studio Set", $"Offset/Studio Set Part EQ {zeroBasedPartNo + 1}")];
+        return _parameterMapper[new Tuple<string, string, string>(
+            "Temporary Studio Set", "Offset/Not Used", $"Offset2/Studio Set Part EQ {zeroBasedPartNo + 1}")];
     }
+
     public DomainBase PCMSynthToneCommon(int zeroBasedPartNo)
     {
-        return _parameterMapper[new Tuple<string, string>($"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/PCM Synth Tone Common")];
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Synth Tone",
+            "Offset2/PCM Synth Tone Common")];
     }
+
     public DomainBase PCMSynthToneCommon2(int zeroBasedPartNo)
     {
-        return _parameterMapper[new Tuple<string, string>($"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/PCM Synth Tone Common 2")];
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Synth Tone",
+            "Offset2/PCM Synth Tone Common 2")];
     }
+
     public DomainBase PCMSynthToneCommonMFX(int zeroBasedPartNo)
     {
-        return _parameterMapper[new Tuple<string, string>($"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/PCM Synth Tone Common MFX")];
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Synth Tone",
+            "Offset2/PCM Synth Tone Common MFX")];
     }
+
     public DomainBase PCMSynthTonePMT(int zeroBasedPartNo)
     {
-        return _parameterMapper[new Tuple<string, string>($"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/PCM Synth Tone Partial Mix Table")];
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Synth Tone",
+            "Offset2/PCM Synth Tone Partial Mix Table")];
     }
+
     public DomainBase PCMSynthTonePartial(int zeroBasedPartNo, int zeroBasedPartial)
     {
-        return _parameterMapper[new Tuple<string, string>($"Temporary Tone Part {zeroBasedPartNo + 1}", $"Offset/PCM Synth Tone Partial {zeroBasedPartial + 1}")];
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Synth Tone",
+            $"Offset2/PCM Synth Tone Partial {zeroBasedPartial + 1}")];
     }
-    public DomainBase System => _parameterMapper[new Tuple<string, string>("System", "Offset/System Common")];
+
+    public DomainBase System => _parameterMapper[new Tuple<string, string, string>(
+        "System", "Offset/Not Used", "Offset2/System Common")];
 
     private const int NO_OF_PARTS = 16;
     private const int NO_OF_PARTIALS = 4;
 
 
-    public Integra7Domain(IIntegra7Api integra7Api, Integra7StartAddresses i7startAddresses, Integra7Parameters i7parameters)
+    public Integra7Domain(IIntegra7Api integra7Api, Integra7StartAddresses i7startAddresses,
+        Integra7Parameters i7parameters)
     {
         _integra7StartAddresses = i7startAddresses;
         _integra7Parameters = i7parameters;
@@ -74,58 +108,89 @@ public class Integra7Domain
         _parameterMapper = [];
 
         DomainBase setup = new DomainSetup(integra7Api, i7startAddresses, i7parameters);
-        _parameterMapper[new Tuple<string, string>(setup.StartAddressName, setup.OffsetAddressName)] = setup;
+        _parameterMapper[
+            new Tuple<string, string, string>(setup.StartAddressName, setup.OffsetAddressName,
+                setup.Offset2AddressName)] = setup;
 
         DomainBase sys = new DomainSystem(integra7Api, i7startAddresses, i7parameters);
-        _parameterMapper[new Tuple<string, string>(sys.StartAddressName, sys.OffsetAddressName)] = sys;
+        _parameterMapper[
+                new Tuple<string, string, string>(sys.StartAddressName, sys.OffsetAddressName,
+                    sys.Offset2AddressName)] = sys;
 
         DomainBase setcommon = new DomainStudioSetCommon(integra7Api, i7startAddresses, i7parameters);
-        _parameterMapper[new Tuple<string, string>(setcommon.StartAddressName, setcommon.OffsetAddressName)] = setcommon;
+        _parameterMapper[
+                new Tuple<string, string, string>(setcommon.StartAddressName, setcommon.OffsetAddressName,
+                    setcommon.Offset2AddressName)] = setcommon;
 
         DomainBase setchorus = new DomainStudioSetCommonChorus(integra7Api, i7startAddresses, i7parameters);
-        _parameterMapper[new Tuple<string, string>(setchorus.StartAddressName, setchorus.OffsetAddressName)] = setchorus;
+        _parameterMapper[
+                new Tuple<string, string, string>(setchorus.StartAddressName, setchorus.OffsetAddressName,
+                    setchorus.Offset2AddressName)] = setchorus;
 
         DomainBase setreverb = new DomainStudioSetCommonReverb(integra7Api, i7startAddresses, i7parameters);
-        _parameterMapper[new Tuple<string, string>(setreverb.StartAddressName, setreverb.OffsetAddressName)] = setreverb;
+        _parameterMapper[
+                new Tuple<string, string, string>(setreverb.StartAddressName, setreverb.OffsetAddressName,
+                    setreverb.Offset2AddressName)] = setreverb;
 
         DomainBase setsurround = new DomainStudioSetCommonMotionalSurround(integra7Api, i7startAddresses, i7parameters);
-        _parameterMapper[new Tuple<string, string>(setsurround.StartAddressName, setsurround.OffsetAddressName)] = setsurround;
+        _parameterMapper[
+                new Tuple<string, string, string>(setsurround.StartAddressName, setsurround.OffsetAddressName,
+                    setsurround.Offset2AddressName)] = setsurround;
 
         DomainBase setmastereq = new DomainStudioSetMasterEQ(integra7Api, i7startAddresses, i7parameters);
-        _parameterMapper[new Tuple<string, string>(setmastereq.StartAddressName, setmastereq.OffsetAddressName)] = setmastereq;
+        _parameterMapper[
+                new Tuple<string, string, string>(setmastereq.StartAddressName, setmastereq.OffsetAddressName,
+                    setmastereq.Offset2AddressName)] = setmastereq;
 
         for (int i = 0; i < NO_OF_PARTS; i++)
         {
             DomainBase setmidi = new DomainStudioSetMIDI(i, integra7Api, i7startAddresses, i7parameters);
-            _parameterMapper[new Tuple<string, string>(setmidi.StartAddressName, setmidi.OffsetAddressName)] = setmidi;
+            _parameterMapper[
+                new Tuple<string, string, string>(setmidi.StartAddressName, setmidi.OffsetAddressName,
+                    setmidi.Offset2AddressName)] = setmidi;
 
             DomainBase setpart = new DomainStudioSetPart(i, integra7Api, i7startAddresses, i7parameters);
-            _parameterMapper[new Tuple<string, string>(setpart.StartAddressName, setpart.OffsetAddressName)] = setpart;
+            _parameterMapper[
+                new Tuple<string, string, string>(setpart.StartAddressName, setpart.OffsetAddressName,
+                    setpart.Offset2AddressName)] = setpart;
 
             DomainBase setparteq = new DomainStudioSetPartEQ(i, integra7Api, i7startAddresses, i7parameters);
-            _parameterMapper[new Tuple<string, string>(setparteq.StartAddressName, setparteq.OffsetAddressName)] = setparteq;
+            _parameterMapper[
+                    new Tuple<string, string, string>(setparteq.StartAddressName, setparteq.OffsetAddressName,
+                        setparteq.Offset2AddressName)] = setparteq;
 
             DomainBase pcmsynthtone = new DomainPCMSynthToneCommon(i, integra7Api, i7startAddresses, i7parameters);
-            _parameterMapper[new Tuple<string, string>(pcmsynthtone.StartAddressName, pcmsynthtone.OffsetAddressName)] = pcmsynthtone;
+            _parameterMapper[
+                    new Tuple<string, string, string>(pcmsynthtone.StartAddressName, pcmsynthtone.OffsetAddressName,
+                        pcmsynthtone.Offset2AddressName)] = pcmsynthtone;
 
             DomainBase pcmsynthtone2 = new DomainPCMSynthToneCommon2(i, integra7Api, i7startAddresses, i7parameters);
-            _parameterMapper[new Tuple<string, string>(pcmsynthtone2.StartAddressName, pcmsynthtone2.OffsetAddressName)] = pcmsynthtone2;
+            _parameterMapper
+                    [new Tuple<string, string, string>(pcmsynthtone2.StartAddressName, pcmsynthtone2.OffsetAddressName, pcmsynthtone2.Offset2AddressName)] =
+                pcmsynthtone2;
 
-            DomainBase pcmsynthtonemfx = new DomainPCMSynthToneCommonMFX(i, integra7Api, i7startAddresses, i7parameters);
-            _parameterMapper[new Tuple<string, string>(pcmsynthtonemfx.StartAddressName, pcmsynthtonemfx.OffsetAddressName)] = pcmsynthtonemfx;
+            DomainBase pcmsynthtonemfx =
+                new DomainPCMSynthToneCommonMFX(i, integra7Api, i7startAddresses, i7parameters);
+            _parameterMapper[
+                    new Tuple<string, string, string>(pcmsynthtonemfx.StartAddressName,
+                        pcmsynthtonemfx.OffsetAddressName, pcmsynthtonemfx.Offset2AddressName)] = pcmsynthtonemfx;
 
             DomainBase pcmsynthtonepmt = new DomainPCMSynthTonePMT(i, integra7Api, i7startAddresses, i7parameters);
-            _parameterMapper[new Tuple<string, string>(pcmsynthtonepmt.StartAddressName, pcmsynthtonepmt.OffsetAddressName)] = pcmsynthtonepmt;
+            _parameterMapper[
+                    new Tuple<string, string, string>(pcmsynthtonepmt.StartAddressName,
+                        pcmsynthtonepmt.OffsetAddressName, pcmsynthtonepmt.Offset2AddressName)] = pcmsynthtonepmt;
 
             for (int j = 0; j < 4; j++)
             {
                 DomainBase part = new DomainPCMSynthTonePartial(i, j, integra7Api, i7startAddresses, i7parameters);
-                _parameterMapper[new Tuple<string, string>(part.StartAddressName, part.OffsetAddressName)] = part;
+                _parameterMapper[
+                    new Tuple<string, string, string>(part.StartAddressName, part.OffsetAddressName,
+                        part.Offset2AddressName)] = part;
             }
         }
 
         _sysexAddressMapper = [];
-        foreach (KeyValuePair<Tuple<string, string>, DomainBase> entry in _parameterMapper)
+        foreach (KeyValuePair<Tuple<string, string, string>, DomainBase> entry in _parameterMapper)
         {
             DomainBase b = entry.Value;
             List<FullyQualifiedParameter> ps = b.GetRelevantParameters(true, true);
@@ -157,36 +222,39 @@ public class Integra7Domain
                 }
             }
         }
+
         return null;
     }
 
     public void WriteSingleParameterToIntegra(FullyQualifiedParameter p)
     {
-        Tuple<string, string> key = new(p.Start, p.Offset);
+        Tuple<string, string, string> key = new(p.Start, p.Offset, p.Offset2);
         if (!_parameterMapper.ContainsKey(key))
         {
-            Debug.WriteLine($"Error. Integra7 doesn't know parameters with start address {p.Start} and offset address {p.Offset}. Please extend or fix.");
+            Debug.WriteLine(
+                $"Error. Integra7 doesn't know parameters with start address {p.Start} and offset address {p.Offset}. Please extend or fix.");
             return;
         }
+
         DomainBase b = _parameterMapper[key];
         b.WriteToIntegra(p.ParSpec.Path, p.StringValue);
     }
 
     public DomainBase GetDomain(FullyQualifiedParameter p)
     {
-        return GetDomain(p.Start, p.Offset);
+        return GetDomain(p.Start, p.Offset, p.Offset2);
     }
 
-    public DomainBase GetDomain(string StartAddressName, string OffsetAddressName)
+    public DomainBase GetDomain(string StartAddressName, string OffsetAddressName, string Offset2AddressName)
     {
-        Tuple<string, string> key = new(StartAddressName, OffsetAddressName);
+        Tuple<string, string, string> key = new(StartAddressName, OffsetAddressName, Offset2AddressName);
         if (!_parameterMapper.ContainsKey(key))
         {
-            Debug.WriteLine($"Error. Integra7 doesn't know parameters with start address {StartAddressName} and offset address {OffsetAddressName}. Please extend or fix.");
+            Debug.WriteLine(
+                $"Error. Integra7 doesn't know parameters with start address {StartAddressName}, offset address {OffsetAddressName} and offset2 address {Offset2AddressName}. Please extend or fix.");
             return _parameterMapper.First().Value;
         }
+
         return _parameterMapper[key];
     }
-
-
 }

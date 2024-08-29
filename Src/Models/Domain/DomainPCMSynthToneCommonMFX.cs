@@ -6,7 +6,11 @@ namespace Integra7AuralAlchemist.Models.Domain;
 public class DomainPCMSynthToneCommonMFX : DomainBase
 {
     public DomainPCMSynthToneCommonMFX(int zeroBasedPart, IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
-    : base(integra7Api, startAddresses, parameters, $"Temporary Tone Part {zeroBasedPart + 1}", "Offset/PCM Synth Tone Common MFX", "PCM Synth Tone Common MFX/")
+    : base(integra7Api, startAddresses, parameters, 
+        startAddressName:$"Temporary Tone Part {zeroBasedPart + 1}", 
+        offsetAddressName:"Offset/Temporary PCM Synth Tone",
+        offset2AddressName:"Offset2/PCM Synth Tone Common MFX", 
+        parameterNamePrefix:"PCM Synth Tone Common MFX/")
     {
     }
 }

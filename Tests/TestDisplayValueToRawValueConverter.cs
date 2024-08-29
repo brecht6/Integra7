@@ -20,7 +20,7 @@ public class TestDisplayValueToRawValueConverter
     public void Test_NotNibbled_NotMapped_NoRepr()
     {
         Integra7ParameterSpec testspec = new(type: NUM, path: "System Common/Master Level", offs: [0x00, 0x05], imin: 0, imax: 127, omin: 0, omax: 127, bytes: 1, res: USED, nib: false, unit: "", repr: null);
-        FullyQualifiedParameter p = new("blah", "blob", testspec, 0, "0");
+        FullyQualifiedParameter p = new("blah", "blob", "foobar", testspec, 0, "0");
         DisplayValueToRawValueConverter.UpdateFromDisplayedValue("100", p);
         Assert.That(p.RawNumericValue, Is.EqualTo(100));
         Assert.That(p.StringValue, Is.EqualTo("100"));
@@ -35,7 +35,7 @@ public class TestDisplayValueToRawValueConverter
             [0x34] = "WHY?"
         };
         Integra7ParameterSpec testspec = new(type: NUM, path: "System Common/Master Level", offs: [0x00, 0x05], imin: 0, imax: 127, omin: 0, omax: 127, bytes: 1, res: USED, nib: false, unit: "", repr: LUT);
-        FullyQualifiedParameter p = new("blah", "blob", testspec, 0x64, "YIPPEE");
+        FullyQualifiedParameter p = new("blah", "blob", "foobar", testspec, 0x64, "YIPPEE");
         DisplayValueToRawValueConverter.UpdateFromDisplayedValue("WHY?", p);
         Assert.That(p.RawNumericValue, Is.EqualTo(0x34));
         Assert.That(p.StringValue, Is.EqualTo(LUT[0x34]));
@@ -45,7 +45,7 @@ public class TestDisplayValueToRawValueConverter
     public void Test_NotNibbled_WithMapped_NoRepr()
     {
         Integra7ParameterSpec testspec = new(type: NUM, path: "System Common/Master Level", offs: [0x00, 0x05], imin: 0, imax: 127, omin: -64, omax: 63, bytes: 1, res: USED, nib: false, unit: "", repr: null);
-        FullyQualifiedParameter p = new("blah", "blob", testspec, 0, "-64");
+        FullyQualifiedParameter p = new("blah", "blob", "foobar", testspec, 0, "-64");
         DisplayValueToRawValueConverter.UpdateFromDisplayedValue("0", p);
         Assert.That(p.RawNumericValue, Is.EqualTo(64));
         Assert.That(p.StringValue, Is.EqualTo("0"));
@@ -61,7 +61,7 @@ public class TestDisplayValueToRawValueConverter
             [63] = "MEH?"
         };
         Integra7ParameterSpec testspec = new(type: NUM, path: "System Common/Master Level", offs: [0x00, 0x05], imin: 0, imax: 127, omin: -64, omax: 63, bytes: 1, res: USED, nib: false, unit: "", repr: LUT);
-        FullyQualifiedParameter p = new("blah", "blob", testspec, 127, LUT[63]);
+        FullyQualifiedParameter p = new("blah", "blob","foobar", testspec, 127, LUT[63]);
         DisplayValueToRawValueConverter.UpdateFromDisplayedValue("YIPPEE", p);
         Assert.That(p.RawNumericValue, Is.EqualTo(64)); // raw value is unmapped value
         Assert.That(p.StringValue, Is.EqualTo(LUT[0]));

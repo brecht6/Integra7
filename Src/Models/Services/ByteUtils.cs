@@ -61,26 +61,26 @@ public class ByteUtils
                 LtlEnd_SecondByte7(value), LtlEnd_FirstByte7(value)];
     }
 
-    public static byte[] AddressWithOffset(byte[] StartAddress, byte[] Offset)
+    public static byte[] AddressWithOffset(byte[] startAddress, byte[] offset)
     {
-        Debug.Assert(StartAddress.Length >= Offset.Length);
-        long saddr = Bytes7ToInt(StartAddress);
-        long offs = Bytes7ToInt(Offset);
+        Debug.Assert(startAddress.Length >= offset.Length);
+        long saddr = Bytes7ToInt(startAddress);
+        long offs = Bytes7ToInt(offset);
         long sum = saddr + offs;
         byte[] tempresult = IntToBytes7_4(sum);
-        int toremove = tempresult.Length - StartAddress.Length;
+        int toremove = tempresult.Length - startAddress.Length;
         if (toremove == 0)
         {
             return tempresult;
         }
-        byte[] result = new byte[StartAddress.Length];
+        byte[] result = new byte[startAddress.Length];
         Array.Copy(tempresult, toremove, result, 0, result.Length);
         return result;
     }
 
-    public static byte[] AddressWithOffset(byte[] StartAddress, byte[] Offset, byte[] ParameterAddress)
+    public static byte[] AddressWithOffset(byte[] startAddress, byte[] offset, byte [] offset2, byte[] parameterAddress)
     {
-        return AddressWithOffset(AddressWithOffset(StartAddress, Offset), ParameterAddress);
+        return AddressWithOffset(AddressWithOffset(AddressWithOffset(startAddress, offset), offset2), parameterAddress);
     }
 
     public static long Bytes7ToInt(byte[] data)

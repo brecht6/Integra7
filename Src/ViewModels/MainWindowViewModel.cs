@@ -178,14 +178,14 @@ public partial class MainWindowViewModel : ViewModelBase
     }
     private void ForceUiRefresh(FullyQualifiedParameter p)
     {
-        ForceUiRefresh(p.Start, p.Offset, p.ParSpec.Path, p.ParSpec.IsParent);
+        ForceUiRefresh(p.Start, p.Offset, p.Offset2, p.ParSpec.Path, p.ParSpec.IsParent);
     }
 
-    private void ForceUiRefresh(string StartAddressName, string OffsetAddressName, string ParPath, bool ResyncNeeded)
+    private void ForceUiRefresh(string StartAddressName, string OffsetAddressName, string Offset2AddressName, string ParPath, bool ResyncNeeded)
     {
         foreach (PartViewModel pvm in _partViewModels)
         {
-            pvm.ForceUiRefresh(StartAddressName, OffsetAddressName, ParPath, ResyncNeeded);
+            pvm.ForceUiRefresh(StartAddressName, OffsetAddressName, Offset2AddressName, ParPath, ResyncNeeded);
         }
     }
 

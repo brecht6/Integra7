@@ -22,21 +22,26 @@ public partial class PartialViewModel : ViewModelBase
     private IIntegra7Api _i7api;
     private Integra7Domain _i7domain;
     private string _toneTypeStr;
+
     public Integra7Domain I7Domain
     {
-        set => _i7domain = value; 
+        set => _i7domain = value;
     }
 
-    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCachePCMSynthTonePartialParameters = new(x => x.ParSpec.Path);
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCachePCMSynthTonePartialParameters =
+        new(x => x.ParSpec.Path);
+
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _PCMSynthTonePartialParameters = new([]);
-    public ReadOnlyObservableCollection<FullyQualifiedParameter> PCMSynthTonePartialParameters => _PCMSynthTonePartialParameters;
+
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> PCMSynthTonePartialParameters =>
+        _PCMSynthTonePartialParameters;
 
     [Reactive] private string _searchTextPCMSynthTonePartial = "";
     [Reactive] private string _refreshPCMSynthTonePartial = "";
-    
+
     IDisposable? _cleanupPCMSynthTonePartialParameters;
-    
-    public PartialViewModel(PartViewModel parent, byte zeroBasedPart, byte zeroBasedPartial, 
+
+    public PartialViewModel(PartViewModel parent, byte zeroBasedPart, byte zeroBasedPartial,
         string toneTypeStr, Integra7StartAddresses i7addr,
         Integra7Parameters par, IIntegra7Api i7api, Integra7Domain i7dom)
     {
@@ -50,9 +55,9 @@ public partial class PartialViewModel : ViewModelBase
         _toneTypeStr = toneTypeStr;
 
         const int THROTTLE = 250;
-        
+
         InitializeParameterSourceCaches();
-        
+
         var parFilterPCMSynthTonePartialParameters = this.WhenAnyValue(x => x.SearchTextPCMSynthTonePartial)
             .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
             .DistinctUntilChanged()
@@ -64,42 +69,53 @@ public partial class PartialViewModel : ViewModelBase
             .Filter(refreshFilterPCMSynthTonePartialParameters)
             .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
             .Filter(parFilterPCMSynthTonePartialParameters)
-            .FilterOnObservable(fullyQualifiedParameter => ((fullyQualifiedParameter.ParSpec.ParentCtrl != "") && (fullyQualifiedParameter.ParSpec.ParentCtrl is string parentId))
-                ? _sourceCachePCMSynthTonePartialParameters
-                    .Watch(parentId)
-                    .Select(parentChange => parentChange.Current.StringValue == fullyQualifiedParameter.ParSpec.ParentCtrlDispValue)
-                : Observable.Return(true))
-            .FilterOnObservable(fullyQualifiedParameter => ((fullyQualifiedParameter.ParSpec.ParentCtrl2 != "") && (fullyQualifiedParameter.ParSpec.ParentCtrl2 is string parentId2))
-                ? _sourceCachePCMSynthTonePartialParameters
-                    .Watch(parentId2)
-                    .Select(parentChange2 => parentChange2.Current.StringValue == fullyQualifiedParameter.ParSpec.ParentCtrlDispValue2)
-                : Observable.Return(true))
+            .FilterOnObservable(fullyQualifiedParameter =>
+                ((fullyQualifiedParameter.ParSpec.ParentCtrl != "") &&
+                 (fullyQualifiedParameter.ParSpec.ParentCtrl is string parentId))
+                    ? _sourceCachePCMSynthTonePartialParameters
+                        .Watch(parentId)
+                        .Select(parentChange => parentChange.Current.StringValue ==
+                                                fullyQualifiedParameter.ParSpec.ParentCtrlDispValue)
+                    : Observable.Return(true))
+            .FilterOnObservable(fullyQualifiedParameter =>
+                ((fullyQualifiedParameter.ParSpec.ParentCtrl2 != "") &&
+                 (fullyQualifiedParameter.ParSpec.ParentCtrl2 is string parentId2))
+                    ? _sourceCachePCMSynthTonePartialParameters
+                        .Watch(parentId2)
+                        .Select(parentChange2 => parentChange2.Current.StringValue ==
+                                                 fullyQualifiedParameter.ParSpec.ParentCtrlDispValue2)
+                    : Observable.Return(true))
             .ObserveOn(RxApp.MainThreadScheduler)
             .SortAndBind(
                 out _PCMSynthTonePartialParameters,
-                SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                SortExpressionComparer<FullyQualifiedParameter>.Ascending(t =>
+                    ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
             .DisposeMany()
             .Subscribe();
     }
 
-    public void ForceUiRefresh(string startAddressName, string offsetAddressName, string parPath, bool resyncNeeded)
+    public void ForceUiRefresh(string startAddressName, string offsetAddressName, string offset2AddressName,
+        string parPath, bool resyncNeeded)
     {
-        if (startAddressName == $"Temporary Tone Part {_zeroBasedPart + 1}" && offsetAddressName == $"Offset/PCM Synth Tone Partial {_zeroBasedPartial + 1}")
+        if (startAddressName == $"Temporary Tone Part {_zeroBasedPart + 1}" &&
+            offset2AddressName == $"Offset2/PCM Synth Tone Partial {_zeroBasedPartial + 1}")
         {
             RefreshPCMSynthTonePartial = ".";
             RefreshPCMSynthTonePartial = SearchTextPCMSynthTonePartial;
         }
     }
-    
-    public string Header => $"Partial {_zeroBasedPartial+1}";
+
+    public string Header => $"Partial {_zeroBasedPartial + 1}";
 
     public void InitializeParameterSourceCaches()
     {
         if (_toneTypeStr == "PCMS")
         {
-            _i7domain.PCMSynthTonePartial(_zeroBasedPart, _zeroBasedPartial).ReadFromIntegra();   
+            _i7domain.PCMSynthTonePartial(_zeroBasedPart, _zeroBasedPartial).ReadFromIntegra();
         }
-        List<FullyQualifiedParameter> par = _i7domain.PCMSynthTonePartial(_zeroBasedPart, _zeroBasedPartial).GetRelevantParameters(true, true);
+
+        List<FullyQualifiedParameter> par = _i7domain.PCMSynthTonePartial(_zeroBasedPart, _zeroBasedPartial)
+            .GetRelevantParameters(true, true);
         _sourceCachePCMSynthTonePartialParameters.AddOrUpdate(par);
     }
 
@@ -107,7 +123,7 @@ public partial class PartialViewModel : ViewModelBase
     {
         DomainBase b = _i7domain.PCMSynthTonePartial(_zeroBasedPart, _zeroBasedPartial);
         b.ReadFromIntegra();
-        ForceUiRefresh(b.StartAddressName, b.OffsetAddressName, "", false /* don't cause inf loop */);
+        ForceUiRefresh(b.StartAddressName, b.OffsetAddressName, b.Offset2AddressName, "",
+            false /* don't cause inf loop */);
     }
-
 }

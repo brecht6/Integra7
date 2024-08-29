@@ -48,6 +48,8 @@ public partial class PartialViewModel : ViewModelBase
 
         const int THROTTLE = 250;
         
+        InitializeParameterSourceCaches();
+        
         var parFilterPCMSynthTonePartialParameters = this.WhenAnyValue(x => x.SearchTextPCMSynthTonePartial)
             .Throttle(TimeSpan.FromMilliseconds(THROTTLE))
             .DistinctUntilChanged()
@@ -75,8 +77,6 @@ public partial class PartialViewModel : ViewModelBase
                 SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
             .DisposeMany()
             .Subscribe();
-        
-        InitializeParameterSourceCaches();
     }
 
     public void ForceUiRefresh(string startAddressName, string offsetAddressName, string parPath, bool resyncNeeded)

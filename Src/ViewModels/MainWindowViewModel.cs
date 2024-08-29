@@ -27,7 +27,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private bool _rescanButtonEnabled = true;
     private Integra7Domain? _integra7Communicator;
 
-    private readonly ReadOnlyObservableCollection<PartViewModel> _partViewModels;
+    private ReadOnlyObservableCollection<PartViewModel> _partViewModels;
     public ReadOnlyObservableCollection<PartViewModel> PartViewModels => _partViewModels;
     private const string INTEGRA_CONNECTION_STRING = "INTEGRA-7";
     private IIntegra7Api? Integra7 { get; set; }
@@ -61,23 +61,30 @@ public partial class MainWindowViewModel : ViewModelBase
     public void RescanMidiDevices()
     {
         Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING));
-        UpdateConnected(Integra7);
+        List<Integra7Preset> presets = LoadPresets();
+        UpdateConnected(Integra7, presets);
     }
-    private void UpdateConnected(IIntegra7Api integra7Api)
+    private void UpdateConnected(IIntegra7Api integra7Api, List<Integra7Preset> presets)
     {
         Connected = integra7Api.ConnectionOk();
         if (_connected)
         {
             MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING + " with device id " + integra7Api.DeviceId().ToString("x2");
             _integra7Communicator = new Integra7Domain(integra7Api, _i7startAddresses, _i7parameters);
-
-            if (_partViewModels is not null)
+            
+            ObservableCollection<PartViewModel> pvm = [];
+            for (byte i = 0; i < 17; i++)
             {
-                foreach (PartViewModel pvm in _partViewModels)
-                {
-                    pvm.I7Domain = _integra7Communicator;
-                    pvm.InitializeParameterSourceCaches();
-                }
+                bool commonTab = i == 0;
+                pvm.Add(new PartViewModel(this, commonTab ? (byte)255 : (byte)(i - 1),
+                    _i7startAddresses, _i7parameters, Integra7,
+                    _integra7Communicator, presets, commonTab));
+            }
+            _partViewModels = new ReadOnlyObservableCollection<PartViewModel>(pvm);
+
+            foreach (PartViewModel pa in _partViewModels)
+            {
+                pa.InitializeParameterSourceCaches();
             }
         }
         else
@@ -114,10 +121,7 @@ public partial class MainWindowViewModel : ViewModelBase
             int lsb = int.Parse(read[5]);
             int pc = int.Parse(read[6]);
             string category = read[7].Trim('"');
-            for (byte ch = 0; ch < 16; ch++)
-            {
-                Presets.Add(new Integra7Preset(id, tonetype, tonebank, number, name, msb, lsb, pc, category));
-            }
+            Presets.Add(new Integra7Preset(id, tonetype, tonebank, number, name, msb, lsb, pc, category));
             id++;
         }
         return Presets;
@@ -127,22 +131,8 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING));
         List<Integra7Preset> presets = LoadPresets();
-        UpdateConnected(Integra7);
-        ObservableCollection<PartViewModel> pvm = [];
-        for (byte i = 0; i < 17; i++)
-        {
-            bool commonTab = i == 0;
-            pvm.Add(new PartViewModel(this, commonTab ? (byte)255 : (byte)(i - 1),
-                                        _i7startAddresses, _i7parameters, Integra7,
-                                        _integra7Communicator, presets, commonTab));
-        }
-        _partViewModels = new ReadOnlyObservableCollection<PartViewModel>(pvm);
-
-        foreach (PartViewModel pa in _partViewModels)
-        {
-            pa.InitializeParameterSourceCaches();
-        }
-
+        UpdateConnected(Integra7, presets);
+        
         MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(THROTTLE)).Subscribe(m => UpdateIntegraFromUi(m));
         MessageBus.Current.Listen<UpdateFromSysexSpec>("hw2ui").Throttle(TimeSpan.FromMilliseconds(THROTTLE)).Subscribe(m => UpdateUiFromIntegra(m));
         MessageBus.Current.Listen<UpdateResyncPart>().Throttle(TimeSpan.FromMilliseconds(THROTTLE)).Subscribe(m => ResyncPart(m.PartNo));

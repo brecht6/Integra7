@@ -81,11 +81,6 @@ public partial class MainWindowViewModel : ViewModelBase
                     _integra7Communicator, presets, commonTab));
             }
             _partViewModels = new ReadOnlyObservableCollection<PartViewModel>(pvm);
-
-            foreach (PartViewModel pa in _partViewModels)
-            {
-                pa.InitializeParameterSourceCaches();
-            }
         }
         else
         {

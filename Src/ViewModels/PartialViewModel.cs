@@ -21,6 +21,7 @@ public partial class PartialViewModel : ViewModelBase
     private Integra7Parameters _i7par;
     private IIntegra7Api _i7api;
     private Integra7Domain _i7domain;
+    private string _toneTypeStr;
     public Integra7Domain I7Domain
     {
         set => _i7domain = value; 
@@ -35,7 +36,8 @@ public partial class PartialViewModel : ViewModelBase
     
     IDisposable? _cleanupPCMSynthTonePartialParameters;
     
-    public PartialViewModel(PartViewModel parent, byte zeroBasedPart, byte zeroBasedPartial, Integra7StartAddresses i7addr,
+    public PartialViewModel(PartViewModel parent, byte zeroBasedPart, byte zeroBasedPartial, 
+        string toneTypeStr, Integra7StartAddresses i7addr,
         Integra7Parameters par, IIntegra7Api i7api, Integra7Domain i7dom)
     {
         _parent = parent;
@@ -45,6 +47,7 @@ public partial class PartialViewModel : ViewModelBase
         _i7par = par;
         _i7api = i7api;
         _i7domain = i7dom;
+        _toneTypeStr = toneTypeStr;
 
         const int THROTTLE = 250;
         
@@ -92,7 +95,10 @@ public partial class PartialViewModel : ViewModelBase
 
     public void InitializeParameterSourceCaches()
     {
-        _i7domain.PCMSynthTonePartial(_zeroBasedPart, _zeroBasedPartial).ReadFromIntegra();
+        if (_toneTypeStr == "PCMS")
+        {
+            _i7domain.PCMSynthTonePartial(_zeroBasedPart, _zeroBasedPartial).ReadFromIntegra();   
+        }
         List<FullyQualifiedParameter> par = _i7domain.PCMSynthTonePartial(_zeroBasedPart, _zeroBasedPartial).GetRelevantParameters(true, true);
         _sourceCachePCMSynthTonePartialParameters.AddOrUpdate(par);
     }

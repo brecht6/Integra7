@@ -63,8 +63,8 @@ public partial class PartViewModel : ViewModelBase
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _PCMSynthTonePMTParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> PCMSynthTonePMTParameters => _PCMSynthTonePMTParameters;
     
-    private ReadOnlyObservableCollection<PartialViewModel> _partialViewModels;
-    public ReadOnlyObservableCollection<PartialViewModel> PartialViewModels => _partialViewModels;
+    private ReadOnlyObservableCollection<PartialViewModel>? _partialViewModels;
+    public ReadOnlyObservableCollection<PartialViewModel>? PartialViewModels => _partialViewModels;
     
     private byte _part;
 
@@ -603,9 +603,12 @@ public partial class PartViewModel : ViewModelBase
                 }
             }
 
-            foreach (PartialViewModel pvm in PartialViewModels)
+            if (_partialViewModels != null)
             {
-                pvm.ForceUiRefresh(StartAddressName, OffsetAddressName, ParPath, ResyncNeeded);
+                foreach (PartialViewModel pvm in _partialViewModels)
+                {
+                    pvm.ForceUiRefresh(StartAddressName, OffsetAddressName, ParPath, ResyncNeeded);
+                }
             }
         }
         else
@@ -641,20 +644,20 @@ public partial class PartViewModel : ViewModelBase
                 _i7domain.PCMSynthToneCommon2(_part).ReadFromIntegra();
                 _i7domain.PCMSynthToneCommonMFX(_part).ReadFromIntegra();
                 _i7domain.PCMSynthTonePMT(_part).ReadFromIntegra();
-                
-                ObservableCollection<PartialViewModel> pvm = [];
-                for (byte i = 0; i < 4; i++)
-                {
-                    pvm.Add(new PartialViewModel(this, _part, i,
-                        _i7startAddresses, _i7parameters, _i7Api,
-                        _i7domain));
-                }
-                _partialViewModels = new ReadOnlyObservableCollection<PartialViewModel>(pvm);
-                foreach (PartialViewModel p in _partialViewModels)
-                {
-                    p.InitializeParameterSourceCaches();
-                }
             }
+            ObservableCollection<PartialViewModel> pvm = [];
+            for (byte i = 0; i < 4; i++)
+            {
+                pvm.Add(new PartialViewModel(this, _part, i,
+                    _selectedPreset?.ToneTypeStr,
+                    _i7startAddresses, _i7parameters, _i7Api,
+                    _i7domain));
+            }
+            _partialViewModels = new ReadOnlyObservableCollection<PartialViewModel>(pvm);
+            foreach (PartialViewModel p in _partialViewModels)
+            {
+                p.InitializeParameterSourceCaches();
+            }            
             List<FullyQualifiedParameter> p_pcmstc = _i7domain.PCMSynthToneCommon(_part).GetRelevantParameters(true, true);
             _sourceCachePCMSynthToneCommonParameters.AddOrUpdate(p_pcmstc);
             List<FullyQualifiedParameter> p_pcmstc2 = _i7domain.PCMSynthToneCommon2(_part).GetRelevantParameters(true, true);

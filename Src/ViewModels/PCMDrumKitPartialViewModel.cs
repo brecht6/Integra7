@@ -14,7 +14,7 @@ namespace Integra7AuralAlchemist.ViewModels;
 
 public sealed partial class PCMDrumKitPartialViewModel : PartialViewModel
 {
-    private int _partialOffset = Constants.FIRST_PARTIAL_DRUM;
+    private int _partialOffset = Constants.FIRST_PARTIAL_PCM_DRUM;
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCachePCMDrumKitPartialParameters =
         new(x => x.ParSpec.Path);
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _PCMDrumKitPartialParameters = new([]);

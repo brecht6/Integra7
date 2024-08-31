@@ -102,22 +102,22 @@ public class Integra7Domain
     public DomainBase PCMDrumKitCommon2(int zeroBasedPartNo)
     {
         return _parameterMapper[new Tuple<string, string, string>(
-            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Synth Tone",
-            "Offset2/PCM Synth Tone Common 2")];
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Drum Kit",
+            "Offset2/PCM Drum Kit Common 2")];
     }
 
     public DomainBase PCMDrumKitCommonMFX(int zeroBasedPartNo)
     {
         return _parameterMapper[new Tuple<string, string, string>(
-            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Synth Tone",
-            "Offset2/PCM Synth Tone Common MFX")];
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Drum Kit",
+            "Offset2/PCM Drum Kit Common MFX")];
     }
 
     public DomainBase PCMDrumKitCompEQ(int zeroBasedPartNo)
     {
         return _parameterMapper[new Tuple<string, string, string>(
-            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Synth Tone",
-            "Offset2/PCM Synth Tone Partial Mix Table")];
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Drum Kit",
+            "Offset2/PCM Drum Kit Common Comp-EQ")];
     }
 
     public DomainBase PCMDrumKitPartial(int zeroBasedPartNo, int zeroBasedPartial)
@@ -256,7 +256,9 @@ public class Integra7Domain
             {
                 long CompleteAddress = ByteUtils.Bytes7ToInt(p.CompleteAddress(i7startAddresses, i7parameters));
                 if (_sysexAddressMapper.ContainsKey(CompleteAddress))
+                {
                     _sysexAddressMapper[CompleteAddress].Add(p);
+                }
                 else
                     _sysexAddressMapper[CompleteAddress] = [p];
             }

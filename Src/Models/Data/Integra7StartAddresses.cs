@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Integra7AuralAlchemist.Models.Services;
 
 namespace Integra7AuralAlchemist.Models.Data;
+
 public class Integra7StartAddresses
 {
     private IDictionary<string, Integra7StartAddressSpec> _startAddresses;
@@ -40,31 +41,31 @@ public class Integra7StartAddresses
             ["Temporary Tone Part 14"] = new(addr: [0x1C, 0x20, 0x00, 0x00]),
             ["Temporary Tone Part 15"] = new(addr: [0x1C, 0x40, 0x00, 0x00]),
             ["Temporary Tone Part 16"] = new(addr: [0x1C, 0x60, 0x00, 0x00]),
-            
+
             //
-            
+
             ["Offset/Not Used"] = new(addr: [0x00, 0x00, 0x00]),
             ["Offset/Temporary PCM Synth Tone"] = new(addr: [0x00, 0x00, 0x00]),
             ["Offset/Temporary SuperNATURAL Synth Tone"] = new(addr: [0x01, 0x00, 0x00]),
             ["Offset/Temporary SuperNATURAL Acoustic Tone"] = new(addr: [0x02, 0x00, 0x00]),
             ["Offset/Temporary SuperNATURAL Drum Kit"] = new(addr: [0x03, 0x00, 0x00]),
             ["Offset/Temporary PCM Drum Kit"] = new([0x10, 0x00, 0x00]),
-            
+
             //
             ["Offset2/System Common"] = new(addr: [0x00, 0x00, 0x00]),
             ["Offset2/Setup Sound Mode"] = new(addr: [0x00, 0x00]),
-            
+
             ["Offset2/Studio Set Common"] = new([0x00, 0x00, 0x00]),
             ["Offset2/Studio Set Common Chorus"] = new([0x00, 0x04, 0x00]),
             ["Offset2/Studio Set Common Reverb"] = new([0x00, 0x06, 0x00]),
             ["Offset2/Studio Set Common Motional Surround"] = new(addr: [0x00, 0x08, 0x00]),
             ["Offset2/Studio Set Master EQ"] = new(addr: [0x00, 0x09, 0x00]),
-            
+
             ["Offset2/PCM Synth Tone Common"] = new(addr: [0x00, 0x00, 0x00]),
             ["Offset2/PCM Synth Tone Common MFX"] = new(addr: [0x00, 0x02, 0x00]),
             ["Offset2/PCM Synth Tone Partial Mix Table"] = new(addr: [0x00, 0x10, 0x00]),
             ["Offset2/PCM Synth Tone Common 2"] = new(addr: [0x00, 0x30, 0x00]),
-            
+
             ["Offset2/PCM Drum Kit Common"] = new(addr: [0x00, 0x00, 0x00]),
             ["Offset2/PCM Drum Kit Common MFX"] = new(addr: [0x00, 0x02, 0x00]),
             ["Offset2/PCM Drum Kit Common Comp-EQ"] = new(addr: [0x00, 0x08, 0x00]),
@@ -98,9 +99,10 @@ public class Integra7StartAddresses
             _startAddresses[$"Offset2/PCM Drum Kit Partial {i + 1}"] = new(addr: Offset_PCM_DrumKit_Partial_Key(i));
         }
 
-        for (byte i = 0; i < 3; i++)
+        for (byte i = 0; i < Constants.NO_OF_PARTIALS_SN_SYNTH_TONE; i++)
         {
-            _startAddresses[$"Offset2/SuperNATURAL Synth Tone Partial {i + 1}"] = new(addr: Offset_SN_SynthTone_Partial(i));
+            _startAddresses[$"Offset2/SuperNATURAL Synth Tone Partial {i + 1}"] =
+                new(addr: Offset_SN_SynthTone_Partial(i));
         }
 
         for (byte i = 27; i < 89; i++)
@@ -126,8 +128,10 @@ public class Integra7StartAddresses
         {
             final = ByteUtils.AddressWithOffset(final, [0x01, 0x00]);
         }
+
         return final;
     }
+
     private static byte[] Offset_StudioSet_Part_EQ(byte ZeroBasedPart)
     {
         byte[] final = [0x00, 0x50, 0x00];
@@ -135,6 +139,7 @@ public class Integra7StartAddresses
         {
             final = ByteUtils.AddressWithOffset(final, [0x01, 0x00]);
         }
+
         return final;
     }
 
@@ -147,6 +152,7 @@ public class Integra7StartAddresses
         {
             final = ByteUtils.AddressWithOffset(final, [0x02, 0x00]);
         }
+
         return final;
     }
 
@@ -171,6 +177,7 @@ public class Integra7StartAddresses
         {
             final = ByteUtils.AddressWithOffset(final, [0x00, 0x01, 0x00]);
         }
+
         return final;
     }
 
@@ -185,5 +192,4 @@ public class Integra7StartAddresses
         }
         return final;
     }
-
 }

@@ -182,10 +182,13 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private void ForceUiRefresh(string StartAddressName, string OffsetAddressName, string Offset2AddressName, string ParPath, bool ResyncNeeded)
     {
-        foreach (PartViewModel pvm in _partViewModels)
+        if (_partViewModels != null)
         {
-            pvm.ForceUiRefresh(StartAddressName, OffsetAddressName, Offset2AddressName, ParPath, ResyncNeeded);
-        }
+            foreach (PartViewModel pvm in _partViewModels)
+            {
+                pvm.ForceUiRefresh(StartAddressName, OffsetAddressName, Offset2AddressName, ParPath, ResyncNeeded);
+            }
+        } 
     }
 
     public void ResyncPart(byte part)

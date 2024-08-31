@@ -645,7 +645,7 @@ public partial class PartViewModel : ViewModelBase
                 _i7domain.PCMSynthTonePMT(_part).ReadFromIntegra();
             }
             ObservableCollection<PartialViewModel> pvm = [];
-            for (byte i = 0; i < 4; i++)
+            for (byte i = 0; i < Constants.NO_OF_PARTIALS; i++)
             {
                 pvm.Add(new PartialViewModel(this, _part, i,
                     _selectedPreset?.ToneTypeStr,

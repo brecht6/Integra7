@@ -93,10 +93,13 @@ public class Integra7Domain
     public DomainBase System => _parameterMapper[new Tuple<string, string, string>(
         "System", "Offset/Not Used", "Offset2/System Common")];
 
-    private const int NO_OF_PARTS = 16;
-    private const int NO_OF_PARTIALS = 4;
-
-
+    public DomainBase PCMDrumKitCommon(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Drum Kit",
+            "Offset2/PCM Drum Kit Common")];
+    }
+    
     public Integra7Domain(IIntegra7Api integra7Api, Integra7StartAddresses i7startAddresses,
         Integra7Parameters i7parameters)
     {
@@ -141,7 +144,7 @@ public class Integra7Domain
                 new Tuple<string, string, string>(setmastereq.StartAddressName, setmastereq.OffsetAddressName,
                     setmastereq.Offset2AddressName)] = setmastereq;
 
-        for (int i = 0; i < NO_OF_PARTS; i++)
+        for (int i = 0; i < Constants.NO_OF_PARTS; i++)
         {
             DomainBase setmidi = new DomainStudioSetMIDI(i, integra7Api, i7startAddresses, i7parameters);
             _parameterMapper[
@@ -179,7 +182,7 @@ public class Integra7Domain
                     new Tuple<string, string, string>(pcmsynthtonepmt.StartAddressName,
                         pcmsynthtonepmt.OffsetAddressName, pcmsynthtonepmt.Offset2AddressName)] = pcmsynthtonepmt;
 
-            for (int j = 0; j < 4; j++)
+            for (int j = 0; j < Constants.NO_OF_PARTIALS; j++)
             {
                 DomainBase part = new DomainPCMSynthTonePartial(i, j, integra7Api, i7startAddresses, i7parameters);
                 _parameterMapper[

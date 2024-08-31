@@ -88,7 +88,7 @@ public class Integra7Api : IIntegra7Api
 
     public void AllNotesOff()
     {
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < Constants.NO_OF_PARTS; i++)
         {
             byte[] data = [(byte)(Integra7MidiControlNos.AllNotesOff + i), 0x7C, 0x00];
             _midiOut?.SafeSend(data);

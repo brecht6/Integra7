@@ -80,14 +80,14 @@ public class Integra7StartAddresses
             ["Offset2/SuperNATURAL Drum Kit Common COMP-EQ"] = new(addr: [0x00, 0x08, 0x00]),
         };
 
-        for (byte i = 0; i < 16; i++)
+        for (byte i = 0; i < Constants.NO_OF_PARTS; i++)
         {
             _startAddresses[$"Offset2/Studio Set MIDI Channel {i + 1}"] = new(addr: Offset_StudioSet_MIDI_Ch(i));
             _startAddresses[$"Offset2/Studio Set Part {i + 1}"] = new(addr: Offset_StudioSet_Part(i));
             _startAddresses[$"Offset2/Studio Set Part EQ {i + 1}"] = new(addr: Offset_StudioSet_Part_EQ(i));
         }
 
-        for (byte i = 0; i < 4; i++)
+        for (byte i = 0; i < Constants.NO_OF_PARTIALS; i++)
         {
             _startAddresses[$"Offset2/PCM Synth Tone Partial {i + 1}"] = new(addr: Offset_PCM_SynthTone_Partial(i));
         }

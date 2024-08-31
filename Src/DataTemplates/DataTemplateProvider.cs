@@ -14,7 +14,7 @@ public static class DataTemplateProvider
     {
         if (!p.IsNumeric)
         {
-            TextBox b = new() { Text = p.StringValue };
+            TextBox b = new() { Text = p.StringValue, HorizontalAlignment = HorizontalAlignment.Left };
             b.PropertyChanged += (s, e) =>
             {
                 if (e.Property.Name == "Text")
@@ -67,7 +67,7 @@ public static class DataTemplateProvider
             {
                 Minimum = p.ParSpec.OMin2,
                 Maximum = p.ParSpec.OMax2,
-                Width = 256,
+                Width = 200,
                 Orientation = Orientation.Horizontal,
                 IsSnapToTickEnabled = true,
                 Ticks = p.ParSpec.Ticks,
@@ -117,7 +117,7 @@ public static class DataTemplateProvider
             {
                 Minimum = p.ParSpec.OMin,
                 Maximum = p.ParSpec.OMax,
-                Width = 256,
+                Width = 200,
                 Orientation = Orientation.Horizontal,
                 IsSnapToTickEnabled = true,
                 Ticks = p.ParSpec.Ticks,
@@ -167,7 +167,7 @@ public static class DataTemplateProvider
             {
                 Minimum = 0,
                 Maximum = 127,
-                Width = 256,
+                Width = 200,
                 Orientation = Orientation.Horizontal,
                 IsSnapToTickEnabled = true,
                 Ticks = p.ParSpec.Ticks,
@@ -215,5 +215,5 @@ public static class DataTemplateProvider
     }
 
     public static FuncDataTemplate<FullyQualifiedParameter> ParameterValueTemplate { get; }
-        = new FuncDataTemplate<FullyQualifiedParameter>(person => person is not null, BuildParameterValuePresenter);
+        = new FuncDataTemplate<FullyQualifiedParameter>(parameter => parameter is not null, BuildParameterValuePresenter);
 }

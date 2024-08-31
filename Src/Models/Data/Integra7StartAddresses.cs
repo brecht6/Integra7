@@ -67,7 +67,8 @@ public class Integra7StartAddresses
             
             ["Offset2/PCM Drum Kit Common"] = new(addr: [0x00, 0x00, 0x00]),
             ["Offset2/PCM Drum Kit Common MFX"] = new(addr: [0x00, 0x02, 0x00]),
-            ["Offset2/PCM Drum Kit Common COMP-EQ"] = new(addr: [0x00, 0x08, 0x00]),
+            ["Offset2/PCM Drum Kit Common Comp-EQ"] = new(addr: [0x00, 0x08, 0x00]),
+            ["Offset2/PCM Drum Kit Common 2"] = new(addr: [0x02, 0x00, 0x00]),
 
             ["Offset2/SuperNATURAL Synth Tone Common"] = new(addr: [0x00, 0x00, 0x00]),
             ["Offset2/SuperNATURAL Synth Tone MFX"] = new(addr: [0x00, 0x02, 0x00]),
@@ -77,7 +78,7 @@ public class Integra7StartAddresses
 
             ["Offset2/SuperNATURAL Drum Kit Common"] = new(addr: [0x00, 0x00, 0x00]),
             ["Offset2/SuperNATURAL Drum Kit MFX"] = new(addr: [0x00, 0x02, 0x00]),
-            ["Offset2/SuperNATURAL Drum Kit Common COMP-EQ"] = new(addr: [0x00, 0x08, 0x00]),
+            ["Offset2/SuperNATURAL Drum Kit Common Comp-EQ"] = new(addr: [0x00, 0x08, 0x00]),
         };
 
         for (byte i = 0; i < Constants.NO_OF_PARTS; i++)
@@ -87,14 +88,14 @@ public class Integra7StartAddresses
             _startAddresses[$"Offset2/Studio Set Part EQ {i + 1}"] = new(addr: Offset_StudioSet_Part_EQ(i));
         }
 
-        for (byte i = 0; i < Constants.NO_OF_PARTIALS; i++)
+        for (byte i = 0; i < Constants.NO_OF_PARTIALS_PCM_SYNTH_TONE; i++)
         {
             _startAddresses[$"Offset2/PCM Synth Tone Partial {i + 1}"] = new(addr: Offset_PCM_SynthTone_Partial(i));
         }
 
-        for (byte i = 21; i < 109; i++)
+        for (byte i = 0; i < Constants.NO_OF_PARTIALS_PCM_DRUM; i++)
         {
-            _startAddresses[$"Offset2/PCM Drum Kit Partial {i}"] = new(addr: Offset_PCM_DrumKit_Partial_Key(i));
+            _startAddresses[$"Offset2/PCM Drum Kit Partial {i + 1}"] = new(addr: Offset_PCM_DrumKit_Partial_Key(i));
         }
 
         for (byte i = 0; i < 3; i++)
@@ -151,29 +152,14 @@ public class Integra7StartAddresses
 
     private static byte[] Offset_PCM_DrumKit_Partial_Key(int KeyNumber)
     {
-        Debug.Assert(KeyNumber >= 21);
-        Debug.Assert(KeyNumber <= 108);
-        if (KeyNumber >= 21 && KeyNumber <= 76)
+        Debug.Assert(KeyNumber >= 0);
+        Debug.Assert(KeyNumber < 88);
+        long final = ByteUtils.Bytes7ToInt([0x00, 0x10, 0x00]);
+        for (int i = 0; i < KeyNumber; i++)
         {
-            byte[] final = [0x00, 0x10, 0x00];
-            for (int i = 0; i < (KeyNumber - 21); i++)
-            {
-                final = ByteUtils.AddressWithOffset(final, [0x02, 0x00]);
-            }
-            return final;
+            final += ByteUtils.Bytes7ToInt([0x02, 0x00]);
         }
-
-        if (KeyNumber >= 77 && KeyNumber <= 108)
-        {
-            byte[] final = [0x01, 0x00, 0x00];
-            for (int i = 0; i < (KeyNumber - 77); i++)
-            {
-                final = ByteUtils.AddressWithOffset(final, [0x02, 0x00]);
-            }
-            return final;
-        }
-        Debug.Assert(false); // invalid key number specified...
-        return [];
+        return ByteUtils.IntToBytes7_3(final);
     }
 
     private static byte[] Offset_SN_DrumKit_Partial_Key(int KeyNumber)

@@ -53,6 +53,12 @@ public class ByteUtils
         Debug.Assert(value < 0x8000);
         return [LtlEnd_SecondByte7(value), LtlEnd_FirstByte7(value)];
     }
+    
+    public static byte[] IntToBytes7_3(long value)
+    {
+        Debug.Assert(value < 0x800000);
+        return [LtlEnd_ThirdByte7(value), LtlEnd_SecondByte7(value), LtlEnd_FirstByte7(value)];
+    }
 
     public static byte[] IntToBytes7_4(long value)
     {

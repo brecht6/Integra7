@@ -12,26 +12,29 @@
              x:Name="ParameterCollectionControl">
     <Grid ColumnDefinitions="*"
           RowDefinitions="Auto,*"
+          MaxWidth="600"
           Margin="20">
         <TextBox Grid.Column="0"
                  Grid.Row="0"
                  Watermark="Filter Parameters..."
                  Background="#3c4043"
-                 Width="600"
+                 Width="550"
                  HorizontalAlignment="Left"
                  Margin="10"
                  Text="{Binding #ParameterCollectionControl.SearchText}" />
         <ScrollViewer Grid.Column="0"
                       Grid.Row="1"
-                      VerticalScrollBarVisibility="Visible">
-            <ItemsRepeater ItemsSource="{Binding #ParameterCollectionControl.Parameters}">
+                      VerticalScrollBarVisibility="Visible"
+                      HorizontalScrollBarVisibility="Auto">
+            <ItemsRepeater ItemsSource="{Binding #ParameterCollectionControl.Parameters}"
+                           MaxWidth="550">
                 <ItemsRepeater.Layout>
                     <StackLayout Spacing="5"
                                  Orientation="Vertical" />
                 </ItemsRepeater.Layout>
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate>
-                        <Grid ColumnDefinitions="270,400"
+                        <Grid ColumnDefinitions="270,*"
                               RowDefinitions="Auto">
                             <Border Grid.Column="0"
                                     Grid.Row="0"

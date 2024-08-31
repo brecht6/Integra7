@@ -99,6 +99,33 @@ public class Integra7Domain
             $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Drum Kit",
             "Offset2/PCM Drum Kit Common")];
     }
+    public DomainBase PCMDrumKitCommon2(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Synth Tone",
+            "Offset2/PCM Synth Tone Common 2")];
+    }
+
+    public DomainBase PCMDrumKitCommonMFX(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Synth Tone",
+            "Offset2/PCM Synth Tone Common MFX")];
+    }
+
+    public DomainBase PCMDrumKitCompEQ(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Synth Tone",
+            "Offset2/PCM Synth Tone Partial Mix Table")];
+    }
+
+    public DomainBase PCMDrumKitPartial(int zeroBasedPartNo, int zeroBasedPartial)
+    {
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Drum Kit",
+            $"Offset2/PCM Drum Kit Partial {zeroBasedPartial + 1}")];
+    }
     
     public Integra7Domain(IIntegra7Api integra7Api, Integra7StartAddresses i7startAddresses,
         Integra7Parameters i7parameters)
@@ -165,7 +192,7 @@ public class Integra7Domain
             _parameterMapper[
                     new Tuple<string, string, string>(pcmsynthtone.StartAddressName, pcmsynthtone.OffsetAddressName,
                         pcmsynthtone.Offset2AddressName)] = pcmsynthtone;
-
+            
             DomainBase pcmsynthtone2 = new DomainPCMSynthToneCommon2(i, integra7Api, i7startAddresses, i7parameters);
             _parameterMapper
                     [new Tuple<string, string, string>(pcmsynthtone2.StartAddressName, pcmsynthtone2.OffsetAddressName, pcmsynthtone2.Offset2AddressName)] =
@@ -181,16 +208,45 @@ public class Integra7Domain
             _parameterMapper[
                     new Tuple<string, string, string>(pcmsynthtonepmt.StartAddressName,
                         pcmsynthtonepmt.OffsetAddressName, pcmsynthtonepmt.Offset2AddressName)] = pcmsynthtonepmt;
+            
+            DomainBase pcmdrumkit = new DomainPCMDrumKitCommon(i, integra7Api, i7startAddresses, i7parameters);
+            _parameterMapper[
+                new Tuple<string, string, string>(pcmdrumkit.StartAddressName, pcmdrumkit.OffsetAddressName,
+                    pcmdrumkit.Offset2AddressName)] = pcmdrumkit;
+            
+            DomainBase pcmdrumkit2 = new DomainPCMDrumKitCommon2(i, integra7Api, i7startAddresses, i7parameters);
+            _parameterMapper
+                    [new Tuple<string, string, string>(pcmdrumkit2.StartAddressName, pcmdrumkit2.OffsetAddressName, pcmdrumkit2.Offset2AddressName)] =
+                pcmdrumkit2;
 
-            for (int j = 0; j < Constants.NO_OF_PARTIALS; j++)
+            DomainBase pcmdrumkitmfx =
+                new DomainPCMDrumKitCommonMFX(i, integra7Api, i7startAddresses, i7parameters);
+            _parameterMapper[
+                new Tuple<string, string, string>(pcmdrumkitmfx.StartAddressName,
+                    pcmdrumkitmfx.OffsetAddressName, pcmdrumkitmfx.Offset2AddressName)] = pcmdrumkitmfx;
+
+            DomainBase pcmdrumkitcompeq = new DomainPCMDrumKitCommonCompEQ(i, integra7Api, i7startAddresses, i7parameters);
+            _parameterMapper[
+                new Tuple<string, string, string>(pcmdrumkitcompeq.StartAddressName,
+                    pcmdrumkitcompeq.OffsetAddressName, pcmdrumkitcompeq.Offset2AddressName)] = pcmdrumkitcompeq;
+
+            for (int j = 0; j < Constants.NO_OF_PARTIALS_PCM_SYNTH_TONE; j++)
             {
                 DomainBase part = new DomainPCMSynthTonePartial(i, j, integra7Api, i7startAddresses, i7parameters);
                 _parameterMapper[
                     new Tuple<string, string, string>(part.StartAddressName, part.OffsetAddressName,
                         part.Offset2AddressName)] = part;
             }
-        }
 
+            for (int j = 0; j < Constants.NO_OF_PARTIALS_PCM_DRUM; j++)
+            {
+                DomainBase part = new DomainPCMDrumKitPartial(i, j, integra7Api, i7startAddresses, i7parameters);
+                _parameterMapper[
+                    new Tuple<string, string, string>(part.StartAddressName, part.OffsetAddressName,
+                        part.Offset2AddressName)] = part;
+            }
+        }
+        
         _sysexAddressMapper = [];
         foreach (KeyValuePair<Tuple<string, string, string>, DomainBase> entry in _parameterMapper)
         {

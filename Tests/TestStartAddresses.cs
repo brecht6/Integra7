@@ -1,7 +1,6 @@
 namespace Tests;
 
 using Integra7AuralAlchemist.Models.Data;
-using Integra7AuralAlchemist.Models.Services;
 
 public class StartAddressesTests
 {

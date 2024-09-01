@@ -180,6 +180,17 @@
                                     <local:ParameterCollection Parameters="{Binding PCMDrumKitCompEQParameters}"
                                                                SearchText="{Binding SearchTextPCMDrumKitCompEQ, Mode=TwoWay}" />
                                 </TabItem>
+                                <TabItem Header="Tone"
+                                         IsVisible="{Binding SelectedPresetIsSNSynthTone}">
+                                    <local:ParameterCollection Parameters="{Binding SNSynthToneCommonParameters}"
+                                                               SearchText="{Binding SearchTextSNSynthToneCommon, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem Header="MFX"
+                                         IsVisible="{Binding SelectedPresetIsSNSynthTone}">
+                                    <local:ParameterCollection Parameters="{Binding SNSynthToneCommonMFXParameters}"
+                                                               SearchText="{Binding SearchTextSNSynthToneCommonMFX, Mode=TwoWay}" />
+                                </TabItem>
+
                                 <TabItem Header="Partials" IsVisible="{Binding SelectedPresetIsPCMSynthTone}">
                                     <TabControl
                                         ItemsSource="{Binding PcmSynthTonePartialViewModels}"
@@ -200,6 +211,23 @@
                                 <TabItem Header="Partials" IsVisible="{Binding SelectedPresetIsPCMDrumKit}">
                                     <TabControl
                                         ItemsSource="{Binding PcmDrumKitPartialViewModels}"
+                                        TabStripPlacement="Left">
+                                        <TabControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Header}"></TextBlock>
+                                            </DataTemplate>
+                                        </TabControl.ItemTemplate>
+                                        <TabControl.ContentTemplate>
+                                            <DataTemplate DataType="vm:PartialViewModel">
+                                                <local:ParameterCollection Parameters="{Binding PartialParameters}"
+                                                                           SearchText="{Binding SearchTextPartial, Mode=TwoWay}" />
+                                            </DataTemplate>
+                                        </TabControl.ContentTemplate>
+                                    </TabControl>
+                                </TabItem>
+                                <TabItem Header="Partials" IsVisible="{Binding SelectedPresetIsSNSynthTone}">
+                                    <TabControl
+                                        ItemsSource="{Binding SNSynthTonePartialViewModels}"
                                         TabStripPlacement="Left">
                                         <TabControl.ItemTemplate>
                                             <DataTemplate>

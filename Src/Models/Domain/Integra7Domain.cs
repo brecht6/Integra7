@@ -126,6 +126,27 @@ public class Integra7Domain
             $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary PCM Drum Kit",
             $"Offset2/PCM Drum Kit Partial {zeroBasedPartial + 1}")];
     }
+
+    public DomainBase SNSynthToneCommon(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary SuperNATURAL Synth Tone",
+            "Offset2/SuperNATURAL Synth Tone Common")];
+    }
+    
+    public DomainBase SNSynthToneCommonMFX(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary SuperNATURAL Synth Tone",
+            "Offset2/SuperNATURAL Synth Tone Common MFX")];
+    }
+
+    public DomainBase SNSynthTonePartial(int zeroBasedPartNo, int zeroBasedPartial)
+    {
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary SuperNATURAL Synth Tone",
+            $"Offset2/SuperNATURAL Synth Tone Partial {zeroBasedPartial + 1}")];
+    }
     
     public Integra7Domain(IIntegra7Api integra7Api, Integra7StartAddresses i7startAddresses,
         Integra7Parameters i7parameters)
@@ -209,6 +230,14 @@ public class Integra7Domain
                     new Tuple<string, string, string>(pcmsynthtonepmt.StartAddressName,
                         pcmsynthtonepmt.OffsetAddressName, pcmsynthtonepmt.Offset2AddressName)] = pcmsynthtonepmt;
             
+            for (int j = 0; j < Constants.NO_OF_PARTIALS_PCM_SYNTH_TONE; j++)
+            {
+                DomainBase part = new DomainPCMSynthTonePartial(i, j, integra7Api, i7startAddresses, i7parameters);
+                _parameterMapper[
+                    new Tuple<string, string, string>(part.StartAddressName, part.OffsetAddressName,
+                        part.Offset2AddressName)] = part;
+            }
+            
             DomainBase pcmdrumkit = new DomainPCMDrumKitCommon(i, integra7Api, i7startAddresses, i7parameters);
             _parameterMapper[
                 new Tuple<string, string, string>(pcmdrumkit.StartAddressName, pcmdrumkit.OffsetAddressName,
@@ -229,18 +258,28 @@ public class Integra7Domain
             _parameterMapper[
                 new Tuple<string, string, string>(pcmdrumkitcompeq.StartAddressName,
                     pcmdrumkitcompeq.OffsetAddressName, pcmdrumkitcompeq.Offset2AddressName)] = pcmdrumkitcompeq;
-
-            for (int j = 0; j < Constants.NO_OF_PARTIALS_PCM_SYNTH_TONE; j++)
+            
+            for (int j = 0; j < Constants.NO_OF_PARTIALS_PCM_DRUM; j++)
             {
-                DomainBase part = new DomainPCMSynthTonePartial(i, j, integra7Api, i7startAddresses, i7parameters);
+                DomainBase part = new DomainPCMDrumKitPartial(i, j, integra7Api, i7startAddresses, i7parameters);
                 _parameterMapper[
                     new Tuple<string, string, string>(part.StartAddressName, part.OffsetAddressName,
                         part.Offset2AddressName)] = part;
             }
 
-            for (int j = 0; j < Constants.NO_OF_PARTIALS_PCM_DRUM; j++)
+            DomainBase snstonecommon = new DomainSNSynthToneCommon(i, integra7Api, i7startAddresses, i7parameters);
+            _parameterMapper[
+                new Tuple<string, string, string>(snstonecommon.StartAddressName,
+                    snstonecommon.OffsetAddressName, snstonecommon.Offset2AddressName)] = snstonecommon;
+            
+            DomainBase snstonemfx = new DomainSNSynthToneCommonMFX(i, integra7Api, i7startAddresses, i7parameters);
+            _parameterMapper[
+                new Tuple<string, string, string>(snstonemfx.StartAddressName, snstonemfx.OffsetAddressName,
+                    snstonemfx.Offset2AddressName)] = snstonemfx;
+            
+            for (int j = 0; j < Constants.NO_OF_PARTIALS_SN_SYNTH_TONE; j++)
             {
-                DomainBase part = new DomainPCMDrumKitPartial(i, j, integra7Api, i7startAddresses, i7parameters);
+                DomainBase part = new DomainSNSynthTonePartial(i, j, integra7Api, i7startAddresses, i7parameters);
                 _parameterMapper[
                     new Tuple<string, string, string>(part.StartAddressName, part.OffsetAddressName,
                         part.Offset2AddressName)] = part;
@@ -254,13 +293,14 @@ public class Integra7Domain
             List<FullyQualifiedParameter> ps = b.GetRelevantParameters(true, true);
             foreach (FullyQualifiedParameter p in ps)
             {
-                long CompleteAddress = ByteUtils.Bytes7ToInt(p.CompleteAddress(i7startAddresses, i7parameters));
-                if (_sysexAddressMapper.ContainsKey(CompleteAddress))
+                long completeAddress = ByteUtils.Bytes7ToInt(p.CompleteAddress(i7startAddresses, i7parameters));
+                if (_sysexAddressMapper.ContainsKey(completeAddress))
                 {
-                    _sysexAddressMapper[CompleteAddress].Add(p);
+                    //Debug.WriteLine($"parameter {p.ParSpec.Path} shares address of {_sysexAddressMapper[CompleteAddress].First().ParSpec.Path}");
+                    _sysexAddressMapper[completeAddress].Add(p);
                 }
                 else
-                    _sysexAddressMapper[CompleteAddress] = [p];
+                    _sysexAddressMapper[completeAddress] = [p];
             }
         }
     }

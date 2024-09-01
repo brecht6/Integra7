@@ -72,10 +72,10 @@ public class Integra7StartAddresses
             ["Offset2/PCM Drum Kit Common 2"] = new(addr: [0x02, 0x00, 0x00]),
 
             ["Offset2/SuperNATURAL Synth Tone Common"] = new(addr: [0x00, 0x00, 0x00]),
-            ["Offset2/SuperNATURAL Synth Tone MFX"] = new(addr: [0x00, 0x02, 0x00]),
+            ["Offset2/SuperNATURAL Synth Tone Common MFX"] = new(addr: [0x00, 0x02, 0x00]),
 
             ["Offset2/SuperNATURAL Acoustic Tone Common"] = new(addr: [0x00, 0x00, 0x00]),
-            ["Offset2/SuperNATURAL Acoustic Tone MFX"] = new(addr: [0x00, 0x02, 0x00]),
+            ["Offset2/SuperNATURAL Acoustic Tone Common MFX"] = new(addr: [0x00, 0x02, 0x00]),
 
             ["Offset2/SuperNATURAL Drum Kit Common"] = new(addr: [0x00, 0x00, 0x00]),
             ["Offset2/SuperNATURAL Drum Kit MFX"] = new(addr: [0x00, 0x02, 0x00]),

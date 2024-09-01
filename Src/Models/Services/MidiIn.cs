@@ -64,7 +64,7 @@ public class MidiIn : IMidiIn
             if (Integra7SysexHelpers.CheckIsDataSetMsg(e.Data))
                 MessageBus.Current.SendMessage(new UpdateFromSysexSpec(e.Data), "hw2ui");
             else if (Integra7Api.CheckIsPartOfPresetChange(e.Data, out byte midiChannel)) {
-                MessageBus.Current.SendMessage(new UpdateResyncPart(midiChannel));
+                MessageBus.Current.SendMessage(new UpdateSetPresetAndResyncPart(midiChannel));
             }
         }
         _manualReplyHandling = false;

@@ -25,3 +25,9 @@ public class UpdateResyncPart(byte partNo)
     private readonly byte _partNo = partNo;
     public byte PartNo => _partNo;
 }
+
+public class UpdateSetPresetAndResyncPart(byte partNo)
+{
+    private readonly byte _partNo = partNo;
+    public byte PartNo => _partNo;
+}

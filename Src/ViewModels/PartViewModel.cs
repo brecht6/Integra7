@@ -92,6 +92,7 @@ public partial class PartViewModel : ViewModelBase
 
     
     private byte _part;
+    public byte PartNo => _part;
 
     public bool SelectedPresetIsPCMSynthTone => _selectedPreset is null ? false : _selectedPreset.ToneTypeStr == "PCMS";
     public bool SelectedPresetIsPCMDrumKit => _selectedPreset is null ? false : _selectedPreset.ToneTypeStr == "PCMD";
@@ -782,7 +783,7 @@ public partial class PartViewModel : ViewModelBase
                     if (Offset2AddressName == $"Offset2/Studio Set Part {_part + 1}")
                     {
                         // using MessageBus instead of direct call because it is automatically throttled
-                        MessageBus.Current.SendMessage(new UpdateResyncPart(_part));
+                        MessageBus.Current.SendMessage(new UpdateSetPresetAndResyncPart(_part));
                     }
                 }
             }

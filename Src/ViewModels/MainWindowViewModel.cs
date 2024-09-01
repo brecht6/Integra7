@@ -130,6 +130,7 @@ public partial class MainWindowViewModel : ViewModelBase
         MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(m => UpdateIntegraFromUi(m));
         MessageBus.Current.Listen<UpdateFromSysexSpec>("hw2ui").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(m => UpdateUiFromIntegra(m));
         MessageBus.Current.Listen<UpdateResyncPart>().Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(m => ResyncPart(m.PartNo));
+        MessageBus.Current.Listen<UpdateSetPresetAndResyncPart>().Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(m => SetPresetAndResyncPart(m.PartNo));
     }
 
     public void UpdateIntegraFromUi(UpdateMessageSpec s)
@@ -193,10 +194,31 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public void ResyncPart(byte part)
     {
-        foreach (PartViewModel pvm in _partViewModels)
+        if (_partViewModels != null)
         {
-            pvm.EnsurePreselectIsNotNull();
-            pvm.ResyncPart(part);
+            foreach (PartViewModel pvm in _partViewModels)
+            {
+                pvm.EnsurePreselectIsNotNull();
+                pvm.ResyncPart(part);
+            }   
+        }
+    }
+
+    public void SetPresetAndResyncPart(byte part)
+    {
+        if (_partViewModels != null)
+        {
+            foreach (PartViewModel pvm in _partViewModels)
+            {
+                if (part == pvm.PartNo)
+                {
+                    DomainBase b = _integra7Communicator.StudioSetPart(part);
+                    b.ReadFromIntegra();
+                    pvm.PreSelectConfiguredPreset(b, true);
+                    pvm.ResyncPart(part);
+  
+                } 
+            }   
         }
     }
 

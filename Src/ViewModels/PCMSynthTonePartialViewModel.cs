@@ -107,7 +107,7 @@ public sealed partial class PCMSynthTonePartialViewModel : PartialViewModel
     }
     public override void SetSearchTextPartial(string value)
     {
-        _searchTextPCMSynthTonePartial = value;
+        SearchTextPCMSynthTonePartial = value;
     }
     public override ReadOnlyObservableCollection<FullyQualifiedParameter> GetPartialParameters()
     {

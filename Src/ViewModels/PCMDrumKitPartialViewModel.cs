@@ -86,7 +86,7 @@ public sealed partial class PCMDrumKitPartialViewModel : PartialViewModel
 
     public override void SetSearchTextPartial(string value)
     {
-        _searchTextPCMDrumKitPartial = value;
+        SearchTextPCMDrumKitPartial = value;
     }
 
     public override ReadOnlyObservableCollection<FullyQualifiedParameter> GetPartialParameters()

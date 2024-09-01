@@ -47,6 +47,10 @@
                     Command="{Binding RescanMidiDevices}">Rescan Midi Devices</Button>
             <Button Command="{Binding PlayNote}"
                     IsEnabled="{Binding Connected}">Play Note</Button>
+            <Button Command="{Binding PlayPhrase}"
+                    IsEnabled="{Binding Connected}">Play Phrase</Button>
+            <Button Command="{Binding StopPhrase}"
+                    IsEnabled="{Binding Connected}">Stop Phrase</Button>
             <Button Command="{Binding Panic}"
                     IsEnabled="{Binding Connected}"
                     Background="Red"

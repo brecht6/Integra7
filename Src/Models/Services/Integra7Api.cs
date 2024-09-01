@@ -18,6 +18,8 @@ public interface IIntegra7Api
 
     byte[] MakeDataRequest(byte[] address, long size);
     void MakeDataTransmission(byte[] address, byte[] data);
+    void SendStopPreviewPhraseMsg();
+    void SendPlayPreviewPhraseMsg(byte channel);
 }
 
 public class Integra7Api : IIntegra7Api
@@ -95,6 +97,17 @@ public class Integra7Api : IIntegra7Api
         }
     }
 
+    public void SendStopPreviewPhraseMsg()
+    {
+        byte[] stop = Integra7SysexHelpers.MakeStopPreviewPhraseMsg(_deviceId);
+        _midiOut?.SafeSend(stop);
+    }
+
+    public void SendPlayPreviewPhraseMsg(byte channel)
+    {
+        byte[] start = Integra7SysexHelpers.MakePlayPreviewPhraseMsg(channel, _deviceId);
+        _midiOut?.SafeSend(start);
+    }
     private void BankSelectMsb(byte Channel, int BankNumberMsb)
     {
         ISet<int> PossibleBankMsb = new HashSet<int> { 85, 86, 87, 88, 89, 92, 93, 95, 96, 97, 120, 121 };

@@ -25,6 +25,16 @@ public class Integra7SysexHelpers
     public static byte[] IDENTITY_REPLY = ByteUtils.Flatten(EXCLUSIVE_STATUS, UNIVERSAL_NON_RT, DEVICE_ID, IDENTITY_GEN_INFO, IDENTITY_ID_REP, ROLAND_ID, ROLAND_DEVICE_FAMILY_CODE, ROLAND_DEVICE_FAMILY_NUMBER_CODE, ROLAND_DEVICE_FAMILY_SW_REV, END_OF_SYSEX);
 
 
+    public static byte[] MakeStopPreviewPhraseMsg(byte devicId)
+    {
+        return ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [devicId], MODEL_ID, COMMAND_DATASET,
+            [0x0f, 00, 0x20, 00, 0x0, 0x51], END_OF_SYSEX);
+    }
+    public static byte[] MakePlayPreviewPhraseMsg(byte channel, byte deviceId)
+    {
+        return ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID, COMMAND_DATASET,
+            [0x0f, 00, 0x20, 00, (byte)(channel + 1), (byte)(0x50 - channel)], END_OF_SYSEX);
+    }
 
     public static bool CheckIdentityReply(byte[] reply, out byte deviceId)
     {

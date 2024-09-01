@@ -51,6 +51,24 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     [ReactiveCommand]
+    public void PlayPhrase()
+    {
+        byte zeroBasedMidiChannel = 0;
+        if (_currentPartSelection > 0 && _currentPartSelection < 17)
+        {
+            zeroBasedMidiChannel = (byte)(_currentPartSelection - 1);
+        }
+        Integra7?.SendStopPreviewPhraseMsg();
+        Integra7?.SendPlayPreviewPhraseMsg(zeroBasedMidiChannel);
+    }
+
+    [ReactiveCommand]
+    public void StopPhrase()
+    {
+        Integra7?.SendStopPreviewPhraseMsg();
+    }
+
+    [ReactiveCommand]
     public void Panic()
     {
         Integra7?.AllNotesOff();

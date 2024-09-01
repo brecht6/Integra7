@@ -1021,6 +1021,10 @@ public partial class PartViewModel : ViewModelBase
             DomainBase setPCMDCompeq = _i7domain?.PCMDrumKitCompEQ(part);
             setPCMDCompeq.ReadFromIntegra();
             ForceUiRefresh(setPCMDCompeq.StartAddressName, setPCMDCompeq.OffsetAddressName, setPCMDCompeq.Offset2AddressName, "", false);
+            foreach (PartialViewModel p in _PCMDrumKitPartialViewModels)
+            {
+                p.ResyncPart(part);
+            }
         }
         PreSelectConfiguredPreset(setPart);
         this.RaisePropertyChanged(nameof(SelectedPresetIsPCMSynthTone));

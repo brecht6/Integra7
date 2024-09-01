@@ -109,11 +109,6 @@ public partial class MainWindowViewModel : ViewModelBase
     [Reactive]
     private int _currentPartSelection;
 
-    [ReactiveCommand]
-    public void DebugCode()
-    {
-    }
-
     private List<Integra7Preset> LoadPresets()
     {
         var uri = @"avares://" + "Integra7AuralAlchemist/" + "Assets/Presets.csv";

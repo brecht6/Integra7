@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Integra7AuralAlchemist.Models.Services;
@@ -40,9 +41,18 @@ public class Integra7SysexHelpers
     {
         if (reply.Length > 2)
         {
-            deviceId = reply[2];
+            byte [] trimmedReply = TrimAfterEndOfSysex(reply);
+            deviceId = trimmedReply[2];
             IDENTITY_REPLY[2] = deviceId;
-            return reply.SequenceEqual(IDENTITY_REPLY);
+            if (!trimmedReply.SequenceEqual(IDENTITY_REPLY))
+            {
+                Debug.WriteLine("Identity check failed.");
+                ByteStreamDisplay.Display("Expected: ", IDENTITY_REPLY);
+                ByteStreamDisplay.Display("Actual: ", trimmedReply);
+                return false;
+            }
+
+            return true;
         }
         deviceId = 0;
         return false;

@@ -24,23 +24,10 @@ public partial class PartViewModel : ViewModelBase
         set
         {
             _i7domain = value;
-            if (_PCMSynthTonePartialViewModels != null)
-            {
-                foreach (PartialViewModel pvm in _PCMSynthTonePartialViewModels)
-                {
-                    pvm.I7Domain = value;
-                }
-            }
-
-            if (_PCMDrumKitPartialViewModels != null)
-            {
-                foreach (PartialViewModel pvm in _PCMDrumKitPartialViewModels)
-                {
-                    pvm.I7Domain = value;
-                }
-            }
+            UpdatePartialViewModelDomains(value);
         } 
     }
+
     private List<Integra7Preset> _i7presets;
     private Integra7Preset? _selectedPreset;
     
@@ -218,10 +205,47 @@ public partial class PartViewModel : ViewModelBase
             if (msbstr == $"{p.Msb}" && lsbstr == $"{p.Lsb}" && pcstr == $"{p.Pc - 1}") // note: seems like integra-7 sends back a one-based program change (PC)??
             {
                 _selectedPreset = p;
+                UpdatePartialViewModelToneTypeStrings(p);
                 if (!Silent)
                 {
                     this.RaisePropertyChanged(nameof(SelectedPreset));   
                 }
+                return;
+            }
+        }
+    }
+
+    private void UpdatePartialViewModelDomains(Integra7Domain value)
+    {
+        if (_PCMSynthTonePartialViewModels != null)
+        {
+            foreach (PartialViewModel pvm in _PCMSynthTonePartialViewModels)
+            {
+                pvm.I7Domain = value;
+            }
+        }
+        if (_PCMDrumKitPartialViewModels != null)
+        {
+            foreach (PartialViewModel pvm in _PCMDrumKitPartialViewModels)
+            {
+                pvm.I7Domain = value;
+            }
+        }
+    }
+    private void UpdatePartialViewModelToneTypeStrings(Integra7Preset p)
+    {
+        if (_PCMSynthTonePartialViewModels != null)
+        {
+            foreach (var pvm in _PCMSynthTonePartialViewModels)
+            {
+                pvm.UpdateToneTypeString(p.ToneTypeStr);
+            }
+        }
+        if (_PCMDrumKitPartialViewModels != null)
+        {
+            foreach (var pvm in _PCMDrumKitPartialViewModels)
+            {
+                pvm.UpdateToneTypeString(p.ToneTypeStr);
             }
         }
     }

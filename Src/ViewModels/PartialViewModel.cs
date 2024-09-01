@@ -57,6 +57,11 @@ public partial class PartialViewModel : ViewModelBase
         _i7domain = i7dom;
         _toneTypeStr = toneTypeStr;
     }
+
+    public void UpdateToneTypeString(string toneTypeStr)
+    {
+        _toneTypeStr = toneTypeStr;
+    }
     public virtual string GetSearchTextPartial()
     {
         // overridden in specific view models

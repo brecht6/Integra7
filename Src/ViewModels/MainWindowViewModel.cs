@@ -72,6 +72,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public void Panic()
     {
         Integra7?.AllNotesOff();
+        Integra7?.SendStopPreviewPhraseMsg();
     }
 
     [ReactiveCommand]

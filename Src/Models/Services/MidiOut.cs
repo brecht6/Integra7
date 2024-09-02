@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Commons.Music.Midi;
 
@@ -46,6 +47,10 @@ public class MidiOut : IMidiOut
             _access?.Send(data, 0, data.Length, 0);
             if (Verbose)
             {
+                if (_access is null)
+                {
+                    Debug.Write("_access is null... cannot complete the following: ");
+                }
                 ByteStreamDisplay.Display("Sent: ", data);
             }
         }

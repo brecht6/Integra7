@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Commons.Music.Midi;
 using CoreMidi;
 using Integra7AuralAlchemist.Models.Data;
@@ -51,7 +52,7 @@ public class Integra7Api : IIntegra7Api
         byte[] data = Integra7SysexHelpers.IDENTITY_REQUEST;
         _midiIn?.AnnounceIntentionToManuallyHandleReply();
         _midiOut?.SafeSend(data);
-        byte[] reply = _midiIn?.GetReply() ?? [];
+        byte[] reply = _midiIn?.GetReply().ToArray() ?? [];
         byte[] usefulreply = Integra7SysexHelpers.TrimAfterEndOfSysex(reply);
         return Integra7SysexHelpers.CheckIdentityReply(usefulreply, out _deviceId);
     }
@@ -61,7 +62,7 @@ public class Integra7Api : IIntegra7Api
         byte[] data = Integra7SysexHelpers.MakeDataRequest(DeviceId(), address, size);
         _midiIn?.AnnounceIntentionToManuallyHandleReply();
         _midiOut?.SafeSend(data);
-        byte[] reply = _midiIn?.GetReply() ?? [];
+        byte[] reply = _midiIn?.GetReply().ToArray() ?? [];
         return reply;
     }
 

@@ -190,7 +190,16 @@
                                     <local:ParameterCollection Parameters="{Binding SNSynthToneCommonMFXParameters}"
                                                                SearchText="{Binding SearchTextSNSynthToneCommonMFX, Mode=TwoWay}" />
                                 </TabItem>
-
+                                <TabItem Header="Tone"
+                                         IsVisible="{Binding SelectedPresetIsSNAcousticTone}">
+                                    <local:ParameterCollection Parameters="{Binding SNAcousticToneCommonParameters}"
+                                                               SearchText="{Binding SearchTextSNAcousticToneCommon, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem Header="MFX"
+                                         IsVisible="{Binding SelectedPresetIsSNAcousticTone}">
+                                    <local:ParameterCollection Parameters="{Binding SNAcousticToneCommonMFXParameters}"
+                                                               SearchText="{Binding SearchTextSNAcousticToneCommonMFX, Mode=TwoWay}" />
+                                </TabItem>
                                 <TabItem Header="Partials" IsVisible="{Binding SelectedPresetIsPCMSynthTone}">
                                     <TabControl
                                         ItemsSource="{Binding PcmSynthTonePartialViewModels}"
@@ -242,6 +251,8 @@
                                         </TabControl.ContentTemplate>
                                     </TabControl>
                                 </TabItem>
+                                <!-- SNAcoustic doesn't have partials -->
+                                
                             </TabControl>
                         </StackPanel>
                     </StackPanel>

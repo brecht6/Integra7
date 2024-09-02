@@ -147,6 +147,20 @@ public class Integra7Domain
             $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary SuperNATURAL Synth Tone",
             $"Offset2/SuperNATURAL Synth Tone Partial {zeroBasedPartial + 1}")];
     }
+
+    public DomainBase SNAcousticToneCommon(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary SuperNATURAL Acoustic Tone",
+            "Offset2/SuperNATURAL Acoustic Tone Common")];
+    }
+    
+    public DomainBase SNAcousticToneCommonMFX(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary SuperNATURAL Acoustic Tone",
+            "Offset2/SuperNATURAL Acoustic Tone Common MFX")];
+    }
     
     public Integra7Domain(IIntegra7Api integra7Api, Integra7StartAddresses i7startAddresses,
         Integra7Parameters i7parameters)
@@ -284,6 +298,16 @@ public class Integra7Domain
                     new Tuple<string, string, string>(part.StartAddressName, part.OffsetAddressName,
                         part.Offset2AddressName)] = part;
             }
+            
+            DomainBase snatonecommon = new DomainSNAcousticToneCommon(i, integra7Api, i7startAddresses, i7parameters);
+            _parameterMapper[
+                new Tuple<string, string, string>(snatonecommon.StartAddressName,
+                    snatonecommon.OffsetAddressName, snatonecommon.Offset2AddressName)] = snatonecommon;
+            
+            DomainBase snatonemfx = new DomainSNAcousticToneCommonMFX(i, integra7Api, i7startAddresses, i7parameters);
+            _parameterMapper[
+                new Tuple<string, string, string>(snatonemfx.StartAddressName, snatonemfx.OffsetAddressName,
+                    snatonemfx.Offset2AddressName)] = snatonemfx;
         }
         
         _sysexAddressMapper = [];

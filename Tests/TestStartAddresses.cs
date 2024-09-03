@@ -32,22 +32,22 @@ public class StartAddressesTests
     [Test]
     public void TestPcmDrumKitPartials()
     {
-        byte[] data = _a.Lookup("Offset2/PCM Drum Kit Partial 21").Address;
+        byte[] data = _a.Lookup("Offset2/PCM Drum Kit Partial 1").Address;
         Assert.That(data, Is.EquivalentTo((byte[])[0x00, 0x10, 0x00]));
-        byte[] data2 = _a.Lookup("Offset2/PCM Drum Kit Partial 77").Address;
+        byte[] data2 = _a.Lookup("Offset2/PCM Drum Kit Partial 57").Address;
         Assert.That(data2, Is.EquivalentTo((byte[])[0x01, 0x00, 0x00]));
-        byte[] data3 = _a.Lookup("Offset2/PCM Drum Kit Partial 108").Address;
+        byte[] data3 = _a.Lookup("Offset2/PCM Drum Kit Partial 88").Address;
         Assert.That(data3, Is.EquivalentTo((byte[])[0x01, 0x3e, 0x00]));
-        Assert.That(_a.Exists("Offset2/PCM Drum Kit Partial 109"), Is.EqualTo(false));
+        Assert.That(_a.Exists("Offset2/PCM Drum Kit Partial 89"), Is.EqualTo(false));
     }
 
     [Test]
     public void TestSnDrumKitPartials()
     {
-        byte[] data = _a.Lookup("Offset2/SuperNATURAL Drum Kit Partial 27").Address;
+        byte[] data = _a.Lookup("Offset2/SuperNATURAL Drum Kit Partial 1").Address;
         Assert.That(data, Is.EquivalentTo((byte[])[0x00, 0x10, 0x00]));
-        byte[] data2 = _a.Lookup("Offset2/SuperNATURAL Drum Kit Partial 88").Address;
+        byte[] data2 = _a.Lookup("Offset2/SuperNATURAL Drum Kit Partial 62").Address;
         Assert.That(data2, Is.EquivalentTo((byte[])[0x00, 0x4d, 0x00]));
-        Assert.That(_a.Exists("Offset2/SuperNATURAL Drum Kit Partial 89"), Is.EqualTo(false));
+        Assert.That(_a.Exists("Offset2/SuperNATURAL Drum Kit Partial 63"), Is.EqualTo(false));
     }
 }

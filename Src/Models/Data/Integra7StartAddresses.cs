@@ -78,7 +78,7 @@ public class Integra7StartAddresses
             ["Offset2/SuperNATURAL Acoustic Tone Common MFX"] = new(addr: [0x00, 0x02, 0x00]),
 
             ["Offset2/SuperNATURAL Drum Kit Common"] = new(addr: [0x00, 0x00, 0x00]),
-            ["Offset2/SuperNATURAL Drum Kit MFX"] = new(addr: [0x00, 0x02, 0x00]),
+            ["Offset2/SuperNATURAL Drum Kit Common MFX"] = new(addr: [0x00, 0x02, 0x00]),
             ["Offset2/SuperNATURAL Drum Kit Common Comp-EQ"] = new(addr: [0x00, 0x08, 0x00]),
         };
 
@@ -105,26 +105,26 @@ public class Integra7StartAddresses
                 new(addr: Offset_SN_SynthTone_Partial(i));
         }
 
-        for (byte i = 27; i < 89; i++)
+        for (byte i = 0; i < Constants.NO_OF_PARTIALS_SN_DRUM; i++)
         {
-            _startAddresses[$"Offset2/SuperNATURAL Drum Kit Partial {i}"] = new(addr: Offset_SN_DrumKit_Partial_Key(i));
+            _startAddresses[$"Offset2/SuperNATURAL Drum Kit Partial {i + 1}"] = new(addr: Offset_SN_DrumKit_Partial_Key(i));
         }
     }
 
-    private static byte[] Offset_StudioSet_MIDI_Ch(byte ZeroBasedChannel)
+    private static byte[] Offset_StudioSet_MIDI_Ch(byte zeroBasedChannel)
     {
         byte[] final = [0x00, 0x10, 0x00];
-        for (byte b = 0; b < ZeroBasedChannel; b++)
+        for (byte b = 0; b < zeroBasedChannel; b++)
         {
             final = ByteUtils.AddressWithOffset(final, [0x01, 0x00]);
         }
         return final;
     }
 
-    private static byte[] Offset_StudioSet_Part(byte ZeroBasedPart)
+    private static byte[] Offset_StudioSet_Part(byte zeroBasedPart)
     {
         byte[] final = [0x00, 0x20, 00];
-        for (byte b = 0; b < ZeroBasedPart; b++)
+        for (byte b = 0; b < zeroBasedPart; b++)
         {
             final = ByteUtils.AddressWithOffset(final, [0x01, 0x00]);
         }
@@ -132,10 +132,10 @@ public class Integra7StartAddresses
         return final;
     }
 
-    private static byte[] Offset_StudioSet_Part_EQ(byte ZeroBasedPart)
+    private static byte[] Offset_StudioSet_Part_EQ(byte zeroBasedPart)
     {
         byte[] final = [0x00, 0x50, 0x00];
-        for (byte b = 0; b < ZeroBasedPart; b++)
+        for (byte b = 0; b < zeroBasedPart; b++)
         {
             final = ByteUtils.AddressWithOffset(final, [0x01, 0x00]);
         }
@@ -143,37 +143,36 @@ public class Integra7StartAddresses
         return final;
     }
 
-    private static byte[] Offset_PCM_SynthTone_Partial(int ZeroBasedPartial)
+    private static byte[] Offset_PCM_SynthTone_Partial(int zeroBasedPartial)
     {
-        Debug.Assert(ZeroBasedPartial >= 0);
-        Debug.Assert(ZeroBasedPartial <= 3);
+        Debug.Assert(zeroBasedPartial >= 0);
+        Debug.Assert(zeroBasedPartial < Constants.NO_OF_PARTIALS_PCM_SYNTH_TONE);
         byte[] final = [0x00, 0x20, 0x00];
-        for (int i = 0; i < ZeroBasedPartial; i++)
+        for (int i = 0; i < zeroBasedPartial; i++)
         {
             final = ByteUtils.AddressWithOffset(final, [0x02, 0x00]);
         }
-
         return final;
     }
 
-    private static byte[] Offset_PCM_DrumKit_Partial_Key(int KeyNumber)
+    private static byte[] Offset_PCM_DrumKit_Partial_Key(int zeroBasedPartial)
     {
-        Debug.Assert(KeyNumber >= 0);
-        Debug.Assert(KeyNumber < 88);
+        Debug.Assert(zeroBasedPartial >= 0);
+        Debug.Assert(zeroBasedPartial < Constants.NO_OF_PARTIALS_PCM_DRUM);
         long final = ByteUtils.Bytes7ToInt([0x00, 0x10, 0x00]);
-        for (int i = 0; i < KeyNumber; i++)
+        for (int i = 0; i < zeroBasedPartial; i++)
         {
             final += ByteUtils.Bytes7ToInt([0x02, 0x00]);
         }
         return ByteUtils.IntToBytes7_3(final);
     }
 
-    private static byte[] Offset_SN_DrumKit_Partial_Key(int KeyNumber)
+    private static byte[] Offset_SN_DrumKit_Partial_Key(int zeroBasedPartial)
     {
-        Debug.Assert(KeyNumber >= 27);
-        Debug.Assert(KeyNumber <= 88);
+        Debug.Assert(zeroBasedPartial >= 0);
+        Debug.Assert(zeroBasedPartial < Constants.NO_OF_PARTIALS_SN_DRUM);
         byte[] final = [0x00, 0x10, 0x00];
-        for (int i = 27; i < KeyNumber; i++)
+        for (int i = 0; i < zeroBasedPartial; i++)
         {
             final = ByteUtils.AddressWithOffset(final, [0x00, 0x01, 0x00]);
         }
@@ -181,12 +180,12 @@ public class Integra7StartAddresses
         return final;
     }
 
-    private static byte[] Offset_SN_SynthTone_Partial(int ZeroBasedPartial)
+    private static byte[] Offset_SN_SynthTone_Partial(int zeroBasedPartial)
     {
-        Debug.Assert(ZeroBasedPartial >= 0);
-        Debug.Assert(ZeroBasedPartial <= 2);
+        Debug.Assert(zeroBasedPartial >= 0);
+        Debug.Assert(zeroBasedPartial < Constants.NO_OF_PARTIALS_SN_SYNTH_TONE);
         byte[] final = [0x00, 0x20, 0x00];
-        for (int i = 0; i < ZeroBasedPartial; i++)
+        for (int i = 0; i < zeroBasedPartial; i++)
         {
             final = ByteUtils.AddressWithOffset(final, [0x00, 0x01, 0x00]);
         }

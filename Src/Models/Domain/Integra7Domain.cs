@@ -162,6 +162,34 @@ public class Integra7Domain
             "Offset2/SuperNATURAL Acoustic Tone Common MFX")];
     }
     
+    public DomainBase SNDrumKitCommon(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary SuperNATURAL Drum Kit",
+            "Offset2/SuperNATURAL Drum Kit Common")];
+    }
+    public DomainBase SNDrumKitCommonMFX(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary SuperNATURAL Drum Kit",
+            "Offset2/SuperNATURAL Drum Kit Common MFX")];
+    }
+
+    public DomainBase SNDrumKitCompEQ(int zeroBasedPartNo)
+    {
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary SuperNATURAL Drum Kit",
+            "Offset2/SuperNATURAL Drum Kit Common Comp-EQ")];
+    }
+
+    public DomainBase SNDrumKitPartial(int zeroBasedPartNo, int zeroBasedPartial)
+    {
+        return _parameterMapper[new Tuple<string, string, string>(
+            $"Temporary Tone Part {zeroBasedPartNo + 1}", "Offset/Temporary SuperNATURAL Drum Kit",
+            $"Offset2/SuperNATURAL Drum Kit Partial {zeroBasedPartial + 1}")];
+    }
+
+    
     public Integra7Domain(IIntegra7Api integra7Api, Integra7StartAddresses i7startAddresses,
         Integra7Parameters i7parameters)
     {
@@ -308,6 +336,29 @@ public class Integra7Domain
             _parameterMapper[
                 new Tuple<string, string, string>(snatonemfx.StartAddressName, snatonemfx.OffsetAddressName,
                     snatonemfx.Offset2AddressName)] = snatonemfx;
+            
+            DomainBase sndcommon = new DomainSNDrumKitCommon(i, integra7Api, i7startAddresses, i7parameters);
+            _parameterMapper[
+                new Tuple<string, string, string>(sndcommon.StartAddressName,
+                    sndcommon.OffsetAddressName, sndcommon.Offset2AddressName)] = sndcommon;
+
+            DomainBase sndcommonmfx = new DomainSNDrumKitCommonMFX(i, integra7Api, i7startAddresses, i7parameters);
+            _parameterMapper[
+                new Tuple<string, string, string>(sndcommonmfx.StartAddressName, sndcommonmfx.OffsetAddressName,
+                    sndcommonmfx.Offset2AddressName)] = sndcommonmfx;
+            
+            DomainBase sndcommoncompeq = new DomainSNDrumKitCommonCompEQ(i, integra7Api, i7startAddresses, i7parameters);
+            _parameterMapper[
+                new Tuple<string, string, string>(sndcommoncompeq.StartAddressName, sndcommoncompeq.OffsetAddressName,
+                    sndcommoncompeq.Offset2AddressName)] = sndcommoncompeq;
+
+            for (int j = 0; j < Constants.NO_OF_PARTIALS_SN_DRUM; j++)
+            {
+                DomainBase part = new DomainSNDrumKitPartial(i, j, integra7Api, i7startAddresses, i7parameters);
+                _parameterMapper[
+                    new Tuple<string, string, string>(part.StartAddressName, part.OffsetAddressName, 
+                        part.Offset2AddressName)] = part;
+            }
         }
         
         _sysexAddressMapper = [];

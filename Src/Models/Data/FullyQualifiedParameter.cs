@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -202,7 +203,6 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
 
     public void DebugLog()
     {
-        /*
         StringBuilder hex = new StringBuilder(ParSpec.Address.Length * 2);
         for (int i = 0; i < ParSpec.Address.Length; i++)
         {
@@ -232,6 +232,5 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
         {
             Debug.WriteLine($"[DebugLog] {Wrn} parameter {ParSpec.Path} at parameter address {address} has value \"{StringValue}\"");
         }
-        */
     }
 }

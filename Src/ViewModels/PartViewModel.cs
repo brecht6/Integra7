@@ -112,6 +112,11 @@ public partial class PartViewModel : ViewModelBase
     //
     private ReadOnlyObservableCollection<PartialViewModel>? _SNSynthTonePartialViewModels;
     public ReadOnlyObservableCollection<PartialViewModel>? SNSynthTonePartialViewModels => _SNSynthTonePartialViewModels;
+    
+    //
+    private ReadOnlyObservableCollection<PartialViewModel>? _SNDrumKitPartialViewModels;
+    public ReadOnlyObservableCollection<PartialViewModel>? SNDrumKitPartialViewModels => _SNDrumKitPartialViewModels;
+    
 
     //
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheSNAcousticToneCommonParameters = new(x => x.ParSpec.Path);
@@ -123,6 +128,21 @@ public partial class PartViewModel : ViewModelBase
     private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _SNAcousticToneCommonMFXParameters = new([]);
     public ReadOnlyObservableCollection<FullyQualifiedParameter> SNAcousticToneCommonMFXParameters => _SNAcousticToneCommonMFXParameters;
     
+    //
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheSNDrumKitCommonParameters = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _SNDrumKitCommonParameters = new([]);
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> SNDrumKitCommonParameters => _SNDrumKitCommonParameters;
+    
+    //
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheSNDrumKitCommonMFXParameters = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _SNDrumKitCommonMFXParameters = new([]);
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> SNDrumKitCommonMFXParameters => _SNDrumKitCommonMFXParameters;
+    
+    //
+    private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheSNDrumKitCompEQParameters = new(x => x.ParSpec.Path);
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _SNDrumKitCompEQParameters = new([]);
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> SNDrumKitCompEQParameters => _SNDrumKitCompEQParameters;
+
     private byte _part;
     public byte PartNo => _part;
 
@@ -130,6 +150,7 @@ public partial class PartViewModel : ViewModelBase
     public bool SelectedPresetIsPCMDrumKit => _selectedPreset is null ? false : _selectedPreset.ToneTypeStr == "PCMD";
     public bool SelectedPresetIsSNSynthTone => _selectedPreset is null ? false : _selectedPreset.ToneTypeStr == "SN-S";
     public bool SelectedPresetIsSNAcousticTone => _selectedPreset is null ? false : _selectedPreset.ToneTypeStr == "SN-A";
+    public bool SelectedPresetIsSNDrumKit => _selectedPreset is null ? false : _selectedPreset.ToneTypeStr == "SN-D";
 
     [Reactive] private string _searchTextPreset = "";
     [Reactive] private string _searchTextStudioSetMidi = "";
@@ -166,6 +187,13 @@ public partial class PartViewModel : ViewModelBase
     [Reactive] private string _searchTextSNAcousticToneCommonMFX = "";
     [Reactive] private string _refreshSNAcousticToneCommonMFX = "";
     
+    [Reactive] private string _searchTextSNDrumKitCommon = "";
+    [Reactive] private string _refreshSNDrumKitCommon = "";
+    [Reactive] private string _searchTextSNDrumKitCommonMFX = "";
+    [Reactive] private string _refreshSNDrumKitCommonMFX = "";
+    [Reactive] private string _searchTextSNDrumKitCompEQ = "";
+    [Reactive] private string _refreshSNDrumKitCompEQ = "";
+    
     public string Header => _commonTab ? "Common" : $"Part {_part + 1}";
 
     IDisposable? _cleanupPresets;
@@ -188,6 +216,11 @@ public partial class PartViewModel : ViewModelBase
     
     IDisposable? _cleanupSNAcousticToneCommonParams;
     IDisposable? _cleanupSNAcousticToneCommonMFXParams;
+    
+    IDisposable? _cleanupSNDrumKitCommonParams;
+    IDisposable? _cleanupSNDrumKitCommon2Params;
+    IDisposable? _cleanupSNDrumKitCommonMFXParams;
+    IDisposable? _cleanupSNDrumKitCompEQParametersParams;
 
     [Reactive]
     private string _searchTextSetup = "";
@@ -300,6 +333,13 @@ public partial class PartViewModel : ViewModelBase
                 pvm.I7Domain = value;
             }
         }
+        if (_SNDrumKitPartialViewModels != null)
+        {
+            foreach (PartialViewModel pvm in _SNDrumKitPartialViewModels)
+            {
+                pvm.I7Domain = value;
+            }
+        }
     }
     private void UpdatePartialViewModelToneTypeStrings(Integra7Preset p)
     {
@@ -320,6 +360,13 @@ public partial class PartViewModel : ViewModelBase
         if (_SNSynthTonePartialViewModels != null)
         {
             foreach (var pvm in _SNSynthTonePartialViewModels)
+            {
+                pvm.UpdateToneTypeString(p.ToneTypeStr);
+            }
+        }
+        if (_SNDrumKitPartialViewModels != null)
+        {
+            foreach (var pvm in _SNDrumKitPartialViewModels)
             {
                 pvm.UpdateToneTypeString(p.ToneTypeStr);
             }
@@ -414,30 +461,48 @@ public partial class PartViewModel : ViewModelBase
             var refreshFilterPCMDrumKitCompEQParameters = this.WhenAnyValue(x => x.RefreshPCMDrumKitCompEQ)
                                                 .Select(FilterProvider.ParameterFilter);
             var parFilterSNSynthToneCommonParameters = this.WhenAnyValue(x => x.SearchTextSNSynthToneCommon)
-                .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
-                .DistinctUntilChanged()
-                .Select(FilterProvider.ParameterFilter);
+                                                .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+                                                .DistinctUntilChanged()
+                                                .Select(FilterProvider.ParameterFilter);
             var refreshFilterSNSynthToneCommonParameters = this.WhenAnyValue(x => x.RefreshSNSynthToneCommon)
-                .Select(FilterProvider.ParameterFilter);
+                                                .Select(FilterProvider.ParameterFilter);
             var parFilterSNSynthToneCommonMFXParameters = this.WhenAnyValue(x => x.SearchTextSNSynthToneCommonMFX)
-                .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
-                .DistinctUntilChanged()
-                .Select(FilterProvider.ParameterFilter);
+                                                .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+                                                .DistinctUntilChanged()
+                                                .Select(FilterProvider.ParameterFilter);
             var refreshFilterSNSynthToneCommonMFXParameters = this.WhenAnyValue(x => x.RefreshSNSynthToneCommonMFX)
-                .Select(FilterProvider.ParameterFilter);
+                                                .Select(FilterProvider.ParameterFilter);
             
             var parFilterSNAcousticToneCommonParameters = this.WhenAnyValue(x => x.SearchTextSNAcousticToneCommon)
-                .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
-                .DistinctUntilChanged()
-                .Select(FilterProvider.ParameterFilter);
+                                                .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+                                                .DistinctUntilChanged()
+                                                .Select(FilterProvider.ParameterFilter);
             var refreshFilterSNAcousticToneCommonParameters = this.WhenAnyValue(x => x.RefreshSNAcousticToneCommon)
-                .Select(FilterProvider.ParameterFilter);
+                                                .Select(FilterProvider.ParameterFilter);
             var parFilterSNAcousticToneCommonMFXParameters = this.WhenAnyValue(x => x.SearchTextSNAcousticToneCommonMFX)
-                .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
-                .DistinctUntilChanged()
-                .Select(FilterProvider.ParameterFilter);
+                                                .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+                                                .DistinctUntilChanged()
+                                                .Select(FilterProvider.ParameterFilter);
             var refreshFilterSNAcousticToneCommonMFXParameters = this.WhenAnyValue(x => x.RefreshSNAcousticToneCommonMFX)
-                .Select(FilterProvider.ParameterFilter);
+                                                .Select(FilterProvider.ParameterFilter);
+            var parFilterSNDrumKitCommonParameters = this.WhenAnyValue(x => x.SearchTextSNDrumKitCommon)
+                                                .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+                                                .DistinctUntilChanged()
+                                                .Select(FilterProvider.ParameterFilter);
+            var refreshFilterSNDrumKitCommon = this.WhenAnyValue(x => x.RefreshSNDrumKitCommon)
+                                                .Select(FilterProvider.ParameterFilter);
+            var parFilterSNDrumKitCommonMFXParameters = this.WhenAnyValue(x => x.SearchTextSNDrumKitCommonMFX)
+                                                .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+                                                .DistinctUntilChanged()
+                                                .Select(FilterProvider.ParameterFilter);
+            var refreshFilterSNDrumKitCommonMFX = this.WhenAnyValue(x => x.RefreshSNDrumKitCommonMFX)
+                                                .Select(FilterProvider.ParameterFilter);
+            var parFilterSNDrumKitCompEQParameters = this.WhenAnyValue(x => x.SearchTextSNDrumKitCompEQ)
+                                                .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+                                                .DistinctUntilChanged()
+                                                .Select(FilterProvider.ParameterFilter);
+            var refreshFilterSNDrumKitCompEQParameters = this.WhenAnyValue(x => x.RefreshSNDrumKitCompEQ)
+                                                .Select(FilterProvider.ParameterFilter);
 
             
             _cleanupPresets = _sourceCachePresets.Connect()
@@ -661,85 +726,146 @@ public partial class PartViewModel : ViewModelBase
                                         .DisposeMany()
                                         .Subscribe();
             _cleanupSNSynthToneCommonParams = _sourceCacheSNSynthToneCommonParameters.Connect()
-                .Filter(refreshFilterSNSynthToneCommonParameters)
-                .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
-                .Filter(parFilterSNSynthToneCommonParameters)
-                .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
-                    ? _sourceCacheSNSynthToneCommonParameters
-                        .Watch(parentId)
-                        .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
-                    : Observable.Return(true))
-                .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
-                    ? _sourceCacheSNSynthToneCommonParameters
-                        .Watch(parentId2)
-                        .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
-                    : Observable.Return(true))
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .SortAndBind(
-                    out _SNSynthToneCommonParameters,
-                    SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
-                .DisposeMany()
-                .Subscribe();
-            _cleanupSNSynthToneCommonMFXParams = _sourceCacheSNSynthToneCommonMFXParameters.Connect()
-                .Filter(refreshFilterSNSynthToneCommonMFXParameters)
-                .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
-                .Filter(parFilterSNSynthToneCommonMFXParameters)
-                .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
-                    ? _sourceCacheSNSynthToneCommonMFXParameters
-                        .Watch(parentId)
-                        .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
-                    : Observable.Return(true))
-                .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
-                    ? _sourceCacheSNSynthToneCommonMFXParameters
-                        .Watch(parentId2)
-                        .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
-                    : Observable.Return(true))
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .SortAndBind(
-                    out _SNSynthToneCommonMFXParameters,
-                    SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
-                .DisposeMany()
-                .Subscribe();
+                                        .Filter(refreshFilterSNSynthToneCommonParameters)
+                                        .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+                                        .Filter(parFilterSNSynthToneCommonParameters)
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheSNSynthToneCommonParameters
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheSNSynthToneCommonParameters
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                        .ObserveOn(RxApp.MainThreadScheduler)
+                                        .SortAndBind(
+                                            out _SNSynthToneCommonParameters,
+                                            SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                        .DisposeMany()
+                                        .Subscribe();
+                                    _cleanupSNSynthToneCommonMFXParams = _sourceCacheSNSynthToneCommonMFXParameters.Connect()
+                                        .Filter(refreshFilterSNSynthToneCommonMFXParameters)
+                                        .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+                                        .Filter(parFilterSNSynthToneCommonMFXParameters)
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheSNSynthToneCommonMFXParameters
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheSNSynthToneCommonMFXParameters
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                        .ObserveOn(RxApp.MainThreadScheduler)
+                                        .SortAndBind(
+                                            out _SNSynthToneCommonMFXParameters,
+                                            SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                        .DisposeMany()
+                                        .Subscribe();
             _cleanupSNAcousticToneCommonParams = _sourceCacheSNAcousticToneCommonParameters.Connect()
-                .Filter(refreshFilterSNAcousticToneCommonParameters)
-                .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
-                .Filter(parFilterSNAcousticToneCommonParameters)
-                .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
-                    ? _sourceCacheSNAcousticToneCommonParameters
-                        .Watch(parentId)
-                        .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
-                    : Observable.Return(true))
-                .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
-                    ? _sourceCacheSNAcousticToneCommonParameters
-                        .Watch(parentId2)
-                        .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
-                    : Observable.Return(true))
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .SortAndBind(
-                    out _SNAcousticToneCommonParameters,
-                    SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
-                .DisposeMany()
-                .Subscribe();
-            _cleanupSNAcousticToneCommonMFXParams = _sourceCacheSNAcousticToneCommonMFXParameters.Connect()
-                .Filter(refreshFilterSNAcousticToneCommonMFXParameters)
-                .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
-                .Filter(parFilterSNAcousticToneCommonMFXParameters)
-                .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
-                    ? _sourceCacheSNAcousticToneCommonMFXParameters
-                        .Watch(parentId)
-                        .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
-                    : Observable.Return(true))
-                .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
-                    ? _sourceCacheSNAcousticToneCommonMFXParameters
-                        .Watch(parentId2)
-                        .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
-                    : Observable.Return(true))
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .SortAndBind(
-                    out _SNAcousticToneCommonMFXParameters,
-                    SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
-                .DisposeMany()
-                .Subscribe();            
+                                        .Filter(refreshFilterSNAcousticToneCommonParameters)
+                                        .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+                                        .Filter(parFilterSNAcousticToneCommonParameters)
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheSNAcousticToneCommonParameters
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheSNAcousticToneCommonParameters
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                        .ObserveOn(RxApp.MainThreadScheduler)
+                                        .SortAndBind(
+                                            out _SNAcousticToneCommonParameters,
+                                            SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                        .DisposeMany()
+                                        .Subscribe();
+                                    _cleanupSNAcousticToneCommonMFXParams = _sourceCacheSNAcousticToneCommonMFXParameters.Connect()
+                                        .Filter(refreshFilterSNAcousticToneCommonMFXParameters)
+                                        .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+                                        .Filter(parFilterSNAcousticToneCommonMFXParameters)
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                            ? _sourceCacheSNAcousticToneCommonMFXParameters
+                                                .Watch(parentId)
+                                                .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                            : Observable.Return(true))
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                            ? _sourceCacheSNAcousticToneCommonMFXParameters
+                                                .Watch(parentId2)
+                                                .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                            : Observable.Return(true))
+                                        .ObserveOn(RxApp.MainThreadScheduler)
+                                        .SortAndBind(
+                                            out _SNAcousticToneCommonMFXParameters,
+                                            SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                        .DisposeMany()
+                                        .Subscribe();
+            
+            _cleanupSNDrumKitCommonParams = _sourceCacheSNDrumKitCommonParameters.Connect()
+                                        .Filter(refreshFilterSNDrumKitCommon)
+                                        .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+                                        .Filter(parFilterSNDrumKitCommonParameters)
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                                ? _sourceCacheSNDrumKitCommonParameters
+                                                    .Watch(parentId)
+                                                    .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                                : Observable.Return(true))
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                                ? _sourceCacheSNDrumKitCommonParameters
+                                                    .Watch(parentId2)
+                                                    .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                                : Observable.Return(true))
+                                        .ObserveOn(RxApp.MainThreadScheduler)
+                                        .SortAndBind(
+                                            out _SNDrumKitCommonParameters,
+                                            SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                        .DisposeMany()
+                                        .Subscribe();
+            _cleanupSNDrumKitCommonMFXParams = _sourceCacheSNDrumKitCommonMFXParameters.Connect()
+                                        .Filter(refreshFilterSNDrumKitCommonMFX)
+                                        .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+                                        .Filter(parFilterSNDrumKitCommonMFXParameters)
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                                ? _sourceCacheSNDrumKitCommonMFXParameters
+                                                    .Watch(parentId)
+                                                    .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                                : Observable.Return(true))
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                                ? _sourceCacheSNDrumKitCommonMFXParameters
+                                                    .Watch(parentId2)
+                                                    .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                                : Observable.Return(true))
+                                        .ObserveOn(RxApp.MainThreadScheduler)
+                                        .SortAndBind(
+                                            out _SNDrumKitCommonMFXParameters,
+                                            SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                        .DisposeMany()
+                                        .Subscribe();
+            _cleanupSNDrumKitCompEQParametersParams = _sourceCacheSNDrumKitCompEQParameters.Connect()
+                                        .Filter(refreshFilterSNDrumKitCompEQParameters)
+                                        .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+                                        .Filter(parFilterSNDrumKitCompEQParameters)
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl != "") && (par.ParSpec.ParentCtrl is string parentId))
+                                                ? _sourceCacheSNDrumKitCompEQParameters
+                                                    .Watch(parentId)
+                                                    .Select(parentChange => parentChange.Current.StringValue == par.ParSpec.ParentCtrlDispValue)
+                                                : Observable.Return(true))
+                                        .FilterOnObservable(par => ((par.ParSpec.ParentCtrl2 != "") && (par.ParSpec.ParentCtrl2 is string parentId2))
+                                                ? _sourceCacheSNDrumKitCompEQParameters
+                                                    .Watch(parentId2)
+                                                    .Select(parentChange2 => parentChange2.Current.StringValue == par.ParSpec.ParentCtrlDispValue2)
+                                                : Observable.Return(true))
+                                        .ObserveOn(RxApp.MainThreadScheduler)
+                                        .SortAndBind(
+                                            out _SNDrumKitCompEQParameters,
+                                            SortExpressionComparer<FullyQualifiedParameter>.Ascending(t => ByteUtils.Bytes7ToInt(t.ParSpec.Address)))
+                                        .DisposeMany()
+                                        .Subscribe();
         }
         else
         {
@@ -959,7 +1085,6 @@ public partial class PartViewModel : ViewModelBase
                     RefreshPCMSynthTonePMT = ".";
                     RefreshPCMSynthTonePMT = SearchTextPCMSynthTonePMT;
                 }
-                
                 else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && Offset2AddressName == "Offset2/PCM Drum Kit Common")
                 {
                     RefreshPCMDrumKitCommon = ".";
@@ -975,7 +1100,7 @@ public partial class PartViewModel : ViewModelBase
                     RefreshPCMDrumKitCommonMFX = ".";
                     RefreshPCMDrumKitCommonMFX = SearchTextPCMDrumKitCommonMFX;
                 }
-                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && Offset2AddressName == "Offset2/PCM Drum Kit Partial Mix Table")
+                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && Offset2AddressName == "Offset2/PCM Drum Kit Common Comp-EQ")
                 {
                     RefreshPCMDrumKitCompEQ = ".";
                     RefreshPCMDrumKitCompEQ = SearchTextPCMDrumKitCompEQ;
@@ -1003,6 +1128,21 @@ public partial class PartViewModel : ViewModelBase
                 {
                     RefreshSNAcousticToneCommonMFX = ".";
                     RefreshSNAcousticToneCommonMFX = SearchTextSNAcousticToneCommonMFX;
+                }
+                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && Offset2AddressName == "Offset2/SuperNATURAL Drum Kit Common")
+                {
+                    RefreshSNDrumKitCommon = ".";
+                    RefreshSNDrumKitCommon = SearchTextSNDrumKitCommon;
+                }
+                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && Offset2AddressName == "Offset2/SuperNATURAL Drum Kit Common MFX")
+                {
+                    RefreshSNDrumKitCommonMFX = ".";
+                    RefreshSNDrumKitCommonMFX = SearchTextSNDrumKitCommonMFX;
+                }
+                else if (StartAddressName == $"Temporary Tone Part {_part + 1}" && Offset2AddressName == "Offset2/SuperNATURAL Drum Kit Common Comp-EQ")
+                {
+                    RefreshSNDrumKitCompEQ = ".";
+                    RefreshSNDrumKitCompEQ = SearchTextSNDrumKitCompEQ;
                 }
                 
                 if (IsPartTab && ParPath.Contains("Tone Bank Select") || ParPath.Contains("Tone Bank Program Number"))
@@ -1032,6 +1172,13 @@ public partial class PartViewModel : ViewModelBase
             if (_SNSynthTonePartialViewModels != null && _selectedPreset?.ToneTypeStr == "SN-S")
             {
                 foreach (PartialViewModel pvm in _SNSynthTonePartialViewModels)
+                {
+                    pvm.ForceUiRefresh(StartAddressName, OffsetAddressName, Offset2AddressName, ParPath, ResyncNeeded);
+                }
+            }
+            if (_SNDrumKitPartialViewModels != null && _selectedPreset?.ToneTypeStr == "SN-D")
+            {
+                foreach (PartialViewModel pvm in _SNDrumKitPartialViewModels)
                 {
                     pvm.ForceUiRefresh(StartAddressName, OffsetAddressName, Offset2AddressName, ParPath, ResyncNeeded);
                 }
@@ -1084,6 +1231,11 @@ public partial class PartViewModel : ViewModelBase
             {
                 _i7domain.SNAcousticToneCommon(_part).ReadFromIntegra();
                 _i7domain.SNAcousticToneCommonMFX(_part).ReadFromIntegra();
+            } else if (_selectedPreset?.ToneTypeStr == "SN-D")
+            {
+                _i7domain.SNDrumKitCommon(_part).ReadFromIntegra();
+                _i7domain.SNDrumKitCommonMFX(_part).ReadFromIntegra();
+                _i7domain.SNDrumKitCompEQ(_part).ReadFromIntegra();
             }
             
             ObservableCollection<PartialViewModel> pvm = [];
@@ -1128,6 +1280,20 @@ public partial class PartViewModel : ViewModelBase
                 p.InitializeParameterSourceCaches();
             }
             
+            ObservableCollection<PartialViewModel> pvm4 = [];
+            for (byte i = 0; i < Constants.NO_OF_PARTIALS_SN_DRUM; i++)
+            {
+                pvm4.Add(new SNDrumKitPartialViewModel(this, _part, i, 
+                    _selectedPreset?.ToneTypeStr,
+                    _i7startAddresses, _i7parameters, _i7Api,
+                    _i7domain));
+            }
+            _SNDrumKitPartialViewModels = new ReadOnlyObservableCollection<PartialViewModel>(pvm4);
+            foreach (PartialViewModel p in _SNDrumKitPartialViewModels)
+            {
+                p.InitializeParameterSourceCaches();
+            }
+            
             List<FullyQualifiedParameter> p_pcmstc = _i7domain.PCMSynthToneCommon(_part).GetRelevantParameters(true, true);
             _sourceCachePCMSynthToneCommonParameters.AddOrUpdate(p_pcmstc);
             List<FullyQualifiedParameter> p_pcmstc2 = _i7domain.PCMSynthToneCommon2(_part).GetRelevantParameters(true, true);
@@ -1155,7 +1321,13 @@ public partial class PartViewModel : ViewModelBase
             _sourceCacheSNAcousticToneCommonParameters.AddOrUpdate(p_snatc);
             List<FullyQualifiedParameter> p_snamfx = _i7domain.SNAcousticToneCommonMFX(_part).GetRelevantParameters(true, true);
             _sourceCacheSNAcousticToneCommonMFXParameters.AddOrUpdate(p_snamfx);
-
+            
+            List<FullyQualifiedParameter> p_sndkc = _i7domain.SNDrumKitCommon(_part).GetRelevantParameters(true, true);
+            _sourceCacheSNDrumKitCommonParameters.AddOrUpdate(p_sndkc);
+            List<FullyQualifiedParameter> p_sndkmfx = _i7domain.SNDrumKitCommonMFX(_part).GetRelevantParameters(true, true);
+            _sourceCacheSNDrumKitCommonMFXParameters.AddOrUpdate(p_sndkmfx);
+            List<FullyQualifiedParameter> p_sncompeq = _i7domain.SNDrumKitCompEQ(_part).GetRelevantParameters(true, true);
+            _sourceCacheSNDrumKitCompEQParameters.AddOrUpdate(p_sncompeq);
         }
         else
         {
@@ -1291,10 +1463,27 @@ public partial class PartViewModel : ViewModelBase
             setSNAMFX.ReadFromIntegra();
             ForceUiRefresh(setSNAMFX.StartAddressName, setSNAMFX.OffsetAddressName, setSNAMFX.Offset2AddressName, "", false);
         }
+        else if (_selectedPreset.ToneTypeStr == "SN-D")
+        {
+            DomainBase setSNDKit = _i7domain?.SNDrumKitCommon(part);
+            setSNDKit.ReadFromIntegra();
+            ForceUiRefresh(setSNDKit.StartAddressName, setSNDKit.OffsetAddressName, setSNDKit.Offset2AddressName, "", false);
+            DomainBase setSNDMfx = _i7domain?.SNDrumKitCommonMFX(part);
+            setSNDMfx.ReadFromIntegra();
+            ForceUiRefresh(setSNDMfx.StartAddressName, setSNDMfx.OffsetAddressName, setSNDMfx.Offset2AddressName, "", false);
+            DomainBase setSNDCompeq = _i7domain?.SNDrumKitCompEQ(part);
+            setSNDCompeq.ReadFromIntegra();
+            ForceUiRefresh(setSNDCompeq.StartAddressName, setSNDCompeq.OffsetAddressName, setSNDCompeq.Offset2AddressName, "", false);
+            foreach (PartialViewModel p in _SNDrumKitPartialViewModels)
+            {
+                p.ResyncPart(part);
+            }
+        }
         PreSelectConfiguredPreset(setPart);
         this.RaisePropertyChanged(nameof(SelectedPresetIsPCMSynthTone));
         this.RaisePropertyChanged(nameof(SelectedPresetIsPCMDrumKit));
         this.RaisePropertyChanged(nameof(SelectedPresetIsSNSynthTone));
         this.RaisePropertyChanged(nameof(SelectedPresetIsSNAcousticTone));
+        this.RaisePropertyChanged(nameof(SelectedPresetIsSNDrumKit));
     }
 }

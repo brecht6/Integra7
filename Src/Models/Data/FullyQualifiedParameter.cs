@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
 using Integra7AuralAlchemist.Models.Services;
+using Serilog;
 
 namespace Integra7AuralAlchemist.Models.Data;
 
@@ -149,7 +150,7 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
         }
         else
         {
-            Debug.WriteLine(
+            Log.Error(
                 $"Sysex msg out of data while trying to parse {_parspec.Path} from sysex reply. Are we looking at the wrong reply?");
         }
     }
@@ -226,11 +227,11 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
             {
                 mapped = Mapping.linlin(mapped, ParSpec.IMin2, ParSpec.IMax2, ParSpec.OMin2, ParSpec.OMax2);
             }
-            Debug.WriteLine($"[DebugLog] {Wrn} parameter {ParSpec.Path} at parameter address {address} has value raw {RawNumericValue}, mapped {Math.Round(mapped, 2)}, (meaning: {StringValue}{unit})");
+            Log.Debug($"{Wrn} parameter {ParSpec.Path} at parameter address {address} has value raw {RawNumericValue}, mapped {Math.Round(mapped, 2)}, (meaning: {StringValue}{unit})");
         }
         else
         {
-            Debug.WriteLine($"[DebugLog] {Wrn} parameter {ParSpec.Path} at parameter address {address} has value \"{StringValue}\"");
+            Log.Debug($"{Wrn} parameter {ParSpec.Path} at parameter address {address} has value \"{StringValue}\"");
         }
     }
 }

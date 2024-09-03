@@ -11,6 +11,7 @@ using Integra7AuralAlchemist.Models.Domain;
 using Integra7AuralAlchemist.Models.Services;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
+using Serilog;
 
 namespace Integra7AuralAlchemist.ViewModels;
 
@@ -87,12 +88,21 @@ public partial class MainWindowViewModel : ViewModelBase
         Connected = integra7Api.ConnectionOk();
         if (_connected)
         {
+            Log.Information("Connected to Integra7");
             MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING + " with device id " + integra7Api.DeviceId().ToString("x2");
             _integra7Communicator = new Integra7Domain(integra7Api, _i7startAddresses, _i7parameters);
             
             ObservableCollection<PartViewModel> pvm = [];
             for (byte i = 0; i < 17; i++)
             {
+                if (i == 0)
+                {
+                    Log.Information("Creating view model for common tab.");
+                }
+                else
+                {
+                    Log.Information($"Creating view model for tab part {i}.");   
+                }
                 bool commonTab = i == 0;
                 pvm.Add(new PartViewModel(this, commonTab ? (byte)255 : (byte)(i - 1),
                     _i7startAddresses, _i7parameters, Integra7,
@@ -102,6 +112,7 @@ public partial class MainWindowViewModel : ViewModelBase
         }
         else
         {
+            Log.Information("Failed to connect to Integra7");
             MidiDevices = "Could not find " + INTEGRA_CONNECTION_STRING;
         }
         RescanButtonEnabled = !_connected;

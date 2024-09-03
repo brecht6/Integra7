@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
+using Serilog;
 
 namespace Integra7AuralAlchemist.Models.Domain;
 
@@ -406,7 +407,7 @@ public class Integra7Domain
         Tuple<string, string, string> key = new(p.Start, p.Offset, p.Offset2);
         if (!_parameterMapper.ContainsKey(key))
         {
-            Debug.WriteLine(
+            Log.Error(
                 $"Error. Integra7 doesn't know parameters with start address {p.Start} and offset address {p.Offset}. Please extend or fix.");
             return;
         }
@@ -425,7 +426,7 @@ public class Integra7Domain
         Tuple<string, string, string> key = new(StartAddressName, OffsetAddressName, Offset2AddressName);
         if (!_parameterMapper.ContainsKey(key))
         {
-            Debug.WriteLine(
+            Log.Error(
                 $"Error. Integra7 doesn't know parameters with start address {StartAddressName}, offset address {OffsetAddressName} and offset2 address {Offset2AddressName}. Please extend or fix.");
             return _parameterMapper.First().Value;
         }

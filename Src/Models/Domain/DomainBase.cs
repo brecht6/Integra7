@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
+using Serilog;
 
 namespace Integra7AuralAlchemist.Models.Domain;
 
@@ -40,6 +41,7 @@ public class DomainBase
 
     public void ReadFromIntegra()
     {
+        Log.Debug($"Reading range of parameters (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2} between {_domainParameters[0].ParSpec.Path} and {_domainParameters.Last().ParSpec.Path} from integra.");
         FullyQualifiedParameterRange r = new FullyQualifiedParameterRange(_domainParameters[0].Start,
                                                                           _domainParameters[0].Offset,
                                                                           _domainParameters[0].Offset2,
@@ -54,6 +56,7 @@ public class DomainBase
 
     public void WriteToIntegra()
     {
+        Log.Debug($"Writing range of parameters (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2} between {_domainParameters[0].ParSpec.Path} and {_domainParameters.Last().ParSpec.Path} to integra.");
         FullyQualifiedParameterRange r = new FullyQualifiedParameterRange(_domainParameters[0].Start,
                                                                           _domainParameters[0].Offset,
                                                                           _domainParameters[0].Offset2,
@@ -65,6 +68,7 @@ public class DomainBase
 
     public FullyQualifiedParameter? ReadFromIntegra(string parameterName)
     {
+        Log.Debug($"Reading single parameter {parameterName}, (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2}) from integra.");
         bool found = false;
         ParserContext ctx = new ParserContext();
         ctx.InitializeFromExistingData(_domainParameters);
@@ -82,13 +86,14 @@ public class DomainBase
         }
         if (!found)
         {
-            Debug.WriteLine($"parameter {parameterName} does not exist, or is not valid in the current context.");
+            Log.Error($"parameter {parameterName} does not exist, or is not valid in the current context.");
         }
         return null;
     }
 
     public void WriteToIntegra(string parameterName)
     {
+        Log.Debug($"Writing single parameter {parameterName}, (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2}) to integra.");
         bool found = false;
         ParserContext ctx = new ParserContext();
         ctx.InitializeFromExistingData(_domainParameters);
@@ -104,7 +109,7 @@ public class DomainBase
         }
         if (!found)
         {
-            Debug.WriteLine($"parameter {parameterName} does not exist, or is not valid in the current context.");
+            Log.Error($"parameter {parameterName} does not exist, or is not valid in the current context.");
         }
     }
 
@@ -116,6 +121,7 @@ public class DomainBase
 
     public string LookupSingleParameterDisplayedValue(string parameterName)
     {
+        Log.Debug($"Look up value of parameter {parameterName}");
         ParserContext ctx = new ParserContext();
         ctx.InitializeFromExistingData(_domainParameters);
 
@@ -127,6 +133,7 @@ public class DomainBase
                 return p.StringValue;
             }
         }
+        Log.Error($"Could not find the value of parameter {parameterName}");
         return "";
     }
 

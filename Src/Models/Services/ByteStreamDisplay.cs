@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Text;
+using Serilog;
 
 public class ByteStreamDisplay
 {
@@ -11,6 +12,6 @@ public class ByteStreamDisplay
         {
             hex.AppendFormat("{0:x2} ", data[i]);
         }
-        Debug.WriteLine(hex.ToString());
+        Log.Debug(hex.ToString());
     }
 }

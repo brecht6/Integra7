@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Integra7AuralAlchemist.Models.Services;
+using Serilog;
 
 namespace Integra7AuralAlchemist.Models.Data;
 
@@ -79,7 +80,7 @@ public class FullyQualifiedParameterRange
         }
         else
         {
-            Debug.WriteLine("Unfortunately, no reply received after making a sysex data request. This may indicate a bug in the program, e.g. requesting parameters for a PCM synth tone if no PCM synth patch is active or having multiple instances of the application running at the same time.");
+            Log.Error("Unfortunately, no reply received after making a sysex data request. This may indicate a bug in the program, e.g. requesting parameters for a PCM synth tone if no PCM synth patch is active or having multiple instances of the application running at the same time.");
         }
     }
 

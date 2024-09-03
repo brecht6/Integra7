@@ -9,6 +9,7 @@ using Integra7AuralAlchemist.Models.Domain;
 using Integra7AuralAlchemist.Models.Services;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
+using Serilog;
 
 namespace Integra7AuralAlchemist.ViewModels;
 public partial class PartViewModel : ViewModelBase
@@ -1038,6 +1039,7 @@ public partial class PartViewModel : ViewModelBase
         {
             if (IsCommonTab)
             {
+                Log.Debug("UI Refresh Requested for Common Tab");
                 if (Offset2AddressName == "Offset2/Studio Set Common Chorus")
                 {
                     // force re-evaluation of the dynamic data filters after the parameters were read from integra-7
@@ -1055,6 +1057,7 @@ public partial class PartViewModel : ViewModelBase
             }
             else if (IsPartTab)
             {
+                Log.Debug($"UI Refresh Requested for Part {_part + 1} Tab");
                 if (Offset2AddressName == $"Offset2/Studio Set Part {_part + 1}")
                 {
                     RefreshStudioSetPart = ".";

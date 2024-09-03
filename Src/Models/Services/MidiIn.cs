@@ -5,6 +5,7 @@ using System.Threading;
 using Commons.Music.Midi;
 using Integra7AuralAlchemist.Models.Data;
 using ReactiveUI;
+using Serilog;
 
 namespace Integra7AuralAlchemist.Models.Services;
 public interface IMidiIn
@@ -62,8 +63,12 @@ public class MidiIn : IMidiIn
         if (!_manualReplyHandling)
         {
             if (Integra7SysexHelpers.CheckIsDataSetMsg(e.Data))
+            {
+                Log.Debug("Request UpdateSysexSpec");
                 MessageBus.Current.SendMessage(new UpdateFromSysexSpec(e.Data), "hw2ui");
+            }
             else if (Integra7Api.CheckIsPartOfPresetChange(e.Data, out byte midiChannel)) {
+                Log.Debug($"Request UpdateSetPresetandResyncPart for channel {midiChannel}");
                 MessageBus.Current.SendMessage(new UpdateSetPresetAndResyncPart(midiChannel));
             }
         }

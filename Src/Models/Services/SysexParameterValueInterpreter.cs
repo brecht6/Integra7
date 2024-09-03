@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using Integra7AuralAlchemist.Models.Data;
+using Serilog;
 
 namespace Integra7AuralAlchemist.Models.Services;
 
@@ -52,7 +53,7 @@ public class SysexParameterValueInterpreter
                 else
                 {
                     //Debug.Assert(false, $"mapped value {key} for par {parspec.Path} not found in {parspec.Repr.Keys}");
-                    Debug.WriteLine($"ERROR: mapped value {key} for par {parspec.Path} not found in {parspec.Repr.Keys}");
+                    Log.Debug($"ERROR: mapped value {key} for par {parspec.Path} not found in {parspec.Repr.Keys}");
                 }
 
             }

@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using Commons.Music.Midi;
+using Serilog;
 
 namespace Integra7AuralAlchemist.Models.Services;
 
@@ -49,7 +50,7 @@ public class MidiOut : IMidiOut
             {
                 if (_access is null)
                 {
-                    Debug.Write("_access is null... cannot complete the following: ");
+                    Log.Debug("_access is null... cannot complete the following: ");
                 }
                 ByteStreamDisplay.Display("Sent: ", data);
             }

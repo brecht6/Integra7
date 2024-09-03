@@ -41,7 +41,7 @@ public class DomainBase
 
     public void ReadFromIntegra()
     {
-        Log.Debug($"Reading range of parameters (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2} between {_domainParameters[0].ParSpec.Path} and {_domainParameters.Last().ParSpec.Path} from integra.");
+        Log.Debug($"Reading range of parameters (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}, offset2 address: {_domainParameters[0].Offset2}) between {_domainParameters[0].ParSpec.Path} and {_domainParameters.Last().ParSpec.Path} from integra.");
         FullyQualifiedParameterRange r = new FullyQualifiedParameterRange(_domainParameters[0].Start,
                                                                           _domainParameters[0].Offset,
                                                                           _domainParameters[0].Offset2,

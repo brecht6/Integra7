@@ -26,13 +26,9 @@
                       Grid.Row="1"
                       VerticalScrollBarVisibility="Visible"
                       HorizontalScrollBarVisibility="Auto">
-            <ItemsRepeater ItemsSource="{Binding #ParameterCollectionControl.Parameters}"
+            <ItemsControl ItemsSource="{Binding #ParameterCollectionControl.Parameters}"
                            MaxWidth="550">
-                <ItemsRepeater.Layout>
-                    <StackLayout Spacing="5"
-                                 Orientation="Vertical" />
-                </ItemsRepeater.Layout>
-                <ItemsRepeater.ItemTemplate>
+                <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid ColumnDefinitions="270,*"
                               RowDefinitions="Auto">
@@ -47,8 +43,8 @@
                                             ContentTemplate="{x:Static dataTemplates:DataTemplateProvider.ParameterValueTemplate}" />
                         </Grid>
                     </DataTemplate>
-                </ItemsRepeater.ItemTemplate>
-            </ItemsRepeater>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
     </Grid>
 </UserControl>

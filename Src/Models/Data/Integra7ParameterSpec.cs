@@ -83,9 +83,9 @@ public class Integra7ParameterSpec
             else
             {
                 AvaloniaList<double> ticks = [];
-                for (long i = (long)_omin; i < (long)(_omax + 1); i++)
+                for (long i = (long)_imin; i <= (long)(_imax); i++)
                 {
-                    ticks.Add(i);
+                    ticks.Add(Mapping.linlin(i, _imin, _imax, _omin, _omax));
                 }
                 return ticks;
             }

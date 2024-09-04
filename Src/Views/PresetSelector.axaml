@@ -23,6 +23,7 @@
                   ItemsSource="{Binding #PresetSelectorControl.Presets}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
+                  SelectedItem="{Binding #PresetSelectorControl.SelectedPreset, Mode=OneWay}"
                   CellPointerPressed="PresetDataGrid_CellPointerPressed"
                   Height="650">
                   

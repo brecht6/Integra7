@@ -231,6 +231,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public void SetPresetAndResyncPart(byte part)
     {
+        
         if (_partViewModels != null)
         {
             foreach (PartViewModel pvm in _partViewModels)
@@ -239,7 +240,7 @@ public partial class MainWindowViewModel : ViewModelBase
                 {
                     DomainBase b = _integra7Communicator.StudioSetPart(part);
                     b.ReadFromIntegra();
-                    pvm.PreSelectConfiguredPreset(b, true);
+                    pvm.PreSelectConfiguredPreset(b);
                     pvm.ResyncPart(part);
   
                 } 

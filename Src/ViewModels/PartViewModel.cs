@@ -288,10 +288,10 @@ public partial class PartViewModel : ViewModelBase
         if (_selectedPreset is null && _part != 255)
         {
             _i7domain.StudioSetPart(_part).ReadFromIntegra();
-            PreSelectConfiguredPreset(_i7domain.StudioSetPart(_part), true);
+            PreSelectConfiguredPreset(_i7domain.StudioSetPart(_part));
         }
     }
-    public void PreSelectConfiguredPreset(DomainBase b, bool Silent=false)
+    public void PreSelectConfiguredPreset(DomainBase b)
     {
         string msbstr = b.LookupSingleParameterDisplayedValue("Studio Set Part/Tone Bank Select MSB");
         string lsbstr = b.LookupSingleParameterDisplayedValue("Studio Set Part/Tone Bank Select LSB");
@@ -300,12 +300,8 @@ public partial class PartViewModel : ViewModelBase
         {
             if (msbstr == $"{p.Msb}" && lsbstr == $"{p.Lsb}" && pcstr == $"{p.Pc - 1}") // note: seems like integra-7 sends back a one-based program change (PC)??
             {
-                _selectedPreset = p;
                 UpdatePartialViewModelToneTypeStrings(p);
-                if (!Silent)
-                {
-                    this.RaisePropertyChanged(nameof(SelectedPreset));   
-                }
+                SelectedPreset = p;
                 return;
             }
         }
@@ -1208,7 +1204,7 @@ public partial class PartViewModel : ViewModelBase
             _i7domain.StudioSetPart(_part).ReadFromIntegra();
             List<FullyQualifiedParameter> p_part = _i7domain.StudioSetPart(_part).GetRelevantParameters(true, true);
             _sourceCacheStudioSetPartParameters.AddOrUpdate(p_part);
-            PreSelectConfiguredPreset(_i7domain.StudioSetPart(_part), true);
+            PreSelectConfiguredPreset(_i7domain.StudioSetPart(_part));
 
             _i7domain.StudioSetPartEQ(_part).ReadFromIntegra();
             List<FullyQualifiedParameter> p_parteq = _i7domain.StudioSetPartEQ(_part).GetRelevantParameters(true, true);
@@ -1373,7 +1369,7 @@ public partial class PartViewModel : ViewModelBase
             {
                 _selectedPreset = value;
                 ChangePreset();
-                this.RaisePropertyChanged();
+                this.RaisePropertyChanged(nameof(SelectedPreset));
             }
         }
     }
@@ -1404,7 +1400,7 @@ public partial class PartViewModel : ViewModelBase
         ForceUiRefresh(midiPart.StartAddressName, midiPart.OffsetAddressName, midiPart.Offset2AddressName, "", false /* don't cause inf loop */);
         DomainBase setPart = _i7domain?.StudioSetPart(part);
         setPart.ReadFromIntegra();
-        PreSelectConfiguredPreset(setPart, true);
+        PreSelectConfiguredPreset(setPart);
         ForceUiRefresh(setPart.StartAddressName, setPart.OffsetAddressName, setPart.Offset2AddressName, "", false /* don't cause inf loop */);
         if (_selectedPreset.ToneTypeStr == "PCMS")
         {

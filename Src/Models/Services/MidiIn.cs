@@ -57,7 +57,6 @@ public class MidiIn : IMidiIn
         Debug.Assert(e.Length != 0);
         Array.Copy(e.Data, localCopy, e.Length);
         Array.Copy(localCopy, _replyData, e.Length);
-        _replyReady.Set();
         if (Verbose)
         {
             ByteStreamDisplay.Display("Received: ", localCopy);
@@ -70,11 +69,12 @@ public class MidiIn : IMidiIn
                 MessageBus.Current.SendMessage(new UpdateFromSysexSpec((localCopy)), "hw2ui");
             }
             else if (Integra7Api.CheckIsPartOfPresetChange(localCopy, out byte midiChannel)) {
-                Log.Debug($"Request UpdateSetPresetandResyncPart for channel {midiChannel}");
+                Log.Debug($"Request UpdateSSetPresetandResyncPart for channel {midiChannel}");
                 MessageBus.Current.SendMessage(new UpdateSetPresetAndResyncPart(midiChannel));
             }
         }
         _manualReplyHandling = false;
+        _replyReady.Set();
     }
 
     public byte[] GetReply()

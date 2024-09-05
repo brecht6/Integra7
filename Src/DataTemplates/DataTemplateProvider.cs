@@ -34,13 +34,14 @@ public static class DataTemplateProvider
                 c.IsChecked = p.StringValue == p.ParSpec.Repr[1];
                 c.IsCheckedChanged += (s, e) =>
                 {
-                    if (s is CheckBox checkBox)
+                    if (s is ToggleSwitch checkBox)
                     {
                         string msg = "OFF";
                         if (checkBox?.IsChecked ?? false)
                         {
                             msg = "ON";
                         }
+                        //Debug.WriteLine($"ToggleSwitch {p.ParSpec.Path} changed to {msg}");
                         MessageBus.Current.SendMessage(new UpdateMessageSpec(p, msg), "ui2hw");
                     }
                 };

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
@@ -72,6 +73,12 @@ public static class DataTemplateProvider
                 IsSnapToTickEnabled = true,
                 Ticks = p.ParSpec.Ticks,
             };
+            if (p.ParSpec.Ticks.First() > p.ParSpec.Ticks.Last())
+            {
+                //s.IsDirectionReversed = true;
+                s.Minimum = p.ParSpec.OMax2;
+                s.Maximum = p.ParSpec.OMin2;
+            }
             if (double.TryParse(p.StringValue, out double LValue))
             {
                 s.Value = Math.Round(LValue, 2);
@@ -122,6 +129,12 @@ public static class DataTemplateProvider
                 IsSnapToTickEnabled = true,
                 Ticks = p.ParSpec.Ticks,
             };
+            if (p.ParSpec.Ticks.First() > p.ParSpec.Ticks.Last())
+            {
+                //s.IsDirectionReversed = true;
+                s.Minimum = p.ParSpec.OMax;
+                s.Maximum = p.ParSpec.OMin;
+            }
             if (double.TryParse(p.StringValue, out double LValue))
             {
                 s.Value = Math.Round(LValue, 2);

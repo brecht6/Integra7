@@ -109,6 +109,7 @@ public partial class MainWindowViewModel : ViewModelBase
                     _integra7Communicator, presets, commonTab));
             }
             _partViewModels = new ReadOnlyObservableCollection<PartViewModel>(pvm);
+            this.RaisePropertyChanged(nameof(PartViewModels));
         }
         else
         {

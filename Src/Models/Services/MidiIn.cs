@@ -53,21 +53,23 @@ public class MidiIn : IMidiIn
     {
         _replyReady.Reset();
         _replyData = new byte[e.Length];
+        var localCopy = new byte[e.Length];
         Debug.Assert(e.Length != 0);
-        Array.Copy(e.Data, _replyData, e.Length);
+        Array.Copy(e.Data, localCopy, e.Length);
+        Array.Copy(localCopy, _replyData, e.Length);
         _replyReady.Set();
         if (Verbose)
         {
-            ByteStreamDisplay.Display("Received: ", e.Data);
+            ByteStreamDisplay.Display("Received: ", localCopy);
         }
         if (!_manualReplyHandling)
         {
-            if (Integra7SysexHelpers.CheckIsDataSetMsg(e.Data))
+            if (Integra7SysexHelpers.CheckIsDataSetMsg(localCopy))
             {
                 Log.Debug("Request UpdateSysexSpec");
-                MessageBus.Current.SendMessage(new UpdateFromSysexSpec(e.Data), "hw2ui");
+                MessageBus.Current.SendMessage(new UpdateFromSysexSpec((localCopy)), "hw2ui");
             }
-            else if (Integra7Api.CheckIsPartOfPresetChange(e.Data, out byte midiChannel)) {
+            else if (Integra7Api.CheckIsPartOfPresetChange(localCopy, out byte midiChannel)) {
                 Log.Debug($"Request UpdateSetPresetandResyncPart for channel {midiChannel}");
                 MessageBus.Current.SendMessage(new UpdateSetPresetAndResyncPart(midiChannel));
             }

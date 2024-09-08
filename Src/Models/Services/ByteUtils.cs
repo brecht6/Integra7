@@ -18,6 +18,49 @@ public class ByteUtils
         return rv;
     }
 
+    public static int CountByte(byte[] array, byte value)
+    {
+        int count = 0;
+        foreach (byte b in array)
+        {
+            if (b == value)
+                count++;
+        }
+
+        return count;
+    }
+
+    public static int FindByte(byte[] array, byte value)
+    {
+        int idx = -1;
+        foreach (byte b in array)
+        {
+            idx++;
+            if (b == value)
+                return idx;
+        }
+        return -1;
+    }
+    
+    public static byte[][] SplitAfterF7(byte[] reply)
+    {
+        int no_of_f7 = CountByte(reply, 0xf7);
+        byte[][] result = new byte[no_of_f7+1][];
+        for (int i = 0; i < no_of_f7; i++)
+        { 
+            int idx = FindByte(reply, 0xf7);
+            if (idx != -1)
+            {
+                byte[] msg = Slice(reply, 0, idx+1);
+                result[i] = msg;
+                byte[] remainder = Slice(reply, msg.Length , reply.Length - idx - 1);
+                reply = remainder;
+            }
+        }
+
+        return result;
+    }
+
     public static byte LtlEnd_FirstByte7(long value)
     {
         Debug.Assert(value < 0x80000000);

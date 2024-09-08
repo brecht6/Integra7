@@ -13,7 +13,7 @@ public static class DataTemplateProvider
 {
     private static Control BuildParameterValuePresenter(FullyQualifiedParameter p)
     {
-        if (!p.IsNumeric)
+        if (!p.IsNumeric && !p.IsDiscrete)
         {
             TextBox b = new() { Text = p.StringValue, HorizontalAlignment = HorizontalAlignment.Left };
             b.PropertyChanged += (s, e) =>
@@ -25,6 +25,22 @@ public static class DataTemplateProvider
                 }
             };
             return b;
+        }
+
+        if (p.IsDiscrete)
+        {
+            ComboBox c = new();
+            foreach (var el in p.ParSpec.Discrete)
+            {
+                c.Items.Add(el.Item2);
+            }
+            c.SelectedItem = p.StringValue;
+            c.SelectionChanged += (s, e) =>
+            {
+                //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.RemovedItems[0]}\" to \"{e.AddedItems[0]}\"");
+                MessageBus.Current.SendMessage(new UpdateMessageSpec(p, $"{e.AddedItems[0]}"), "ui2hw");
+            };
+            return c;
         }
         if (p.ParSpec.Repr != null)
         {

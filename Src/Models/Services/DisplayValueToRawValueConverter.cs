@@ -59,6 +59,19 @@ public class DisplayValueToRawValueConverter
             }
             p.StringValue = displayValue;
         }
+        else if (p.IsDiscrete)
+        {
+            foreach (var entry in p.ParSpec.Discrete)
+            {
+                if (entry.Item2 == displayValue)
+                {
+                    p.RawNumericValue = entry.Item1;
+                    break;
+                }
+            }
+
+            p.StringValue = displayValue;
+        }
         else
         {
             if (displayValue.Length > p.ParSpec.Bytes)

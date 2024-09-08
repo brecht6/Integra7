@@ -21,6 +21,10 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
 
     private bool _numeric;
     public bool IsNumeric => _numeric;
+    
+    private bool _discrete;
+    public bool IsDiscrete => _discrete;
+    
     private long _rawNumericValue;
 
     public long RawNumericValue
@@ -52,6 +56,7 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
         _offset2 = offset2;
         _parspec = parspec;
         _numeric = parspec.Type == Integra7ParameterSpec.SpecType.NUMERIC;
+        _discrete = parspec.Type == Integra7ParameterSpec.SpecType.DISCRETE;
     }
 
     public FullyQualifiedParameter(string start, string offset, string offset2, Integra7ParameterSpec parspec,
@@ -62,6 +67,7 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
         _offset2 = offset2;
         _parspec = parspec;
         _numeric = parspec.Type == Integra7ParameterSpec.SpecType.NUMERIC;
+        _discrete = parspec.Type == Integra7ParameterSpec.SpecType.DISCRETE;
         _rawNumericValue = rawNumericValue;
         _stringValue = stringValue;
     }
@@ -186,6 +192,11 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
 
             return sysex;
         }
+        
+        if (_discrete)
+        {
+            return (byte[]) [(byte)(_rawNumericValue >> 8), (byte)(_rawNumericValue & 0xff)];
+        }
 
         if (_stringValue.Length > _parspec.Bytes)
         {
@@ -228,6 +239,10 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
                 mapped = Mapping.linlin(mapped, ParSpec.IMin2, ParSpec.IMax2, ParSpec.OMin2, ParSpec.OMax2);
             }
             Log.Debug($"{Wrn} parameter {ParSpec.Path} at parameter address {address} has value raw {RawNumericValue}, mapped {Math.Round(mapped, 2)}, (meaning: {StringValue}{unit})");
+        }
+        else if (IsDiscrete)
+        {
+            Log.Debug($"{Wrn} parameter {ParSpec.Path} at parameter address {address} has value raw {RawNumericValue}, (meaning: {StringValue}{unit})");
         }
         else
         {

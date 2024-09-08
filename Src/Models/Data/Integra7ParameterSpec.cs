@@ -7,7 +7,7 @@ namespace Integra7AuralAlchemist.Models.Data;
 
 public class Integra7ParameterSpec
 {
-    public enum SpecType { NUMERIC, ASCII }
+    public enum SpecType { NUMERIC, ASCII, DISCRETE }
     private SpecType _type;
     public SpecType Type => _type;
     private string _path;
@@ -32,6 +32,10 @@ public class Integra7ParameterSpec
     public string Unit => _unit;
     private IDictionary<int, string>? _repr;
     public IDictionary<int, string>? Repr => _repr;
+
+    private List<Tuple<int, string>> _discrete;
+    public List<Tuple<int, string>> Discrete => _discrete;
+    
     private string _parentCtrlPath = "";
     public string ParentCtrl { get => _parentCtrlPath; set => _parentCtrlPath = value; }
     private string _parentCtrlDispValue = "";
@@ -56,7 +60,7 @@ public class Integra7ParameterSpec
     {
         get
         {
-            if (Type == SpecType.ASCII)
+            if (Type == SpecType.ASCII || Type == SpecType.DISCRETE)
             {
                 return [];
             }
@@ -92,7 +96,7 @@ public class Integra7ParameterSpec
         }
     }
 
-    public Integra7ParameterSpec(SpecType type, string path, byte[] offs, int imin, int imax, float omin, float omax, int bytes, bool res, bool nib, string unit, IDictionary<int, string>? repr, string par = "", string parval = "", bool isparent = false, string par2 = "", string parval2 = "", float imin2 = float.NaN, float imax2 = float.NaN, float omin2 = float.NaN, float omax2 = float.NaN)
+    public Integra7ParameterSpec(SpecType type, string path, byte[] offs, int imin, int imax, float omin, float omax, int bytes, bool res, bool nib, string unit, IDictionary<int, string>? repr, string par = "", string parval = "", bool isparent = false, string par2 = "", string parval2 = "", float imin2 = float.NaN, float imax2 = float.NaN, float omin2 = float.NaN, float omax2 = float.NaN, List<Tuple<int, string>>? discrete = null)
     {
         _type = type; // numeric or ascii?
         _path = path; // name of parameter
@@ -115,6 +119,7 @@ public class Integra7ParameterSpec
         _imax2 = imax2; // second level of output mapping, used in combination with generic chorus, reverb, mfx parameters
         _omin2 = omin2; // second level of output mapping, used in combination with generic chorus, reverb, mfx parameters
         _omax2 = omax2; // second level of output mapping, used in combination with generic chorus, reverb, mfx parameters
+        _discrete = discrete; // for a discrete list of items (typically with gaps)
     }
 
     public bool IsSameAs(Integra7ParameterSpec other)

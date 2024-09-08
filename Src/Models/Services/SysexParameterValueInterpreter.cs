@@ -11,6 +11,7 @@ public class SysexParameterValueInterpreter
     public static void Interpret(byte[] parResult, Integra7ParameterSpec? parspec, out long rawNumericValue, out string stringValue)
     {
         rawNumericValue = 0;
+        stringValue = "";
 
         if (parspec is null)
         {
@@ -56,6 +57,26 @@ public class SysexParameterValueInterpreter
                     Log.Debug($"ERROR: mapped value {key} for par {parspec.Path} not found in {parspec.Repr.Keys}");
                 }
 
+            }
+        }
+        else if (parspec.Type == Integra7ParameterSpec.SpecType.DISCRETE)
+        {
+            bool found = false;
+            long val = (parResult[0] << 8) + parResult[1];
+            foreach (Tuple<int, string> entry in parspec.Discrete)
+            {
+                if (entry.Item1 == val)
+                {
+                    found = true;
+                    rawNumericValue = val;
+                    stringValue = entry.Item2;
+                }
+            }
+            if (!found)
+            {
+                Log.Error($"Discrete value {val} has not known value for parameter {parspec.Path}. Choosing something else instead.");
+                rawNumericValue = parspec.Discrete[0].Item1;
+                stringValue = parspec.Discrete[0].Item2;
             }
         }
         else

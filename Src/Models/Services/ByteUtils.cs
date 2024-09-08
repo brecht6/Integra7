@@ -152,7 +152,7 @@ public class ByteUtils
             sum += data[i]; // (should should be data[i] mod 128 or data[i] & 0x7f but data[i] is 7-bit so this will always yield back data[i])
             sum &= 0x7f;
         }
-        int checksum = 0x80 - sum;
+        int checksum = (0x80 - sum) & 0x7f;
         return (byte)checksum;
     }
 

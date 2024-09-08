@@ -1227,7 +1227,7 @@ public partial class PartViewModel : ViewModelBase
         {
             if (IsCommonTab)
             {
-                Log.Debug("UI Refresh Requested for Common Tab");
+                //Log.Debug("UI Refresh Requested for Common Tab");
                 if (Offset2AddressName == "Offset2/Studio Set Common Chorus")
                 {
                     // force re-evaluation of the dynamic data filters after the parameters were read from integra-7
@@ -1245,7 +1245,7 @@ public partial class PartViewModel : ViewModelBase
             }
             else if (IsPartTab)
             {
-                Log.Debug($"UI Refresh Requested for Part {_part + 1} Tab");
+                //Log.Debug($"UI Refresh Requested for Part {_part + 1} Tab");
                 if (Offset2AddressName == $"Offset2/Studio Set Part {_part + 1}")
                 {
                     RefreshStudioSetPart = ".";

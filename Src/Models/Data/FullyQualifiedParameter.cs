@@ -195,7 +195,7 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
         
         if (_discrete)
         {
-            return (byte[]) [(byte)(_rawNumericValue >> 8), (byte)(_rawNumericValue & 0xff)];
+            return (byte[]) [(byte)((_rawNumericValue >> 8) & 0x7f), (byte)(_rawNumericValue & 0x7f)];
         }
 
         if (_stringValue.Length > _parspec.Bytes)

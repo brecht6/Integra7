@@ -20,6 +20,8 @@ public interface IIntegra7Api
     byte[] MakeDataRequest(byte[] address, long size);
     void MakeDataTransmission(byte[] address, byte[] data);
     void SendStopPreviewPhraseMsg();
+    void SendLoadSrx(byte srx_slot1, byte srx_slot2, byte srx_slot3, byte srx_slot4);
+    (byte, byte, byte, byte) GetLoadedSrx();
     void SendPlayPreviewPhraseMsg(byte channel);
 }
 
@@ -109,6 +111,26 @@ public class Integra7Api : IIntegra7Api
         byte[] start = Integra7SysexHelpers.MakePlayPreviewPhraseMsg(channel, _deviceId);
         _midiOut?.SafeSend(start);
     }
+
+    public void SendLoadSrx(byte srx_slot1, byte srx_slot2, byte srx_slot3, byte srx_slot4)
+    {
+        byte[] msg = Integra7SysexHelpers.MakeLoadSrxMsg(srx_slot1, srx_slot2, srx_slot3, srx_slot4, _deviceId);
+        _midiOut?.SafeSend(msg);
+    }
+
+    public (byte /*slot1*/, byte/* slot2*/, byte /*slot3*/, byte /*slot4*/) GetLoadedSrx()
+    {
+        byte[] msg = Integra7SysexHelpers.MakeAskLoadedSrxMsg(_deviceId);
+        _midiIn.AnnounceIntentionToManuallyHandleReply();
+        _midiOut?.SafeSend(msg);
+        byte[] reply = _midiIn?.GetReply().ToArray() ?? [];
+        if (reply.Length > 15)
+        {
+            return (reply[11], reply[12], reply[13], reply[14]);   
+        }
+        return (0, 0, 0, 0);
+    }
+    
     private void BankSelectMsb(byte Channel, int BankNumberMsb)
     {
         ISet<int> PossibleBankMsb = new HashSet<int> { 85, 86, 87, 88, 89, 92, 93, 95, 96, 97, 120, 121 };

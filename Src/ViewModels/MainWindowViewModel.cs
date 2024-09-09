@@ -83,11 +83,27 @@ public partial class MainWindowViewModel : ViewModelBase
         List<Integra7Preset> presets = LoadPresets();
         UpdateConnected(Integra7, presets);
     }
+
+    [Reactive] private int _srx_slot1;
+    [Reactive] private int _srx_slot2;
+    [Reactive] private int _srx_slot3;
+    [Reactive] private int _srx_slot4;
+
+    [ReactiveCommand]
+    public void LoadSrx()
+    {
+        if (_connected)
+        {
+            Integra7?.SendLoadSrx((byte)_srx_slot1, (byte)_srx_slot2, (byte)_srx_slot3, (byte)_srx_slot4);
+        }
+    }
+    
     private void UpdateConnected(IIntegra7Api integra7Api, List<Integra7Preset> presets)
     {
         Connected = integra7Api.ConnectionOk();
         if (_connected)
         {
+            (Srx_slot1, Srx_slot2, Srx_slot3, Srx_slot4) = integra7Api.GetLoadedSrx();
             Log.Information("Connected to Integra7");
             MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING + " with device id " + integra7Api.DeviceId().ToString("x2");
             _integra7Communicator = new Integra7Domain(integra7Api, _i7startAddresses, _i7parameters);

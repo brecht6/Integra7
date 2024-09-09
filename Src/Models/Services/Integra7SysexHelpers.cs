@@ -1,11 +1,35 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using Avalonia.Controls.Embedding.Offscreen;
 
 namespace Integra7AuralAlchemist.Models.Services;
 
 public class Integra7SysexHelpers
 {
+    public enum SrxIdForLoad
+    {
+        Off = 0,
+        Srx01 = 1,
+        Srx02 = 2,
+        Srx03 = 3,
+        Srx04 = 4,
+        Srx05 = 5,
+        Srx06 = 6,
+        Srx07 = 7,
+        Srx08 = 8,
+        Srx09 = 9,
+        Srx10 = 10,
+        Srx11 = 11,
+        Srx12 = 12,
+        ExSN1 = 13,
+        ExSN2 = 14,
+        ExSN3 = 15,
+        ExSN4 = 16,
+        ExSn5 = 17,
+        ExSN6 = 18,
+        HQPcm = 19
+    };
     private static byte[] EXCLUSIVE_STATUS = [0xF0];
     private static byte[] UNIVERSAL_NON_RT = [0x7e];
     private static byte[] SYSEX_GLOBAL_CH = [0x7f];
@@ -26,15 +50,29 @@ public class Integra7SysexHelpers
     public static byte[] IDENTITY_REPLY = ByteUtils.Flatten(EXCLUSIVE_STATUS, UNIVERSAL_NON_RT, DEVICE_ID, IDENTITY_GEN_INFO, IDENTITY_ID_REP, ROLAND_ID, ROLAND_DEVICE_FAMILY_CODE, ROLAND_DEVICE_FAMILY_NUMBER_CODE, ROLAND_DEVICE_FAMILY_SW_REV, END_OF_SYSEX);
 
 
-    public static byte[] MakeStopPreviewPhraseMsg(byte devicId)
+    public static byte[] MakeStopPreviewPhraseMsg(byte deviceId)
     {
-        return ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [devicId], MODEL_ID, COMMAND_DATASET,
+        return ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID, COMMAND_DATASET,
             [0x0f, 00, 0x20, 00, 0x0, 0x51], END_OF_SYSEX);
     }
     public static byte[] MakePlayPreviewPhraseMsg(byte channel, byte deviceId)
     {
         return ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID, COMMAND_DATASET,
             [0x0f, 00, 0x20, 00, (byte)(channel + 1), (byte)(0x50 - channel)], END_OF_SYSEX);
+    }
+
+    public static byte[] MakeLoadSrxMsg(byte slot1, byte slot2, byte slot3, byte slot4, byte deviceId)
+    {
+        byte[] payload = [0x0F, 0x00, 0x30, 0x00, slot1, slot2, slot3, slot4];
+        return ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID, COMMAND_DATAREQ,
+            payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX);
+    }
+
+    public static byte[] MakeAskLoadedSrxMsg(byte deviceId)
+    {
+        byte[] payload = [0x0F, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00];
+        return ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID, COMMAND_DATAREQ,
+            payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX);
     }
 
     public static bool CheckIdentityReply(byte[] reply, out byte deviceId)

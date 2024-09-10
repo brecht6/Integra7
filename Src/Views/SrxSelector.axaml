@@ -9,102 +9,491 @@
                 <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto, Auto, Auto, Auto">
                 <ComboBox Grid.Row="0" 
                           Grid.Column="0"
+                          Width="250"
+                          Margin="5"
                           SelectedIndex="{Binding Srx_slot1}">
                     <ComboBoxItem>Empty</ComboBoxItem>
-                    <ComboBoxItem>Srx01: Dynamic Drum Kits</ComboBoxItem>
-                    <ComboBoxItem>Srx02: Concert Piano</ComboBoxItem>
-                    <ComboBoxItem>Srx03: Studio SRX</ComboBoxItem>
-                    <ComboBoxItem>Srx04: Symphonique Strings</ComboBoxItem>
-                    <ComboBoxItem>Srx05: Supreme Dance</ComboBoxItem>
-                    <ComboBoxItem>Srx06: Complete Orchestra</ComboBoxItem>
-                    <ComboBoxItem>Srx07: Ultimate Keys</ComboBoxItem>
-                    <ComboBoxItem>Srx08: Platinum Trax</ComboBoxItem>
-                    <ComboBoxItem>Srx09: World Collection</ComboBoxItem>
-                    <ComboBoxItem>Srx10: Big Brass Ensemble</ComboBoxItem>
-                    <ComboBoxItem>Srx11: Complete Piano</ComboBoxItem>
-                    <ComboBoxItem>Srx12: Classic EPs</ComboBoxItem>
-                    <ComboBoxItem>ExSN1: Ethnic SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN2: WoodWinds SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN3: Session SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN4: A.Guitar SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSn5: Brass SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN6: SFX SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>HQPcm: HQ GM2+HQ Pcm (occupies all slots!)</ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx01.png"></Image>
+                            <TextBlock>Srx01: Dynamic Drum Kits</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx02.png"></Image>
+                            <TextBlock>Srx02: Concert Piano</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx03.png"></Image>
+                            <TextBlock>Srx03: Studio SRX</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx04.png"></Image>
+                            <TextBlock>Srx04: Symphonique Strings</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx05.png"></Image>
+                            <TextBlock>Srx05: Supreme Dance</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx06.png"></Image>
+                            <TextBlock>Srx06: Complete Orchestra</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx07.png"></Image>
+                            <TextBlock>Srx07: Ultimate Keys</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx08.png"></Image>
+                            <TextBlock>Srx08: Platinum Trax</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx09.png"></Image>
+                            <TextBlock>Srx09: World Collection</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx10.png"></Image>
+                            <TextBlock>Srx10: Big Brass Ensemble</TextBlock>    
+                        </StackPanel>                        
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx11.png"></Image>
+                            <TextBlock>Srx11: Complete Piano</TextBlock>    
+                        </StackPanel>                        
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx12.png"></Image>
+                            <TextBlock>Srx12: Classic EPs</TextBlock>    
+                        </StackPanel>                        
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn1.png"></Image>
+                            <TextBlock>ExSN1: Ethnic SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn2.png"></Image>
+                            <TextBlock>ExSN2: WoodWinds SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn3.png"></Image>
+                            <TextBlock>ExSN3: Session SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn4.png"></Image>
+                            <TextBlock>ExSN4: A.Guitar SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn5.png"></Image>
+                            <TextBlock>ExSn5: Brass SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn6.png"></Image>
+                            <TextBlock>ExSN6: SFX SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/pcmhq.png"></Image>
+                            <TextBlock>HQPcm: HQ GM2+HQ Pcm (uses all slots!)</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
                 </ComboBox>
                 <ComboBox Grid.Row="1" 
                           Grid.Column="0"
+                          Width="250"
+                          Margin="5"
                           SelectedIndex="{Binding Srx_slot2}">
                     <ComboBoxItem>Empty</ComboBoxItem>
-                    <ComboBoxItem>Srx01: Dynamic Drum Kits</ComboBoxItem>
-                    <ComboBoxItem>Srx02: Concert Piano</ComboBoxItem>
-                    <ComboBoxItem>Srx03: Studio SRX</ComboBoxItem>
-                    <ComboBoxItem>Srx04: Symphonique Strings</ComboBoxItem>
-                    <ComboBoxItem>Srx05: Supreme Dance</ComboBoxItem>
-                    <ComboBoxItem>Srx06: Complete Orchestra</ComboBoxItem>
-                    <ComboBoxItem>Srx07: Ultimate Keys</ComboBoxItem>
-                    <ComboBoxItem>Srx08: Platinum Trax</ComboBoxItem>
-                    <ComboBoxItem>Srx09: World Collection</ComboBoxItem>
-                    <ComboBoxItem>Srx10: Big Brass Ensemble</ComboBoxItem>
-                    <ComboBoxItem>Srx11: Complete Piano</ComboBoxItem>
-                    <ComboBoxItem>Srx12: Classic EPs</ComboBoxItem>
-                    <ComboBoxItem>ExSN1: Ethnic SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN2: WoodWinds SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN3: Session SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN4: A.Guitar SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSn5: Brass SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN6: SFX SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>HQPcm: HQ GM2+HQ Pcm (occupies all slots!)</ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx01.png"></Image>
+                            <TextBlock>Srx01: Dynamic Drum Kits</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx02.png"></Image>
+                            <TextBlock>Srx02: Concert Piano</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx03.png"></Image>
+                            <TextBlock>Srx03: Studio SRX</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx04.png"></Image>
+                            <TextBlock>Srx04: Symphonique Strings</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx05.png"></Image>
+                            <TextBlock>Srx05: Supreme Dance</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx06.png"></Image>
+                            <TextBlock>Srx06: Complete Orchestra</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx07.png"></Image>
+                            <TextBlock>Srx07: Ultimate Keys</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx08.png"></Image>
+                            <TextBlock>Srx08: Platinum Trax</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx09.png"></Image>
+                            <TextBlock>Srx09: World Collection</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx10.png"></Image>
+                            <TextBlock>Srx10: Big Brass Ensemble</TextBlock>    
+                        </StackPanel>                        
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx11.png"></Image>
+                            <TextBlock>Srx11: Complete Piano</TextBlock>    
+                        </StackPanel>                        
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx12.png"></Image>
+                            <TextBlock>Srx12: Classic EPs</TextBlock>    
+                        </StackPanel>                        
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn1.png"></Image>
+                            <TextBlock>ExSN1: Ethnic SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn2.png"></Image>
+                            <TextBlock>ExSN2: WoodWinds SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn3.png"></Image>
+                            <TextBlock>ExSN3: Session SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn4.png"></Image>
+                            <TextBlock>ExSN4: A.Guitar SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn5.png"></Image>
+                            <TextBlock>ExSn5: Brass SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn6.png"></Image>
+                            <TextBlock>ExSN6: SFX SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/pcmhq.png"></Image>
+                            <TextBlock>HQPcm: HQ GM2+HQ Pcm (uses all slots!)</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
                 </ComboBox>
                 <ComboBox Grid.Row="2" 
                           Grid.Column="0"
+                          Width="250"
+                          Margin="5"
                           SelectedIndex="{Binding Srx_slot3}">
                     <ComboBoxItem>Empty</ComboBoxItem>
-                    <ComboBoxItem>Srx01: Dynamic Drum Kits</ComboBoxItem>
-                    <ComboBoxItem>Srx02: Concert Piano</ComboBoxItem>
-                    <ComboBoxItem>Srx03: Studio SRX</ComboBoxItem>
-                    <ComboBoxItem>Srx04: Symphonique Strings</ComboBoxItem>
-                    <ComboBoxItem>Srx05: Supreme Dance</ComboBoxItem>
-                    <ComboBoxItem>Srx06: Complete Orchestra</ComboBoxItem>
-                    <ComboBoxItem>Srx07: Ultimate Keys</ComboBoxItem>
-                    <ComboBoxItem>Srx08: Platinum Trax</ComboBoxItem>
-                    <ComboBoxItem>Srx09: World Collection</ComboBoxItem>
-                    <ComboBoxItem>Srx10: Big Brass Ensemble</ComboBoxItem>
-                    <ComboBoxItem>Srx11: Complete Piano</ComboBoxItem>
-                    <ComboBoxItem>Srx12: Classic EPs</ComboBoxItem>
-                    <ComboBoxItem>ExSN1: Ethnic SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN2: WoodWinds SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN3: Session SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN4: A.Guitar SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSn5: Brass SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN6: SFX SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>HQPcm: HQ GM2+HQ Pcm (occupies all slots!)</ComboBoxItem>
-                </ComboBox>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx01.png"></Image>
+                            <TextBlock>Srx01: Dynamic Drum Kits</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx02.png"></Image>
+                            <TextBlock>Srx02: Concert Piano</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx03.png"></Image>
+                            <TextBlock>Srx03: Studio SRX</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx04.png"></Image>
+                            <TextBlock>Srx04: Symphonique Strings</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx05.png"></Image>
+                            <TextBlock>Srx05: Supreme Dance</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx06.png"></Image>
+                            <TextBlock>Srx06: Complete Orchestra</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx07.png"></Image>
+                            <TextBlock>Srx07: Ultimate Keys</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx08.png"></Image>
+                            <TextBlock>Srx08: Platinum Trax</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx09.png"></Image>
+                            <TextBlock>Srx09: World Collection</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx10.png"></Image>
+                            <TextBlock>Srx10: Big Brass Ensemble</TextBlock>    
+                        </StackPanel>                        
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx11.png"></Image>
+                            <TextBlock>Srx11: Complete Piano</TextBlock>    
+                        </StackPanel>                        
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx12.png"></Image>
+                            <TextBlock>Srx12: Classic EPs</TextBlock>    
+                        </StackPanel>                        
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn1.png"></Image>
+                            <TextBlock>ExSN1: Ethnic SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn2.png"></Image>
+                            <TextBlock>ExSN2: WoodWinds SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn3.png"></Image>
+                            <TextBlock>ExSN3: Session SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn4.png"></Image>
+                            <TextBlock>ExSN4: A.Guitar SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn5.png"></Image>
+                            <TextBlock>ExSn5: Brass SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn6.png"></Image>
+                            <TextBlock>ExSN6: SFX SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/pcmhq.png"></Image>
+                            <TextBlock>HQPcm: HQ GM2+HQ Pcm (uses all slots!)</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>                </ComboBox>
                 <ComboBox Grid.Row="3" 
                           Grid.Column="0"
+                          Width="250"
+                          Margin="5"
                           SelectedIndex="{Binding Srx_slot4}">
                     <ComboBoxItem>Empty</ComboBoxItem>
-                    <ComboBoxItem>Srx01: Dynamic Drum Kits</ComboBoxItem>
-                    <ComboBoxItem>Srx02: Concert Piano</ComboBoxItem>
-                    <ComboBoxItem>Srx03: Studio SRX</ComboBoxItem>
-                    <ComboBoxItem>Srx04: Symphonique Strings</ComboBoxItem>
-                    <ComboBoxItem>Srx05: Supreme Dance</ComboBoxItem>
-                    <ComboBoxItem>Srx06: Complete Orchestra</ComboBoxItem>
-                    <ComboBoxItem>Srx07: Ultimate Keys</ComboBoxItem>
-                    <ComboBoxItem>Srx08: Platinum Trax</ComboBoxItem>
-                    <ComboBoxItem>Srx09: World Collection</ComboBoxItem>
-                    <ComboBoxItem>Srx10: Big Brass Ensemble</ComboBoxItem>
-                    <ComboBoxItem>Srx11: Complete Piano</ComboBoxItem>
-                    <ComboBoxItem>Srx12: Classic EPs</ComboBoxItem>
-                    <ComboBoxItem>ExSN1: Ethnic SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN2: WoodWinds SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN3: Session SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN4: A.Guitar SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSn5: Brass SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>ExSN6: SFX SuperNATURAL</ComboBoxItem>
-                    <ComboBoxItem>HQPcm: HQ GM2+HQ Pcm (occupies all slots!)</ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx01.png"></Image>
+                            <TextBlock>Srx01: Dynamic Drum Kits</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx02.png"></Image>
+                            <TextBlock>Srx02: Concert Piano</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx03.png"></Image>
+                            <TextBlock>Srx03: Studio SRX</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx04.png"></Image>
+                            <TextBlock>Srx04: Symphonique Strings</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx05.png"></Image>
+                            <TextBlock>Srx05: Supreme Dance</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx06.png"></Image>
+                            <TextBlock>Srx06: Complete Orchestra</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx07.png"></Image>
+                            <TextBlock>Srx07: Ultimate Keys</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx08.png"></Image>
+                            <TextBlock>Srx08: Platinum Trax</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx09.png"></Image>
+                            <TextBlock>Srx09: World Collection</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx10.png"></Image>
+                            <TextBlock>Srx10: Big Brass Ensemble</TextBlock>    
+                        </StackPanel>                        
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx11.png"></Image>
+                            <TextBlock>Srx11: Complete Piano</TextBlock>    
+                        </StackPanel>                        
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/srx12.png"></Image>
+                            <TextBlock>Srx12: Classic EPs</TextBlock>    
+                        </StackPanel>                        
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn1.png"></Image>
+                            <TextBlock>ExSN1: Ethnic SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn2.png"></Image>
+                            <TextBlock>ExSN2: WoodWinds SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn3.png"></Image>
+                            <TextBlock>ExSN3: Session SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn4.png"></Image>
+                            <TextBlock>ExSN4: A.Guitar SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn5.png"></Image>
+                            <TextBlock>ExSn5: Brass SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/exsn6.png"></Image>
+                            <TextBlock>ExSN6: SFX SuperNATURAL</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Vertical">
+                            <Image Width = "121" Source="avares://Integra7AuralAlchemist/Assets/pictures/pcmhq.png"></Image>
+                            <TextBlock>HQPcm: HQ GM2+HQ Pcm (uses all slots!)</TextBlock>    
+                        </StackPanel>
+                    </ComboBoxItem>
                 </ComboBox>
                 <Button Grid.Row="4"
                         Grid.Column="0"
+                        Margin="5"
+                        HorizontalAlignment="Center"
                         Command="{Binding LoadSrx}">
                     Load selected SRX!
                 </Button>

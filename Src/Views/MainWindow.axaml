@@ -322,7 +322,7 @@
                 </TabControl>
             </Grid>
         </TabItem>
-        <TabItem Header="Librarian">
+        <TabItem Header="SRX Loader">
             <local:SrxSelector></local:SrxSelector>
         </TabItem>
     </TabControl>

@@ -25,8 +25,9 @@ public class DomainBase
 
     private readonly SemaphoreSlim _semaphore;
 
-    public DomainBase(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters, 
-        string startAddressName, string offsetAddressName, string offset2AddressName, string parameterNamePrefix, SemaphoreSlim semaphore)
+    public DomainBase(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters,
+        string startAddressName, string offsetAddressName, string offset2AddressName, string parameterNamePrefix,
+        SemaphoreSlim semaphore)
     {
         _integra7Api = integra7Api;
         _startAddresses = startAddresses;
@@ -39,18 +40,20 @@ public class DomainBase
         List<Integra7ParameterSpec> relevant = parameters.GetParametersWithPrefix(parameterNamePrefix);
         for (int i = 0; i < relevant.Count; i++)
         {
-            _domainParameters.Add(new FullyQualifiedParameter(startAddressName, offsetAddressName, offset2AddressName, relevant[i]));
+            _domainParameters.Add(new FullyQualifiedParameter(startAddressName, offsetAddressName, offset2AddressName,
+                relevant[i]));
         }
     }
 
     public async Task ReadFromIntegraAsync()
     {
-        Log.Debug($"Reading range of parameters (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}, offset2 address: {_domainParameters[0].Offset2}) between {_domainParameters[0].ParSpec.Path} and {_domainParameters.Last().ParSpec.Path} from integra.");
+        Log.Debug(
+            $"Reading range of parameters (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}, offset2 address: {_domainParameters[0].Offset2}) between {_domainParameters[0].ParSpec.Path} and {_domainParameters.Last().ParSpec.Path} from integra.");
         FullyQualifiedParameterRange r = new FullyQualifiedParameterRange(_domainParameters[0].Start,
-                                                                          _domainParameters[0].Offset,
-                                                                          _domainParameters[0].Offset2,
-                                                                          _domainParameters[0].ParSpec,
-                                                                          _domainParameters.Last().ParSpec);
+            _domainParameters[0].Offset,
+            _domainParameters[0].Offset2,
+            _domainParameters[0].ParSpec,
+            _domainParameters.Last().ParSpec);
         await r.RetrieveFromIntegraAsync(_integra7Api, _startAddresses, _parameters);
         for (int i = 0; i < r.Range.Count; i++)
         {
@@ -60,19 +63,21 @@ public class DomainBase
 
     public async Task WriteToIntegraAsync()
     {
-        Log.Debug($"Writing range of parameters (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2} between {_domainParameters[0].ParSpec.Path} and {_domainParameters.Last().ParSpec.Path} to integra.");
+        Log.Debug(
+            $"Writing range of parameters (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2} between {_domainParameters[0].ParSpec.Path} and {_domainParameters.Last().ParSpec.Path} to integra.");
         FullyQualifiedParameterRange r = new FullyQualifiedParameterRange(_domainParameters[0].Start,
-                                                                          _domainParameters[0].Offset,
-                                                                          _domainParameters[0].Offset2,
-                                                                          _domainParameters[0].ParSpec,
-                                                                          _domainParameters.Last().ParSpec);
+            _domainParameters[0].Offset,
+            _domainParameters[0].Offset2,
+            _domainParameters[0].ParSpec,
+            _domainParameters.Last().ParSpec);
         r.Initialize(_domainParameters);
         await r.WriteToIntegraAsync(_integra7Api, _startAddresses, _parameters);
     }
 
     public async Task<FullyQualifiedParameter?> ReadFromIntegraAsync(string parameterName)
     {
-        Log.Debug($"Reading single parameter {parameterName}, (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2}) from integra.");
+        Log.Debug(
+            $"Reading single parameter {parameterName}, (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2}) from integra.");
         bool found = false;
         ParserContext ctx = new ParserContext();
         ctx.InitializeFromExistingData(_domainParameters);
@@ -88,16 +93,19 @@ public class DomainBase
                 return p;
             }
         }
+
         if (!found)
         {
             Log.Error($"parameter {parameterName} does not exist, or is not valid in the current context.");
         }
+
         return null;
     }
 
     public async Task WriteToIntegraAsync(string parameterName)
     {
-        Log.Debug($"Writing single parameter {parameterName}, (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2}) to integra.");
+        Log.Debug(
+            $"Writing single parameter {parameterName}, (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2}) to integra.");
         bool found = false;
         ParserContext ctx = new ParserContext();
         ctx.InitializeFromExistingData(_domainParameters);
@@ -111,6 +119,7 @@ public class DomainBase
                 p.DebugLog();
             }
         }
+
         if (!found)
         {
             Log.Error($"parameter {parameterName} does not exist, or is not valid in the current context.");
@@ -137,6 +146,7 @@ public class DomainBase
                 return p.StringValue;
             }
         }
+
         Log.Error($"Could not find the value of parameter {parameterName}");
         return "";
     }
@@ -157,6 +167,7 @@ public class DomainBase
                 p.DebugLog();
             }
         }
+
         if (!found)
         {
             // did you try to update a parameter that simply does not exist?
@@ -183,10 +194,12 @@ public class DomainBase
                 }
             }
         }
+
         return names;
     }
 
-    public List<FullyQualifiedParameter> GetRelevantParameters(bool IncludeReserved = false, bool IncludeInvalidIncontext = false)
+    public List<FullyQualifiedParameter> GetRelevantParameters(bool IncludeReserved = false,
+        bool IncludeInvalidIncontext = false)
     {
         ParserContext ctx = new ParserContext();
         ctx.InitializeFromExistingData(_domainParameters);
@@ -202,7 +215,7 @@ public class DomainBase
                 }
             }
         }
+
         return pars;
     }
-
 }

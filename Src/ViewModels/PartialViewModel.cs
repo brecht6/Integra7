@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 using Integra7AuralAlchemist.Models.Data;
@@ -23,6 +25,7 @@ public partial class PartialViewModel : ViewModelBase
     private IIntegra7Api _i7api;
     protected Integra7Domain? _i7domain;
     protected string _toneTypeStr;
+    protected readonly SemaphoreSlim _semaphore;
 
     public ReadOnlyObservableCollection<FullyQualifiedParameter> PartialParameters {
         get => GetPartialParameters(); 
@@ -46,7 +49,7 @@ public partial class PartialViewModel : ViewModelBase
 
     public PartialViewModel(PartViewModel parent, byte zeroBasedPart, byte zeroBasedPartial, 
         string toneTypeStr, Integra7StartAddresses i7addr,
-        Integra7Parameters par, IIntegra7Api i7api, Integra7Domain i7dom)
+        Integra7Parameters par, IIntegra7Api i7api, Integra7Domain i7dom, SemaphoreSlim semaphore)
     {
         _parent = parent;
         _zeroBasedPart = zeroBasedPart;
@@ -56,6 +59,7 @@ public partial class PartialViewModel : ViewModelBase
         _i7api = i7api;
         _i7domain = i7dom;
         _toneTypeStr = toneTypeStr;
+        _semaphore = semaphore;
     }
 
     public void UpdateToneTypeString(string toneTypeStr)
@@ -103,13 +107,13 @@ public partial class PartialViewModel : ViewModelBase
         return 0;
     }
 
-    public virtual void InitializeParameterSourceCaches()
+    public virtual async Task InitializeParameterSourceCachesAsync()
     {
         // overridden in specific view models
         Debug.Assert(false, "Must implement in child class.");
     }
 
-    public virtual void ResyncPart(byte part)
+    public virtual async Task ResyncPartAsync(byte part)
     {
         // overridden in specific view models
         Debug.Assert(false, "Must implement in child class.");

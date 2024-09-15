@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 using Integra7AuralAlchemist.Models.Data;
@@ -27,8 +29,8 @@ public sealed partial class PCMDrumKitPartialViewModel : PartialViewModel
     
     public PCMDrumKitPartialViewModel(PartViewModel parent, byte zeroBasedPart, byte zeroBasedPartial, 
         string toneTypeStr, Integra7StartAddresses i7addr,
-        Integra7Parameters par, IIntegra7Api i7api, Integra7Domain i7dom) : 
-        base(parent, zeroBasedPart, zeroBasedPartial, toneTypeStr, i7addr, par, i7api, i7dom)
+        Integra7Parameters par, IIntegra7Api i7api, Integra7Domain i7dom, SemaphoreSlim semaphore) : 
+        base(parent, zeroBasedPart, zeroBasedPartial, toneTypeStr, i7addr, par, i7api, i7dom, semaphore)
     {
         var parFilterPCMDrumKitPartialParameters = this.WhenAnyValue(x => x.SearchTextPCMDrumKitPartial)
             .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
@@ -65,7 +67,7 @@ public sealed partial class PCMDrumKitPartialViewModel : PartialViewModel
             .DisposeMany()
             .Subscribe();
 
-        InitializeParameterSourceCaches();
+        // InitializeParameterSourceCachesAsync(); // call constructor
     }
 
     public override int GetPartialOffset()
@@ -108,26 +110,26 @@ public sealed partial class PCMDrumKitPartialViewModel : PartialViewModel
         return _toneTypeStr == "PCMD";
     }
     
-    public override void InitializeParameterSourceCaches()
+    public override async Task InitializeParameterSourceCachesAsync()
     {
         if (_i7domain == null)
             return;
         
         if (IsValidForCurrentPreset())
         {
-            _i7domain.PCMDrumKitPartial(_zeroBasedPart, _zeroBasedPartial).ReadFromIntegra();   
+            await _i7domain.PCMDrumKitPartial(_zeroBasedPart, _zeroBasedPartial).ReadFromIntegraAsync();   
         }
         List<FullyQualifiedParameter> par2 = _i7domain.PCMDrumKitPartial(_zeroBasedPart, _zeroBasedPartial)
             .GetRelevantParameters(true, true);
         _sourceCachePCMDrumKitPartialParameters.AddOrUpdate(par2);
     }
 
-    public override void ResyncPart(byte part)
+    public override async Task ResyncPartAsync(byte part)
     {
         if (part == _zeroBasedPart && IsValidForCurrentPreset())
         {
             DomainBase b = _i7domain.PCMDrumKitPartial(_zeroBasedPart, _zeroBasedPartial);
-            b.ReadFromIntegra();
+            await b.ReadFromIntegraAsync();
             ForceUiRefresh(b.StartAddressName, b.OffsetAddressName, b.Offset2AddressName, "",
                 false /* don't cause inf loop */);
         }

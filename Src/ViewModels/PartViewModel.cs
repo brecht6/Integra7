@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 using Integra7AuralAlchemist.Models.Data;
@@ -20,6 +22,7 @@ public partial class PartViewModel : ViewModelBase
     private Integra7Parameters _i7parameters;
     private IIntegra7Api _i7Api;
     private Integra7Domain? _i7domain;
+    private readonly SemaphoreSlim _semaphore;
 
     public Integra7Domain I7Domain
     {
@@ -296,7 +299,6 @@ public partial class PartViewModel : ViewModelBase
     IDisposable? _cleanupSNAcousticToneCommonMFXParams;
 
     IDisposable? _cleanupSNDrumKitCommonParams;
-    IDisposable? _cleanupSNDrumKitCommon2Params;
     IDisposable? _cleanupSNDrumKitCommonMFXParams;
     IDisposable? _cleanupSNDrumKitCompEQParametersParams;
 
@@ -372,11 +374,11 @@ public partial class PartViewModel : ViewModelBase
     IDisposable? _cleanupMotionalSurround;
     IDisposable? _cleanupStudioSetMasterEQ;
 
-    public void EnsurePreselectIsNotNull()
+    public async Task EnsurePreselectIsNotNullAsync()
     {
         if (_selectedPreset is null && _part != 255)
         {
-            _i7domain.StudioSetPart(_part).ReadFromIntegra();
+            await _i7domain.StudioSetPart(_part).ReadFromIntegraAsync();
             PreSelectConfiguredPreset(_i7domain.StudioSetPart(_part));
         }
     }
@@ -470,7 +472,8 @@ public partial class PartViewModel : ViewModelBase
 
 
     public PartViewModel(ViewModelBase parent, byte zeroBasedPartNo, Integra7StartAddresses i7startAddr,
-        Integra7Parameters i7par, IIntegra7Api i7, Integra7Domain i7dom, List<Integra7Preset> i7presets,
+        Integra7Parameters i7par, IIntegra7Api i7, Integra7Domain i7dom, 
+        SemaphoreSlim semaphore, List<Integra7Preset> i7presets,
         bool commonTab = false)
     {
         _parent = parent;
@@ -482,9 +485,10 @@ public partial class PartViewModel : ViewModelBase
         _i7presets = i7presets;
         _commonTab = commonTab;
         _selectedPreset = null;
+        _semaphore = semaphore;
 
         _sourceCachePresets.AddOrUpdate(i7presets);
-        InitializeParameterSourceCaches();
+        // InitializeParameterSourceCachesAsync(); // call outside constructor
 
         if (!commonTab)
         {
@@ -1401,115 +1405,123 @@ public partial class PartViewModel : ViewModelBase
         }
     }
 
-    public void InitializeParameterSourceCaches()
+    public async Task InitializeParameterSourceCachesAsync()
     {
         if (_i7domain is null)
             return;
 
         if (!_commonTab)
         {
-            _i7domain.StudioSetMidi(_part).ReadFromIntegra();
+            await _i7domain.StudioSetMidi(_part).ReadFromIntegraAsync();
             List<FullyQualifiedParameter> p_mid = _i7domain.StudioSetMidi(_part).GetRelevantParameters(true, true);
             _sourceCacheStudioSetMidiParameters.AddOrUpdate(p_mid);
 
-            _i7domain.StudioSetPart(_part).ReadFromIntegra();
+            await _i7domain.StudioSetPart(_part).ReadFromIntegraAsync();
             List<FullyQualifiedParameter> p_part = _i7domain.StudioSetPart(_part).GetRelevantParameters(true, true);
             _sourceCacheStudioSetPartParameters.AddOrUpdate(p_part);
             PreSelectConfiguredPreset(_i7domain.StudioSetPart(_part));
 
-            _i7domain.StudioSetPartEQ(_part).ReadFromIntegra();
+            await _i7domain.StudioSetPartEQ(_part).ReadFromIntegraAsync();
             List<FullyQualifiedParameter> p_parteq = _i7domain.StudioSetPartEQ(_part).GetRelevantParameters(true, true);
             _sourceCacheStudioSetPartEQParameters.AddOrUpdate(p_parteq);
 
             if (_selectedPreset?.ToneTypeStr == "PCMS")
             {
-                _i7domain.PCMSynthToneCommon(_part).ReadFromIntegra();
-                _i7domain.PCMSynthToneCommon2(_part).ReadFromIntegra();
-                _i7domain.PCMSynthToneCommonMFX(_part).ReadFromIntegra();
-                _i7domain.PCMSynthTonePMT(_part).ReadFromIntegra();
+                await _i7domain.PCMSynthToneCommon(_part).ReadFromIntegraAsync();
+                await _i7domain.PCMSynthToneCommon2(_part).ReadFromIntegraAsync();
+                await _i7domain.PCMSynthToneCommonMFX(_part).ReadFromIntegraAsync();
+                await _i7domain.PCMSynthTonePMT(_part).ReadFromIntegraAsync();
             }
             else if (_selectedPreset?.ToneTypeStr == "PCMD")
             {
-                _i7domain.PCMDrumKitCommon(_part).ReadFromIntegra();
-                _i7domain.PCMDrumKitCommon2(_part).ReadFromIntegra();
-                _i7domain.PCMDrumKitCommonMFX(_part).ReadFromIntegra();
-                _i7domain.PCMDrumKitCompEQ(_part).ReadFromIntegra();
+                await _i7domain.PCMDrumKitCommon(_part).ReadFromIntegraAsync();
+                await _i7domain.PCMDrumKitCommon2(_part).ReadFromIntegraAsync();
+                await _i7domain.PCMDrumKitCommonMFX(_part).ReadFromIntegraAsync();
+                await _i7domain.PCMDrumKitCompEQ(_part).ReadFromIntegraAsync();
             }
             else if (_selectedPreset?.ToneTypeStr == "SN-S")
             {
-                _i7domain.SNSynthToneCommon(_part).ReadFromIntegra();
-                _i7domain.SNSynthToneCommonMFX(_part).ReadFromIntegra();
+                await _i7domain.SNSynthToneCommon(_part).ReadFromIntegraAsync();
+                await _i7domain.SNSynthToneCommonMFX(_part).ReadFromIntegraAsync();
             }
             else if (_selectedPreset?.ToneTypeStr == "SN-A")
             {
-                _i7domain.SNAcousticToneCommon(_part).ReadFromIntegra();
-                _i7domain.SNAcousticToneCommonMFX(_part).ReadFromIntegra();
+                await _i7domain.SNAcousticToneCommon(_part).ReadFromIntegraAsync();
+                await _i7domain.SNAcousticToneCommonMFX(_part).ReadFromIntegraAsync();
             }
             else if (_selectedPreset?.ToneTypeStr == "SN-D")
             {
-                _i7domain.SNDrumKitCommon(_part).ReadFromIntegra();
-                _i7domain.SNDrumKitCommonMFX(_part).ReadFromIntegra();
-                _i7domain.SNDrumKitCompEQ(_part).ReadFromIntegra();
+                await _i7domain.SNDrumKitCommon(_part).ReadFromIntegraAsync();
+                await _i7domain.SNDrumKitCommonMFX(_part).ReadFromIntegraAsync();
+                await _i7domain.SNDrumKitCompEQ(_part).ReadFromIntegraAsync();
             }
 
             ObservableCollection<PartialViewModel> pvm = [];
             for (byte i = 0; i < Constants.NO_OF_PARTIALS_PCM_SYNTH_TONE; i++)
             {
-                pvm.Add(new PCMSynthTonePartialViewModel(this, _part, i,
+                PCMSynthTonePartialViewModel vm = new PCMSynthTonePartialViewModel(this, _part, i,
                     _selectedPreset?.ToneTypeStr,
                     _i7startAddresses, _i7parameters, _i7Api,
-                    _i7domain));
+                    _i7domain, _semaphore);
+                await vm.InitializeParameterSourceCachesAsync();
+                pvm.Add(vm);
             }
 
             _PCMSynthTonePartialViewModels = new ReadOnlyObservableCollection<PartialViewModel>(pvm);
             foreach (PartialViewModel p in _PCMSynthTonePartialViewModels)
             {
-                p.InitializeParameterSourceCaches();
+                await p.InitializeParameterSourceCachesAsync();
             }
 
             ObservableCollection<PartialViewModel> pvm2 = [];
             for (byte i = 0; i < Constants.NO_OF_PARTIALS_PCM_DRUM; i++)
             {
-                pvm2.Add(new PCMDrumKitPartialViewModel(this, _part, i,
+                PCMDrumKitPartialViewModel vm = new PCMDrumKitPartialViewModel(this, _part, i,
                     _selectedPreset?.ToneTypeStr,
                     _i7startAddresses, _i7parameters, _i7Api,
-                    _i7domain));
+                    _i7domain, _semaphore);
+                await vm.InitializeParameterSourceCachesAsync();
+                pvm2.Add(vm);
             }
 
             _PCMDrumKitPartialViewModels = new ReadOnlyObservableCollection<PartialViewModel>(pvm2);
             foreach (PartialViewModel p in _PCMDrumKitPartialViewModels)
             {
-                p.InitializeParameterSourceCaches();
+                await p.InitializeParameterSourceCachesAsync();
             }
 
             ObservableCollection<PartialViewModel> pvm3 = [];
             for (byte i = 0; i < Constants.NO_OF_PARTIALS_SN_SYNTH_TONE; i++)
             {
-                pvm3.Add(new SNSynthTonePartialViewModel(this, _part, i,
+                SNSynthTonePartialViewModel vm = new SNSynthTonePartialViewModel(this, _part, i,
                     _selectedPreset?.ToneTypeStr,
                     _i7startAddresses, _i7parameters, _i7Api,
-                    _i7domain));
+                    _i7domain, _semaphore);
+                await vm.InitializeParameterSourceCachesAsync();
+                pvm3.Add(vm);
             }
 
             _SNSynthTonePartialViewModels = new ReadOnlyObservableCollection<PartialViewModel>(pvm3);
             foreach (PartialViewModel p in _SNSynthTonePartialViewModels)
             {
-                p.InitializeParameterSourceCaches();
+                await p.InitializeParameterSourceCachesAsync();
             }
 
             ObservableCollection<PartialViewModel> pvm4 = [];
             for (byte i = 0; i < Constants.NO_OF_PARTIALS_SN_DRUM; i++)
             {
-                pvm4.Add(new SNDrumKitPartialViewModel(this, _part, i,
+                SNDrumKitPartialViewModel vm = new SNDrumKitPartialViewModel(this, _part, i,
                     _selectedPreset?.ToneTypeStr,
                     _i7startAddresses, _i7parameters, _i7Api,
-                    _i7domain));
+                    _i7domain, _semaphore);
+                await vm.InitializeParameterSourceCachesAsync();
+                pvm4.Add(vm);
             }
 
             _SNDrumKitPartialViewModels = new ReadOnlyObservableCollection<PartialViewModel>(pvm4);
             foreach (PartialViewModel p in _SNDrumKitPartialViewModels)
             {
-                p.InitializeParameterSourceCaches();
+                await p.InitializeParameterSourceCachesAsync();
             }
 
             List<FullyQualifiedParameter> p_pcmstc =
@@ -1562,32 +1574,32 @@ public partial class PartViewModel : ViewModelBase
         }
         else
         {
-            _i7domain?.Setup.ReadFromIntegra();
+            await _i7domain?.Setup.ReadFromIntegraAsync();
             List<FullyQualifiedParameter> p_s = _i7domain?.Setup.GetRelevantParameters();
             _sourceCacheSetupParameters.AddOrUpdate(p_s);
 
-            _i7domain?.System.ReadFromIntegra();
+            await _i7domain?.System.ReadFromIntegraAsync();
             List<FullyQualifiedParameter> s_s = _i7domain?.System.GetRelevantParameters();
             _sourceCacheSystem.AddOrUpdate(s_s);
 
-            _i7domain?.StudioSetCommon.ReadFromIntegra();
+            await _i7domain?.StudioSetCommon.ReadFromIntegraAsync();
             List<FullyQualifiedParameter> p_ssc = _i7domain?.StudioSetCommon.GetRelevantParameters();
             _sourceCacheStudioSetCommonParameters.AddOrUpdate(p_ssc);
 
-            _i7domain?.StudioSetCommonChorus.ReadFromIntegra();
+            await _i7domain?.StudioSetCommonChorus.ReadFromIntegraAsync();
             List<FullyQualifiedParameter> p_sscc = _i7domain?.StudioSetCommonChorus.GetRelevantParameters(true, true);
             _sourceCacheStudioSetCommonChorusParameters.AddOrUpdate(p_sscc);
 
-            _i7domain?.StudioSetCommonReverb.ReadFromIntegra();
+            await _i7domain?.StudioSetCommonReverb.ReadFromIntegraAsync();
             List<FullyQualifiedParameter> p_sscr = _i7domain?.StudioSetCommonReverb.GetRelevantParameters(true, true);
             _sourceCacheStudioSetCommonReverbParameters.AddOrUpdate(p_sscr);
 
-            _i7domain?.StudioSetCommonMotionalSurround.ReadFromIntegra();
+            await _i7domain?.StudioSetCommonMotionalSurround.ReadFromIntegraAsync();
             List<FullyQualifiedParameter> p_ssms =
                 _i7domain?.StudioSetCommonMotionalSurround.GetRelevantParameters(true, true);
             _sourceCacheStudioSetCommonMotionalSurroundParameters.AddOrUpdate(p_ssms);
 
-            _i7domain?.StudioSetCommonMasterEQ.ReadFromIntegra();
+            await _i7domain?.StudioSetCommonMasterEQ.ReadFromIntegraAsync();
             List<FullyQualifiedParameter> p_meq = _i7domain?.StudioSetCommonMasterEQ.GetRelevantParameters(true, true);
             _sourceCacheStudioSetCommonMasterEQParameters.AddOrUpdate(p_meq);
         }
@@ -1617,7 +1629,7 @@ public partial class PartViewModel : ViewModelBase
         }
     }
 
-    public void ResyncPart(byte part)
+    public async Task ResyncPartAsync(byte part)
     {
         if (_i7domain is null)
             return;
@@ -1628,132 +1640,132 @@ public partial class PartViewModel : ViewModelBase
         if (_commonTab)
         {
             DomainBase setup = _i7domain?.Setup;
-            setup?.ReadFromIntegra();
+            await setup?.ReadFromIntegraAsync();
             ForceUiRefresh(setup.StartAddressName, setup.OffsetAddressName, setup.Offset2AddressName, "",
                 false /* don't cause inf loop */);
 
             DomainBase system = _i7domain?.System; 
-            system?.ReadFromIntegra();
+            await system?.ReadFromIntegraAsync();
             ForceUiRefresh(system.StartAddressName, system.OffsetAddressName, system.Offset2AddressName, "", false);
             
             DomainBase setcom = _i7domain?.StudioSetCommon; 
-            setcom?.ReadFromIntegra();
+            await setcom?.ReadFromIntegraAsync();
             ForceUiRefresh(setcom.StartAddressName, setcom.OffsetAddressName, setcom.Offset2AddressName, "", false);
 
             DomainBase setchor = _i7domain?.StudioSetCommonChorus;
-            setchor.ReadFromIntegra();
+            await setchor.ReadFromIntegraAsync();
             ForceUiRefresh(setchor.StartAddressName, setchor.OffsetAddressName, setchor.Offset2AddressName, "", false);
 
             DomainBase setrev = _i7domain?.StudioSetCommonReverb;
-            setrev.ReadFromIntegra();
+            await setrev.ReadFromIntegraAsync();
             ForceUiRefresh(setrev.StartAddressName, setrev.OffsetAddressName, setrev.Offset2AddressName, "", false);
 
             DomainBase setsur = _i7domain?.StudioSetCommonMotionalSurround;
-            setsur.ReadFromIntegra();
+            await setsur.ReadFromIntegraAsync();
             ForceUiRefresh(setsur.StartAddressName, setsur.OffsetAddressName, setsur.Offset2AddressName, "", false);
 
             DomainBase seteq = _i7domain?.StudioSetCommonMasterEQ;
-            seteq.ReadFromIntegra();
+            await seteq.ReadFromIntegraAsync();
             ForceUiRefresh(seteq.StartAddressName, seteq.OffsetAddressName, seteq.Offset2AddressName, "", false);
         }
         else
         {
             DomainBase midiPart = _i7domain?.StudioSetMidi(part);
-            midiPart.ReadFromIntegra();
+            await midiPart.ReadFromIntegraAsync();
             ForceUiRefresh(midiPart.StartAddressName, midiPart.OffsetAddressName, midiPart.Offset2AddressName, "",
                 false /* don't cause inf loop */);
             DomainBase setPart = _i7domain?.StudioSetPart(part);
-            setPart.ReadFromIntegra();
+            await setPart.ReadFromIntegraAsync();
             PreSelectConfiguredPreset(setPart);
             ForceUiRefresh(setPart.StartAddressName, setPart.OffsetAddressName, setPart.Offset2AddressName, "",
                 false /* don't cause inf loop */);
             if (_selectedPreset.ToneTypeStr == "PCMS")
             {
                 DomainBase setPCMSTone = _i7domain?.PCMSynthToneCommon(part);
-                setPCMSTone.ReadFromIntegra();
+                await setPCMSTone.ReadFromIntegraAsync();
                 ForceUiRefresh(setPCMSTone.StartAddressName, setPCMSTone.OffsetAddressName,
                     setPCMSTone.Offset2AddressName, "", false /* don't cause inf loop */);
                 DomainBase setPCMSTone2 = _i7domain?.PCMSynthToneCommon2(part);
-                setPCMSTone2.ReadFromIntegra();
+                await setPCMSTone2.ReadFromIntegraAsync();
                 ForceUiRefresh(setPCMSTone2.StartAddressName, setPCMSTone2.OffsetAddressName,
                     setPCMSTone2.Offset2AddressName, "", false /* don't cause inf loop */);
                 DomainBase setPCMSToneMFX = _i7domain?.PCMSynthToneCommonMFX(part);
-                setPCMSToneMFX.ReadFromIntegra();
+                await setPCMSToneMFX.ReadFromIntegraAsync();
                 ForceUiRefresh(setPCMSToneMFX.StartAddressName, setPCMSToneMFX.OffsetAddressName,
                     setPCMSToneMFX.Offset2AddressName, "", false /* don't cause inf loop */);
                 DomainBase setPCMSTonePMT = _i7domain?.PCMSynthTonePMT(part);
-                setPCMSTonePMT.ReadFromIntegra();
+                await setPCMSTonePMT.ReadFromIntegraAsync();
                 ForceUiRefresh(setPCMSTonePMT.StartAddressName, setPCMSTonePMT.OffsetAddressName,
                     setPCMSTonePMT.Offset2AddressName, "", false /* don't cause inf loop */);
                 foreach (PartialViewModel p in _PCMSynthTonePartialViewModels)
                 {
-                    p.ResyncPart(part);
+                    await p.ResyncPartAsync(part);
                 }
             }
             else if (_selectedPreset.ToneTypeStr == "PCMD")
             {
                 DomainBase setPCMDKit = _i7domain?.PCMDrumKitCommon(part);
-                setPCMDKit.ReadFromIntegra();
+                await setPCMDKit.ReadFromIntegraAsync();
                 ForceUiRefresh(setPCMDKit.StartAddressName, setPCMDKit.OffsetAddressName, setPCMDKit.Offset2AddressName,
                     "", false);
                 DomainBase setPCMDKit2 = _i7domain?.PCMDrumKitCommon2(part);
-                setPCMDKit2.ReadFromIntegra();
+                await setPCMDKit2.ReadFromIntegraAsync();
                 ForceUiRefresh(setPCMDKit2.StartAddressName, setPCMDKit2.OffsetAddressName,
                     setPCMDKit2.Offset2AddressName, "", false);
                 DomainBase setPCMDMfx = _i7domain?.PCMDrumKitCommonMFX(part);
-                setPCMDMfx.ReadFromIntegra();
+                await setPCMDMfx.ReadFromIntegraAsync();
                 ForceUiRefresh(setPCMDMfx.StartAddressName, setPCMDMfx.OffsetAddressName, setPCMDMfx.Offset2AddressName,
                     "", false);
                 DomainBase setPCMDCompeq = _i7domain?.PCMDrumKitCompEQ(part);
-                setPCMDCompeq.ReadFromIntegra();
+                await setPCMDCompeq.ReadFromIntegraAsync();
                 ForceUiRefresh(setPCMDCompeq.StartAddressName, setPCMDCompeq.OffsetAddressName,
                     setPCMDCompeq.Offset2AddressName, "", false);
                 foreach (PartialViewModel p in _PCMDrumKitPartialViewModels)
                 {
-                    p.ResyncPart(part);
+                    await p.ResyncPartAsync(part);
                 }
             }
             else if (_selectedPreset.ToneTypeStr == "SN-S")
             {
                 DomainBase setSNS = _i7domain?.SNSynthToneCommon(part);
-                setSNS.ReadFromIntegra();
+                await setSNS.ReadFromIntegraAsync();
                 ForceUiRefresh(setSNS.StartAddressName, setSNS.OffsetAddressName, setSNS.Offset2AddressName, "", false);
                 DomainBase setSNSMFX = _i7domain?.SNSynthToneCommonMFX(part);
-                setSNSMFX.ReadFromIntegra();
+                await setSNSMFX.ReadFromIntegraAsync();
                 ForceUiRefresh(setSNSMFX.StartAddressName, setSNSMFX.OffsetAddressName, setSNSMFX.Offset2AddressName,
                     "", false);
                 foreach (PartialViewModel p in _SNSynthTonePartialViewModels)
                 {
-                    p.ResyncPart(part);
+                    await p.ResyncPartAsync(part);
                 }
             }
             else if (_selectedPreset.ToneTypeStr == "SN-A")
             {
                 DomainBase setSNA = _i7domain?.SNAcousticToneCommon(part);
-                setSNA.ReadFromIntegra();
+                await setSNA.ReadFromIntegraAsync();
                 ForceUiRefresh(setSNA.StartAddressName, setSNA.OffsetAddressName, setSNA.Offset2AddressName, "", false);
                 DomainBase setSNAMFX = _i7domain?.SNAcousticToneCommonMFX(part);
-                setSNAMFX.ReadFromIntegra();
+                await setSNAMFX.ReadFromIntegraAsync();
                 ForceUiRefresh(setSNAMFX.StartAddressName, setSNAMFX.OffsetAddressName, setSNAMFX.Offset2AddressName,
                     "", false);
             }
             else if (_selectedPreset.ToneTypeStr == "SN-D")
             {
                 DomainBase setSNDKit = _i7domain?.SNDrumKitCommon(part);
-                setSNDKit.ReadFromIntegra();
+                await setSNDKit.ReadFromIntegraAsync();
                 ForceUiRefresh(setSNDKit.StartAddressName, setSNDKit.OffsetAddressName, setSNDKit.Offset2AddressName,
                     "", false);
                 DomainBase setSNDMfx = _i7domain?.SNDrumKitCommonMFX(part);
-                setSNDMfx.ReadFromIntegra();
+                await setSNDMfx.ReadFromIntegraAsync();
                 ForceUiRefresh(setSNDMfx.StartAddressName, setSNDMfx.OffsetAddressName, setSNDMfx.Offset2AddressName,
                     "", false);
                 DomainBase setSNDCompeq = _i7domain?.SNDrumKitCompEQ(part);
-                setSNDCompeq.ReadFromIntegra();
+                await setSNDCompeq.ReadFromIntegraAsync();
                 ForceUiRefresh(setSNDCompeq.StartAddressName, setSNDCompeq.OffsetAddressName,
                     setSNDCompeq.Offset2AddressName, "", false);
                 foreach (PartialViewModel p in _SNDrumKitPartialViewModels)
                 {
-                    p.ResyncPart(part);
+                    await p.ResyncPartAsync(part);
                 }
             }
 

@@ -46,7 +46,7 @@
                             Orientation="Horizontal"
                             Spacing="20">
                     <Button IsEnabled="{Binding RescanButtonEnabled}"
-                            Command="{Binding RescanMidiDevices}">
+                            Command="{Binding RescanMidiDevicesAsync}">
                         Rescan Midi Devices
                     </Button>
                     <Button Command="{Binding PlayNote}"

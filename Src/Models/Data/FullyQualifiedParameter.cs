@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 using Integra7AuralAlchemist.Models.Services;
 using Serilog;
 
@@ -119,11 +120,11 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
         return totalAddr;
     }
 
-    public void RetrieveFromIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses,
+    public async Task RetrieveFromIntegraAsync(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses,
         Integra7Parameters parameters)
     {
         byte[] totalAddr = CompleteAddress(startAddresses, parameters);
-        byte[] reply = integra7Api.MakeDataRequest(totalAddr, _parspec.Bytes);
+        byte[] reply = await integra7Api.MakeDataRequestAsync(totalAddr, _parspec.Bytes);
         ParseFromSysexReply(reply, parameters);
     }
 

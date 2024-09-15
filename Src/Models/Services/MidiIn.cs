@@ -10,6 +10,7 @@ using Serilog;
 namespace Integra7AuralAlchemist.Models.Services;
 public interface IMidiIn
 {
+    public void ConfigureHandler(EventHandler<MidiReceivedEventArgs> handler);
     public byte[] GetReply();
     public void AnnounceIntentionToManuallyHandleReply();
 }
@@ -49,6 +50,13 @@ public class MidiIn : IMidiIn
         }
     }
 
+    public void ConfigureHandler(EventHandler<MidiReceivedEventArgs> handler)
+    {
+        _access.MessageReceived -= _lastEventHandler;
+        _lastEventHandler = handler;
+        _access.MessageReceived += _lastEventHandler;
+    }
+
     private void DefaultHandler(object? sender, MidiReceivedEventArgs e)
     {
         _replyReady.Reset();
@@ -79,7 +87,7 @@ public class MidiIn : IMidiIn
 
     public byte[] GetReply()
     {
-        if (_replyReady.WaitOne(5000))
+        if (_replyReady.WaitOne(500))
         {
             _replyReady.Reset();
             return _replyData;

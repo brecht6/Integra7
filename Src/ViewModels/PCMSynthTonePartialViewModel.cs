@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 using Integra7AuralAlchemist.Models.Data;
@@ -27,8 +29,8 @@ public sealed partial class PCMSynthTonePartialViewModel : PartialViewModel
 
     public PCMSynthTonePartialViewModel(PartViewModel parent, byte zeroBasedPart, byte zeroBasedPartial,
         string toneTypeStr, Integra7StartAddresses i7addr, Integra7Parameters par,
-        IIntegra7Api i7api, Integra7Domain i7dom) : base(parent, zeroBasedPart, zeroBasedPartial, toneTypeStr, i7addr,
-        par, i7api, i7dom)
+        IIntegra7Api i7api, Integra7Domain i7dom, SemaphoreSlim semaphore) : base(parent, zeroBasedPart, zeroBasedPartial, toneTypeStr, i7addr,
+        par, i7api, i7dom, semaphore)
     {
         var parFilterPCMSynthTonePartialParameters = this.WhenAnyValue(x => x.SearchTextPCMSynthTonePartial)
             .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
@@ -65,16 +67,16 @@ public sealed partial class PCMSynthTonePartialViewModel : PartialViewModel
             .DisposeMany()
             .Subscribe();
         
-        InitializeParameterSourceCaches();
+        // InitializeParameterSourceCachesAsync(); // call outside constructor 
     }
-    public override void InitializeParameterSourceCaches()
+    public override async Task InitializeParameterSourceCachesAsync()
     {
         if (_i7domain == null)
             return;
         
         if (IsValidForCurrentPreset())
         {
-            _i7domain.PCMSynthTonePartial(_zeroBasedPart, _zeroBasedPartial).ReadFromIntegra();
+            await _i7domain.PCMSynthTonePartial(_zeroBasedPart, _zeroBasedPartial).ReadFromIntegraAsync();
         }
         List<FullyQualifiedParameter> par = _i7domain.PCMSynthTonePartial(_zeroBasedPart, _zeroBasedPartial)
             .GetRelevantParameters(true, true);
@@ -119,12 +121,12 @@ public sealed partial class PCMSynthTonePartialViewModel : PartialViewModel
         return _toneTypeStr == "PCMS";
     }
     
-    public override void ResyncPart(byte part)
+    public override async Task ResyncPartAsync(byte part)
     {
         if (part == _zeroBasedPart && IsValidForCurrentPreset())
         {
             DomainBase b = _i7domain.PCMSynthTonePartial(_zeroBasedPart, _zeroBasedPartial); 
-            b.ReadFromIntegra();
+            await b.ReadFromIntegraAsync();
             ForceUiRefresh(b.StartAddressName, b.OffsetAddressName, b.Offset2AddressName, "",
                 false /* don't cause inf loop */);
         }

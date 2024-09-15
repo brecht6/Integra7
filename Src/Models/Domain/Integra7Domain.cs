@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
 using Serilog;
@@ -192,7 +193,7 @@ public class Integra7Domain
 
     
     public Integra7Domain(IIntegra7Api integra7Api, Integra7StartAddresses i7startAddresses,
-        Integra7Parameters i7parameters)
+        Integra7Parameters i7parameters, SemaphoreSlim semaphore)
     {
         _integra7StartAddresses = i7startAddresses;
         _integra7Parameters = i7parameters;
@@ -200,162 +201,162 @@ public class Integra7Domain
 
         _parameterMapper = [];
 
-        DomainBase setup = new DomainSetup(integra7Api, i7startAddresses, i7parameters);
+        DomainBase setup = new DomainSetup(integra7Api, i7startAddresses, i7parameters, semaphore);
         _parameterMapper[
             new Tuple<string, string, string>(setup.StartAddressName, setup.OffsetAddressName,
                 setup.Offset2AddressName)] = setup;
 
-        DomainBase sys = new DomainSystem(integra7Api, i7startAddresses, i7parameters);
+        DomainBase sys = new DomainSystem(integra7Api, i7startAddresses, i7parameters, semaphore);
         _parameterMapper[
                 new Tuple<string, string, string>(sys.StartAddressName, sys.OffsetAddressName,
                     sys.Offset2AddressName)] = sys;
 
-        DomainBase setcommon = new DomainStudioSetCommon(integra7Api, i7startAddresses, i7parameters);
+        DomainBase setcommon = new DomainStudioSetCommon(integra7Api, i7startAddresses, i7parameters, semaphore);
         _parameterMapper[
                 new Tuple<string, string, string>(setcommon.StartAddressName, setcommon.OffsetAddressName,
                     setcommon.Offset2AddressName)] = setcommon;
 
-        DomainBase setchorus = new DomainStudioSetCommonChorus(integra7Api, i7startAddresses, i7parameters);
+        DomainBase setchorus = new DomainStudioSetCommonChorus(integra7Api, i7startAddresses, i7parameters, semaphore);
         _parameterMapper[
                 new Tuple<string, string, string>(setchorus.StartAddressName, setchorus.OffsetAddressName,
                     setchorus.Offset2AddressName)] = setchorus;
 
-        DomainBase setreverb = new DomainStudioSetCommonReverb(integra7Api, i7startAddresses, i7parameters);
+        DomainBase setreverb = new DomainStudioSetCommonReverb(integra7Api, i7startAddresses, i7parameters, semaphore);
         _parameterMapper[
                 new Tuple<string, string, string>(setreverb.StartAddressName, setreverb.OffsetAddressName,
                     setreverb.Offset2AddressName)] = setreverb;
 
-        DomainBase setsurround = new DomainStudioSetCommonMotionalSurround(integra7Api, i7startAddresses, i7parameters);
+        DomainBase setsurround = new DomainStudioSetCommonMotionalSurround(integra7Api, i7startAddresses, i7parameters, semaphore);
         _parameterMapper[
                 new Tuple<string, string, string>(setsurround.StartAddressName, setsurround.OffsetAddressName,
                     setsurround.Offset2AddressName)] = setsurround;
 
-        DomainBase setmastereq = new DomainStudioSetMasterEQ(integra7Api, i7startAddresses, i7parameters);
+        DomainBase setmastereq = new DomainStudioSetMasterEQ(integra7Api, i7startAddresses, i7parameters, semaphore);
         _parameterMapper[
                 new Tuple<string, string, string>(setmastereq.StartAddressName, setmastereq.OffsetAddressName,
                     setmastereq.Offset2AddressName)] = setmastereq;
 
         for (int i = 0; i < Constants.NO_OF_PARTS; i++)
         {
-            DomainBase setmidi = new DomainStudioSetMIDI(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase setmidi = new DomainStudioSetMIDI(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                 new Tuple<string, string, string>(setmidi.StartAddressName, setmidi.OffsetAddressName,
                     setmidi.Offset2AddressName)] = setmidi;
 
-            DomainBase setpart = new DomainStudioSetPart(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase setpart = new DomainStudioSetPart(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                 new Tuple<string, string, string>(setpart.StartAddressName, setpart.OffsetAddressName,
                     setpart.Offset2AddressName)] = setpart;
 
-            DomainBase setparteq = new DomainStudioSetPartEQ(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase setparteq = new DomainStudioSetPartEQ(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                     new Tuple<string, string, string>(setparteq.StartAddressName, setparteq.OffsetAddressName,
                         setparteq.Offset2AddressName)] = setparteq;
 
-            DomainBase pcmsynthtone = new DomainPCMSynthToneCommon(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase pcmsynthtone = new DomainPCMSynthToneCommon(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                     new Tuple<string, string, string>(pcmsynthtone.StartAddressName, pcmsynthtone.OffsetAddressName,
                         pcmsynthtone.Offset2AddressName)] = pcmsynthtone;
             
-            DomainBase pcmsynthtone2 = new DomainPCMSynthToneCommon2(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase pcmsynthtone2 = new DomainPCMSynthToneCommon2(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper
                     [new Tuple<string, string, string>(pcmsynthtone2.StartAddressName, pcmsynthtone2.OffsetAddressName, pcmsynthtone2.Offset2AddressName)] =
                 pcmsynthtone2;
 
             DomainBase pcmsynthtonemfx =
-                new DomainPCMSynthToneCommonMFX(i, integra7Api, i7startAddresses, i7parameters);
+                new DomainPCMSynthToneCommonMFX(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                     new Tuple<string, string, string>(pcmsynthtonemfx.StartAddressName,
                         pcmsynthtonemfx.OffsetAddressName, pcmsynthtonemfx.Offset2AddressName)] = pcmsynthtonemfx;
 
-            DomainBase pcmsynthtonepmt = new DomainPCMSynthTonePMT(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase pcmsynthtonepmt = new DomainPCMSynthTonePMT(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                     new Tuple<string, string, string>(pcmsynthtonepmt.StartAddressName,
                         pcmsynthtonepmt.OffsetAddressName, pcmsynthtonepmt.Offset2AddressName)] = pcmsynthtonepmt;
             
             for (int j = 0; j < Constants.NO_OF_PARTIALS_PCM_SYNTH_TONE; j++)
             {
-                DomainBase part = new DomainPCMSynthTonePartial(i, j, integra7Api, i7startAddresses, i7parameters);
+                DomainBase part = new DomainPCMSynthTonePartial(i, j, integra7Api, i7startAddresses, i7parameters, semaphore);
                 _parameterMapper[
                     new Tuple<string, string, string>(part.StartAddressName, part.OffsetAddressName,
                         part.Offset2AddressName)] = part;
             }
             
-            DomainBase pcmdrumkit = new DomainPCMDrumKitCommon(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase pcmdrumkit = new DomainPCMDrumKitCommon(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                 new Tuple<string, string, string>(pcmdrumkit.StartAddressName, pcmdrumkit.OffsetAddressName,
                     pcmdrumkit.Offset2AddressName)] = pcmdrumkit;
             
-            DomainBase pcmdrumkit2 = new DomainPCMDrumKitCommon2(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase pcmdrumkit2 = new DomainPCMDrumKitCommon2(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper
                     [new Tuple<string, string, string>(pcmdrumkit2.StartAddressName, pcmdrumkit2.OffsetAddressName, pcmdrumkit2.Offset2AddressName)] =
                 pcmdrumkit2;
 
             DomainBase pcmdrumkitmfx =
-                new DomainPCMDrumKitCommonMFX(i, integra7Api, i7startAddresses, i7parameters);
+                new DomainPCMDrumKitCommonMFX(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                 new Tuple<string, string, string>(pcmdrumkitmfx.StartAddressName,
                     pcmdrumkitmfx.OffsetAddressName, pcmdrumkitmfx.Offset2AddressName)] = pcmdrumkitmfx;
 
-            DomainBase pcmdrumkitcompeq = new DomainPCMDrumKitCommonCompEQ(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase pcmdrumkitcompeq = new DomainPCMDrumKitCommonCompEQ(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                 new Tuple<string, string, string>(pcmdrumkitcompeq.StartAddressName,
                     pcmdrumkitcompeq.OffsetAddressName, pcmdrumkitcompeq.Offset2AddressName)] = pcmdrumkitcompeq;
             
             for (int j = 0; j < Constants.NO_OF_PARTIALS_PCM_DRUM; j++)
             {
-                DomainBase part = new DomainPCMDrumKitPartial(i, j, integra7Api, i7startAddresses, i7parameters);
+                DomainBase part = new DomainPCMDrumKitPartial(i, j, integra7Api, i7startAddresses, i7parameters, semaphore);
                 _parameterMapper[
                     new Tuple<string, string, string>(part.StartAddressName, part.OffsetAddressName,
                         part.Offset2AddressName)] = part;
             }
 
-            DomainBase snstonecommon = new DomainSNSynthToneCommon(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase snstonecommon = new DomainSNSynthToneCommon(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                 new Tuple<string, string, string>(snstonecommon.StartAddressName,
                     snstonecommon.OffsetAddressName, snstonecommon.Offset2AddressName)] = snstonecommon;
             
-            DomainBase snstonemfx = new DomainSNSynthToneCommonMFX(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase snstonemfx = new DomainSNSynthToneCommonMFX(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                 new Tuple<string, string, string>(snstonemfx.StartAddressName, snstonemfx.OffsetAddressName,
                     snstonemfx.Offset2AddressName)] = snstonemfx;
             
             for (int j = 0; j < Constants.NO_OF_PARTIALS_SN_SYNTH_TONE; j++)
             {
-                DomainBase part = new DomainSNSynthTonePartial(i, j, integra7Api, i7startAddresses, i7parameters);
+                DomainBase part = new DomainSNSynthTonePartial(i, j, integra7Api, i7startAddresses, i7parameters, semaphore);
                 _parameterMapper[
                     new Tuple<string, string, string>(part.StartAddressName, part.OffsetAddressName,
                         part.Offset2AddressName)] = part;
             }
             
-            DomainBase snatonecommon = new DomainSNAcousticToneCommon(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase snatonecommon = new DomainSNAcousticToneCommon(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                 new Tuple<string, string, string>(snatonecommon.StartAddressName,
                     snatonecommon.OffsetAddressName, snatonecommon.Offset2AddressName)] = snatonecommon;
             
-            DomainBase snatonemfx = new DomainSNAcousticToneCommonMFX(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase snatonemfx = new DomainSNAcousticToneCommonMFX(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                 new Tuple<string, string, string>(snatonemfx.StartAddressName, snatonemfx.OffsetAddressName,
                     snatonemfx.Offset2AddressName)] = snatonemfx;
             
-            DomainBase sndcommon = new DomainSNDrumKitCommon(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase sndcommon = new DomainSNDrumKitCommon(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                 new Tuple<string, string, string>(sndcommon.StartAddressName,
                     sndcommon.OffsetAddressName, sndcommon.Offset2AddressName)] = sndcommon;
 
-            DomainBase sndcommonmfx = new DomainSNDrumKitCommonMFX(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase sndcommonmfx = new DomainSNDrumKitCommonMFX(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                 new Tuple<string, string, string>(sndcommonmfx.StartAddressName, sndcommonmfx.OffsetAddressName,
                     sndcommonmfx.Offset2AddressName)] = sndcommonmfx;
             
-            DomainBase sndcommoncompeq = new DomainSNDrumKitCommonCompEQ(i, integra7Api, i7startAddresses, i7parameters);
+            DomainBase sndcommoncompeq = new DomainSNDrumKitCommonCompEQ(i, integra7Api, i7startAddresses, i7parameters, semaphore);
             _parameterMapper[
                 new Tuple<string, string, string>(sndcommoncompeq.StartAddressName, sndcommoncompeq.OffsetAddressName,
                     sndcommoncompeq.Offset2AddressName)] = sndcommoncompeq;
 
             for (int j = 0; j < Constants.NO_OF_PARTIALS_SN_DRUM; j++)
             {
-                DomainBase part = new DomainSNDrumKitPartial(i, j, integra7Api, i7startAddresses, i7parameters);
+                DomainBase part = new DomainSNDrumKitPartial(i, j, integra7Api, i7startAddresses, i7parameters, semaphore);
                 _parameterMapper[
                     new Tuple<string, string, string>(part.StartAddressName, part.OffsetAddressName, 
                         part.Offset2AddressName)] = part;

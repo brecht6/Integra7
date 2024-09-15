@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Integra7AuralAlchemist.Models.Services;
 using Serilog;
 
@@ -55,7 +56,7 @@ public class FullyQualifiedParameterRange
         integra7Api.MakeDataTransmission(totalAddr, data);
     }
 
-    public void RetrieveFromIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
+    public async Task RetrieveFromIntegraAsync(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
     {
         byte[] startAddr = startAddresses.Lookup(_start).Address;
         byte[] offsetAddr = startAddresses.Lookup(_offset).Address;
@@ -73,7 +74,7 @@ public class FullyQualifiedParameterRange
         // size, however, must not count duplicates needed for data dependencies multiple times since only one of them
         // will be actually used during parsing (based on which value was read for its master control)
         long size = ParameterListSysexSizeCalculator.CalculateSysexSize(allRelevantPars);
-        byte[] reply = integra7Api.MakeDataRequest(totalAddr, size);
+        byte[] reply = await integra7Api.MakeDataRequestAsync(totalAddr, size);
         if (reply.Length > 0)
         {
             ParseFromSysexReply(reply, parameters, _firstPar);

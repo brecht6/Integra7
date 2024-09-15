@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Commons.Music.Midi;
 using CoreMidi;
 using Integra7AuralAlchemist.Models.Data;
@@ -17,7 +18,7 @@ public interface IIntegra7Api
     void AllNotesOff();
     void ChangePreset(byte Channel, int Msb, int Lsb, int Pc);
 
-    byte[] MakeDataRequest(byte[] address, long size);
+    Task<byte[]> MakeDataRequestAsync(byte[] address, long size);
     void MakeDataTransmission(byte[] address, byte[] data);
     void SendStopPreviewPhraseMsg();
     void SendLoadSrx(byte srx_slot1, byte srx_slot2, byte srx_slot3, byte srx_slot4);
@@ -59,12 +60,12 @@ public class Integra7Api : IIntegra7Api
         return Integra7SysexHelpers.CheckIdentityReply(usefulreply, out _deviceId);
     }
 
-    public byte[] MakeDataRequest(byte[] address, long size)
+    public async Task<byte[]> MakeDataRequestAsync(byte[] address, long size)
     {
         byte[] data = Integra7SysexHelpers.MakeDataRequest(DeviceId(), address, size);
-        _midiIn?.AnnounceIntentionToManuallyHandleReply();
+        AsyncMidiInputWrapper m = new AsyncMidiInputWrapper(_midiIn);
         _midiOut?.SafeSend(data);
-        byte[] reply = _midiIn?.GetReply().ToArray() ?? [];
+        byte[] reply = await m.WaitForMidiMessageAsync();
         return reply;
     }
 

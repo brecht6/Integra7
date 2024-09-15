@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
 using Serilog;
@@ -21,8 +23,10 @@ public class DomainBase
 
     private readonly List<FullyQualifiedParameter> _domainParameters = [];
 
+    private readonly SemaphoreSlim _semaphore;
+
     public DomainBase(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters, 
-        string startAddressName, string offsetAddressName, string offset2AddressName, string parameterNamePrefix)
+        string startAddressName, string offsetAddressName, string offset2AddressName, string parameterNamePrefix, SemaphoreSlim semaphore)
     {
         _integra7Api = integra7Api;
         _startAddresses = startAddresses;
@@ -30,7 +34,7 @@ public class DomainBase
         _startAddressName = startAddressName;
         _offsetAddressName = offsetAddressName;
         _offset2AddressName = offset2AddressName;
-        
+        _semaphore = semaphore;
 
         List<Integra7ParameterSpec> relevant = parameters.GetParametersWithPrefix(parameterNamePrefix);
         for (int i = 0; i < relevant.Count; i++)
@@ -39,7 +43,7 @@ public class DomainBase
         }
     }
 
-    public void ReadFromIntegra()
+    public async Task ReadFromIntegraAsync()
     {
         Log.Debug($"Reading range of parameters (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}, offset2 address: {_domainParameters[0].Offset2}) between {_domainParameters[0].ParSpec.Path} and {_domainParameters.Last().ParSpec.Path} from integra.");
         FullyQualifiedParameterRange r = new FullyQualifiedParameterRange(_domainParameters[0].Start,
@@ -47,7 +51,7 @@ public class DomainBase
                                                                           _domainParameters[0].Offset2,
                                                                           _domainParameters[0].ParSpec,
                                                                           _domainParameters.Last().ParSpec);
-        r.RetrieveFromIntegra(_integra7Api, _startAddresses, _parameters);
+        await r.RetrieveFromIntegraAsync(_integra7Api, _startAddresses, _parameters);
         for (int i = 0; i < r.Range.Count; i++)
         {
             _domainParameters[i].CopyParsedDataFrom(r.Range[i]);
@@ -66,7 +70,7 @@ public class DomainBase
         r.WriteToIntegra(_integra7Api, _startAddresses, _parameters);
     }
 
-    public FullyQualifiedParameter? ReadFromIntegra(string parameterName)
+    public async Task<FullyQualifiedParameter?> ReadFromIntegraAsync(string parameterName)
     {
         Log.Debug($"Reading single parameter {parameterName}, (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2}) from integra.");
         bool found = false;
@@ -79,7 +83,7 @@ public class DomainBase
             if (p.ValidInContext(ctx) && p.ParSpec.Path == parameterName)
             {
                 found = true;
-                p.RetrieveFromIntegra(_integra7Api, _startAddresses, _parameters);
+                await p.RetrieveFromIntegraAsync(_integra7Api, _startAddresses, _parameters);
                 p.DebugLog();
                 return p;
             }

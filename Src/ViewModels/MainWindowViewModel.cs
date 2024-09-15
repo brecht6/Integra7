@@ -171,6 +171,10 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
+        MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await UpdateIntegraFromUiAsync(m));
+        MessageBus.Current.Listen<UpdateFromSysexSpec>("hw2ui").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await UpdateUiFromIntegraAsync(m));
+        MessageBus.Current.Listen<UpdateResyncPart>().Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await ResyncPartAsync(m.PartNo));
+        MessageBus.Current.Listen<UpdateSetPresetAndResyncPart>().Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await SetPresetAndResyncPartAsync(m.PartNo));
     }
 
     public async Task InitializeAsync()
@@ -179,10 +183,6 @@ public partial class MainWindowViewModel : ViewModelBase
         await Integra7.CheckIdentityAsync();
         List<Integra7Preset> presets = LoadPresets();
         await UpdateConnectedAsync(Integra7, presets);
-        MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await UpdateIntegraFromUiAsync(m));
-        MessageBus.Current.Listen<UpdateFromSysexSpec>("hw2ui").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await UpdateUiFromIntegraAsync(m));
-        MessageBus.Current.Listen<UpdateResyncPart>().Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await ResyncPartAsync(m.PartNo));
-        MessageBus.Current.Listen<UpdateSetPresetAndResyncPart>().Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await SetPresetAndResyncPartAsync(m.PartNo));
     }
 
     public async Task UpdateIntegraFromUiAsync(UpdateMessageSpec s)

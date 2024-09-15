@@ -1,4 +1,5 @@
 using Commons.Music.Midi;
+using Serilog;
 
 namespace Integra7AuralAlchemist.Models.Services;
 using System;
@@ -19,6 +20,7 @@ public class AsyncMidiInputWrapper
     private void OnMidiMessageReceived(object? sender, MidiReceivedEventArgs e)
     {
         // Set the result of the TaskCompletionSource
+        ByteStreamDisplay.Display("Received (async): ", e.Data);
         _tcs?.TrySetResult(e.Data);
     }
 
@@ -29,5 +31,10 @@ public class AsyncMidiInputWrapper
         byte[] message = await _tcs.Task;
         _midiInput.ConfigureDefaultHandler();
         return message;
+    }
+
+    public void CleanupAfterTimeOut()
+    {
+        _midiInput.RestoreAutomaticHandling();
     }
 }

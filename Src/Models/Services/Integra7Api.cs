@@ -60,6 +60,7 @@ public class Integra7Api : IIntegra7Api
         }
         catch (TimeoutException ex)
         {
+            mi.CleanupAfterTimeOut();
             Log.Error(ex, $"Timeout waiting for MIDI reply while connecting to Integra-7 {ex.Message}");
             _midiOut = null;
             _midiIn = null;
@@ -91,6 +92,7 @@ public class Integra7Api : IIntegra7Api
             }
             catch (TimeoutException ex)
             {
+                mi.CleanupAfterTimeOut();
                 Log.Error(ex, $"Timeout waiting for MIDI reply after data request {ex.Message}");
                 return [];
             }
@@ -175,6 +177,7 @@ public class Integra7Api : IIntegra7Api
             }
             catch (TimeoutException ex)
             {
+                mi.CleanupAfterTimeOut();
                 Log.Error(ex, $"Timeout waiting for MIDI reply while requesting loaded SRX: {ex.Message}");
             }
             if (reply.Length > 15)

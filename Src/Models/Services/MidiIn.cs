@@ -14,6 +14,7 @@ public interface IMidiIn
     public void ConfigureDefaultHandler();
     public byte[] GetReply();
     public void AnnounceIntentionToManuallyHandleReply();
+    public void RestoreAutomaticHandling();    
 }
 
 
@@ -23,6 +24,14 @@ public class MidiIn : IMidiIn
     private IMidiInput? _access;
     private IMidiPortDetails? _midiPortDetails;
     private bool _manualReplyHandling;
+    public bool ManualReplyHandling { 
+        get => _manualReplyHandling;
+        set
+        {
+            Log.Debug($"Set manual MIDI reply handling to {value}.");
+            _manualReplyHandling = value;
+        }
+    }
     private event EventHandler<MidiReceivedEventArgs> _lastEventHandler;
     private static ManualResetEvent _replyReady = new ManualResetEvent(false);
     private byte[] _replyData = [];
@@ -36,6 +45,7 @@ public class MidiIn : IMidiIn
     {
         _midiAccessManager = MidiAccessManager.Default as IMidiAccess2;
         _lastEventHandler = DefaultHandler;
+        _manualReplyHandling = false;
         try
         {
             _midiPortDetails = _midiAccessManager?.Inputs.Where(x => x.Name.Contains(Name)).Last();
@@ -59,6 +69,7 @@ public class MidiIn : IMidiIn
         _access.MessageReceived -= _lastEventHandler;
         _lastEventHandler = DefaultHandler;
         _access.MessageReceived += _lastEventHandler;
+        _manualReplyHandling = false;
     }
 
     public void ConfigureHandler(EventHandler<MidiReceivedEventArgs> handler)
@@ -66,6 +77,7 @@ public class MidiIn : IMidiIn
         _access.MessageReceived -= _lastEventHandler;
         _lastEventHandler = handler;
         _access.MessageReceived += _lastEventHandler;
+        _manualReplyHandling = false;
     }
 
     private void DefaultHandler(object? sender, MidiReceivedEventArgs e)
@@ -78,7 +90,7 @@ public class MidiIn : IMidiIn
         Array.Copy(localCopy, _replyData, e.Length);
         if (Verbose)
         {
-            ByteStreamDisplay.Display("Received: ", localCopy);
+            ByteStreamDisplay.Display("Received (default handler): ", localCopy);
         }
         if (!_manualReplyHandling)
         {
@@ -91,6 +103,15 @@ public class MidiIn : IMidiIn
                 Log.Debug($"Request UpdateSSetPresetandResyncPart for channel {midiChannel}");
                 MessageBus.Current.SendMessage(new UpdateSetPresetAndResyncPart(midiChannel));
             }
+            else
+            {
+                Log.Debug($"Received MIDI msg that will not be dispatched for ui update.");
+                ByteStreamDisplay.Display("The message was: ", localCopy);
+            }
+        }
+        else
+        {
+            Log.Debug($"Received MIDI msg that will not be dispatched for ui update because manual reply handling is active.");
         }
         _manualReplyHandling = false;
         _replyReady.Set();
@@ -106,6 +127,7 @@ public class MidiIn : IMidiIn
 
         // if no reply after 5 seconds, most likely no reply will come anymore...
         _replyReady.Reset();
+        _manualReplyHandling = false;
         return [];
     }
 
@@ -113,5 +135,11 @@ public class MidiIn : IMidiIn
     {
         _replyReady.Reset();
         _manualReplyHandling = true;
+    }
+
+    public void RestoreAutomaticHandling()
+    {
+        _replyReady.Set();
+        _manualReplyHandling = false;
     }
 }

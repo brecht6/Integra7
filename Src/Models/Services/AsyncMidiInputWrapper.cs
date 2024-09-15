@@ -27,6 +27,7 @@ public class AsyncMidiInputWrapper
         _tcs = new TaskCompletionSource<byte[]>();
         // Start listening for MIDI messages
         byte[] message = await _tcs.Task;
+        _midiInput.ConfigureDefaultHandler();
         return message;
     }
 }

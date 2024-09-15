@@ -82,7 +82,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ReactiveCommand]
     public async Task RescanMidiDevicesAsync()
     {
-        Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING));
+        Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING), _semaphore);
         List<Integra7Preset> presets = LoadPresets();
         await UpdateConnectedAsync(Integra7, presets);
     }
@@ -170,7 +170,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING));
+        Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING), _semaphore);
         List<Integra7Preset> presets = LoadPresets();
         UpdateConnectedAsync(Integra7, presets);
         

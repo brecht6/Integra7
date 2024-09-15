@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Commons.Music.Midi;
 using CoreMidi;
 using Integra7AuralAlchemist.Models.Data;
 using ReactiveUI;
+using Serilog;
 
 namespace Integra7AuralAlchemist.Models.Services;
 
@@ -31,16 +33,18 @@ public class Integra7Api : IIntegra7Api
     private IMidiOut? _midiOut;
     private IMidiIn? _midiIn;
     private byte _deviceId;
+    private SemaphoreSlim _semaphore;
 
     public byte DeviceId()
     {
         return _deviceId;
     }
 
-    public Integra7Api(IMidiOut midiOut, IMidiIn midiIn)
+    public Integra7Api(IMidiOut midiOut, IMidiIn midiIn, SemaphoreSlim semaphore)
     {
         _midiOut = midiOut;
         _midiIn = midiIn;
+        _semaphore = semaphore;
         if (!CheckIdentity())
         {
             _midiOut = null;
@@ -62,11 +66,21 @@ public class Integra7Api : IIntegra7Api
 
     public async Task<byte[]> MakeDataRequestAsync(byte[] address, long size)
     {
-        byte[] data = Integra7SysexHelpers.MakeDataRequest(DeviceId(), address, size);
-        AsyncMidiInputWrapper m = new AsyncMidiInputWrapper(_midiIn);
-        _midiOut?.SafeSend(data);
-        byte[] reply = await m.WaitForMidiMessageAsync();
-        return reply;
+        await _semaphore.WaitAsync();
+        try
+        {
+            Log.Debug($"Lock acquired");
+            byte[] data = Integra7SysexHelpers.MakeDataRequest(DeviceId(), address, size);
+            AsyncMidiInputWrapper m = new AsyncMidiInputWrapper(_midiIn);
+            _midiOut?.SafeSend(data);
+            byte[] reply = await m.WaitForMidiMessageAsync();
+            return reply;
+        }
+        finally
+        {
+            Log.Debug("Lock released");
+            _semaphore.Release();
+        }
     }
 
     public void MakeDataTransmission(byte[] address, byte[] data)

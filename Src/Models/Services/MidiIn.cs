@@ -11,6 +11,7 @@ namespace Integra7AuralAlchemist.Models.Services;
 public interface IMidiIn
 {
     public void ConfigureHandler(EventHandler<MidiReceivedEventArgs> handler);
+    public void ConfigureDefaultHandler();
     public byte[] GetReply();
     public void AnnounceIntentionToManuallyHandleReply();
 }
@@ -48,6 +49,16 @@ public class MidiIn : IMidiIn
         {
             _midiPortDetails = null;
         }
+    }
+
+    public void ConfigureDefaultHandler()
+    {
+        if (_access == null)
+            return; 
+        
+        _access.MessageReceived -= _lastEventHandler;
+        _lastEventHandler = DefaultHandler;
+        _access.MessageReceived += _lastEventHandler;
     }
 
     public void ConfigureHandler(EventHandler<MidiReceivedEventArgs> handler)

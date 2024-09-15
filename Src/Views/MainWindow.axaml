@@ -49,19 +49,19 @@
                             Command="{Binding RescanMidiDevicesAsync}">
                         Rescan Midi Devices
                     </Button>
-                    <Button Command="{Binding PlayNote}"
+                    <Button Command="{Binding PlayNoteAsync}"
                             IsEnabled="{Binding Connected}">
                         Play Note
                     </Button>
-                    <Button Command="{Binding PlayPhrase}"
+                    <Button Command="{Binding PlayPhraseAsync}"
                             IsEnabled="{Binding Connected}">
                         Play Phrase
                     </Button>
-                    <Button Command="{Binding StopPhrase}"
+                    <Button Command="{Binding StopPhraseAsync}"
                             IsEnabled="{Binding Connected}">
                         Stop Phrase
                     </Button>
-                    <Button Command="{Binding Panic}"
+                    <Button Command="{Binding PanicAsync}"
                             IsEnabled="{Binding Connected}"
                             Background="Red"
                             Foreground="White">

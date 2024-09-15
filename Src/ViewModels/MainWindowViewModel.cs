@@ -42,47 +42,48 @@ public partial class MainWindowViewModel : ViewModelBase
     private string _midiDevices = "No Midi Devices Detected";
 
     [ReactiveCommand]
-    public void PlayNote()
+    public async Task PlayNoteAsync()
     {
         byte zeroBasedMidiChannel = 0;
         if (_currentPartSelection > 0 && _currentPartSelection < 17)
         {
             zeroBasedMidiChannel = (byte)(_currentPartSelection - 1);
         }
-        Integra7?.NoteOn(zeroBasedMidiChannel, 65, 100);
+        await Integra7?.NoteOnAsync(zeroBasedMidiChannel, 65, 100);
         Thread.Sleep(1000);
-        Integra7?.NoteOff(zeroBasedMidiChannel, 65);
+        await Integra7?.NoteOffAsync(zeroBasedMidiChannel, 65);
     }
 
     [ReactiveCommand]
-    public void PlayPhrase()
+    public async Task PlayPhraseAsync()
     {
         byte zeroBasedMidiChannel = 0;
         if (_currentPartSelection > 0 && _currentPartSelection < 17)
         {
             zeroBasedMidiChannel = (byte)(_currentPartSelection - 1);
         }
-        Integra7?.SendStopPreviewPhraseMsg();
-        Integra7?.SendPlayPreviewPhraseMsg(zeroBasedMidiChannel);
+        await Integra7?.SendStopPreviewPhraseMsgAsync();
+        await Integra7?.SendPlayPreviewPhraseMsgAsync(zeroBasedMidiChannel);
     }
 
     [ReactiveCommand]
-    public void StopPhrase()
+    public async Task StopPhraseAsync()
     {
-        Integra7?.SendStopPreviewPhraseMsg();
+        await Integra7?.SendStopPreviewPhraseMsgAsync();
     }
 
     [ReactiveCommand]
-    public void Panic()
+    public async Task PanicAsync()
     {
-        Integra7?.AllNotesOff();
-        Integra7?.SendStopPreviewPhraseMsg();
+        await Integra7?.AllNotesOffAsync();
+        await Integra7?.SendStopPreviewPhraseMsgAsync();
     }
 
     [ReactiveCommand]
     public async Task RescanMidiDevicesAsync()
     {
         Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING), _semaphore);
+        await Integra7.CheckIdentityAsync();
         List<Integra7Preset> presets = LoadPresets();
         await UpdateConnectedAsync(Integra7, presets);
     }
@@ -93,11 +94,11 @@ public partial class MainWindowViewModel : ViewModelBase
     [Reactive] private int _srx_slot4;
 
     [ReactiveCommand]
-    public void LoadSrx()
+    public async Task LoadSrx()
     {
         if (_connected)
         {
-            Integra7?.SendLoadSrx((byte)_srx_slot1, (byte)_srx_slot2, (byte)_srx_slot3, (byte)_srx_slot4);
+            await Integra7?.SendLoadSrxAsync((byte)_srx_slot1, (byte)_srx_slot2, (byte)_srx_slot3, (byte)_srx_slot4);
         }
     }
     
@@ -106,7 +107,7 @@ public partial class MainWindowViewModel : ViewModelBase
         Connected = integra7Api.ConnectionOk();
         if (_connected)
         {
-            (Srx_slot1, Srx_slot2, Srx_slot3, Srx_slot4) = integra7Api.GetLoadedSrx();
+            (Srx_slot1, Srx_slot2, Srx_slot3, Srx_slot4) = await integra7Api.GetLoadedSrxAsync();
             Log.Information("Connected to Integra7");
             MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING + " with device id " + integra7Api.DeviceId().ToString("x2");
             _integra7Communicator = new Integra7Domain(integra7Api, _i7startAddresses, _i7parameters, _semaphore);
@@ -175,6 +176,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public async Task InitializeAsync()
     {
         Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING), _semaphore);
+        await Integra7.CheckIdentityAsync();
         List<Integra7Preset> presets = LoadPresets();
         await UpdateConnectedAsync(Integra7, presets);
         MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await UpdateIntegraFromUiAsync(m));

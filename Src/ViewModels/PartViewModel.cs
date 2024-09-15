@@ -1613,19 +1613,19 @@ public partial class PartViewModel : ViewModelBase
             if (_selectedPreset != value && value is not null)
             {
                 _selectedPreset = value;
-                ChangePreset();
+                ChangePresetAsync();
                 this.RaisePropertyChanged(nameof(SelectedPreset));
             }
         }
     }
 
     [ReactiveCommand]
-    public void ChangePreset()
+    public async Task ChangePresetAsync()
     {
         Integra7Preset? CurrentSelection = _selectedPreset;
         if (CurrentSelection != null)
         {
-            _i7Api.ChangePreset(_part, CurrentSelection.Msb, CurrentSelection.Lsb, CurrentSelection.Pc);
+            await _i7Api.ChangePresetAsync(_part, CurrentSelection.Msb, CurrentSelection.Lsb, CurrentSelection.Pc);
         }
     }
 

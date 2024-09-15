@@ -58,7 +58,7 @@ public class DomainBase
         }
     }
 
-    public void WriteToIntegra()
+    public async Task WriteToIntegraAsync()
     {
         Log.Debug($"Writing range of parameters (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2} between {_domainParameters[0].ParSpec.Path} and {_domainParameters.Last().ParSpec.Path} to integra.");
         FullyQualifiedParameterRange r = new FullyQualifiedParameterRange(_domainParameters[0].Start,
@@ -67,7 +67,7 @@ public class DomainBase
                                                                           _domainParameters[0].ParSpec,
                                                                           _domainParameters.Last().ParSpec);
         r.Initialize(_domainParameters);
-        r.WriteToIntegra(_integra7Api, _startAddresses, _parameters);
+        await r.WriteToIntegraAsync(_integra7Api, _startAddresses, _parameters);
     }
 
     public async Task<FullyQualifiedParameter?> ReadFromIntegraAsync(string parameterName)
@@ -95,7 +95,7 @@ public class DomainBase
         return null;
     }
 
-    public void WriteToIntegra(string parameterName)
+    public async Task WriteToIntegraAsync(string parameterName)
     {
         Log.Debug($"Writing single parameter {parameterName}, (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2}) to integra.");
         bool found = false;
@@ -107,7 +107,7 @@ public class DomainBase
             if (p.ValidInContext(ctx) && p.ParSpec.Path == parameterName)
             {
                 found = true;
-                p.WriteToIntegra(_integra7Api, _startAddresses, _parameters);
+                await p.WriteToIntegraAsync(_integra7Api, _startAddresses, _parameters);
                 p.DebugLog();
             }
         }
@@ -117,10 +117,10 @@ public class DomainBase
         }
     }
 
-    public void WriteToIntegra(string parameterName, string displayedValue)
+    public async Task WriteToIntegraAsync(string parameterName, string displayedValue)
     {
         ModifySingleParameterDisplayedValue(parameterName, displayedValue);
-        WriteToIntegra(parameterName);
+        await WriteToIntegraAsync(parameterName);
     }
 
     public string LookupSingleParameterDisplayedValue(string parameterName)

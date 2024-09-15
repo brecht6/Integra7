@@ -35,7 +35,7 @@ public class FullyQualifiedParameterRange
         }
     }
 
-    public void WriteToIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
+    public async Task WriteToIntegraAsync(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)
     {
         byte[] startAddr = startAddresses.Lookup(_start).Address;
         byte[] offsetAddr = startAddresses.Lookup(_offset).Address;
@@ -53,7 +53,7 @@ public class FullyQualifiedParameterRange
                 data = ByteUtils.Flatten(data, p.GetSysexDataFragment());
             }
         }
-        integra7Api.MakeDataTransmission(totalAddr, data);
+        await integra7Api.MakeDataTransmissionAsync(totalAddr, data);
     }
 
     public async Task RetrieveFromIntegraAsync(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters)

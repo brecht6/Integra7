@@ -21,7 +21,7 @@ public interface IIntegra7Api
     void ChangePreset(byte Channel, int Msb, int Lsb, int Pc);
 
     Task<byte[]> MakeDataRequestAsync(byte[] address, long size);
-    void MakeDataTransmission(byte[] address, byte[] data);
+    Task MakeDataTransmissionAsync(byte[] address, byte[] data);
     void SendStopPreviewPhraseMsg();
     void SendLoadSrx(byte srx_slot1, byte srx_slot2, byte srx_slot3, byte srx_slot4);
     (byte, byte, byte, byte) GetLoadedSrx();
@@ -69,7 +69,7 @@ public class Integra7Api : IIntegra7Api
         await _semaphore.WaitAsync();
         try
         {
-            Log.Debug($"Lock acquired");
+            Log.Debug($"DataRequest Lock acquired");
             byte[] data = Integra7SysexHelpers.MakeDataRequest(DeviceId(), address, size);
             AsyncMidiInputWrapper m = new AsyncMidiInputWrapper(_midiIn);
             _midiOut?.SafeSend(data);
@@ -78,15 +78,16 @@ public class Integra7Api : IIntegra7Api
         }
         finally
         {
-            Log.Debug("Lock released");
+            Log.Debug("DataRequest Lock released");
             _semaphore.Release();
         }
     }
 
-    public void MakeDataTransmission(byte[] address, byte[] data)
+    public async Task MakeDataTransmissionAsync(byte[] address, byte[] data)
     {
         byte[] transmission = Integra7SysexHelpers.MakeDataSet(DeviceId(), address, data);
-        _midiOut?.SafeSend(transmission);
+        AsyncMidiOutputWrapper w = new AsyncMidiOutputWrapper(_midiOut, _semaphore);
+        await w.SafeSendAsync(transmission);
     }
 
     public bool ConnectionOk()

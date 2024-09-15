@@ -170,21 +170,24 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
+    }
+
+    public async Task InitializeAsync()
+    {
         Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING), _semaphore);
         List<Integra7Preset> presets = LoadPresets();
-        UpdateConnectedAsync(Integra7, presets);
-        
-        MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await UpdateIntegraFromUi(m));
-        MessageBus.Current.Listen<UpdateFromSysexSpec>("hw2ui").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await UpdateUiFromIntegra(m));
+        await UpdateConnectedAsync(Integra7, presets);
+        MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await UpdateIntegraFromUiAsync(m));
+        MessageBus.Current.Listen<UpdateFromSysexSpec>("hw2ui").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await UpdateUiFromIntegraAsync(m));
         MessageBus.Current.Listen<UpdateResyncPart>().Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await ResyncPartAsync(m.PartNo));
         MessageBus.Current.Listen<UpdateSetPresetAndResyncPart>().Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await SetPresetAndResyncPartAsync(m.PartNo));
     }
 
-    public async Task UpdateIntegraFromUi(UpdateMessageSpec s)
+    public async Task UpdateIntegraFromUiAsync(UpdateMessageSpec s)
     {
         FullyQualifiedParameter p = s.Par;
         p.StringValue = s.DisplayValue;
-        _integra7Communicator?.WriteSingleParameterToIntegra(p);
+        await _integra7Communicator?.WriteSingleParameterToIntegraAsync(p);
         if (p.ParSpec.IsParent)
         {
             await _integra7Communicator?.GetDomain(p).ReadFromIntegraAsync();
@@ -192,7 +195,7 @@ public partial class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public async Task UpdateUiFromIntegra(UpdateFromSysexSpec s)
+    public async Task UpdateUiFromIntegraAsync(UpdateFromSysexSpec s)
     {
         List<UpdateMessageSpec> parameters = SysexDataTransmissionParser.ConvertSysexToParameterUpdates(s.SysexMsg, _integra7Communicator);
         bool ParentControlModified = parameters.Any(spec => spec.Par.ParSpec.IsParent);

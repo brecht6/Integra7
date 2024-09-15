@@ -128,12 +128,12 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
         ParseFromSysexReply(reply, parameters);
     }
 
-    public void WriteToIntegra(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses,
+    public async Task WriteToIntegraAsync(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses,
         Integra7Parameters parameters)
     {
         byte[] totalAddr = CompleteAddress(startAddresses, parameters);
         byte[] data = GetSysexDataFragment();
-        integra7Api.MakeDataTransmission(totalAddr, data);
+        await integra7Api.MakeDataTransmissionAsync(totalAddr, data);
     }
 
     public void ParseFromSysexReply(byte[] reply, Integra7Parameters parameters,

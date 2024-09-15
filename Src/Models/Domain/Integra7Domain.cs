@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Services;
 using Serilog;
@@ -403,7 +404,7 @@ public class Integra7Domain
         return null;
     }
 
-    public void WriteSingleParameterToIntegra(FullyQualifiedParameter p)
+    public async Task WriteSingleParameterToIntegraAsync(FullyQualifiedParameter p)
     {
         Tuple<string, string, string> key = new(p.Start, p.Offset, p.Offset2);
         if (!_parameterMapper.ContainsKey(key))
@@ -414,7 +415,7 @@ public class Integra7Domain
         }
 
         DomainBase b = _parameterMapper[key];
-        b.WriteToIntegra(p.ParSpec.Path, p.StringValue);
+        await b.WriteToIntegraAsync(p.ParSpec.Path, p.StringValue);
     }
 
     public DomainBase GetDomain(FullyQualifiedParameter p)

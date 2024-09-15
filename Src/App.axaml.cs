@@ -21,8 +21,10 @@ public class App : Application
             // Without this line you will get duplicate validations from both Avalonia and CT
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new MainWindowViewModel()
             };
+            _ = (desktop.MainWindow.DataContext as  MainWindowViewModel).InitializeAsync();
+            
         }
 
         base.OnFrameworkInitializationCompleted();

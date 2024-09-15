@@ -16,7 +16,6 @@ using Serilog;
 
 namespace Integra7AuralAlchemist.ViewModels;
 
-
 public partial class MainWindowViewModel : ViewModelBase
 {
 #pragma warning disable CA1822 // Mark members as static
@@ -24,22 +23,22 @@ public partial class MainWindowViewModel : ViewModelBase
     private Integra7StartAddresses _i7startAddresses = new();
     private Integra7Parameters _i7parameters = new();
 
-    private SemaphoreSlim _semaphore = new(1, 1); 
-        
-    [Reactive]
-    private bool _rescanButtonEnabled = true;
+    private SemaphoreSlim _semaphore = new(1, 1);
+
+    [Reactive] private bool _rescanButtonEnabled = true;
     private Integra7Domain? _integra7Communicator;
+
+    [Reactive] private bool _isSyncing = true;
+    private int _syncLevels = 0;
 
     private ReadOnlyObservableCollection<PartViewModel> _partViewModels;
     public ReadOnlyObservableCollection<PartViewModel> PartViewModels => _partViewModels;
     private const string INTEGRA_CONNECTION_STRING = "INTEGRA-7";
     private IIntegra7Api? Integra7 { get; set; }
 
-    [Reactive]
-    private bool _connected;
+    [Reactive] private bool _connected;
 
-    [Reactive]
-    private string _midiDevices = "No Midi Devices Detected";
+    [Reactive] private string _midiDevices = "No Midi Devices Detected";
 
     [ReactiveCommand]
     public async Task PlayNoteAsync()
@@ -49,6 +48,7 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             zeroBasedMidiChannel = (byte)(_currentPartSelection - 1);
         }
+
         await Integra7?.NoteOnAsync(zeroBasedMidiChannel, 65, 100);
         Thread.Sleep(1000);
         await Integra7?.NoteOffAsync(zeroBasedMidiChannel, 65);
@@ -62,6 +62,7 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             zeroBasedMidiChannel = (byte)(_currentPartSelection - 1);
         }
+
         await Integra7?.SendStopPreviewPhraseMsgAsync();
         await Integra7?.SendPlayPreviewPhraseMsgAsync(zeroBasedMidiChannel);
     }
@@ -82,7 +83,8 @@ public partial class MainWindowViewModel : ViewModelBase
     [ReactiveCommand]
     public async Task RescanMidiDevicesAsync()
     {
-        Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING), _semaphore);
+        Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING),
+            _semaphore);
         await Integra7.CheckIdentityAsync();
         List<Integra7Preset> presets = LoadPresets();
         await UpdateConnectedAsync(Integra7, presets);
@@ -101,48 +103,72 @@ public partial class MainWindowViewModel : ViewModelBase
             await Integra7?.SendLoadSrxAsync((byte)_srx_slot1, (byte)_srx_slot2, (byte)_srx_slot3, (byte)_srx_slot4);
         }
     }
-    
+
+    private void SignalStartSync()
+    {
+        IsSyncing = true;
+        _syncLevels = _syncLevels + 1;
+    }
+
+    private void SignalStopSync()
+    {
+        _syncLevels = _syncLevels - 1;
+        if (_syncLevels == 0)
+            IsSyncing = false;
+    }
+
     private async Task UpdateConnectedAsync(IIntegra7Api integra7Api, List<Integra7Preset> presets)
     {
         Connected = integra7Api.ConnectionOk();
-        if (_connected)
+        try
         {
-            (Srx_slot1, Srx_slot2, Srx_slot3, Srx_slot4) = await integra7Api.GetLoadedSrxAsync();
-            Log.Information("Connected to Integra7");
-            MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING + " with device id " + integra7Api.DeviceId().ToString("x2");
-            _integra7Communicator = new Integra7Domain(integra7Api, _i7startAddresses, _i7parameters, _semaphore);
-            
-            ObservableCollection<PartViewModel> pvm = [];
-            for (byte i = 0; i < 17; i++)
+            if (_connected)
             {
-                if (i == 0)
+                SignalStartSync();
+                (Srx_slot1, Srx_slot2, Srx_slot3, Srx_slot4) = await integra7Api.GetLoadedSrxAsync();
+                Log.Information("Connected to Integra7");
+                MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING + " with device id " +
+                              integra7Api.DeviceId().ToString("x2");
+                _integra7Communicator = new Integra7Domain(integra7Api, _i7startAddresses, _i7parameters, _semaphore);
+
+                ObservableCollection<PartViewModel> pvm = [];
+                for (byte i = 0; i < 17; i++)
                 {
-                    Log.Information("Creating view model for common tab.");
+                    if (i == 0)
+                    {
+                        Log.Information("Creating view model for common tab.");
+                    }
+                    else
+                    {
+                        Log.Information($"Creating view model for tab part {i}.");
+                    }
+
+                    bool commonTab = i == 0;
+                    PartViewModel vm = new PartViewModel(this, commonTab ? (byte)255 : (byte)(i - 1),
+                        _i7startAddresses, _i7parameters, Integra7,
+                        _integra7Communicator, _semaphore, presets, commonTab);
+                    await vm.InitializeParameterSourceCachesAsync();
+                    pvm.Add(vm);
                 }
-                else
-                {
-                    Log.Information($"Creating view model for tab part {i}.");   
-                }
-                bool commonTab = i == 0;
-                PartViewModel vm = new PartViewModel(this, commonTab ? (byte)255 : (byte)(i - 1),
-                    _i7startAddresses, _i7parameters, Integra7,
-                    _integra7Communicator, _semaphore, presets, commonTab);
-                await vm.InitializeParameterSourceCachesAsync();
-                pvm.Add(vm);
+
+                _partViewModels = new ReadOnlyObservableCollection<PartViewModel>(pvm);
+                this.RaisePropertyChanged(nameof(PartViewModels));
             }
-            _partViewModels = new ReadOnlyObservableCollection<PartViewModel>(pvm);
-            this.RaisePropertyChanged(nameof(PartViewModels));
+            else
+            {
+                Log.Information("Failed to connect to Integra7");
+                MidiDevices = "Could not find " + INTEGRA_CONNECTION_STRING;
+            }
+
+            RescanButtonEnabled = !_connected;
         }
-        else
+        finally
         {
-            Log.Information("Failed to connect to Integra7");
-            MidiDevices = "Could not find " + INTEGRA_CONNECTION_STRING;
+            SignalStopSync();
         }
-        RescanButtonEnabled = !_connected;
     }
 
-    [Reactive]
-    private int _currentPartSelection;
+    [Reactive] private int _currentPartSelection;
 
     private List<Integra7Preset> LoadPresets()
     {
@@ -166,20 +192,27 @@ public partial class MainWindowViewModel : ViewModelBase
             Presets.Add(new Integra7Preset(id, tonetype, tonebank, number, name, msb, lsb, pc, category));
             id++;
         }
+
         return Presets;
     }
 
     public MainWindowViewModel()
     {
-        MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await UpdateIntegraFromUiAsync(m));
-        MessageBus.Current.Listen<UpdateFromSysexSpec>("hw2ui").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await UpdateUiFromIntegraAsync(m));
-        MessageBus.Current.Listen<UpdateResyncPart>().Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await ResyncPartAsync(m.PartNo));
-        MessageBus.Current.Listen<UpdateSetPresetAndResyncPart>().Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE)).Subscribe(async m => await SetPresetAndResyncPartAsync(m.PartNo));
+        MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+            .Subscribe(async m => await UpdateIntegraFromUiAsync(m));
+        MessageBus.Current.Listen<UpdateFromSysexSpec>("hw2ui").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+            .Subscribe(async m => await UpdateUiFromIntegraAsync(m));
+        MessageBus.Current.Listen<UpdateResyncPart>().Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+            .Subscribe(async m => await ResyncPartAsync(m.PartNo));
+        MessageBus.Current.Listen<UpdateSetPresetAndResyncPart>()
+            .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
+            .Subscribe(async m => await SetPresetAndResyncPartAsync(m.PartNo));
     }
 
     public async Task InitializeAsync()
     {
-        Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING), _semaphore);
+        Integra7 = new Integra7Api(new MidiOut(INTEGRA_CONNECTION_STRING), new MidiIn(INTEGRA_CONNECTION_STRING),
+            _semaphore);
         await Integra7.CheckIdentityAsync();
         List<Integra7Preset> presets = LoadPresets();
         await UpdateConnectedAsync(Integra7, presets);
@@ -199,16 +232,20 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public async Task UpdateUiFromIntegraAsync(UpdateFromSysexSpec s)
     {
-        List<UpdateMessageSpec> parameters = SysexDataTransmissionParser.ConvertSysexToParameterUpdates(s.SysexMsg, _integra7Communicator);
+        List<UpdateMessageSpec> parameters =
+            SysexDataTransmissionParser.ConvertSysexToParameterUpdates(s.SysexMsg, _integra7Communicator);
         bool ParentControlModified = parameters.Any(spec => spec.Par.ParSpec.IsParent);
-        bool PresetChanged = parameters.Any(spec => spec.Par.ParSpec.Path.Contains("Tone Bank Select") || spec.Par.ParSpec.Path.Contains("Tone Bank Program Number"));
+        bool PresetChanged = parameters.Any(spec =>
+            spec.Par.ParSpec.Path.Contains("Tone Bank Select") ||
+            spec.Par.ParSpec.Path.Contains("Tone Bank Program Number"));
         bool HighImpactControlChanged = ParentControlModified || PresetChanged;
         if (!HighImpactControlChanged)
         {
             // update only the affected parameters
             foreach (UpdateMessageSpec spec in parameters)
             {
-                _integra7Communicator?.GetDomain(spec.Par).ModifySingleParameterDisplayedValue(spec.Par.ParSpec.Path, spec.DisplayValue);
+                _integra7Communicator?.GetDomain(spec.Par)
+                    .ModifySingleParameterDisplayedValue(spec.Par.ParSpec.Path, spec.DisplayValue);
                 ForceUiRefresh(parameters.First().Par);
             }
         }
@@ -228,12 +265,14 @@ public partial class MainWindowViewModel : ViewModelBase
             }
         }
     }
+
     private void ForceUiRefresh(FullyQualifiedParameter p)
     {
         ForceUiRefresh(p.Start, p.Offset, p.Offset2, p.ParSpec.Path, p.ParSpec.IsParent);
     }
 
-    private void ForceUiRefresh(string StartAddressName, string OffsetAddressName, string Offset2AddressName, string ParPath, bool ResyncNeeded)
+    private void ForceUiRefresh(string StartAddressName, string OffsetAddressName, string Offset2AddressName,
+        string ParPath, bool ResyncNeeded)
     {
         if (_partViewModels != null)
         {
@@ -241,40 +280,54 @@ public partial class MainWindowViewModel : ViewModelBase
             {
                 pvm.ForceUiRefresh(StartAddressName, OffsetAddressName, Offset2AddressName, ParPath, ResyncNeeded);
             }
-        } 
+        }
     }
 
     public async Task ResyncPartAsync(byte part)
     {
-        if (_partViewModels != null)
+        try
         {
-            foreach (PartViewModel pvm in _partViewModels)
+            SignalStartSync();
+            if (_partViewModels != null)
             {
-                await pvm.EnsurePreselectIsNotNullAsync();
-                await pvm.ResyncPartAsync(part);
-            }   
+                foreach (PartViewModel pvm in _partViewModels)
+                {
+                    await pvm.EnsurePreselectIsNotNullAsync();
+                    await pvm.ResyncPartAsync(part);
+                }
+            }
+        }
+        finally
+        {
+            SignalStopSync();
         }
     }
 
     public async Task SetPresetAndResyncPartAsync(byte part)
     {
-        
-        if (_partViewModels != null)
+        try
         {
-            foreach (PartViewModel pvm in _partViewModels)
+            SignalStartSync();
+            if (_partViewModels != null)
             {
-                if (part == pvm.PartNo)
+                foreach (PartViewModel pvm in _partViewModels)
                 {
-                    DomainBase b = _integra7Communicator.StudioSetPart(part);
-                    await b.ReadFromIntegraAsync();
-                    pvm.PreSelectConfiguredPreset(b);
-                    await pvm.ResyncPartAsync(part);
-                } 
-            }   
+                    if (part == pvm.PartNo)
+                    {
+                        DomainBase b = _integra7Communicator.StudioSetPart(part);
+                        await b.ReadFromIntegraAsync();
+                        pvm.PreSelectConfiguredPreset(b);
+                        await pvm.ResyncPartAsync(part);
+                    }
+                }
+            }
+        }
+        finally
+        {
+            SignalStopSync();
         }
     }
 
 #pragma warning restore CA1822 // Mark members as static
 #pragma warning restore CS8618 // nullable must be assigned in constructor
 }
-

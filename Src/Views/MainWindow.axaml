@@ -27,7 +27,23 @@
         </Style>
     </Window.Styles>
     <Grid RowDefinitions="*" ColumnDefinitions="*">
-        <TextBlock Grid.Column="0" Grid.Row="0" FontSize="200" Text="Syncing..." HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsSyncing}"/>
+        <Border Background="#BF696969"
+                BorderBrush="#BF696969"
+                BorderThickness="2"
+                CornerRadius="10"
+                Padding="10"
+                Margin="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="900"
+                Height="300"
+                IsVisible="{Binding IsSyncing}"
+                ZIndex="100">
+            <TextBlock Grid.Column="0" Grid.Row="0" FontSize="200" Text="Syncing..." HorizontalAlignment="Center"
+                       VerticalAlignment="Center" IsVisible="{Binding IsSyncing}" 
+                       ZIndex="110"/>    
+        </Border>
+        
         <TabControl Grid.Column="0" Grid.Row="0">
             <TabItem Header="Parameters">
                 <Grid ColumnDefinitions="*"

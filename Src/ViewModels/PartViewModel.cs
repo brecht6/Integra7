@@ -18,6 +18,7 @@ namespace Integra7AuralAlchemist.ViewModels;
 public partial class PartViewModel : ViewModelBase
 {
     private ViewModelBase _parent;
+    private MainWindowViewModel _mwvm;
     private Integra7StartAddresses _i7startAddresses;
     private Integra7Parameters _i7parameters;
     private IIntegra7Api _i7Api;
@@ -472,11 +473,12 @@ public partial class PartViewModel : ViewModelBase
 
 
     public PartViewModel(ViewModelBase parent, byte zeroBasedPartNo, Integra7StartAddresses i7startAddr,
-        Integra7Parameters i7par, IIntegra7Api i7, Integra7Domain i7dom, 
+        Integra7Parameters i7par, IIntegra7Api i7, Integra7Domain i7dom,
         SemaphoreSlim semaphore, List<Integra7Preset> i7presets,
         bool commonTab = false)
     {
         _parent = parent;
+        _mwvm = parent as MainWindowViewModel;
         _part = zeroBasedPartNo;
         _i7startAddresses = i7startAddr;
         _i7parameters = i7par;
@@ -492,10 +494,23 @@ public partial class PartViewModel : ViewModelBase
 
         if (!commonTab)
         {
-            var parFilterPreset = this.WhenAnyValue(x => x.SearchTextPreset)
+            var parFilterPreset = this.WhenAnyValue(
+                    x => x.SearchTextPreset,
+                    x => x._mwvm.Srx_slot1,
+                    x => x._mwvm.Srx_slot2,
+                    x => x._mwvm.Srx_slot3,
+                    x => x._mwvm.Srx_slot4) 
                 .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
                 .DistinctUntilChanged()
-                .Select(FilterProvider.PresetFilter);
+                .Select(tuple =>
+                {
+                    var searchText = tuple.Item1;
+                    var srx01 = tuple.Item2;
+                    var srx02 = tuple.Item3;
+                    var srx03 = tuple.Item4;
+                    var srx04 = tuple.Item5;
+                    return FilterProvider.PresetFilter(searchText, srx01, srx02, srx03, srx04);
+                });
             var parFilterStudioSetMidiParameters = this.WhenAnyValue(x => x.SearchTextStudioSetMidi)
                 .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
                 .DistinctUntilChanged()
@@ -1644,11 +1659,11 @@ public partial class PartViewModel : ViewModelBase
             ForceUiRefresh(setup.StartAddressName, setup.OffsetAddressName, setup.Offset2AddressName, "",
                 false /* don't cause inf loop */);
 
-            DomainBase system = _i7domain?.System; 
+            DomainBase system = _i7domain?.System;
             await system?.ReadFromIntegraAsync();
             ForceUiRefresh(system.StartAddressName, system.OffsetAddressName, system.Offset2AddressName, "", false);
-            
-            DomainBase setcom = _i7domain?.StudioSetCommon; 
+
+            DomainBase setcom = _i7domain?.StudioSetCommon;
             await setcom?.ReadFromIntegraAsync();
             ForceUiRefresh(setcom.StartAddressName, setcom.OffsetAddressName, setcom.Offset2AddressName, "", false);
 

@@ -75,6 +75,48 @@ public class Integra7SysexHelpers
             payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX);
     }
 
+    public static byte[] MakeWriteStudioSetMsg(byte deviceId, int studioSetId)
+    {
+        byte[] payload = ByteUtils.Flatten([[0x0F, 0x00, 0x10, 0x00, 0x55], ByteUtils.IntToBytes7_2(studioSetId), [0x7f]]);
+        return ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID, COMMAND_DATAREQ,
+            payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX);
+    }
+    
+    public static byte[] MakeWritePCMDrumKitMsg(byte deviceId, byte zeroBasedPartNo, int userMemoryId)
+    {
+        byte[] payload = ByteUtils.Flatten([[0x0F, 0x00, 0x10, 0x00, 0x56], ByteUtils.IntToBytes7_2(userMemoryId), [zeroBasedPartNo]]);
+        return ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID, COMMAND_DATAREQ,
+            payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX);
+    }
+    
+    public static byte[] MakeWritePCMSynthToneMsg(byte deviceId, byte zeroBasedPartNo, int userMemoryId)
+    {
+        byte[] payload = ByteUtils.Flatten([[0x0F, 0x00, 0x10, 0x00, 0x57], ByteUtils.IntToBytes7_2(userMemoryId), [zeroBasedPartNo]]);
+        return ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID, COMMAND_DATAREQ,
+            payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX);
+    }
+
+    public static byte[] MakeWriteSuperNATURALDrumKitMsg(byte deviceId, byte zeroBasedPartNo, int userMemoryId)
+    {
+        byte[] payload = ByteUtils.Flatten([[0x0F, 0x00, 0x10, 0x00, 0x58], ByteUtils.IntToBytes7_2(userMemoryId), [zeroBasedPartNo]]);
+        return ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID, COMMAND_DATAREQ,
+            payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX);   
+    }
+    
+    public static byte[] MakeWriteSuperNATURALAcousticToneMsg(byte deviceId, byte zeroBasedPartNo, int userMemoryId)
+    {
+        byte[] payload = ByteUtils.Flatten([[0x0F, 0x00, 0x10, 0x00, 0x59], ByteUtils.IntToBytes7_2(userMemoryId), [zeroBasedPartNo]]);
+        return ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID, COMMAND_DATAREQ,
+            payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX);   
+    }
+    
+    public static byte[] MakeWriteSuperNATURALSynthToneMsg(byte deviceId, byte zeroBasedPartNo, int userMemoryId)
+    {
+        byte[] payload = ByteUtils.Flatten([[0x0F, 0x00, 0x10, 0x00, 0x5F], ByteUtils.IntToBytes7_2(userMemoryId), [zeroBasedPartNo]]);
+        return ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID, COMMAND_DATAREQ,
+            payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX);   
+    }
+
     public static bool CheckIdentityReply(byte[] reply, out byte deviceId)
     {
         if (reply.Length > 2)

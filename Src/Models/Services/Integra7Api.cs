@@ -284,19 +284,21 @@ public class Integra7Api : IIntegra7Api
         try
         {
             Log.Debug($"DataRequest Lock acquired");
-            byte[] data = Integra7SysexHelpers.MakeRequestStudioSetNames0to63Msg(_deviceId);
-            _midiOut?.SafeSend(data);
-            List<byte[]> all_replies = [];
+            List<byte[]> allReplies = [];
             int totalRepliesReceived = 0;
             try
             {
+                int replyNo = 1;
+                byte[] data = Integra7SysexHelpers.MakeRequestStudioSetNames0to63Msg(_deviceId);
+                _midiOut?.SafeSend(data);
                 while (true) // concatenate multiple incoming replies 
                 {
-                    byte[] local_reply = await mi.WaitForMidiMessageAsyncNoRestore().WaitAsync(TimeSpan.FromSeconds(1));
-                    ByteStreamDisplay.Display("partial reply:", local_reply);
-                    byte[] local_reply_copy = new byte[local_reply.Length];
-                    Buffer.BlockCopy(local_reply, 0, local_reply_copy, 0, local_reply.Length);
-                    all_replies.Add(local_reply_copy);
+                    byte[] localReply = await mi.WaitForMidiMessageAsyncExpectingMultipleInARow().WaitAsync(TimeSpan.FromSeconds(1));
+                    ByteStreamDisplay.Display($"partial reply #{replyNo}:", localReply);
+                    replyNo += 1;
+                    byte[] localReplyCopy = new byte[localReply.Length];
+                    Buffer.BlockCopy(localReply, 0, localReplyCopy, 0, localReply.Length);
+                    allReplies.Add(localReplyCopy);
                     totalRepliesReceived += 1;
                 }
             }
@@ -309,14 +311,14 @@ public class Integra7Api : IIntegra7Api
                     return [];
                 }
             }
-            byte[] full_reply = new byte[all_replies.Sum(arr => arr.Length)];
+            byte[] fullReply = new byte[allReplies.Sum(arr => arr.Length)];
             int writeIdx = 0;
-            foreach (byte[] reply in all_replies)
+            foreach (byte[] reply in allReplies)
             {
-                reply.CopyTo(full_reply, writeIdx);
+                reply.CopyTo(fullReply, writeIdx);
                 writeIdx += reply.Length;
             }
-            ByteStreamDisplay.Display("Studio Set Names 0-63:", full_reply);
+            ByteStreamDisplay.Display("Studio Set Names 0-63:", fullReply);
             return [];
         }
         finally

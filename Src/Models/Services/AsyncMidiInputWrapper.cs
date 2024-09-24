@@ -35,11 +35,12 @@ public class AsyncMidiInputWrapper
         return message;
     }
     
-    public async Task<byte[]> WaitForMidiMessageAsyncNoRestore()
+    public async Task<byte[]> WaitForMidiMessageAsyncExpectingMultipleInARow()
     {
         _tcs = new TaskCompletionSource<byte[]>();
         // Start listening for MIDI messages
         byte[] message = await _tcs.Task;
+        _midiInput.AnnounceIntentionToManuallyHandleReply();
         return message;
     }
 

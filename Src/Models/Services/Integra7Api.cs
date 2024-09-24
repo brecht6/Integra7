@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Commons.Music.Midi;
@@ -26,6 +28,26 @@ public interface IIntegra7Api
     Task SendLoadSrxAsync(byte srx_slot1, byte srx_slot2, byte srx_slot3, byte srx_slot4);
     Task<(byte, byte, byte, byte)> GetLoadedSrxAsync();
     Task SendPlayPreviewPhraseMsgAsync(byte channel);
+    
+    Task<List<string>> GetStudioSetNames0to63();
+    Task<List<string>> GetPCMDrumKitUserNames0to32();
+    Task<List<string>> GetPCMToneUserNames0to63();
+    Task<List<string>> GetPCMToneUserNames64to127();
+    Task<List<string>> GetPCMToneUserNames128to191();
+    Task<List<string>> GetPCMToneUserNames192to255();
+    Task<List<string>> GetSuperNATURALDrumKitUserNames0to63();
+    Task<List<string>> GetSuperNATURALAcousticToneUserNames0to63();
+    Task<List<string>> GetSuperNATURALAcousticToneUserNames64to127();
+    Task<List<string>> GetSuperNATURALAcousticToneUserNames128to191();
+    Task<List<string>> GetSuperNATURALAcousticToneUserNames192to255();
+    Task<List<string>> GetSuperNATURALSynthToneUserNames0to63();
+    Task<List<string>> GetSuperNATURALSynthToneUserNames64to127();
+    Task<List<string>> GetSuperNATURALSynthToneUserNames128to191();
+    Task<List<string>> GetSuperNATURALSynthToneUserNames192to255();
+    Task<List<string>> GetSuperNATURALSynthToneUserNames256to319();
+    Task<List<string>> GetSuperNATURALSynthToneUserNames320to383();
+    Task<List<string>> GetSuperNATURALSynthToneUserNames384to447();
+    Task<List<string>> GetSuperNATURALSynthToneUserNames448to511();
 }
 
 public class Integra7Api : IIntegra7Api
@@ -46,7 +68,7 @@ public class Integra7Api : IIntegra7Api
         _midiIn = midiIn;
         _semaphore = semaphore;
     }
-    
+
     public async Task CheckIdentityAsync()
     {
         byte[] data = Integra7SysexHelpers.IDENTITY_REQUEST;
@@ -65,7 +87,7 @@ public class Integra7Api : IIntegra7Api
             _midiIn = null;
             _deviceId = 0;
         }
-        
+
         byte[] usefulreply = Integra7SysexHelpers.TrimAfterEndOfSysex(reply);
         if (!Integra7SysexHelpers.CheckIdentityReply(usefulreply, out _deviceId))
         {
@@ -95,6 +117,7 @@ public class Integra7Api : IIntegra7Api
                 Log.Error(ex, $"Timeout waiting for MIDI reply after data request {ex.Message}");
                 return [];
             }
+
             return reply;
         }
         finally
@@ -161,7 +184,7 @@ public class Integra7Api : IIntegra7Api
         await mo.SafeSendAsync(msg);
     }
 
-    public async Task<(byte /*slot1*/, byte/* slot2*/, byte /*slot3*/, byte /*slot4*/)> GetLoadedSrxAsync()
+    public async Task<(byte /*slot1*/, byte /* slot2*/, byte /*slot3*/, byte /*slot4*/)> GetLoadedSrxAsync()
     {
         byte[] msg = Integra7SysexHelpers.MakeAskLoadedSrxMsg(_deviceId);
         try
@@ -179,10 +202,12 @@ public class Integra7Api : IIntegra7Api
                 mi.CleanupAfterTimeOut();
                 Log.Error(ex, $"Timeout waiting for MIDI reply while requesting loaded SRX: {ex.Message}");
             }
+
             if (reply.Length > 15)
             {
                 return (reply[11], reply[12], reply[13], reply[14]);
             }
+
             return (0, 0, 0, 0);
         }
         finally
@@ -190,7 +215,7 @@ public class Integra7Api : IIntegra7Api
             _semaphore.Release();
         }
     }
-    
+
     private void BankSelectMsb(byte Channel, int BankNumberMsb)
     {
         ISet<int> PossibleBankMsb = new HashSet<int> { 85, 86, 87, 88, 89, 92, 93, 95, 96, 97, 120, 121 };
@@ -251,6 +276,147 @@ public class Integra7Api : IIntegra7Api
 
         return false;
     }
+
+    public async Task<List<string>> GetStudioSetNames0to63()
+    {
+        await _semaphore.WaitAsync();
+        AsyncMidiInputWrapper mi = new AsyncMidiInputWrapper(_midiIn);
+        try
+        {
+            Log.Debug($"DataRequest Lock acquired");
+            byte[] data = Integra7SysexHelpers.MakeRequestStudioSetNames0to63Msg(_deviceId);
+            _midiOut?.SafeSend(data);
+            List<byte[]> all_replies = [];
+            int totalRepliesReceived = 0;
+            try
+            {
+                while (true) // concatenate multiple incoming replies 
+                {
+                    byte[] local_reply = await mi.WaitForMidiMessageAsyncNoRestore().WaitAsync(TimeSpan.FromSeconds(1));
+                    ByteStreamDisplay.Display("partial reply:", local_reply);
+                    byte[] local_reply_copy = new byte[local_reply.Length];
+                    Buffer.BlockCopy(local_reply, 0, local_reply_copy, 0, local_reply.Length);
+                    all_replies.Add(local_reply_copy);
+                    totalRepliesReceived += 1;
+                }
+            }
+            catch (TimeoutException ex)
+            {
+                mi.CleanupAfterTimeOut();
+                if (totalRepliesReceived == 0)
+                {
+                    Log.Error(ex, $"Timeout waiting for MIDI reply after data request {ex.Message}");
+                    return [];
+                }
+            }
+            byte[] full_reply = new byte[all_replies.Sum(arr => arr.Length)];
+            int writeIdx = 0;
+            foreach (byte[] reply in all_replies)
+            {
+                reply.CopyTo(full_reply, writeIdx);
+                writeIdx += reply.Length;
+            }
+            ByteStreamDisplay.Display("Studio Set Names 0-63:", full_reply);
+            return [];
+        }
+        finally
+        {
+            mi.CleanupAfterTimeOut();
+            Log.Debug("DataRequest Lock released");
+            _semaphore.Release();
+        }
+
+    }
+
+    public async Task<List<string>> GetPCMDrumKitUserNames0to32()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetPCMToneUserNames0to63()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetPCMToneUserNames64to127()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetPCMToneUserNames128to191()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetPCMToneUserNames192to255()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetSuperNATURALDrumKitUserNames0to63()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetSuperNATURALAcousticToneUserNames0to63()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetSuperNATURALAcousticToneUserNames64to127()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetSuperNATURALAcousticToneUserNames128to191()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetSuperNATURALAcousticToneUserNames192to255()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetSuperNATURALSynthToneUserNames0to63()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetSuperNATURALSynthToneUserNames64to127()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetSuperNATURALSynthToneUserNames128to191()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetSuperNATURALSynthToneUserNames192to255()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetSuperNATURALSynthToneUserNames256to319()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetSuperNATURALSynthToneUserNames320to383()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetSuperNATURALSynthToneUserNames384to447()
+    {
+        return [];
+    }
+
+    public async Task<List<string>> GetSuperNATURALSynthToneUserNames448to511()
+    {
+        return [];
+    } 
 
     public async Task ChangePresetAsync(byte Channel, int Msb, int Lsb, int Pc)
     {

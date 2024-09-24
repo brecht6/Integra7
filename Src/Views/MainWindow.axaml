@@ -85,6 +85,10 @@
                                 Foreground="White">
                             Panic!
                         </Button>
+                        <Button Command="{Binding DebugCode}"
+                                IsEnabled="{Binding Connected}">
+                            Run Debug Code
+                        </Button>
                     </StackPanel>
                     <TabControl HorizontalContentAlignment="Left"
                                 TabStripPlacement="Left"

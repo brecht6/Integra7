@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
@@ -40,6 +42,13 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [Reactive] private string _midiDevices = "No Midi Devices Detected";
 
+    [ReactiveCommand]
+    public async Task DebugCode()
+    {
+        List<string> names = await Integra7?.GetStudioSetNames0to63();
+        Debug.WriteLine(names);
+    }
+    
     [ReactiveCommand]
     public async Task PlayNoteAsync()
     {

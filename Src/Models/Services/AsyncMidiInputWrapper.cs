@@ -21,7 +21,9 @@ public class AsyncMidiInputWrapper
     {
         // Set the result of the TaskCompletionSource
         ByteStreamDisplay.Display("Received (async): ", e.Data);
-        _tcs?.TrySetResult(e.Data);
+        byte[] localCopy = new byte[e.Data.Length];
+        Buffer.BlockCopy(e.Data, 0, localCopy, 0, e.Data.Length);
+        _tcs?.TrySetResult(localCopy);
     }
 
     public async Task<byte[]> WaitForMidiMessageAsync()
@@ -32,9 +34,18 @@ public class AsyncMidiInputWrapper
         _midiInput.ConfigureDefaultHandler();
         return message;
     }
+    
+    public async Task<byte[]> WaitForMidiMessageAsyncNoRestore()
+    {
+        _tcs = new TaskCompletionSource<byte[]>();
+        // Start listening for MIDI messages
+        byte[] message = await _tcs.Task;
+        return message;
+    }
 
     public void CleanupAfterTimeOut()
     {
+        _midiInput.ConfigureDefaultHandler();
         _midiInput.RestoreAutomaticHandling();
     }
 }

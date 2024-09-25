@@ -28,7 +28,7 @@ public interface IIntegra7Api
     Task SendLoadSrxAsync(byte srx_slot1, byte srx_slot2, byte srx_slot3, byte srx_slot4);
     Task<(byte, byte, byte, byte)> GetLoadedSrxAsync();
     Task SendPlayPreviewPhraseMsgAsync(byte channel);
-    
+
     Task<List<string>> GetStudioSetNames0to63();
     Task<List<string>> GetPCMDrumKitUserNames0to32();
     Task<List<string>> GetPCMToneUserNames0to63();
@@ -75,25 +75,24 @@ public class Integra7Api : IIntegra7Api
         AsyncMidiInputWrapper mi = new AsyncMidiInputWrapper(_midiIn);
         _midiOut?.SafeSend(data);
         byte[] reply = [];
-        try
-        {
-            reply = await mi.WaitForMidiMessageAsync().WaitAsync(TimeSpan.FromSeconds(2));
-        }
-        catch (TimeoutException ex)
+        reply = await mi.WaitForMidiMessageAsync();
+        if (reply.Length == 0)
         {
             mi.CleanupAfterTimeOut();
-            Log.Error(ex, $"Timeout waiting for MIDI reply while connecting to Integra-7 {ex.Message}");
+            Log.Error($"Timeout waiting for MIDI reply while connecting to Integra-7.");
             _midiOut = null;
             _midiIn = null;
             _deviceId = 0;
         }
-
-        byte[] usefulreply = Integra7SysexHelpers.TrimAfterEndOfSysex(reply);
-        if (!Integra7SysexHelpers.CheckIdentityReply(usefulreply, out _deviceId))
+        else
         {
-            _midiOut = null;
-            _midiIn = null;
-            _deviceId = 0;
+            byte[] usefulreply = Integra7SysexHelpers.TrimAfterEndOfSysex(reply);
+            if (!Integra7SysexHelpers.CheckIdentityReply(usefulreply, out _deviceId))
+            {
+                _midiOut = null;
+                _midiIn = null;
+                _deviceId = 0;
+            }
         }
     }
 
@@ -106,15 +105,11 @@ public class Integra7Api : IIntegra7Api
             byte[] data = Integra7SysexHelpers.MakeDataRequest(DeviceId(), address, size);
             AsyncMidiInputWrapper mi = new AsyncMidiInputWrapper(_midiIn);
             _midiOut?.SafeSend(data);
-            byte[] reply = [];
-            try
-            {
-                reply = await mi.WaitForMidiMessageAsync().WaitAsync(TimeSpan.FromSeconds(2));
-            }
-            catch (TimeoutException ex)
+            byte[] reply = await mi.WaitForMidiMessageAsync();
+            if (reply.Length == 0)
             {
                 mi.CleanupAfterTimeOut();
-                Log.Error(ex, $"Timeout waiting for MIDI reply after data request {ex.Message}");
+                Log.Error($"Timeout waiting for MIDI reply after data request.");
                 return [];
             }
 
@@ -192,15 +187,11 @@ public class Integra7Api : IIntegra7Api
             await _semaphore.WaitAsync();
             AsyncMidiInputWrapper mi = new AsyncMidiInputWrapper(_midiIn);
             _midiOut?.SafeSend(msg);
-            byte[] reply = [];
-            try
-            {
-                reply = await mi.WaitForMidiMessageAsync().WaitAsync(TimeSpan.FromSeconds(2));
-            }
-            catch (TimeoutException ex)
+            byte[] reply = await mi.WaitForMidiMessageAsync();
+            if (reply.Length == 0)
             {
                 mi.CleanupAfterTimeOut();
-                Log.Error(ex, $"Timeout waiting for MIDI reply while requesting loaded SRX: {ex.Message}");
+                Log.Error($"Timeout waiting for MIDI reply while requesting loaded SRX.");
             }
 
             if (reply.Length > 15)
@@ -286,31 +277,32 @@ public class Integra7Api : IIntegra7Api
             Log.Debug($"DataRequest Lock acquired");
             List<byte[]> allReplies = [];
             int totalRepliesReceived = 0;
-            try
+
+            byte[] data = Integra7SysexHelpers.MakeRequestStudioSetNames0to63Msg(_deviceId);
+            _midiOut?.SafeSend(data);
+            bool continueReading = true;
+            while (continueReading) // concatenate multiple incoming replies 
             {
-                int replyNo = 1;
-                byte[] data = Integra7SysexHelpers.MakeRequestStudioSetNames0to63Msg(_deviceId);
-                _midiOut?.SafeSend(data);
-                while (true) // concatenate multiple incoming replies 
+                byte[] localReply = await mi.WaitForMidiMessageAsyncExpectingMultipleInARow();
+                if (localReply.Length != 0)
                 {
-                    byte[] localReply = await mi.WaitForMidiMessageAsyncExpectingMultipleInARow().WaitAsync(TimeSpan.FromSeconds(1));
-                    ByteStreamDisplay.Display($"partial reply #{replyNo}:", localReply);
-                    replyNo += 1;
-                    byte[] localReplyCopy = new byte[localReply.Length];
-                    Buffer.BlockCopy(localReply, 0, localReplyCopy, 0, localReply.Length);
-                    allReplies.Add(localReplyCopy);
+                    byte[] usefulReply = Integra7SysexHelpers.TrimAfterEndOfSysex(localReply);
+                    allReplies.Add(Integra7SysexHelpers.TrimAfterEndOfSysex(usefulReply));
                     totalRepliesReceived += 1;
+                    ByteStreamDisplay.Display($"partial reply #{totalRepliesReceived}:", usefulReply);
                 }
-            }
-            catch (TimeoutException ex)
-            {
-                mi.CleanupAfterTimeOut();
-                if (totalRepliesReceived == 0)
+                else
                 {
-                    Log.Error(ex, $"Timeout waiting for MIDI reply after data request {ex.Message}");
-                    return [];
+                    continueReading = false;
+                    mi.CleanupAfterTimeOut();
+                    if (totalRepliesReceived == 0)
+                    {
+                        Log.Error($"Timeout waiting for MIDI reply after data request.");
+                        return [];
+                    }
                 }
             }
+
             byte[] fullReply = new byte[allReplies.Sum(arr => arr.Length)];
             int writeIdx = 0;
             foreach (byte[] reply in allReplies)
@@ -318,6 +310,7 @@ public class Integra7Api : IIntegra7Api
                 reply.CopyTo(fullReply, writeIdx);
                 writeIdx += reply.Length;
             }
+
             ByteStreamDisplay.Display("Studio Set Names 0-63:", fullReply);
             return [];
         }
@@ -327,7 +320,6 @@ public class Integra7Api : IIntegra7Api
             Log.Debug("DataRequest Lock released");
             _semaphore.Release();
         }
-
     }
 
     public async Task<List<string>> GetPCMDrumKitUserNames0to32()
@@ -418,7 +410,7 @@ public class Integra7Api : IIntegra7Api
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames448to511()
     {
         return [];
-    } 
+    }
 
     public async Task ChangePresetAsync(byte Channel, int Msb, int Lsb, int Pc)
     {

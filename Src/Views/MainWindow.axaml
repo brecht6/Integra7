@@ -67,26 +67,61 @@
                                 Command="{Binding RescanMidiDevicesAsync}">
                             Rescan Midi Devices
                         </Button>
-                        <Button Command="{Binding PlayNoteAsync}"
-                                IsEnabled="{Binding Connected}">
+                        <Button Command="{Binding PlayNoteAsync}">
+                            <Button.IsEnabled>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="Connected"/>
+                                        <Binding Path = "!IsSyncing"></Binding>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </Button.IsEnabled>
                             Play Note
                         </Button>
-                        <Button Command="{Binding PlayPhraseAsync}"
-                                IsEnabled="{Binding Connected}">
+                        <Button Command="{Binding PlayPhraseAsync}">
+                            <Button.IsEnabled>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="Connected"/>
+                                        <Binding Path = "!IsSyncing"></Binding>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </Button.IsEnabled>
                             Play Phrase
                         </Button>
-                        <Button Command="{Binding StopPhraseAsync}"
-                                IsEnabled="{Binding Connected}">
+                        <Button Command="{Binding StopPhraseAsync}">
+                            <Button.IsEnabled>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="Connected"/>
+                                        <Binding Path = "!IsSyncing"></Binding>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </Button.IsEnabled>
                             Stop Phrase
                         </Button>
                         <Button Command="{Binding PanicAsync}"
-                                IsEnabled="{Binding Connected}"
                                 Background="Red"
                                 Foreground="White">
+                            <Button.IsEnabled>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="Connected"/>
+                                        <Binding Path = "!IsSyncing"></Binding>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </Button.IsEnabled>
                             Panic!
                         </Button>
-                        <Button Command="{Binding DebugCode}"
-                                IsEnabled="{Binding Connected}">
+                        <Button Command="{Binding DebugCode}">
+                            <Button.IsEnabled>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="Connected"/>
+                                        <Binding Path = "!IsSyncing"></Binding>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </Button.IsEnabled>
                             Run Debug Code
                         </Button>
                     </StackPanel>

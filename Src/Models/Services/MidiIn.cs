@@ -100,7 +100,7 @@ public class MidiIn : IMidiIn
                 MessageBus.Current.SendMessage(new UpdateFromSysexSpec((localCopy)), "hw2ui");
             }
             else if (Integra7Api.CheckIsPartOfPresetChange(localCopy, out byte midiChannel)) {
-                Log.Debug($"Request UpdateSSetPresetandResyncPart for channel {midiChannel}");
+                Log.Debug($"Request UpdateSetPresetandResyncPart for channel {midiChannel}");
                 MessageBus.Current.SendMessage(new UpdateSetPresetAndResyncPart(midiChannel));
             }
             else

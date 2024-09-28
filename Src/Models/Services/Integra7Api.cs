@@ -286,10 +286,17 @@ public class Integra7Api : IIntegra7Api
                 byte[] localReply = await mi.WaitForMidiMessageAsyncExpectingMultipleInARow();
                 if (localReply.Length != 0)
                 {
-                    byte[] usefulReply = Integra7SysexHelpers.TrimAfterEndOfSysex(localReply);
-                    allReplies.Add(Integra7SysexHelpers.TrimAfterEndOfSysex(usefulReply));
-                    totalRepliesReceived += 1;
-                    ByteStreamDisplay.Display($"partial reply #{totalRepliesReceived}:", usefulReply);
+                    //Debug.WriteLine($"len: {localReply.Length}");
+                    byte[][] multiplereplies = ByteUtils.SplitAfterF7(localReply);
+                    foreach (byte[] r in multiplereplies)
+                    {
+                        if (r is [0xf0, 0x41, ..])
+                        {
+                            allReplies.Add(r);
+                            totalRepliesReceived += 1;
+                            //ByteStreamDisplay.Display($"partial reply #{totalRepliesReceived}:", r); 
+                        }
+                    }
                 }
                 else
                 {
@@ -303,15 +310,23 @@ public class Integra7Api : IIntegra7Api
                 }
             }
 
-            byte[] fullReply = new byte[allReplies.Sum(arr => arr.Length)];
-            int writeIdx = 0;
+            List<string> StudioSetNames = [];
             foreach (byte[] reply in allReplies)
             {
-                reply.CopyTo(fullReply, writeIdx);
-                writeIdx += reply.Length;
+                byte[] name = ByteUtils.Slice(reply, 16, 16);
+                if (name[0] != 0x00) // last returned message contains all 00's
+                {
+                    StudioSetNames.Add(System.Text.Encoding.ASCII.GetString(name));   
+                }
             }
 
-            ByteStreamDisplay.Display("Studio Set Names 0-63:", fullReply);
+            Debug.WriteLine("Studio Set Names 0-63: ");
+            int idx = 0;
+            foreach (var n in StudioSetNames)
+            {
+                idx++;
+                Debug.WriteLine($"{idx}: {n}");
+            }
             return [];
         }
         finally

@@ -176,7 +176,7 @@ public class Integra7SysexHelpers
     public static byte[] MakeRequestPCMToneUserNames128to191Msg(byte deviceId)
     {
         byte noOfNames = 0x40;
-        byte[] payload = [0x0F, 0x00, 0x04, 0x02, 0x57, 0x01, 0x40, noOfNames];
+        byte[] payload = [0x0F, 0x00, 0x04, 0x02, 0x57, 0x01, 0x00, noOfNames];
         return ByteUtils.Flatten(EXCLUSIVE_STATUS, ROLAND_ID, [deviceId], MODEL_ID, COMMAND_DATAREQ,
             payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX);
     }

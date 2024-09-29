@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Commons.Music.Midi;
@@ -319,15 +316,14 @@ public class Integra7Api : IIntegra7Api
                     StudioSetNames.Add(System.Text.Encoding.ASCII.GetString(name));   
                 }
             }
-
-            Debug.WriteLine("Studio Set Names 0-63: ");
+            
             int idx = 0;
             foreach (var n in StudioSetNames)
             {
                 idx++;
-                Debug.WriteLine($"{idx}: {n}");
+                Log.Debug($"{idx}: {n}");
             }
-            return [];
+            return StudioSetNames;
         }
         finally
         {

@@ -11,7 +11,6 @@ using Integra7AuralAlchemist.Models.Domain;
 using Integra7AuralAlchemist.Models.Services;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
-using Serilog;
 
 namespace Integra7AuralAlchemist.ViewModels;
 

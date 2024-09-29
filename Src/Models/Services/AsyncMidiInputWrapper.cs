@@ -1,8 +1,6 @@
-using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Channels;
 using Commons.Music.Midi;
-using Serilog;
 
 namespace Integra7AuralAlchemist.Models.Services;
 
@@ -27,6 +25,7 @@ public class AsyncMidiInputWrapper
         byte[] localCopy = new byte[e.Length];
         Buffer.BlockCopy(e.Data, 0, localCopy, 0, e.Length);
         //ByteStreamDisplay.Display($"Writing {localCopy.Length} bytes into channel: ", localCopy);
+        //Log.Debug($"Writing {localCopy.Length} bytes into channel");
         _channel.Writer.TryWrite(localCopy);
     }
 
@@ -69,6 +68,13 @@ public class AsyncMidiInputWrapper
     {
         _midiInput.ConfigureDefaultHandler();
         _midiInput.RestoreAutomaticHandling();
-        _channel.Writer.Complete();
+        try
+        {
+            _channel.Writer.Complete();   
+        }
+        catch (System.Threading.Channels.ChannelClosedException e)
+        {
+            // ignore
+        }
     }
 }

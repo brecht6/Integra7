@@ -264,8 +264,7 @@ public class Integra7Api : IIntegra7Api
 
         return false;
     }
-
-    public async Task<List<string>> GetStudioSetNames0to63()
+    private async Task<List<string>> GetListOfNamesHelper(byte[] msg)
     {
         await _semaphore.WaitAsync();
         AsyncMidiInputWrapper mi = new AsyncMidiInputWrapper(_midiIn);
@@ -274,9 +273,8 @@ public class Integra7Api : IIntegra7Api
             Log.Debug($"DataRequest Lock acquired");
             List<byte[]> allReplies = [];
             int totalRepliesReceived = 0;
-
-            byte[] data = Integra7SysexHelpers.MakeRequestStudioSetNames0to63Msg(_deviceId);
-            _midiOut?.SafeSend(data);
+            
+            _midiOut?.SafeSend(msg);
             bool continueReading = true;
             while (continueReading) // concatenate multiple incoming replies 
             {
@@ -307,23 +305,23 @@ public class Integra7Api : IIntegra7Api
                 }
             }
 
-            List<string> StudioSetNames = [];
+            List<string> names = [];
             foreach (byte[] reply in allReplies)
             {
                 byte[] name = ByteUtils.Slice(reply, 16, 16);
                 if (name[0] != 0x00) // last returned message contains all 00's
                 {
-                    StudioSetNames.Add(System.Text.Encoding.ASCII.GetString(name));   
+                    names.Add(System.Text.Encoding.ASCII.GetString(name));   
                 }
             }
             
             int idx = 0;
-            foreach (var n in StudioSetNames)
+            foreach (var n in names)
             {
                 idx++;
                 Log.Debug($"{idx}: {n}");
             }
-            return StudioSetNames;
+            return names;
         }
         finally
         {
@@ -332,97 +330,101 @@ public class Integra7Api : IIntegra7Api
             _semaphore.Release();
         }
     }
-
+    public async Task<List<string>> GetStudioSetNames0to63()
+    {
+        byte[] msg = Integra7SysexHelpers.MakeRequestStudioSetNames0to63Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
+    }
     public async Task<List<string>> GetPCMDrumKitUserNames0to32()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestPCMDrumKitUserNames0to32Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetPCMToneUserNames0to63()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestPCMToneUserNames0to63Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetPCMToneUserNames64to127()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestPCMToneUserNames64to127Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetPCMToneUserNames128to191()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestPCMToneUserNames128to191Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetPCMToneUserNames192to255()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestPCMToneUserNames192to255Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetSuperNATURALDrumKitUserNames0to63()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALDrumKitUserNames0to63Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetSuperNATURALAcousticToneUserNames0to63()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALAcousticToneUserNames0to63Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetSuperNATURALAcousticToneUserNames64to127()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALAcousticToneUserNames64to127Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetSuperNATURALAcousticToneUserNames128to191()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALAcousticToneUserNames128to191Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetSuperNATURALAcousticToneUserNames192to255()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALAcousticToneUserNames192to255Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames0to63()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames0to63Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames64to127()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames64to127Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames128to191()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames128to191Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames192to255()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames192to255Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames256to319()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames256to319Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames320to383()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames320to383Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames384to447()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames384to447Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames448to511()
     {
-        return [];
+        byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames448to511Msg(_deviceId);
+        return await GetListOfNamesHelper(msg);
     }
-
     public async Task ChangePresetAsync(byte Channel, int Msb, int Lsb, int Pc)
     {
         BankSelectMsb(Channel, Msb);

@@ -51,7 +51,7 @@ public class AsyncMidiInputWrapper
     {
         CancellationTokenSource cts = new CancellationTokenSource();
         Task<bool> waitForData = _channel.Reader.WaitToReadAsync(cts.Token).AsTask();
-        Task waitForTimeout = Task.Delay(TimeSpan.FromSeconds(2), cts.Token);
+        Task waitForTimeout = Task.Delay(TimeSpan.FromSeconds(0.5), cts.Token);
 
         if (await Task.WhenAny(waitForTimeout, waitForData) == waitForData)
         {

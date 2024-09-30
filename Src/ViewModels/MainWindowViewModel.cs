@@ -29,7 +29,19 @@ public partial class MainWindowViewModel : ViewModelBase
     private Integra7Domain? _integra7Communicator;
 
     [Reactive] private bool _isSyncing = true;
-    [Reactive] private string _syncInfo = "";
+    private string _syncInfo = "";
+    public string SyncInfo
+    {
+        get => _syncInfo;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _syncInfo, value);
+            if (value != "")
+            {
+                Log.Information(value);   
+            }
+        }
+    }
     private int _syncLevels = 0;
 
     private ReadOnlyObservableCollection<PartViewModel> _partViewModels;

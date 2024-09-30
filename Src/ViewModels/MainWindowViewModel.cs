@@ -153,7 +153,7 @@ public partial class MainWindowViewModel : ViewModelBase
                     }
                     else
                     {
-                        SyncInfo = $"Initializing part {i} tab...";
+                        SyncInfo = $"Initializing part {i}/16 tab...";
                         Log.Information($"Creating view model for tab part {i}.");
                     }
 

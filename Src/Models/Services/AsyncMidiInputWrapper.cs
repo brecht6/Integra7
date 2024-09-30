@@ -39,6 +39,7 @@ public class AsyncMidiInputWrapper
         {
             byte[] message = await _channel.Reader.ReadAsync(cts.Token);
             await cts.CancelAsync();
+            _midiInput.ConfigureDefaultHandler();
             return message;
         }
 

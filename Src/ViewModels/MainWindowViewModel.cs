@@ -30,6 +30,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private Integra7Domain? _integra7Communicator;
 
     [Reactive] private bool _isSyncing = true;
+    [Reactive] private string _syncInfo = "";
     private int _syncLevels = 0;
 
     private ReadOnlyObservableCollection<PartViewModel> _partViewModels;
@@ -123,6 +124,7 @@ public partial class MainWindowViewModel : ViewModelBase
         if (_syncLevels == 0)
         {
             IsSyncing = false;
+            SyncInfo = "";
         }
     }
 
@@ -134,7 +136,7 @@ public partial class MainWindowViewModel : ViewModelBase
             if (_connected)
             {
                 SignalStartSync();
-                _syncInfo = "Loading SRX...";
+                SyncInfo = "Fetch loaded SRX...";
                 (SrxSlot1, SrxSlot2, SrxSlot3, SrxSlot4) = await integra7Api.GetLoadedSrxAsync();
                 Log.Information("Connected to Integra7");
                 MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING + " with device id " +
@@ -146,10 +148,12 @@ public partial class MainWindowViewModel : ViewModelBase
                 {
                     if (i == 0)
                     {
+                        SyncInfo = "Initializing common tab...";
                         Log.Information("Creating view model for common tab.");
                     }
                     else
                     {
+                        SyncInfo = $"Initializing part {i} tab...";
                         Log.Information($"Creating view model for tab part {i}.");
                     }
 
@@ -299,8 +303,11 @@ public partial class MainWindowViewModel : ViewModelBase
             SignalStartSync();
             if (_partViewModels != null)
             {
+                int i = 0;
                 foreach (PartViewModel pvm in _partViewModels)
                 {
+                    SyncInfo = $"Resync part {i}";
+                    i++;
                     await pvm.EnsurePreselectIsNotNullAsync();
                     await pvm.ResyncPartAsync(part);
                 }
@@ -323,6 +330,7 @@ public partial class MainWindowViewModel : ViewModelBase
                 {
                     if (part == pvm.PartNo)
                     {
+                        SyncInfo = $"Resync part {pvm.PartNo-1}";
                         DomainBase b = _integra7Communicator.StudioSetPart(part);
                         await b.ReadFromIntegraAsync();
                         pvm.PreSelectConfiguredPreset(b);

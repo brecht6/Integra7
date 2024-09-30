@@ -39,9 +39,14 @@
                 Height="300"
                 IsVisible="{Binding IsSyncing}"
                 ZIndex="100">
-            <TextBlock Grid.Column="0" Grid.Row="0" FontSize="200" Text="Syncing..." HorizontalAlignment="Center"
-                       VerticalAlignment="Center" IsVisible="{Binding IsSyncing}" 
-                       ZIndex="110"/>    
+            <StackPanel Orientation="Vertical">
+                <TextBlock FontSize="150" Text="Syncing..." HorizontalAlignment="Center"
+                           VerticalAlignment="Center" IsVisible="{Binding IsSyncing}" 
+                           ZIndex="110"/>
+                <TextBlock FontSize="25" Text="{Binding SyncInfo}" HorizontalAlignment="Center"
+                           VerticalAlignment="Center" IsVisible="{Binding IsSyncing}" 
+                           ZIndex="110"></TextBlock>
+            </StackPanel>
         </Border>
         
         <TabControl Grid.Column="0" Grid.Row="0">

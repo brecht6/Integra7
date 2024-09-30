@@ -11,7 +11,7 @@
                           Grid.Column="0"
                           Width="250"
                           Margin="5"
-                          SelectedIndex="{Binding Srx_slot1}">
+                          SelectedIndex="{Binding SrxSlot1}">
                     <ComboBoxItem>Empty</ComboBoxItem>
                     <ComboBoxItem>
                         <StackPanel Orientation="Vertical">
@@ -132,7 +132,7 @@
                           Grid.Column="1"
                           Width="250"
                           Margin="5"
-                          SelectedIndex="{Binding Srx_slot2}">
+                          SelectedIndex="{Binding SrxSlot2}">
                     <ComboBoxItem>Empty</ComboBoxItem>
                     <ComboBoxItem>
                         <StackPanel Orientation="Vertical">
@@ -253,7 +253,7 @@
                           Grid.Column="0"
                           Width="250"
                           Margin="5"
-                          SelectedIndex="{Binding Srx_slot3}">
+                          SelectedIndex="{Binding SrxSlot3}">
                     <ComboBoxItem>Empty</ComboBoxItem>
                     <ComboBoxItem>
                         <StackPanel Orientation="Vertical">
@@ -373,7 +373,7 @@
                           Grid.Column="1"
                           Width="250"
                           Margin="5"
-                          SelectedIndex="{Binding Srx_slot4}">
+                          SelectedIndex="{Binding SrxSlot4}">
                     <ComboBoxItem>Empty</ComboBoxItem>
                     <ComboBoxItem>
                         <StackPanel Orientation="Vertical">

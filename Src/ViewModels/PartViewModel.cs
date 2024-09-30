@@ -495,10 +495,10 @@ public partial class PartViewModel : ViewModelBase
         {
             var parFilterPreset = this.WhenAnyValue(
                     x => x.SearchTextPreset,
-                    x => x._mwvm.Srx_slot1,
-                    x => x._mwvm.Srx_slot2,
-                    x => x._mwvm.Srx_slot3,
-                    x => x._mwvm.Srx_slot4) 
+                    x => x._mwvm.SrxSlot1,
+                    x => x._mwvm.SrxSlot2,
+                    x => x._mwvm.SrxSlot3,
+                    x => x._mwvm.SrxSlot4) 
                 .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
                 .DistinctUntilChanged()
                 .Select(tuple =>

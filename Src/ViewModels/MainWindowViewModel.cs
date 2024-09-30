@@ -21,10 +21,10 @@ public partial class MainWindowViewModel : ViewModelBase
 {
 #pragma warning disable CA1822 // Mark members as static
 #pragma warning disable CS8618 // Non-nullable field 'xxx' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the field as nullable.
-    private Integra7StartAddresses _i7startAddresses = new();
-    private Integra7Parameters _i7parameters = new();
+    private readonly Integra7StartAddresses _i7startAddresses = new();
+    private readonly Integra7Parameters _i7parameters = new();
 
-    private SemaphoreSlim _semaphore = new(1, 1);
+    private readonly SemaphoreSlim _semaphore = new(1, 1);
 
     [Reactive] private bool _rescanButtonEnabled = true;
     private Integra7Domain? _integra7Communicator;
@@ -44,70 +44,14 @@ public partial class MainWindowViewModel : ViewModelBase
     [ReactiveCommand]
     public async Task DebugCode()
     {
-        List<string> names = await Integra7?.GetStudioSetNames0to63();
-        Debug.Write("GetStudioSetNames0to63: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetPCMDrumKitUserNames0to32();
-        Debug.Write("GetPCMDrumKitUserNames0to32: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetPCMToneUserNames0to63();
-        Debug.Write("GetPCMToneUserNames0to63: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetPCMToneUserNames64to127();
-        Debug.Write("GetPCMToneUserNames64to127: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetPCMToneUserNames128to191();
-        Debug.Write("GetPCMToneUserNames128to191: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetPCMToneUserNames192to255();
-        Debug.Write("GetPCMToneUserNames192to255: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetSuperNATURALDrumKitUserNames0to63();
-        Debug.Write("GetSuperNATURALDrumKitUserNames0to63: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetSuperNATURALAcousticToneUserNames0to63();
-        Debug.Write("GetSuperNATURALAcousticToneUserNames0to63: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetSuperNATURALAcousticToneUserNames64to127();
-        Debug.Write("GetSuperNATURALAcousticToneUserNames64to127: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetSuperNATURALAcousticToneUserNames128to191();
-        Debug.Write("GetSuperNATURALAcousticToneUserNames128to191: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetSuperNATURALAcousticToneUserNames192to255();
-        Debug.Write("GetSuperNATURALAcousticToneUserNames192to255: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetSuperNATURALSynthToneUserNames0to63();
-        Debug.Write("GetSuperNATURALSynthToneUserNames0to63: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetSuperNATURALSynthToneUserNames64to127();
-        Debug.Write("GetSuperNATURALSynthToneUserNames64to127: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetSuperNATURALSynthToneUserNames128to191();
-        Debug.Write("GetSuperNATURALSynthToneUserNames128to191: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetSuperNATURALSynthToneUserNames192to255();
-        Debug.Write("GetSuperNATURALSynthToneUserNames192to255: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetSuperNATURALSynthToneUserNames256to319();
-        Debug.Write("GetSuperNATURALSynthToneUserNames256to319: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetSuperNATURALSynthToneUserNames320to383();
-        Debug.Write("GetSuperNATURALSynthToneUserNames320to383: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetSuperNATURALSynthToneUserNames384to447();
-        Debug.Write("GetSuperNATURALSynthToneUserNames384to447: ");
-        Debug.WriteLine(names);
-        names = await Integra7?.GetSuperNATURALSynthToneUserNames448to511();
-        Debug.Write("GetSuperNATURALSynthToneUserNames448to511: ");
-        Debug.WriteLine(names);
+
     }
     
     [ReactiveCommand]
     public async Task PlayNoteAsync()
     {
         byte zeroBasedMidiChannel = 0;
-        if (_currentPartSelection > 0 && _currentPartSelection < 17)
+        if (_currentPartSelection is > 0 and < 17)
         {
             zeroBasedMidiChannel = (byte)(_currentPartSelection - 1);
         }
@@ -121,7 +65,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public async Task PlayPhraseAsync()
     {
         byte zeroBasedMidiChannel = 0;
-        if (_currentPartSelection > 0 && _currentPartSelection < 17)
+        if (_currentPartSelection is > 0 and < 17)
         {
             zeroBasedMidiChannel = (byte)(_currentPartSelection - 1);
         }
@@ -153,17 +97,17 @@ public partial class MainWindowViewModel : ViewModelBase
         await UpdateConnectedAsync(Integra7, presets);
     }
 
-    [Reactive] private int _srx_slot1;
-    [Reactive] private int _srx_slot2;
-    [Reactive] private int _srx_slot3;
-    [Reactive] private int _srx_slot4;
+    [Reactive] private int _srxSlot1;
+    [Reactive] private int _srxSlot2;
+    [Reactive] private int _srxSlot3;
+    [Reactive] private int _srxSlot4;
 
     [ReactiveCommand]
     public async Task LoadSrx()
     {
         if (_connected)
         {
-            await Integra7?.SendLoadSrxAsync((byte)_srx_slot1, (byte)_srx_slot2, (byte)_srx_slot3, (byte)_srx_slot4);
+            await Integra7?.SendLoadSrxAsync((byte)_srxSlot1, (byte)_srxSlot2, (byte)_srxSlot3, (byte)_srxSlot4);
         }
     }
 
@@ -177,7 +121,9 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         _syncLevels = _syncLevels - 1;
         if (_syncLevels == 0)
+        {
             IsSyncing = false;
+        }
     }
 
     private async Task UpdateConnectedAsync(IIntegra7Api integra7Api, List<Integra7Preset> presets)
@@ -188,7 +134,8 @@ public partial class MainWindowViewModel : ViewModelBase
             if (_connected)
             {
                 SignalStartSync();
-                (Srx_slot1, Srx_slot2, Srx_slot3, Srx_slot4) = await integra7Api.GetLoadedSrxAsync();
+                _syncInfo = "Loading SRX...";
+                (SrxSlot1, SrxSlot2, SrxSlot3, SrxSlot4) = await integra7Api.GetLoadedSrxAsync();
                 Log.Information("Connected to Integra7");
                 MidiDevices = "Connected to: " + INTEGRA_CONNECTION_STRING + " with device id " +
                               integra7Api.DeviceId().ToString("x2");
@@ -238,7 +185,7 @@ public partial class MainWindowViewModel : ViewModelBase
         var uri = @"avares://" + "Integra7AuralAlchemist/" + "Assets/Presets.csv";
         var file = new StreamReader(AssetLoader.Open(new Uri(uri)));
         var data = file.ReadLine();
-        char[] separators = { ',' };
+        char[] separators = [','];
         List<Integra7Preset> Presets = [];
         int id = 0;
         while ((data = file.ReadLine()) != null)
@@ -281,7 +228,7 @@ public partial class MainWindowViewModel : ViewModelBase
         await UpdateConnectedAsync(Integra7, presets);
     }
 
-    public async Task UpdateIntegraFromUiAsync(UpdateMessageSpec s)
+    private async Task UpdateIntegraFromUiAsync(UpdateMessageSpec s)
     {
         FullyQualifiedParameter p = s.Par;
         p.StringValue = s.DisplayValue;
@@ -293,7 +240,7 @@ public partial class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public async Task UpdateUiFromIntegraAsync(UpdateFromSysexSpec s)
+    private async Task UpdateUiFromIntegraAsync(UpdateFromSysexSpec s)
     {
         List<UpdateMessageSpec> parameters =
             SysexDataTransmissionParser.ConvertSysexToParameterUpdates(s.SysexMsg, _integra7Communicator);
@@ -319,9 +266,8 @@ public partial class MainWindowViewModel : ViewModelBase
             foreach (UpdateMessageSpec spec in parameters)
             {
                 string domainName = spec.Par.Start + spec.Par.Offset;
-                if (!alreadyEncountered.Contains(domainName))
+                if (alreadyEncountered.Add(domainName))
                 {
-                    alreadyEncountered.Add(domainName);
                     await _integra7Communicator?.GetDomain(spec.Par).ReadFromIntegraAsync();
                     ForceUiRefresh(spec.Par);
                 }
@@ -346,7 +292,7 @@ public partial class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public async Task ResyncPartAsync(byte part)
+    private async Task ResyncPartAsync(byte part)
     {
         try
         {
@@ -366,7 +312,7 @@ public partial class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public async Task SetPresetAndResyncPartAsync(byte part)
+    private async Task SetPresetAndResyncPartAsync(byte part)
     {
         try
         {

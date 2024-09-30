@@ -21,9 +21,9 @@ public class AsyncMidiInputWrapper
     private void OnMidiMessageReceived(object? sender, MidiReceivedEventArgs e)
     {
         // Set the result of the TaskCompletionSource
-        //ByteStreamDisplay.Display($"Received {e.Length} bytes (async): ", e.Data);
         byte[] localCopy = new byte[e.Length];
         Buffer.BlockCopy(e.Data, 0, localCopy, 0, e.Length);
+        ByteStreamDisplay.Display($"Received {localCopy.Length} bytes (async): ", localCopy);
         //ByteStreamDisplay.Display($"Writing {localCopy.Length} bytes into channel: ", localCopy);
         //Log.Debug($"Writing {localCopy.Length} bytes into channel");
         _channel.Writer.TryWrite(localCopy);
@@ -33,7 +33,7 @@ public class AsyncMidiInputWrapper
     {
         CancellationTokenSource cts = new CancellationTokenSource();
         Task<bool> waitForData = _channel.Reader.WaitToReadAsync(cts.Token).AsTask();
-        Task waitForTimeout = Task.Delay(TimeSpan.FromSeconds(1), cts.Token);
+        Task waitForTimeout = Task.Delay(TimeSpan.FromSeconds(0.5), cts.Token);
 
         if (await Task.WhenAny(waitForTimeout, waitForData) == waitForData)
         {

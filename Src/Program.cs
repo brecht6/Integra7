@@ -21,7 +21,7 @@ sealed class Program
                 rollingInterval: RollingInterval.Day,
                 fileSizeLimitBytes: 1024 * 1024 * 1024)
             .CreateLogger();
-        
+        Log.Information("Integra-7 Aural Alchemist is starting.");
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
     }

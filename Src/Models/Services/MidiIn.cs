@@ -52,6 +52,7 @@ public class MidiIn : IMidiIn
             _access = _midiAccessManager?.OpenInputAsync(_midiPortDetails?.Id).Result;
             if (_access != null)
             {
+                Log.Debug("Configure default midi handler");
                 _access.MessageReceived += _lastEventHandler;
             }
         }
@@ -66,16 +67,20 @@ public class MidiIn : IMidiIn
         if (_access == null)
             return; 
         
+        Log.Debug("Remove customized midi handler");
         _access.MessageReceived -= _lastEventHandler;
         _lastEventHandler = DefaultHandler;
+        Log.Debug("Restore default midi handler");
         _access.MessageReceived += _lastEventHandler;
         _manualReplyHandling = false;
     }
 
     public void ConfigureHandler(EventHandler<MidiReceivedEventArgs> handler)
     {
+        Log.Debug("Remove last configured midi handler");
         _access.MessageReceived -= _lastEventHandler;
         _lastEventHandler = handler;
+        Log.Debug("Configure custom midi handler");
         _access.MessageReceived += _lastEventHandler;
         _manualReplyHandling = false;
     }

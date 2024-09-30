@@ -84,6 +84,8 @@ public class FilterProvider
                                           || preset.ToneTypeStr.Contains(txt.Trim(),
                                               StringComparison.CurrentCultureIgnoreCase)
                                           || preset.CategoryStr.Contains(txt.Trim(),
+                                              StringComparison.CurrentCultureIgnoreCase)
+                                          || preset.InternalUserDefinedStr.Contains(txt.Trim(),
                                               StringComparison.CurrentCultureIgnoreCase))));
         };
 }

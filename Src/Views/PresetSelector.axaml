@@ -34,6 +34,8 @@
                 </Style>
             </DataGrid.Styles>
             <DataGrid.Columns>
+                <DataGridTextColumn Header ="Kind"
+                                    Binding="{Binding InternalUserDefinedStr}"/>
                 <DataGridTextColumn Header="Tone Type"
                                     Binding="{Binding ToneTypeStr}" />
                 <DataGridTextColumn Header="Tone Bank"

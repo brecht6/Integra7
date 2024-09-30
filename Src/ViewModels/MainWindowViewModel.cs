@@ -252,7 +252,7 @@ public partial class MainWindowViewModel : ViewModelBase
             int lsb = int.Parse(read[5]);
             int pc = int.Parse(read[6]);
             string category = read[7].Trim('"');
-            Presets.Add(new Integra7Preset(id, tonetype, tonebank, number, name, msb, lsb, pc, category));
+            Presets.Add(new Integra7Preset(id, "Int", tonetype, tonebank, number, name, msb, lsb, pc, category));
             id++;
         }
 

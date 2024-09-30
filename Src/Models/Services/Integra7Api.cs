@@ -25,7 +25,8 @@ public interface IIntegra7Api
     Task SendLoadSrxAsync(byte srx_slot1, byte srx_slot2, byte srx_slot3, byte srx_slot4);
     Task<(byte, byte, byte, byte)> GetLoadedSrxAsync();
     Task SendPlayPreviewPhraseMsgAsync(byte channel);
-
+    Task WriteToneToUserMemory(string name, int userMemoryId);
+    
     Task<List<string>> GetStudioSetNames0to63();
     Task<List<string>> GetPCMDrumKitUserNames0to32();
     Task<List<string>> GetPCMToneUserNames0to63();
@@ -425,6 +426,12 @@ public class Integra7Api : IIntegra7Api
         byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames448to511Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
+    public async Task WriteToneToUserMemory(string name, int userMemoryId)
+    {
+        // todo
+    }
+    
     public async Task ChangePresetAsync(byte Channel, int Msb, int Lsb, int Pc)
     {
         BankSelectMsb(Channel, Msb);

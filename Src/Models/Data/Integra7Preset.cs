@@ -5,6 +5,7 @@ namespace Integra7AuralAlchemist.Models.Data;
 enum EnumToneType { SuperNaturalAcoustic, SuperNaturalSynth, SuperNaturalDrums, PCMSynth, PCMDrums}
 enum EnumToneBank { Preset, GeneralMidi, ExSN1, ExSN2, ExSN3, ExSN4, ExSN5, ExSN6, SRX01, SRX02, SRX03, SRX04, SRX05, SRX06, SRX07, SRX08, SRX09, SRX10, SRX11, SRX12, ExPCM}
 enum EnumCategory { AcPiano, OtherKeyboards, Organ, EGuitar, DistGuitar, AcBass, EBass, AcGuitar, AccordionHarmonica, BellMallet, Percussion, PluckedStroke, Strings, VoxChoir, Brass, Sax, Wind, Flute, SynthPadStrings, Pulsating, SynthBrass, SynthPolyKey, SynthBellPad, SynthSeqPop, SynthBass, SynthLead, FX, EPiano, Hit, Drums, BeatGroove, Recorder, SoundFX, Phrase}
+enum EnumInternalUserDefined { Internal, UserDefined }
 
 public record Integra7Preset {
     // unique id
@@ -30,8 +31,10 @@ public record Integra7Preset {
     public int Msb => _msb;
     public int Lsb => _lsb;
     public int Pc => _pc;
+    private EnumInternalUserDefined _internalUserDefined { get; set; }
+    public string InternalUserDefinedStr => _internalUserDefined == EnumInternalUserDefined.Internal ? "Int" : "Usr";
 
-    public Integra7Preset(int Id, string ToneType, string ToneBank, int Number, string Name, int MSB, int LSB, int PC, string Category)
+    public Integra7Preset(int Id, string InternalUserDefined, string ToneType, string ToneBank, int Number, string Name, int MSB, int LSB, int PC, string Category)
     {
         _id = Id;
         _toneTypeStr = ToneType;
@@ -112,7 +115,13 @@ public record Integra7Preset {
             "Recorder" => EnumCategory.Recorder, 
             "Sound FX" => EnumCategory.SoundFX,
             "Phrase" => EnumCategory.Phrase,
-            _ => throw new MidiException("Invalid string value for category: " + Category),
+            _ => throw new MidiException("Invalid string value for Category: " + Category),
+        };
+        _internalUserDefined = InternalUserDefined switch
+        {
+            "Int" => EnumInternalUserDefined.Internal,
+            "Usr" => EnumInternalUserDefined.UserDefined,
+            _ => throw new MidiException("Invalid string value for InternalUserDefined: " + InternalUserDefined),
         };
 
     }

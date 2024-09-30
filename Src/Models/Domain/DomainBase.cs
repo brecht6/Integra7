@@ -143,7 +143,9 @@ public class DomainBase
             FullyQualifiedParameter p = _domainParameters[i];
             if (p.ValidInContext(ctx) && p.ParSpec.Path == parameterName)
             {
-                return p.StringValue;
+                string v = p.StringValue;
+                Log.Debug($"Value found to be {v}");
+                return v;
             }
         }
 

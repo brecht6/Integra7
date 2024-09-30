@@ -28,7 +28,7 @@ public interface IIntegra7Api
     Task WriteToneToUserMemory(string name, int userMemoryId);
     
     Task<List<string>> GetStudioSetNames0to63();
-    Task<List<string>> GetPCMDrumKitUserNames0to32();
+    Task<List<string>> GetPCMDrumKitUserNames0to31();
     Task<List<string>> GetPCMToneUserNames0to63();
     Task<List<string>> GetPCMToneUserNames64to127();
     Task<List<string>> GetPCMToneUserNames128to191();
@@ -336,9 +336,9 @@ public class Integra7Api : IIntegra7Api
         byte[] msg = Integra7SysexHelpers.MakeRequestStudioSetNames0to63Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
-    public async Task<List<string>> GetPCMDrumKitUserNames0to32()
+    public async Task<List<string>> GetPCMDrumKitUserNames0to31()
     {
-        byte[] msg = Integra7SysexHelpers.MakeRequestPCMDrumKitUserNames0to32Msg(_deviceId);
+        byte[] msg = Integra7SysexHelpers.MakeRequestPCMDrumKitUserNames0to31Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
     public async Task<List<string>> GetPCMToneUserNames0to63()

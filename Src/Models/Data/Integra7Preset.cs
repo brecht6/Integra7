@@ -32,7 +32,7 @@ public record Integra7Preset {
     public int Lsb => _lsb;
     public int Pc => _pc;
     private EnumInternalUserDefined _internalUserDefined { get; set; }
-    public string InternalUserDefinedStr => _internalUserDefined == EnumInternalUserDefined.Internal ? "Int" : "Usr";
+    public string InternalUserDefinedStr => _internalUserDefined == EnumInternalUserDefined.Internal ? "INT" : "USR";
 
     public Integra7Preset(int Id, string InternalUserDefined, string ToneType, string ToneBank, int Number, string Name, int MSB, int LSB, int PC, string Category)
     {
@@ -119,8 +119,8 @@ public record Integra7Preset {
         };
         _internalUserDefined = InternalUserDefined switch
         {
-            "Int" => EnumInternalUserDefined.Internal,
-            "Usr" => EnumInternalUserDefined.UserDefined,
+            "INT" => EnumInternalUserDefined.Internal,
+            "USR" => EnumInternalUserDefined.UserDefined,
             _ => throw new MidiException("Invalid string value for InternalUserDefined: " + InternalUserDefined),
         };
 

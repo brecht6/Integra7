@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
@@ -45,9 +44,8 @@ public partial class MainWindowViewModel : ViewModelBase
     [ReactiveCommand]
     public async Task DebugCode()
     {
-
     }
-    
+
     [ReactiveCommand]
     public async Task PlayNoteAsync()
     {
@@ -143,6 +141,8 @@ public partial class MainWindowViewModel : ViewModelBase
                               integra7Api.DeviceId().ToString("x2");
                 _integra7Communicator = new Integra7Domain(integra7Api, _i7startAddresses, _i7parameters, _semaphore);
 
+                await AddUserDefinedPresets(presets);
+
                 ObservableCollection<PartViewModel> pvm = [];
                 for (byte i = 0; i < 17; i++)
                 {
@@ -182,6 +182,236 @@ public partial class MainWindowViewModel : ViewModelBase
         }
     }
 
+    private async Task AddUserDefinedPresets(List<Integra7Preset> presets)
+    {
+        SyncInfo = "Loading PCM Drum Kit User Names 0-31...";
+        List<string> names = await Integra7?.GetPCMDrumKitUserNames0to31();
+        int pc = 0;
+        int id = presets.Count;
+        foreach (string n in names)
+        {
+            int msb = 86;
+            int lsb = 0;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "PCMD", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Drums" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading PCM Synth Tone User Names 0-63...";
+        names = await Integra7?.GetPCMToneUserNames0to63();
+        pc = 0;
+        foreach (string n in names)
+        {
+            int msb = 87;
+            int lsb = 0;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "PCMS", "PRST" /* todo incorrect */, pc,
+                n, msb, lsb, pc, "Synth Lead" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading PCM Synth Tone User Names 64-127...";
+        names = await Integra7?.GetPCMToneUserNames64to127();
+        foreach (string n in names)
+        {
+            int msb = 87;
+            int lsb = 0;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "PCMS", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Synth Lead" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading PCM Synth Tone User Names 128-191...";
+        names = await Integra7?.GetPCMToneUserNames128to191();
+        pc = 0;
+        foreach (string n in names)
+        {
+            int msb = 87;
+            int lsb = 1;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "PCMS", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Synth Lead" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading PCM Synth Tone User Names 192-255...";
+        names = await Integra7?.GetPCMToneUserNames192to255();
+        foreach (string n in names)
+        {
+            int msb = 87;
+            int lsb = 1;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "PCMS", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Synth Lead" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading SuperNATURAL Drum Kit User Names 0-63...";
+        names = await Integra7?.GetSuperNATURALDrumKitUserNames0to63();
+        pc = 0;
+        foreach (string n in names)
+        {
+            int msb = 88;
+            int lsb = 0;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "SN-D", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Drums" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading SuperNATURAL Acoustic Tone User Names 0-63...";
+        names = await Integra7?.GetSuperNATURALAcousticToneUserNames0to63();
+        pc = 0;
+        foreach (string n in names)
+        {
+            int msb = 89;
+            int lsb = 0;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "SN-A", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Ac.Piano" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading SuperNATURAL Acoustic Tone User Names 64-127...";
+        names = await Integra7?.GetSuperNATURALAcousticToneUserNames64to127();
+        foreach (string n in names)
+        {
+            int msb = 89;
+            int lsb = 0;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "SN-A", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Ac.Piano" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading SuperNATURAL Acoustic Tone User Names 128-191...";
+        names = await Integra7?.GetSuperNATURALAcousticToneUserNames128to191();
+        pc = 0;
+        foreach (string n in names)
+        {
+            int msb = 89;
+            int lsb = 1;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "SN-A", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Ac.Piano" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading SuperNATURAL Acoustic Tone User Names 192-255...";
+        names = await Integra7?.GetSuperNATURALAcousticToneUserNames192to255();
+        foreach (string n in names)
+        {
+            int msb = 89;
+            int lsb = 1;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "SN-A", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Ac.Piano" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading SuperNATURAL Synth Tone User Names 0-63...";
+        names = await Integra7?.GetSuperNATURALSynthToneUserNames0to63();
+        pc = 0;
+        foreach (string n in names)
+        {
+            int msb = 95;
+            int lsb = 0;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "SN-S", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Synth Lead" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading SuperNATURAL Synth Tone User Names 64-127...";
+        names = await Integra7?.GetSuperNATURALSynthToneUserNames64to127();
+        foreach (string n in names)
+        {
+            int msb = 95;
+            int lsb = 0;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "SN-S", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Synth Lead" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading SuperNATURAL Synth Tone User Names 128-191...";
+        names = await Integra7?.GetSuperNATURALSynthToneUserNames128to191();
+        pc = 0;
+        foreach (string n in names)
+        {
+            int msb = 95;
+            int lsb = 1;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "SN-S", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Synth Lead" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading SuperNATURAL Synth Tone User Names 192-255...";
+        names = await Integra7?.GetSuperNATURALSynthToneUserNames192to255();
+        foreach (string n in names)
+        {
+            int msb = 95;
+            int lsb = 1;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "SN-S", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Synth Lead" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading SuperNATURAL Synth Tone User Names 256-319...";
+        names = await Integra7?.GetSuperNATURALSynthToneUserNames256to319();
+        pc = 0;
+        foreach (string n in names)
+        {
+            int msb = 95;
+            int lsb = 2;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "SN-S", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Synth Lead" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading SuperNATURAL Synth Tone User Names 320-383...";
+        names = await Integra7?.GetSuperNATURALSynthToneUserNames320to383();
+        foreach (string n in names)
+        {
+            int msb = 95;
+            int lsb = 2;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "SN-S", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Synth Lead" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading SuperNATURAL Synth Tone User Names 384-447...";
+        names = await Integra7?.GetSuperNATURALSynthToneUserNames384to447();
+        pc = 0;
+        foreach (string n in names)
+        {
+            int msb = 95;
+            int lsb = 3;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "SN-S", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Synth Lead" /*todo incorrect*/));
+            id++;
+        }
+
+        SyncInfo = "Loading SuperNATURAL Synth Tone User Names 448-511...";
+        names = await Integra7?.GetSuperNATURALSynthToneUserNames448to511();
+        foreach (string n in names)
+        {
+            int msb = 95;
+            int lsb = 3;
+            pc++;
+            presets.Add(new Integra7Preset(id, "USR", "SN-S", "PRST" /*todo incorrect*/, pc,
+                n, msb, lsb, pc, "Synth Lead" /*todo incorrect*/));
+            id++;
+        }
+    }
+
     [Reactive] private int _currentPartSelection;
 
     private List<Integra7Preset> LoadPresets()
@@ -203,7 +433,7 @@ public partial class MainWindowViewModel : ViewModelBase
             int lsb = int.Parse(read[5]);
             int pc = int.Parse(read[6]);
             string category = read[7].Trim('"');
-            Presets.Add(new Integra7Preset(id, "Int", tonetype, tonebank, number, name, msb, lsb, pc, category));
+            Presets.Add(new Integra7Preset(id, "INT", tonetype, tonebank, number, name, msb, lsb, pc, category));
             id++;
         }
 
@@ -330,7 +560,7 @@ public partial class MainWindowViewModel : ViewModelBase
                 {
                     if (part == pvm.PartNo)
                     {
-                        SyncInfo = $"Resync part {pvm.PartNo-1}";
+                        SyncInfo = $"Resync part {pvm.PartNo}";
                         DomainBase b = _integra7Communicator.StudioSetPart(part);
                         await b.ReadFromIntegraAsync();
                         pvm.PreSelectConfiguredPreset(b);

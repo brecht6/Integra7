@@ -141,7 +141,7 @@ public class Integra7SysexHelpers
             payload, [ByteUtils.CheckSum(payload)], END_OF_SYSEX);
     }
 
-    public static byte[] MakeRequestPCMDrumKitUserNames0to32Msg(byte deviceId)
+    public static byte[] MakeRequestPCMDrumKitUserNames0to31Msg(byte deviceId)
     {
         byte noOfNames = 0x20;
         byte[] payload = [0x0F, 0x00, 0x04, 0x02, 0x56, 0x00, 0x00, noOfNames];

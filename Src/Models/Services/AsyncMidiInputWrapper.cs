@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 public class AsyncMidiInputWrapper
 {
+    private const double inactivityTimespan = 0.5;
     private IMidiIn _midiInput;
     private readonly Channel<byte[]> _channel = Channel.CreateUnbounded<byte[]>();
 
@@ -33,7 +34,7 @@ public class AsyncMidiInputWrapper
     {
         CancellationTokenSource cts = new CancellationTokenSource();
         Task<bool> waitForData = _channel.Reader.WaitToReadAsync(cts.Token).AsTask();
-        Task waitForTimeout = Task.Delay(TimeSpan.FromSeconds(0.5), cts.Token);
+        Task waitForTimeout = Task.Delay(TimeSpan.FromSeconds(inactivityTimespan), cts.Token);
 
         if (await Task.WhenAny(waitForTimeout, waitForData) == waitForData)
         {
@@ -52,7 +53,7 @@ public class AsyncMidiInputWrapper
     {
         CancellationTokenSource cts = new CancellationTokenSource();
         Task<bool> waitForData = _channel.Reader.WaitToReadAsync(cts.Token).AsTask();
-        Task waitForTimeout = Task.Delay(TimeSpan.FromSeconds(0.5), cts.Token);
+        Task waitForTimeout = Task.Delay(TimeSpan.FromSeconds(inactivityTimespan), cts.Token);
 
         if (await Task.WhenAny(waitForTimeout, waitForData) == waitForData)
         {

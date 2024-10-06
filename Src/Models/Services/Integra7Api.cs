@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Commons.Music.Midi;
 using CoreMidi;
 using Integra7AuralAlchemist.Models.Data;
+using Integra7AuralAlchemist.Models.Domain;
 using ReactiveUI;
 using Serilog;
 
@@ -25,8 +26,10 @@ public interface IIntegra7Api
     Task SendLoadSrxAsync(byte srx_slot1, byte srx_slot2, byte srx_slot3, byte srx_slot4);
     Task<(byte, byte, byte, byte)> GetLoadedSrxAsync();
     Task SendPlayPreviewPhraseMsgAsync(byte channel);
-    Task WriteToneToUserMemory(string name, int userMemoryId);
-    
+
+    Task WriteToneToUserMemory(Integra7Domain i7domain, string toneTypeStr, byte zeroBasedPartNo, string name,
+        int zeroBasedUserMemoryId);
+
     Task<List<string>> GetStudioSetNames0to63();
     Task<List<string>> GetPCMDrumKitUserNames0to31();
     Task<List<string>> GetPCMToneUserNames0to63();
@@ -265,6 +268,7 @@ public class Integra7Api : IIntegra7Api
 
         return false;
     }
+
     private async Task<List<string>> GetListOfNamesHelper(byte[] msg)
     {
         await _semaphore.WaitAsync();
@@ -274,7 +278,6 @@ public class Integra7Api : IIntegra7Api
             Log.Debug($"DataRequest Lock acquired");
             List<byte[]> allReplies = [];
             int totalRepliesReceived = 0;
-            
             _midiOut?.SafeSend(msg);
             bool continueReading = true;
             while (continueReading) // concatenate multiple incoming replies 
@@ -312,16 +315,17 @@ public class Integra7Api : IIntegra7Api
                 byte[] name = ByteUtils.Slice(reply, 16, 16);
                 if (name[0] != 0x00) // last returned message contains all 00's
                 {
-                    names.Add(System.Text.Encoding.ASCII.GetString(name));   
+                    names.Add(System.Text.Encoding.ASCII.GetString(name));
                 }
             }
-            
+
             int idx = 0;
             foreach (var n in names)
             {
                 idx++;
                 Log.Debug($"{idx}: {n}");
             }
+
             return names;
         }
         finally
@@ -331,107 +335,286 @@ public class Integra7Api : IIntegra7Api
             _semaphore.Release();
         }
     }
+
     public async Task<List<string>> GetStudioSetNames0to63()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestStudioSetNames0to63Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetPCMDrumKitUserNames0to31()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestPCMDrumKitUserNames0to31Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetPCMToneUserNames0to63()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestPCMToneUserNames0to63Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetPCMToneUserNames64to127()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestPCMToneUserNames64to127Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetPCMToneUserNames128to191()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestPCMToneUserNames128to191Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetPCMToneUserNames192to255()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestPCMToneUserNames192to255Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetSuperNATURALDrumKitUserNames0to63()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALDrumKitUserNames0to63Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetSuperNATURALAcousticToneUserNames0to63()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALAcousticToneUserNames0to63Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetSuperNATURALAcousticToneUserNames64to127()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALAcousticToneUserNames64to127Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetSuperNATURALAcousticToneUserNames128to191()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALAcousticToneUserNames128to191Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetSuperNATURALAcousticToneUserNames192to255()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALAcousticToneUserNames192to255Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames0to63()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames0to63Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames64to127()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames64to127Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames128to191()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames128to191Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames192to255()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames192to255Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames256to319()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames256to319Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames320to383()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames320to383Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames384to447()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames384to447Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
+
     public async Task<List<string>> GetSuperNATURALSynthToneUserNames448to511()
     {
         byte[] msg = Integra7SysexHelpers.MakeRequestSuperNATURALSynthToneUserNames448to511Msg(_deviceId);
         return await GetListOfNamesHelper(msg);
     }
 
-    public async Task WriteToneToUserMemory(string name, int userMemoryId)
+    private async Task ChangePresetNameAsync(Integra7Domain i7domain, byte zeroBasedPartNo, string toneType,
+        string name)
     {
-        // todo
+        switch (toneType)
+        {
+            case "PCMD":
+            {
+                DomainBase d = i7domain.PCMDrumKitCommon(zeroBasedPartNo);
+                d.ModifySingleParameterDisplayedValue("PCM Drum Kit Common/Kit Name", name);
+                await d.WriteToIntegraAsync("PCM Drum Kit Common/Kit Name");
+            }
+                break;
+            case "PCMS":
+            {
+                DomainBase d = i7domain.PCMSynthToneCommon(zeroBasedPartNo);
+                d.ModifySingleParameterDisplayedValue("PCM Synth Tone Common/PCM Synth Tone Name", name);
+                await d.WriteToIntegraAsync("PCM Synth Tone Common/PCM Synth Tone Name");
+            }
+                break;
+            case "SN-A":
+            {
+                DomainBase d = i7domain.SNAcousticToneCommon(zeroBasedPartNo);
+                d.ModifySingleParameterDisplayedValue("SuperNATURAL Acoustic Tone Common/Tone Name", name);
+                await d.WriteToIntegraAsync("SuperNATURAL Acoustic Tone Common/Tone Name");
+            }
+                break;
+            case "SN-S":
+            {
+                DomainBase d = i7domain.SNSynthToneCommon(zeroBasedPartNo);
+                d.ModifySingleParameterDisplayedValue("SuperNATURAL Synth Tone Common/Tone Name", name);
+                await d.WriteToIntegraAsync("SuperNATURAL Synth Tone Common/Tone Name");
+            }
+                break;
+            case "SN-D":
+            {
+                DomainBase d = i7domain.SNDrumKitCommon(zeroBasedPartNo);
+                d.ModifySingleParameterDisplayedValue("SuperNATURAL Drum Kit Common/Kit Name", name);
+                await d.WriteToIntegraAsync("SuperNATURAL Drum Kit Common/Kit Name");
+            }
+                break;
+        }
     }
-    
+
+    public async Task WriteToneToUserMemory(Integra7Domain i7domain, string toneTypeStr, byte zeroBasedPartNo,
+        string name,
+        int zeroBasedUserMemoryId)
+    {
+        // 3-steps needed
+        //
+        // 1. write the current patch to the user memory -> this has the side effect of also selecting the new patch
+        // 2. write the name to the user memory
+        // 3. write the current patch (i.e. the selected user patch) to the user memory again to cement the new name
+        int msb = 0;
+        int lsb = 0;
+
+        // step 1
+        switch (toneTypeStr)
+        {
+            case "SN-A":
+            {
+                msb = 89;
+                lsb = zeroBasedUserMemoryId >> 7;
+                byte[] msg =
+                    Integra7SysexHelpers.MakeWriteSuperNATURALAcousticToneMsg(_deviceId, zeroBasedPartNo,
+                        zeroBasedUserMemoryId);
+                AsyncMidiOutputWrapper w = new AsyncMidiOutputWrapper(_midiOut, _semaphore);
+                await w.SafeSendAsync(msg);
+            }
+                break;
+            case "SN-S":
+            {
+                msb = 95;
+                lsb = zeroBasedUserMemoryId >> 7;
+                byte[] msg =
+                    Integra7SysexHelpers.MakeWriteSuperNATURALSynthToneMsg(_deviceId, zeroBasedPartNo,
+                        zeroBasedUserMemoryId);
+                AsyncMidiOutputWrapper w = new AsyncMidiOutputWrapper(_midiOut, _semaphore);
+                await w.SafeSendAsync(msg);
+            }
+                break;
+            case "SN-D":
+            {
+                msb = 88;
+                lsb = zeroBasedUserMemoryId >> 7;
+                byte[] msg =
+                    Integra7SysexHelpers.MakeWriteSuperNATURALDrumKitMsg(_deviceId, zeroBasedPartNo,
+                        zeroBasedUserMemoryId);
+                AsyncMidiOutputWrapper w = new AsyncMidiOutputWrapper(_midiOut, _semaphore);
+                await w.SafeSendAsync(msg);
+            }
+                break;
+            case "PCMS":
+            {
+                msb = 87;
+                lsb = zeroBasedUserMemoryId >> 7;
+                byte[] msg =
+                    Integra7SysexHelpers.MakeWritePCMSynthToneMsg(_deviceId, zeroBasedPartNo, zeroBasedUserMemoryId);
+                AsyncMidiOutputWrapper w = new AsyncMidiOutputWrapper(_midiOut, _semaphore);
+                await w.SafeSendAsync(msg);
+            }
+                break;
+            case "PCMD":
+            {
+                msb = 86;
+                lsb = 0;
+                byte[] msg =
+                    Integra7SysexHelpers.MakeWritePCMDrumKitMsg(_deviceId, zeroBasedPartNo, zeroBasedUserMemoryId);
+                AsyncMidiOutputWrapper w = new AsyncMidiOutputWrapper(_midiOut, _semaphore);
+                await w.SafeSendAsync(msg);
+            }
+                break;
+        }
+
+        // step 2
+        await ChangePresetNameAsync(i7domain, zeroBasedPartNo, toneTypeStr, name);
+
+        // step 3: todo cleanup duplication with step 1
+        switch (toneTypeStr)
+        {
+            case "SN-A":
+            {
+                byte[] msg =
+                    Integra7SysexHelpers.MakeWriteSuperNATURALAcousticToneMsg(_deviceId, zeroBasedPartNo,
+                        zeroBasedUserMemoryId);
+                AsyncMidiOutputWrapper w = new AsyncMidiOutputWrapper(_midiOut, _semaphore);
+                await w.SafeSendAsync(msg);
+            }
+                break;
+            case "SN-S":
+            {
+                byte[] msg =
+                    Integra7SysexHelpers.MakeWriteSuperNATURALSynthToneMsg(_deviceId, zeroBasedPartNo,
+                        zeroBasedUserMemoryId);
+                AsyncMidiOutputWrapper w = new AsyncMidiOutputWrapper(_midiOut, _semaphore);
+                await w.SafeSendAsync(msg);
+            }
+                break;
+            case "SN-D":
+            {
+                byte[] msg =
+                    Integra7SysexHelpers.MakeWriteSuperNATURALDrumKitMsg(_deviceId, zeroBasedPartNo,
+                        zeroBasedUserMemoryId);
+                AsyncMidiOutputWrapper w = new AsyncMidiOutputWrapper(_midiOut, _semaphore);
+                await w.SafeSendAsync(msg);
+            }
+                break;
+            case "PCMS":
+            {
+                byte[] msg =
+                    Integra7SysexHelpers.MakeWritePCMSynthToneMsg(_deviceId, zeroBasedPartNo, zeroBasedUserMemoryId);
+                AsyncMidiOutputWrapper w = new AsyncMidiOutputWrapper(_midiOut, _semaphore);
+                await w.SafeSendAsync(msg);
+            }
+                break;
+            case "PCMD":
+            {
+                byte[] msg =
+                    Integra7SysexHelpers.MakeWritePCMDrumKitMsg(_deviceId, zeroBasedPartNo, zeroBasedUserMemoryId);
+                AsyncMidiOutputWrapper w = new AsyncMidiOutputWrapper(_midiOut, _semaphore);
+                await w.SafeSendAsync(msg);
+            }
+                break;
+        }
+    }
+
     public async Task ChangePresetAsync(byte Channel, int Msb, int Lsb, int Pc)
     {
         BankSelectMsb(Channel, Msb);

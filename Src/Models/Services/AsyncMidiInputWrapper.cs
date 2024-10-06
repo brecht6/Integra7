@@ -70,13 +70,6 @@ public class AsyncMidiInputWrapper
     {
         _midiInput.ConfigureDefaultHandler();
         _midiInput.RestoreAutomaticHandling();
-        try
-        {
-            _channel.Writer.Complete();   
-        }
-        catch (System.Threading.Channels.ChannelClosedException e)
-        {
-            // ignore
-        }
+        _channel.Writer.TryComplete();
     }
 }

@@ -76,6 +76,8 @@ public class DisplayValueToRawValueConverter
         {
             if (displayValue.Length > p.ParSpec.Bytes)
                 p.StringValue = displayValue[..p.ParSpec.Bytes]; // clip string to max length
+            else
+                p.StringValue = displayValue;
         }
 
         p.DebugLog();

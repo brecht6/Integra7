@@ -56,6 +56,11 @@ public partial class MainWindowViewModel : ViewModelBase
     [ReactiveCommand]
     public async Task DebugCode()
     {
+        if (_currentPartSelection == 0)
+            return;
+        Integra7Preset preset = _partViewModels[_currentPartSelection].SelectedPreset;
+        string toneType = preset.ToneTypeStr;
+        await Integra7.WriteToneToUserMemory(_integra7Communicator, toneType, (byte)(_currentPartSelection-1), "some name", 5);
     }
 
     [ReactiveCommand]

@@ -10,6 +10,7 @@ using Avalonia.Platform;
 using Integra7AuralAlchemist.Models.Data;
 using Integra7AuralAlchemist.Models.Domain;
 using Integra7AuralAlchemist.Models.Services;
+using Integra7AuralAlchemist.Views;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 using Serilog;
@@ -52,15 +53,33 @@ public partial class MainWindowViewModel : ViewModelBase
     [Reactive] private bool _connected;
 
     [Reactive] private string _midiDevices = "No Midi Devices Detected";
-
+    public bool CurrentPartIsNotCommonPart { get => CurrentPartSelection > 0; }
+    public Interaction<SaveUserToneViewModel, UserToneToSave?> ShowSaveUserToneDialog { get; }
+    
     [ReactiveCommand]
-    public async Task DebugCode()
+    public async Task SaveUserTone()
     {
         if (_currentPartSelection == 0)
             return;
+        
+        if (_partViewModels is null || PartViewModels.Count < 2)
+        {
+            Log.Error("Cannot save user tone because there are no parts initialized.");
+            return;
+        }
+       
+        List<Integra7Preset> presets = _partViewModels[1].Presets.ToList();
+        SaveUserToneViewModel vm = new SaveUserToneViewModel(presets);
+        UserToneToSave tone = await ShowSaveUserToneDialog.Handle(vm);
+        
         Integra7Preset preset = _partViewModels[_currentPartSelection].SelectedPreset;
         string toneType = preset.ToneTypeStr;
         await Integra7.WriteToneToUserMemory(_integra7Communicator, toneType, (byte)(_currentPartSelection-1), "some name", 5);
+    }
+    
+    [ReactiveCommand]
+    public async Task DebugCode()
+    {
     }
 
     [ReactiveCommand]
@@ -429,7 +448,16 @@ public partial class MainWindowViewModel : ViewModelBase
         }
     }
 
-    [Reactive] private int _currentPartSelection;
+    private int _currentPartSelection = 0;
+    public int CurrentPartSelection
+    {
+        get => _currentPartSelection;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _currentPartSelection, value);
+            this.RaisePropertyChanged(nameof(CurrentPartIsNotCommonPart));
+        }
+    }
 
     private List<Integra7Preset> LoadPresets()
     {
@@ -456,7 +484,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
         return Presets;
     }
-
+    
     public MainWindowViewModel()
     {
         MessageBus.Current.Listen<UpdateMessageSpec>("ui2hw").Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
@@ -468,6 +496,8 @@ public partial class MainWindowViewModel : ViewModelBase
         MessageBus.Current.Listen<UpdateSetPresetAndResyncPart>()
             .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
             .Subscribe(async m => await SetPresetAndResyncPartAsync(m.PartNo));
+        
+        ShowSaveUserToneDialog = new Interaction<SaveUserToneViewModel, UserToneToSave?>();
     }
 
     public async Task InitializeAsync()

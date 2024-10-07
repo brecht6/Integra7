@@ -118,7 +118,20 @@
                             </Button.IsEnabled>
                             Panic!
                         </Button>
-                        <Button Command="{Binding DebugCode}">
+                        <Button Command="{Binding SaveUserTone}">
+                            <Button.IsEnabled>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="Connected"/>
+                                        <Binding Path = "!IsSyncing"/>
+                                        <Binding Path="CurrentPartIsNotCommonPart"/>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </Button.IsEnabled>
+                            Save User Tone
+                        </Button>
+                        <Button Command="{Binding DebugCode}"
+                                IsVisible="False">
                             <Button.IsEnabled>
                                 <MultiBinding Converter="{x:Static BoolConverters.And}">
                                     <MultiBinding.Bindings>

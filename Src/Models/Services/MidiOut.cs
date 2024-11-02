@@ -26,7 +26,11 @@ public class MidiOut : IMidiOut
         _midiAccessManager = MidiAccessManager.Default as IMidiAccess2;
         try
         {
-            _midiPortDetails = _midiAccessManager?.Outputs.Where(x => x.Name.Contains(Name)).Last();
+            var outputs = _midiAccessManager?.Outputs.Where(x => x.Name.Contains(Name));
+            if (!outputs.Any())
+                _midiPortDetails = null;
+            else
+                _midiPortDetails = outputs.Last();
         }
         catch (InvalidOperationException)
         {
@@ -42,6 +46,11 @@ public class MidiOut : IMidiOut
         {
             if (_access is null)
             {
+                if (_midiPortDetails is null)
+                {
+                    Log.Error("No MIDI message sent because no Integra-7 hardware found.");
+                    return;
+                }
                 _access = _midiAccessManager?.OpenOutputAsync(_midiPortDetails?.Id).Result;
             }
             _access?.Send(data, 0, data.Length, 0);

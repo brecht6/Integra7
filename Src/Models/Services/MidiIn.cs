@@ -48,8 +48,18 @@ public class MidiIn : IMidiIn
         _manualReplyHandling = false;
         try
         {
-            _midiPortDetails = _midiAccessManager?.Inputs.Where(x => x.Name.Contains(Name)).Last();
-            _access = _midiAccessManager?.OpenInputAsync(_midiPortDetails?.Id).Result;
+            var inputs = _midiAccessManager?.Inputs.Where(x => x.Name.Contains(Name));
+            if (!inputs.Any())
+            {
+                _midiPortDetails = null;
+                _access = null;
+            }
+            else
+            {
+                _midiPortDetails = inputs.Last();
+                _access = _midiAccessManager?.OpenInputAsync(_midiPortDetails?.Id).Result;                
+            }
+
             if (_access != null)
             {
                 Log.Debug("Configure default midi handler");
@@ -77,6 +87,12 @@ public class MidiIn : IMidiIn
 
     public void ConfigureHandler(EventHandler<MidiReceivedEventArgs> handler)
     {
+        if (_access == null)
+        {
+            Log.Information("No midi handler configured because no Integra-7 hardware found.");
+            return;
+        }
+
         Log.Debug("Remove last configured midi handler");
         _access.MessageReceived -= _lastEventHandler;
         _lastEventHandler = handler;

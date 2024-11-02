@@ -9,18 +9,10 @@ namespace Integra7AuralAlchemist.Views;
 public partial class MainWindow : AppWindow, IViewFor<MainWindowViewModel>
 {
     private MainWindowViewModel _viewModel;
-    private async Task DoShowSaveUserToneDialogAsync(
-        InteractionContext<SaveUserToneViewModel, UserToneToSave?> interaction)
-    {
-        var dialog = new SaveUserToneDialog();
-        dialog.DataContext = interaction.Input;
-        var result = await dialog.ShowDialog<UserToneToSave>(this);
-        interaction.SetOutput(result);
-    }
     public void RegisterDialogHandler()
     {
         this.WhenActivated(action =>
-            action(ViewModel!.ShowSaveUserToneDialog.RegisterHandler(DoShowDialogAsync)));   
+            action(ViewModel!.ShowSaveUserToneDialog.RegisterHandler(DoShowDialogAsync)));
     }
     
     public MainWindow()

@@ -88,4 +88,22 @@ public class FilterProvider
                                           || preset.InternalUserDefinedStr.Contains(txt.Trim(),
                                               StringComparison.CurrentCultureIgnoreCase))));
         };
+
+    public static Func<Integra7Preset, bool> SaveTonePresetFilter(string toneTypeStr, string text) =>
+        preset =>
+        {
+            IEnumerable<string> textParts = Regex.Split(text, @"\s+").Where(s => s != string.Empty);
+            return preset.ToneTypeStr == toneTypeStr && preset.InternalUserDefinedStr == "USR" &&
+                   (string.IsNullOrEmpty(text)
+                    ||
+                    textParts.All(txt => (preset.Name.Contains(txt.Trim(), StringComparison.CurrentCultureIgnoreCase)
+                                          || preset.ToneBankStr.Contains(txt.Trim(),
+                                              StringComparison.CurrentCultureIgnoreCase)
+                                          || preset.ToneTypeStr.Contains(txt.Trim(),
+                                              StringComparison.CurrentCultureIgnoreCase)
+                                          || preset.CategoryStr.Contains(txt.Trim(),
+                                              StringComparison.CurrentCultureIgnoreCase)
+                                          || preset.InternalUserDefinedStr.Contains(txt.Trim(),
+                                              StringComparison.CurrentCultureIgnoreCase))));
+        };
 }

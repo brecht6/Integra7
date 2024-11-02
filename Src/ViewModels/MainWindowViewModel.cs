@@ -67,14 +67,20 @@ public partial class MainWindowViewModel : ViewModelBase
             Log.Error("Cannot save user tone because there are no parts initialized.");
             return;
         }
+
+        if (_partViewModels[_currentPartSelection].SelectedPreset is null)
+        {
+            Log.Error("Cannot save user tone because there is  no preset selected.");
+            return;
+        }
        
         List<Integra7Preset> presets = _partViewModels[1].Presets.ToList();
-        SaveUserToneViewModel vm = new SaveUserToneViewModel(presets);
-        UserToneToSave tone = await ShowSaveUserToneDialog.Handle(vm);
-        
         Integra7Preset preset = _partViewModels[_currentPartSelection].SelectedPreset;
         string toneType = preset.ToneTypeStr;
-        await Integra7.WriteToneToUserMemory(_integra7Communicator, toneType, (byte)(_currentPartSelection-1), "some name", 5);
+        SaveUserToneViewModel vm = new SaveUserToneViewModel(presets, toneType);
+        UserToneToSave tone = await ShowSaveUserToneDialog.Handle(vm);
+        if (tone != null)
+            await Integra7.WriteToneToUserMemory(_integra7Communicator, toneType, (byte)(_currentPartSelection-1), "some name", 5);
     }
     
     [ReactiveCommand]

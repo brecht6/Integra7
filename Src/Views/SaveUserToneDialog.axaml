@@ -9,16 +9,30 @@
         x:DataType="vm:SaveUserToneViewModel"
         Title="Save User Tone"
         IsVisible="False"
-        Width="500"
-        Height="600"
+        Width="650"
+        Height="800"
         WindowStartupLocation="CenterOwner">
     
-    <local:PresetSelector SearchText="{Binding SearchTextPreset, Mode=TwoWay}"
-                          Presets="{Binding Presets}"
-                          SelectedPreset="{Binding SelectedPreset, Mode=TwoWay}"
-                          Height="500"
-                          VerticalAlignment="Top"
-                          VerticalContentAlignment="Top"
-                          IsVisible="True" />
+    <StackPanel Orientation="Vertical"
+                Margin="10,5,0,0"
+                Spacing="50"
+                IsVisible="True">
+
+        <local:PresetSelector SearchText="{Binding SearchTextPreset, Mode=TwoWay}"
+                              Presets="{Binding Presets}"
+                              SelectedPreset="{Binding SelectedPreset, Mode=TwoWay}"
+                              Height="700"
+                              VerticalAlignment="Top"
+                              VerticalContentAlignment="Top"
+                              IsVisible="True" />
+        
+        <StackPanel Orientation="Horizontal"
+                    Margin="10,5,0,0"
+                    Spacing="50"
+                    IsVisible="True">
+            <Button>Save (TODO)!</Button>
+            <Button Command="{Binding CancelCommand}">Cancel</Button>
+        </StackPanel>
+    </StackPanel>
     
 </Window>

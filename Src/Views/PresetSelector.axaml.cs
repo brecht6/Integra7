@@ -30,6 +30,10 @@ public partial class PresetSelector : UserControl
     // add an argument "SelectedPreset" to the user control
     public static readonly StyledProperty<Integra7Preset> SelectedPresetProperty =
         AvaloniaProperty.Register<PresetSelector, Integra7Preset>(nameof(SelectedPreset));
+    
+    // add an argumenbt "SelectedPresetIndex" to the user control
+    public static readonly StyledProperty<int> SelectedPresetIndexProperty =
+        AvaloniaProperty.Register<PresetSelector, int>(nameof(SelectedPresetIndex));
 
     public Integra7Preset SelectedPreset
     {
@@ -42,9 +46,16 @@ public partial class PresetSelector : UserControl
         
     }
 
+    public int SelectedPresetIndex
+    {
+        get => (int)GetValue(SelectedPresetIndexProperty);
+        set => SetValue(SelectedPresetIndexProperty, value);
+    }
+
     public void PresetDataGrid_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs? args)
     {
         SelectedPreset = (Integra7Preset)args.Row.DataContext;
+        SelectedPresetIndex = args.Row.GetIndex();
     }
 
     public PresetSelector()

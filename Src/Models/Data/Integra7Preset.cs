@@ -21,7 +21,12 @@ public record Integra7Preset {
     public string ToneBankStr => _toneBankStr;
     private int _number { get; set; }
     private string _name { get; set; }
-    public string Name => _name;
+    public string Name
+    {
+        get => _name;
+        set => _name = value;
+    }
+
     private int _msb { get; set; }
     private int _lsb { get; set; }
     private int _pc { get; set; }

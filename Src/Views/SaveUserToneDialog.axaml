@@ -21,6 +21,7 @@
         <local:PresetSelector SearchText="{Binding SearchTextPreset, Mode=TwoWay}"
                               Presets="{Binding Presets}"
                               SelectedPreset="{Binding SelectedPreset, Mode=TwoWay}"
+                              SelectedPresetIndex="{Binding SelectedPresetIndex, Mode=TwoWay}"
                               Height="700"
                               VerticalAlignment="Top"
                               VerticalContentAlignment="Top"
@@ -30,7 +31,8 @@
                     Margin="10,5,0,0"
                     Spacing="50"
                     IsVisible="True">
-            <Button>Save (TODO)!</Button>
+            <TextBox MinWidth="200" Watermark="type the new name here" Text="{Binding NewName}"></TextBox>
+            <Button IsEnabled="{Binding NewNameNotEmpty}" Command="{Binding SaveCommand}">Save</Button>
             <Button Command="{Binding CancelCommand}">Cancel</Button>
         </StackPanel>
     </StackPanel>

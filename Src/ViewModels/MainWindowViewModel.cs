@@ -78,14 +78,30 @@ public partial class MainWindowViewModel : ViewModelBase
         Integra7Preset preset = _partViewModels[_currentPartSelection].SelectedPreset;
         string toneType = preset.ToneTypeStr;
         SaveUserToneViewModel vm = new SaveUserToneViewModel(presets, toneType);
-        UserToneToSave tone = await ShowSaveUserToneDialog.Handle(vm);
+        UserToneToSave? tone = await ShowSaveUserToneDialog.Handle(vm);
         if (tone != null)
-            await Integra7.WriteToneToUserMemory(_integra7Communicator, toneType, (byte)(_currentPartSelection-1), "some name", 5);
-    }
-    
-    [ReactiveCommand]
-    public async Task DebugCode()
-    {
+        {
+            if (_integra7Communicator != null)
+            {
+                await Integra7?.WriteToneToUserMemory(_integra7Communicator, toneType,
+                    (byte)(_currentPartSelection - 1), tone.NewName, tone.ZeroBasedMemoryId);
+                
+                // also update name in preset list
+                int presetId = -1;
+                foreach (var p in presets)
+                {
+                    if (p.ToneTypeStr == toneType && p.InternalUserDefinedStr == "USR")
+                    {
+                        presetId++;
+                        if (presetId == tone.ZeroBasedMemoryId)
+                        {
+                            p.Name = tone.NewName;
+                        }
+                    }
+                }
+            }
+            
+        }
     }
 
     [ReactiveCommand]

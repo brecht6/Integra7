@@ -130,18 +130,6 @@
                             </Button.IsEnabled>
                             Save User Tone
                         </Button>
-                        <Button Command="{Binding DebugCode}"
-                                IsVisible="False">
-                            <Button.IsEnabled>
-                                <MultiBinding Converter="{x:Static BoolConverters.And}">
-                                    <MultiBinding.Bindings>
-                                        <Binding Path="Connected"/>
-                                        <Binding Path = "!IsSyncing"></Binding>
-                                    </MultiBinding.Bindings>
-                                </MultiBinding>
-                            </Button.IsEnabled>
-                            Run Debug Code
-                        </Button>
                     </StackPanel>
                     <TabControl HorizontalContentAlignment="Left"
                                 TabStripPlacement="Left"

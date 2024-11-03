@@ -20,13 +20,29 @@ public partial class SaveUserToneViewModel : ViewModelBase
     private List<Integra7Preset> i7presets = [];
     private string _toneTypeStr;
     public Integra7Preset? SelectedPreset => _selectedPreset;
+    public int SelectedPresetIndex { get; set; }
     private SourceCache<Integra7Preset, int> _sourceCachePresets = new SourceCache<Integra7Preset, int>(x => x.Id);
     private readonly ReadOnlyObservableCollection<Integra7Preset> _presets = new([]);
     public ReadOnlyObservableCollection<Integra7Preset> Presets => _presets;
     private UserToneToSave? _userToneToSave = null;
     
-
+    private string _newName = "";
+    public string NewName
+    {
+        get => _newName;
+        set
+        {
+            this.RaisePropertyChanging();
+            this.RaisePropertyChanging(nameof(NewNameNotEmpty));
+            _newName = value;
+            this.RaisePropertyChanged();
+            this.RaisePropertyChanged(nameof(NewNameNotEmpty));
+        } 
+    }
+    public bool NewNameNotEmpty => NewName != "";
+    
     public ReactiveCommand<Unit, UserToneToSave?> CancelCommand { get; }
+    public ReactiveCommand<Unit, UserToneToSave> SaveCommand { get; }
     
     private IDisposable? _cleanupPresets;
 
@@ -39,6 +55,12 @@ public partial class SaveUserToneViewModel : ViewModelBase
         CancelCommand = ReactiveCommand.Create(() =>
         {
             _userToneToSave = null;
+            return _userToneToSave;
+        });
+
+        SaveCommand = ReactiveCommand.Create(() =>
+        {
+            _userToneToSave = new UserToneToSave(_newName, SelectedPresetIndex);
             return _userToneToSave;
         });
         

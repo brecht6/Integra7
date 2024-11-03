@@ -1,6 +1,6 @@
-namespace Tests;
-
 using Integra7AuralAlchemist.Models.Services;
+
+namespace Tests;
 
 public class MappingTests
 {

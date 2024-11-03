@@ -8,23 +8,25 @@ using ReactiveUI;
 using Serilog;
 
 namespace Integra7AuralAlchemist.Models.Services;
+
 public interface IMidiIn
 {
     public void ConfigureHandler(EventHandler<MidiReceivedEventArgs> handler);
     public void ConfigureDefaultHandler();
     public byte[] GetReply();
     public void AnnounceIntentionToManuallyHandleReply();
-    public void RestoreAutomaticHandling();    
+    public void RestoreAutomaticHandling();
 }
-
 
 public class MidiIn : IMidiIn
 {
     private readonly IMidiAccess2? _midiAccessManager;
-    private IMidiInput? _access;
-    private IMidiPortDetails? _midiPortDetails;
+    private readonly IMidiInput? _access;
+    private readonly IMidiPortDetails? _midiPortDetails;
     private bool _manualReplyHandling;
-    public bool ManualReplyHandling { 
+
+    public bool ManualReplyHandling
+    {
         get => _manualReplyHandling;
         set
         {
@@ -32,10 +34,11 @@ public class MidiIn : IMidiIn
             _manualReplyHandling = value;
         }
     }
+
     private event EventHandler<MidiReceivedEventArgs> _lastEventHandler;
-    private static ManualResetEvent _replyReady = new ManualResetEvent(false);
+    private static readonly ManualResetEvent _replyReady = new(false);
     private byte[] _replyData = [];
-#if DEBUG    
+#if DEBUG
     public bool Verbose { get; set; } = true;
 #else
     public bool Verbose { get; set; } = false;
@@ -57,7 +60,7 @@ public class MidiIn : IMidiIn
             else
             {
                 _midiPortDetails = inputs.Last();
-                _access = _midiAccessManager?.OpenInputAsync(_midiPortDetails?.Id).Result;                
+                _access = _midiAccessManager?.OpenInputAsync(_midiPortDetails?.Id).Result;
             }
 
             if (_access != null)
@@ -75,8 +78,8 @@ public class MidiIn : IMidiIn
     public void ConfigureDefaultHandler()
     {
         if (_access == null)
-            return; 
-        
+            return;
+
         Log.Debug("Remove customized midi handler");
         _access.MessageReceived -= _lastEventHandler;
         _lastEventHandler = DefaultHandler;
@@ -109,31 +112,31 @@ public class MidiIn : IMidiIn
         Debug.Assert(e.Length != 0);
         Array.Copy(e.Data, localCopy, e.Length);
         Array.Copy(localCopy, _replyData, e.Length);
-        if (Verbose)
-        {
-            ByteStreamDisplay.Display("Received (default handler): ", localCopy);
-        }
+        if (Verbose) ByteStreamDisplay.Display("Received (default handler): ", localCopy);
         if (!_manualReplyHandling)
         {
             if (Integra7SysexHelpers.CheckIsDataSetMsg(localCopy))
             {
                 Log.Debug("Request UpdateSysexSpec");
-                MessageBus.Current.SendMessage(new UpdateFromSysexSpec((localCopy)), "hw2ui");
+                MessageBus.Current.SendMessage(new UpdateFromSysexSpec(localCopy), "hw2ui");
             }
-            else if (Integra7Api.CheckIsPartOfPresetChange(localCopy, out byte midiChannel)) {
+            else if (Integra7Api.CheckIsPartOfPresetChange(localCopy, out var midiChannel))
+            {
                 Log.Debug($"Request UpdateSetPresetandResyncPart for channel {midiChannel}");
                 MessageBus.Current.SendMessage(new UpdateSetPresetAndResyncPart(midiChannel));
             }
             else
             {
-                Log.Debug($"Received MIDI msg that will not be dispatched for ui update.");
+                Log.Debug("Received MIDI msg that will not be dispatched for ui update.");
                 ByteStreamDisplay.Display("The message was: ", localCopy);
             }
         }
         else
         {
-            Log.Debug($"Received MIDI msg that will not be dispatched for ui update because manual reply handling is active.");
+            Log.Debug(
+                "Received MIDI msg that will not be dispatched for ui update because manual reply handling is active.");
         }
+
         _manualReplyHandling = false;
         _replyReady.Set();
     }

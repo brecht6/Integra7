@@ -1,7 +1,7 @@
-
 using Commons.Music.Midi;
 
 namespace Integra7AuralAlchemist.Models.Services;
+
 public class Integra7MidiControlNos
 {
     public static byte NoteOn = MidiEvent.NoteOn;

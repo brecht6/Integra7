@@ -24,51 +24,52 @@ public class DisplayValueToRawValueConverter
                 }
                 else
                 {
-                    p.RawNumericValue = key.First(); // if a repr is present, and a mapping is present this is still a "mapped value"
+                    p.RawNumericValue =
+                        key.First(); // if a repr is present, and a mapping is present this is still a "mapped value"
                 }
             }
 
-            if (p.ParSpec.IMin != p.ParSpec.OMin || p.ParSpec.IMax != p.ParSpec.OMax || p.ParSpec.IMin2 != p.ParSpec.OMin2 || p.ParSpec.IMax2 != p.ParSpec.OMax2)
+            if (p.ParSpec.IMin != p.ParSpec.OMin || p.ParSpec.IMax != p.ParSpec.OMax ||
+                p.ParSpec.IMin2 != p.ParSpec.OMin2 || p.ParSpec.IMax2 != p.ParSpec.OMax2)
             {
                 // need to unmap mapped value to raw value
                 if (p.ParSpec.Repr != null)
                 {
                     double unmapped = p.RawNumericValue;
-                    if (!float.IsNaN(p.ParSpec.IMin2) && !float.IsNaN(p.ParSpec.IMax2) && !float.IsNaN(p.ParSpec.OMin2) && !float.IsNaN(p.ParSpec.OMax2))
-                    {
-                        unmapped = Mapping.linlin(unmapped, p.ParSpec.OMin2, p.ParSpec.OMax2, p.ParSpec.IMin2, p.ParSpec.IMax2, true);
-                    }
-                    p.RawNumericValue = (long)Math.Round(Mapping.linlin(unmapped, p.ParSpec.OMin, p.ParSpec.OMax, p.ParSpec.IMin, p.ParSpec.IMax, true));
+                    if (!float.IsNaN(p.ParSpec.IMin2) && !float.IsNaN(p.ParSpec.IMax2) &&
+                        !float.IsNaN(p.ParSpec.OMin2) && !float.IsNaN(p.ParSpec.OMax2))
+                        unmapped = Mapping.linlin(unmapped, p.ParSpec.OMin2, p.ParSpec.OMax2, p.ParSpec.IMin2,
+                            p.ParSpec.IMax2, true);
+                    p.RawNumericValue = (long)Math.Round(Mapping.linlin(unmapped, p.ParSpec.OMin, p.ParSpec.OMax,
+                        p.ParSpec.IMin, p.ParSpec.IMax, true));
                 }
                 else
                 {
-                    double unmapped = double.Parse(displayValue);
-                    if (!float.IsNaN(p.ParSpec.IMin2) && !float.IsNaN(p.ParSpec.IMax2) && !float.IsNaN(p.ParSpec.OMin2) && !float.IsNaN(p.ParSpec.OMax2))
-                    {
-                        unmapped = Mapping.linlin(unmapped, p.ParSpec.OMin2, p.ParSpec.OMax2, p.ParSpec.IMin2, p.ParSpec.IMax2, true);
-                    }
-                    p.RawNumericValue = (long)Math.Round(Mapping.linlin(unmapped, p.ParSpec.OMin, p.ParSpec.OMax, p.ParSpec.IMin, p.ParSpec.IMax, true));
+                    var unmapped = double.Parse(displayValue);
+                    if (!float.IsNaN(p.ParSpec.IMin2) && !float.IsNaN(p.ParSpec.IMax2) &&
+                        !float.IsNaN(p.ParSpec.OMin2) && !float.IsNaN(p.ParSpec.OMax2))
+                        unmapped = Mapping.linlin(unmapped, p.ParSpec.OMin2, p.ParSpec.OMax2, p.ParSpec.IMin2,
+                            p.ParSpec.IMax2, true);
+                    p.RawNumericValue = (long)Math.Round(Mapping.linlin(unmapped, p.ParSpec.OMin, p.ParSpec.OMax,
+                        p.ParSpec.IMin, p.ParSpec.IMax, true));
                 }
             }
             else
             {
                 if (p.ParSpec.Repr == null) // otherwise p.RawNumericValue is already found in the previous paragraph
-                {
                     p.RawNumericValue = (long)Math.Round(double.Parse(displayValue));
-                }
             }
+
             p.StringValue = displayValue;
         }
         else if (p.IsDiscrete)
         {
             foreach (var entry in p.ParSpec.Discrete)
-            {
                 if (entry.Item2 == displayValue)
                 {
                     p.RawNumericValue = entry.Item1;
                     break;
                 }
-            }
 
             p.StringValue = displayValue;
         }

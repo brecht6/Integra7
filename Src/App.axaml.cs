@@ -24,8 +24,8 @@ public class App : Application
             {
                 DataContext = vm
             };
-            var mw = (desktop.MainWindow as MainWindow);
-            mw.ViewModel = vm; 
+            var mw = desktop.MainWindow as MainWindow;
+            mw.ViewModel = vm;
             mw.RegisterDialogHandler();
             _ = vm.InitializeAsync();
         }

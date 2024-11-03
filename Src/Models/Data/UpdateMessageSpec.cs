@@ -2,32 +2,28 @@ namespace Integra7AuralAlchemist.Models.Data;
 
 public class UpdateMessageSpec
 {
-    private readonly FullyQualifiedParameter _par;
-    public FullyQualifiedParameter Par => _par;
-    private readonly string _displayvalue;
-    public string DisplayValue => _displayvalue;
-
     public UpdateMessageSpec(FullyQualifiedParameter par, string displayvalue)
     {
-        _par = par;
-        _displayvalue = displayvalue;
+        Par = par;
+        DisplayValue = displayvalue;
     }
+
+    public FullyQualifiedParameter Par { get; }
+
+    public string DisplayValue { get; }
 }
 
 public class UpdateFromSysexSpec(byte[] sysexMsg)
 {
-    private readonly byte[] _sysexMsg = sysexMsg;
-    public byte[] SysexMsg => _sysexMsg;
+    public byte[] SysexMsg { get; } = sysexMsg;
 }
 
 public class UpdateResyncPart(byte partNo)
 {
-    private readonly byte _partNo = partNo;
-    public byte PartNo => _partNo;
+    public byte PartNo { get; } = partNo;
 }
 
 public class UpdateSetPresetAndResyncPart(byte partNo)
 {
-    private readonly byte _partNo = partNo;
-    public byte PartNo => _partNo;
+    public byte PartNo { get; } = partNo;
 }

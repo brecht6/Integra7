@@ -11,30 +11,50 @@ namespace Integra7AuralAlchemist.Models.Data;
 
 public class FullyQualifiedParameter : INotifyPropertyChanged
 {
-    private readonly string _start;
-    public string Start => _start;
-    private readonly string _offset;
-    public string Offset => _offset;
-    private readonly string _offset2;
-    public string Offset2 => _offset2;
-    private readonly Integra7ParameterSpec _parspec;
-    public Integra7ParameterSpec ParSpec => _parspec;
-
-    private bool _numeric;
-    public bool IsNumeric => _numeric;
-    
-    private bool _discrete;
-    public bool IsDiscrete => _discrete;
-    
     private long _rawNumericValue;
+
+    private string _stringValue = "";
+
+    public FullyQualifiedParameter(string start, string offset, string offset2, Integra7ParameterSpec parspec)
+    {
+        Start = start;
+        Offset = offset;
+        Offset2 = offset2;
+        ParSpec = parspec;
+        IsNumeric = parspec.Type == Integra7ParameterSpec.SpecType.NUMERIC;
+        IsDiscrete = parspec.Type == Integra7ParameterSpec.SpecType.DISCRETE;
+    }
+
+    public FullyQualifiedParameter(string start, string offset, string offset2, Integra7ParameterSpec parspec,
+        long rawNumericValue, string stringValue)
+    {
+        Start = start;
+        Offset = offset;
+        Offset2 = offset2;
+        ParSpec = parspec;
+        IsNumeric = parspec.Type == Integra7ParameterSpec.SpecType.NUMERIC;
+        IsDiscrete = parspec.Type == Integra7ParameterSpec.SpecType.DISCRETE;
+        _rawNumericValue = rawNumericValue;
+        _stringValue = stringValue;
+    }
+
+    public string Start { get; }
+
+    public string Offset { get; }
+
+    public string Offset2 { get; }
+
+    public Integra7ParameterSpec ParSpec { get; }
+
+    public bool IsNumeric { get; private set; }
+
+    public bool IsDiscrete { get; }
 
     public long RawNumericValue
     {
         get => _rawNumericValue;
         set => _rawNumericValue = value;
     }
-
-    private string _stringValue = "";
 
     public string StringValue
     {
@@ -50,37 +70,14 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public FullyQualifiedParameter(string start, string offset, string offset2, Integra7ParameterSpec parspec)
-    {
-        _start = start;
-        _offset = offset;
-        _offset2 = offset2;
-        _parspec = parspec;
-        _numeric = parspec.Type == Integra7ParameterSpec.SpecType.NUMERIC;
-        _discrete = parspec.Type == Integra7ParameterSpec.SpecType.DISCRETE;
-    }
-
-    public FullyQualifiedParameter(string start, string offset, string offset2, Integra7ParameterSpec parspec,
-        long rawNumericValue, string stringValue)
-    {
-        _start = start;
-        _offset = offset;
-        _offset2 = offset2;
-        _parspec = parspec;
-        _numeric = parspec.Type == Integra7ParameterSpec.SpecType.NUMERIC;
-        _discrete = parspec.Type == Integra7ParameterSpec.SpecType.DISCRETE;
-        _rawNumericValue = rawNumericValue;
-        _stringValue = stringValue;
-    }
-
     public bool ValidInContext(ParserContext ctx)
     {
         if (ParSpec.ParentCtrl != "")
         {
             if (ctx.Contains(ParSpec.ParentCtrl))
             {
-                string value = ctx.Lookup(ParSpec.ParentCtrl);
-                bool stillValid = ParSpec.ParentCtrlDispValue == value;
+                var value = ctx.Lookup(ParSpec.ParentCtrl);
+                var stillValid = ParSpec.ParentCtrlDispValue == value;
                 if (stillValid)
                 {
                     if (ParSpec.ParentCtrl2 != "")
@@ -88,7 +85,7 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
                         // StillValid, but a second level dependency also must be fulfilled
                         if (ctx.Contains(ParSpec.ParentCtrl2))
                         {
-                            string value2 = ctx.Lookup(ParSpec.ParentCtrl2);
+                            var value2 = ctx.Lookup(ParSpec.ParentCtrl2);
                             return value2 == ParSpec.ParentCtrlDispValue2;
                         }
 
@@ -112,138 +109,113 @@ public class FullyQualifiedParameter : INotifyPropertyChanged
 
     public byte[] CompleteAddress(Integra7StartAddresses startAddresses, Integra7Parameters parameters)
     {
-        byte[] startAddr = startAddresses.Lookup(_start).Address;
-        byte[] offsetAddr = startAddresses.Lookup(_offset).Address;
-        byte[] offset2Addr = startAddresses.Lookup(_offset2).Address;
-        byte[] parameterAddr = _parspec.Address;
-        byte[] totalAddr = ByteUtils.AddressWithOffset(startAddr, offsetAddr, offset2Addr, parameterAddr);
+        var startAddr = startAddresses.Lookup(Start).Address;
+        var offsetAddr = startAddresses.Lookup(Offset).Address;
+        var offset2Addr = startAddresses.Lookup(Offset2).Address;
+        var parameterAddr = ParSpec.Address;
+        var totalAddr = ByteUtils.AddressWithOffset(startAddr, offsetAddr, offset2Addr, parameterAddr);
         return totalAddr;
     }
 
     public async Task RetrieveFromIntegraAsync(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses,
         Integra7Parameters parameters)
     {
-        byte[] totalAddr = CompleteAddress(startAddresses, parameters);
-        byte[] reply = await integra7Api.MakeDataRequestAsync(totalAddr, _parspec.Bytes);
+        var totalAddr = CompleteAddress(startAddresses, parameters);
+        var reply = await integra7Api.MakeDataRequestAsync(totalAddr, ParSpec.Bytes);
         ParseFromSysexReply(reply, parameters);
     }
 
     public async Task WriteToIntegraAsync(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses,
         Integra7Parameters parameters)
     {
-        byte[] totalAddr = CompleteAddress(startAddresses, parameters);
-        byte[] data = GetSysexDataFragment();
+        var totalAddr = CompleteAddress(startAddresses, parameters);
+        var data = GetSysexDataFragment();
         await integra7Api.MakeDataTransmissionAsync(totalAddr, data);
     }
 
     public void ParseFromSysexReply(byte[] reply, Integra7Parameters parameters,
         Integra7ParameterSpec? firstParameterInSysexReply = null)
     {
-        if (firstParameterInSysexReply == null)
-        {
-            firstParameterInSysexReply = _parspec;
-        }
+        if (firstParameterInSysexReply == null) firstParameterInSysexReply = ParSpec;
 
         const int SYSEX_DATA_REPLY_HEADER_LENGTH = 11;
         List<Integra7ParameterSpec> parametersInSysexReply =
-            parameters.GetParametersFromTo(firstParameterInSysexReply.Path, _parspec.Path);
-        int dataToSkip = SYSEX_DATA_REPLY_HEADER_LENGTH;
-        int gap = ParameterListSysexSizeCalculator.CalculateSysexGapBetweenFirstAndLast(parametersInSysexReply);
+            parameters.GetParametersFromTo(firstParameterInSysexReply.Path, ParSpec.Path);
+        var dataToSkip = SYSEX_DATA_REPLY_HEADER_LENGTH;
+        var gap = ParameterListSysexSizeCalculator.CalculateSysexGapBetweenFirstAndLast(parametersInSysexReply);
         dataToSkip += gap;
-        if (reply.Length > dataToSkip + _parspec.Bytes)
+        if (reply.Length > dataToSkip + ParSpec.Bytes)
         {
-            byte[] parResult = ByteUtils.Slice(reply, dataToSkip, _parspec.Bytes);
-            SysexParameterValueInterpreter.Interpret(parResult, _parspec, out _rawNumericValue, out _stringValue);
+            var parResult = ByteUtils.Slice(reply, dataToSkip, ParSpec.Bytes);
+            SysexParameterValueInterpreter.Interpret(parResult, ParSpec, out _rawNumericValue, out _stringValue);
         }
         else
         {
             Log.Error(
-                $"Sysex msg out of data while trying to parse {_parspec.Path} from sysex reply. Are we looking at the wrong reply?");
+                $"Sysex msg out of data while trying to parse {ParSpec.Path} from sysex reply. Are we looking at the wrong reply?");
         }
     }
 
     public byte[] GetSysexDataFragment()
     {
-        if (_numeric)
+        if (IsNumeric)
         {
-            byte[] sysex = new byte[_parspec.Bytes];
-            if (_parspec.PerNibble)
+            var sysex = new byte[ParSpec.Bytes];
+            if (ParSpec.PerNibble)
             {
-                sysex = ByteUtils.IntToNibbled(_rawNumericValue, _parspec.Bytes);
+                sysex = ByteUtils.IntToNibbled(_rawNumericValue, ParSpec.Bytes);
             }
             else
             {
-                if (_parspec.Bytes == 1)
-                {
+                if (ParSpec.Bytes == 1)
                     sysex = ByteUtils.IntToBytes7_1(_rawNumericValue);
-                }
-                else if (_parspec.Bytes == 2)
-                {
+                else if (ParSpec.Bytes == 2)
                     sysex = ByteUtils.IntToBytes7_2(_rawNumericValue);
-                }
-                else if (_parspec.Bytes == 4)
-                {
+                else if (ParSpec.Bytes == 4)
                     sysex = ByteUtils.IntToBytes7_4(_rawNumericValue);
-                }
                 else
-                {
                     Debug.Assert(false);
-                }
             }
 
             return sysex;
         }
-        
-        if (_discrete)
-        {
-            return (byte[]) [(byte)((_rawNumericValue >> 8) & 0x7f), (byte)(_rawNumericValue & 0x7f)];
-        }
 
-        if (_stringValue.Length > _parspec.Bytes)
-        {
-            _stringValue = _stringValue[.._parspec.Bytes]; // clip to max length
-        }
+        if (IsDiscrete) return (byte[]) [(byte)((_rawNumericValue >> 8) & 0x7f), (byte)(_rawNumericValue & 0x7f)];
 
-        return ByteUtils.PadString(Encoding.ASCII.GetBytes(_stringValue), _parspec.Bytes);
+        if (_stringValue.Length > ParSpec.Bytes) _stringValue = _stringValue[..ParSpec.Bytes]; // clip to max length
+
+        return ByteUtils.PadString(Encoding.ASCII.GetBytes(_stringValue), ParSpec.Bytes);
     }
 
     public void CopyParsedDataFrom(FullyQualifiedParameter other)
     {
-        _numeric = other.IsNumeric;
+        IsNumeric = other.IsNumeric;
         _rawNumericValue = other.RawNumericValue;
         _stringValue = other.StringValue;
     }
 
     public void DebugLog()
     {
-        StringBuilder hex = new StringBuilder(ParSpec.Address.Length * 2);
-        for (int i = 0; i < ParSpec.Address.Length; i++)
-        {
-            hex.AppendFormat("{0:x2} ", ParSpec.Address[i]);
-        }
-        string address = "[ " + hex.ToString() + "]";
-        string Wrn = "";
-        if (ParSpec.Reserved)
-        {
-            Wrn = " (reserved!)";
-        }
-        string unit = "";
-        if (ParSpec.Unit != "")
-        {
-            unit = "[" + ParSpec.Unit + "]";
-        }
+        var hex = new StringBuilder(ParSpec.Address.Length * 2);
+        for (var i = 0; i < ParSpec.Address.Length; i++) hex.AppendFormat("{0:x2} ", ParSpec.Address[i]);
+        var address = "[ " + hex + "]";
+        var Wrn = "";
+        if (ParSpec.Reserved) Wrn = " (reserved!)";
+        var unit = "";
+        if (ParSpec.Unit != "") unit = "[" + ParSpec.Unit + "]";
         if (IsNumeric)
         {
-            double mapped = Mapping.linlin(RawNumericValue, ParSpec.IMin, ParSpec.IMax, ParSpec.OMin, ParSpec.OMax);
-            if (!float.IsNaN(ParSpec.IMin2) && !float.IsNaN(ParSpec.IMax2) && !float.IsNaN(ParSpec.OMin2) && !float.IsNaN(ParSpec.OMax2))
-            {
+            var mapped = Mapping.linlin(RawNumericValue, ParSpec.IMin, ParSpec.IMax, ParSpec.OMin, ParSpec.OMax);
+            if (!float.IsNaN(ParSpec.IMin2) && !float.IsNaN(ParSpec.IMax2) && !float.IsNaN(ParSpec.OMin2) &&
+                !float.IsNaN(ParSpec.OMax2))
                 mapped = Mapping.linlin(mapped, ParSpec.IMin2, ParSpec.IMax2, ParSpec.OMin2, ParSpec.OMax2);
-            }
-            Log.Debug($"{Wrn} parameter {ParSpec.Path} at parameter address {address} has value raw {RawNumericValue}, mapped {Math.Round(mapped, 2)}, (meaning: {StringValue}{unit})");
+            Log.Debug(
+                $"{Wrn} parameter {ParSpec.Path} at parameter address {address} has value raw {RawNumericValue}, mapped {Math.Round(mapped, 2)}, (meaning: {StringValue}{unit})");
         }
         else if (IsDiscrete)
         {
-            Log.Debug($"{Wrn} parameter {ParSpec.Path} at parameter address {address} has value raw {RawNumericValue}, (meaning: {StringValue}{unit})");
+            Log.Debug(
+                $"{Wrn} parameter {ParSpec.Path} at parameter address {address} has value raw {RawNumericValue}, (meaning: {StringValue}{unit})");
         }
         else
         {

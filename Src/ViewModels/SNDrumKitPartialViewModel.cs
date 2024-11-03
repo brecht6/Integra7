@@ -16,20 +16,19 @@ namespace Integra7AuralAlchemist.ViewModels;
 
 public sealed partial class SNDrumKitPartialViewModel : PartialViewModel
 {
+    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _SNDrumKitPartialParameters = new([]);
+
     private readonly SourceCache<FullyQualifiedParameter, string> _sourceCacheSNDrumKitPartialParameters =
         new(x => x.ParSpec.Path);
-    private readonly ReadOnlyObservableCollection<FullyQualifiedParameter> _SNDrumKitPartialParameters = new([]);
-    public ReadOnlyObservableCollection<FullyQualifiedParameter> SNDrumKitPartialParameters =>
-        _SNDrumKitPartialParameters;
-    
-    [Reactive] private string _searchTextSNDrumKitPartial = "";
+
+    private IDisposable? _cleanupSNDrumKitPartialParameters;
     [Reactive] private string _refreshSNDrumKitPartial = "";
-    
-    IDisposable? _cleanupSNDrumKitPartialParameters;
-    
-    public SNDrumKitPartialViewModel(PartViewModel parent, byte zeroBasedPart, byte zeroBasedPartial, 
+
+    [Reactive] private string _searchTextSNDrumKitPartial = "";
+
+    public SNDrumKitPartialViewModel(PartViewModel parent, byte zeroBasedPart, byte zeroBasedPartial,
         string toneTypeStr, Integra7StartAddresses i7addr,
-        Integra7Parameters par, IIntegra7Api i7api, Integra7Domain i7dom, SemaphoreSlim semaphore) : 
+        Integra7Parameters par, IIntegra7Api i7api, Integra7Domain i7dom, SemaphoreSlim semaphore) :
         base(parent, zeroBasedPart, zeroBasedPartial, toneTypeStr, i7addr, par, i7api, i7dom, semaphore)
     {
         var parFilterSNDrumKitPartialParameters = this.WhenAnyValue(x => x.SearchTextSNDrumKitPartial)
@@ -38,22 +37,22 @@ public sealed partial class SNDrumKitPartialViewModel : PartialViewModel
             .Select(FilterProvider.ParameterFilter);
         var refreshFilterSNDrumKitPartialParameters = this.WhenAnyValue(x => x.RefreshSNDrumKitPartial)
             .Select(FilterProvider.ParameterFilter);
-        
+
         _cleanupSNDrumKitPartialParameters = _sourceCacheSNDrumKitPartialParameters.Connect()
             .Filter(refreshFilterSNDrumKitPartialParameters)
             .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
             .Filter(parFilterSNDrumKitPartialParameters)
             .FilterOnObservable(fullyQualifiedParameter =>
-                ((fullyQualifiedParameter.ParSpec.ParentCtrl != "") &&
-                 (fullyQualifiedParameter.ParSpec.ParentCtrl is string parentId))
+                fullyQualifiedParameter.ParSpec.ParentCtrl != "" &&
+                fullyQualifiedParameter.ParSpec.ParentCtrl is string parentId
                     ? _sourceCacheSNDrumKitPartialParameters
                         .Watch(parentId)
                         .Select(parentChange => parentChange.Current.StringValue ==
                                                 fullyQualifiedParameter.ParSpec.ParentCtrlDispValue)
                     : Observable.Return(true))
             .FilterOnObservable(fullyQualifiedParameter =>
-                ((fullyQualifiedParameter.ParSpec.ParentCtrl2 != "") &&
-                 (fullyQualifiedParameter.ParSpec.ParentCtrl2 is string parentId2))
+                fullyQualifiedParameter.ParSpec.ParentCtrl2 != "" &&
+                fullyQualifiedParameter.ParSpec.ParentCtrl2 is string parentId2
                     ? _sourceCacheSNDrumKitPartialParameters
                         .Watch(parentId2)
                         .Select(parentChange2 => parentChange2.Current.StringValue ==
@@ -70,6 +69,9 @@ public sealed partial class SNDrumKitPartialViewModel : PartialViewModel
         //InitializeParameterSourceCachesAsync(); // call outside constructor
     }
 
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> SNDrumKitPartialParameters =>
+        _SNDrumKitPartialParameters;
+
     public override int GetPartialOffset()
     {
         return Constants.FIRST_PARTIAL_SN_DRUM;
@@ -79,7 +81,7 @@ public sealed partial class SNDrumKitPartialViewModel : PartialViewModel
     {
         return "";
     }
-    
+
     public override string GetSearchTextPartial()
     {
         return _searchTextSNDrumKitPartial;
@@ -95,7 +97,8 @@ public sealed partial class SNDrumKitPartialViewModel : PartialViewModel
         return _SNDrumKitPartialParameters;
     }
 
-    public override void ForceUiRefresh(string startAddressName, string offsetAddressName, string offset2AddressName, string parPath, bool resyncNeeded)
+    public override void ForceUiRefresh(string startAddressName, string offsetAddressName, string offset2AddressName,
+        string parPath, bool resyncNeeded)
     {
         if (startAddressName == $"Temporary Tone Part {_zeroBasedPart + 1}" &&
             offset2AddressName == $"Offset2/SuperNATURAL Drum Kit Partial {_zeroBasedPartial + 1}")
@@ -109,16 +112,14 @@ public sealed partial class SNDrumKitPartialViewModel : PartialViewModel
     {
         return _toneTypeStr == "SN-D";
     }
-    
+
     public override async Task InitializeParameterSourceCachesAsync()
     {
         if (_i7domain == null)
             return;
-        
+
         if (IsValidForCurrentPreset())
-        {
-            await _i7domain.SNDrumKitPartial(_zeroBasedPart, _zeroBasedPartial).ReadFromIntegraAsync();   
-        }
+            await _i7domain.SNDrumKitPartial(_zeroBasedPart, _zeroBasedPartial).ReadFromIntegraAsync();
         List<FullyQualifiedParameter> par2 = _i7domain.SNDrumKitPartial(_zeroBasedPart, _zeroBasedPartial)
             .GetRelevantParameters(true, true);
         _sourceCacheSNDrumKitPartialParameters.AddOrUpdate(par2);
@@ -128,11 +129,10 @@ public sealed partial class SNDrumKitPartialViewModel : PartialViewModel
     {
         if (part == _zeroBasedPart && IsValidForCurrentPreset())
         {
-            DomainBase b = _i7domain.SNDrumKitPartial(_zeroBasedPart, _zeroBasedPartial);
+            var b = _i7domain.SNDrumKitPartial(_zeroBasedPart, _zeroBasedPartial);
             await b.ReadFromIntegraAsync();
             ForceUiRefresh(b.StartAddressName, b.OffsetAddressName, b.Offset2AddressName, "",
                 false /* don't cause inf loop */);
         }
     }
-    
 }

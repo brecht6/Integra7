@@ -1,17 +1,16 @@
+using System;
 using System.Threading;
 using System.Threading.Channels;
+using System.Threading.Tasks;
 using Commons.Music.Midi;
 
 namespace Integra7AuralAlchemist.Models.Services;
 
-using System;
-using System.Threading.Tasks;
-
 public class AsyncMidiInputWrapper
 {
     private const double inactivityTimespan = 0.5;
-    private IMidiIn _midiInput;
     private readonly Channel<byte[]> _channel = Channel.CreateUnbounded<byte[]>();
+    private readonly IMidiIn _midiInput;
 
     public AsyncMidiInputWrapper(IMidiIn midiIn)
     {
@@ -22,7 +21,7 @@ public class AsyncMidiInputWrapper
     private void OnMidiMessageReceived(object? sender, MidiReceivedEventArgs e)
     {
         // Set the result of the TaskCompletionSource
-        byte[] localCopy = new byte[e.Length];
+        var localCopy = new byte[e.Length];
         Buffer.BlockCopy(e.Data, 0, localCopy, 0, e.Length);
         ByteStreamDisplay.Display($"Received {localCopy.Length} bytes (async): ", localCopy);
         //ByteStreamDisplay.Display($"Writing {localCopy.Length} bytes into channel: ", localCopy);
@@ -32,13 +31,13 @@ public class AsyncMidiInputWrapper
 
     public async Task<byte[]> WaitForMidiMessageAsync()
     {
-        CancellationTokenSource cts = new CancellationTokenSource();
-        Task<bool> waitForData = _channel.Reader.WaitToReadAsync(cts.Token).AsTask();
-        Task waitForTimeout = Task.Delay(TimeSpan.FromSeconds(inactivityTimespan), cts.Token);
+        var cts = new CancellationTokenSource();
+        var waitForData = _channel.Reader.WaitToReadAsync(cts.Token).AsTask();
+        var waitForTimeout = Task.Delay(TimeSpan.FromSeconds(inactivityTimespan), cts.Token);
 
         if (await Task.WhenAny(waitForTimeout, waitForData) == waitForData)
         {
-            byte[] message = await _channel.Reader.ReadAsync(cts.Token);
+            var message = await _channel.Reader.ReadAsync(cts.Token);
             await cts.CancelAsync();
             _midiInput.ConfigureDefaultHandler();
             return message;
@@ -51,13 +50,13 @@ public class AsyncMidiInputWrapper
 
     public async Task<byte[]> WaitForMidiMessageAsyncExpectingMultipleInARow()
     {
-        CancellationTokenSource cts = new CancellationTokenSource();
-        Task<bool> waitForData = _channel.Reader.WaitToReadAsync(cts.Token).AsTask();
-        Task waitForTimeout = Task.Delay(TimeSpan.FromSeconds(inactivityTimespan), cts.Token);
+        var cts = new CancellationTokenSource();
+        var waitForData = _channel.Reader.WaitToReadAsync(cts.Token).AsTask();
+        var waitForTimeout = Task.Delay(TimeSpan.FromSeconds(inactivityTimespan), cts.Token);
 
         if (await Task.WhenAny(waitForTimeout, waitForData) == waitForData)
         {
-            byte[] message = await _channel.Reader.ReadAsync(cts.Token);
+            var message = await _channel.Reader.ReadAsync(cts.Token);
             await cts.CancelAsync();
             return message;
         }

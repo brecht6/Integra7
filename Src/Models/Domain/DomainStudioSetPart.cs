@@ -6,14 +6,14 @@ namespace Integra7AuralAlchemist.Models.Domain;
 
 public class DomainStudioSetPart : DomainBase
 {
-    public DomainStudioSetPart(int ZeroBasedPartNo, IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters, SemaphoreSlim semaphore)
-    : base(integra7Api, startAddresses, parameters, 
-        startAddressName:"Temporary Studio Set", 
-        offsetAddressName:"Offset/Not Used", 
-        offset2AddressName: $"Offset2/Studio Set Part {ZeroBasedPartNo + 1}", 
-        parameterNamePrefix: "Studio Set Part/",
-        semaphore)
+    public DomainStudioSetPart(int ZeroBasedPartNo, IIntegra7Api integra7Api, Integra7StartAddresses startAddresses,
+        Integra7Parameters parameters, SemaphoreSlim semaphore)
+        : base(integra7Api, startAddresses, parameters,
+            "Temporary Studio Set",
+            "Offset/Not Used",
+            $"Offset2/Studio Set Part {ZeroBasedPartNo + 1}",
+            "Studio Set Part/",
+            semaphore)
     {
     }
 }
-

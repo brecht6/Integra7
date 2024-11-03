@@ -5,7 +5,7 @@ using Serilog;
 
 namespace Integra7AuralAlchemist;
 
-sealed class Program
+internal sealed class Program
 {
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -13,11 +13,10 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
             .WriteTo.Console()
-            .WriteTo.File("logs/I7AuralAlchemist.log", 
+            .WriteTo.File("logs/I7AuralAlchemist.log",
                 rollingInterval: RollingInterval.Day,
                 fileSizeLimitBytes: 1024 * 1024 * 1024)
             .CreateLogger();
@@ -25,12 +24,14 @@ sealed class Program
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
     }
-    
+
     // Avalonia configuration, don't remove; also used by visual designer.
     public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
+    {
+        return AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
             .LogToTrace()
             .UseReactiveUI();
+    }
 }

@@ -6,12 +6,13 @@ namespace Integra7AuralAlchemist.Models.Domain;
 
 public class DomainPCMDrumKitCommonCompEQ : DomainBase
 {
-    public DomainPCMDrumKitCommonCompEQ(int zeroBasedPart, IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters, SemaphoreSlim semaphore)
-        : base(integra7Api, startAddresses, parameters, 
-            startAddressName:$"Temporary Tone Part {zeroBasedPart + 1}", 
-            offsetAddressName:"Offset/Temporary PCM Drum Kit",
-            offset2AddressName:"Offset2/PCM Drum Kit Common Comp-EQ", 
-            parameterNamePrefix:"PCM Drum Kit Common Comp-EQ/",
+    public DomainPCMDrumKitCommonCompEQ(int zeroBasedPart, IIntegra7Api integra7Api,
+        Integra7StartAddresses startAddresses, Integra7Parameters parameters, SemaphoreSlim semaphore)
+        : base(integra7Api, startAddresses, parameters,
+            $"Temporary Tone Part {zeroBasedPart + 1}",
+            "Offset/Temporary PCM Drum Kit",
+            "Offset2/PCM Drum Kit Common Comp-EQ",
+            "PCM Drum Kit Common Comp-EQ/",
             semaphore)
     {
     }

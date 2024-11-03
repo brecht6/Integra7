@@ -6,12 +6,13 @@ namespace Integra7AuralAlchemist.Models.Domain;
 
 public class DomainSNDrumKitCommon : DomainBase
 {
-    public DomainSNDrumKitCommon(int zeroBasedPart, IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters, SemaphoreSlim semaphore)
-        : base(integra7Api, startAddresses, parameters, 
-            startAddressName:$"Temporary Tone Part {zeroBasedPart + 1}", 
-            offsetAddressName:"Offset/Temporary SuperNATURAL Drum Kit",  
-            offset2AddressName:"Offset2/SuperNATURAL Drum Kit Common", 
-            parameterNamePrefix:"SuperNATURAL Drum Kit Common/",
+    public DomainSNDrumKitCommon(int zeroBasedPart, IIntegra7Api integra7Api, Integra7StartAddresses startAddresses,
+        Integra7Parameters parameters, SemaphoreSlim semaphore)
+        : base(integra7Api, startAddresses, parameters,
+            $"Temporary Tone Part {zeroBasedPart + 1}",
+            "Offset/Temporary SuperNATURAL Drum Kit",
+            "Offset2/SuperNATURAL Drum Kit Common",
+            "SuperNATURAL Drum Kit Common/",
             semaphore)
     {
     }

@@ -57,17 +57,21 @@ public class FilterProvider
         }
     }
 
-    public static Func<FullyQualifiedParameter, bool> ParameterFilter(string text) => par =>
+    public static Func<FullyQualifiedParameter, bool> ParameterFilter(string text)
     {
-        IEnumerable<string> textParts = Regex.Split(text, @"\s+").Where(s => s != string.Empty);
-        bool ReturnValue = !par.ParSpec.Reserved && (string.IsNullOrEmpty(text) ||
-                                                     textParts.All(txt => par.ParSpec.Name.Contains(txt.Trim(),
-                                                         StringComparison.CurrentCultureIgnoreCase)));
-        return ReturnValue;
-    };
+        return par =>
+        {
+            IEnumerable<string> textParts = Regex.Split(text, @"\s+").Where(s => s != string.Empty);
+            var ReturnValue = !par.ParSpec.Reserved && (string.IsNullOrEmpty(text) ||
+                                                        textParts.All(txt => par.ParSpec.Name.Contains(txt.Trim(),
+                                                            StringComparison.CurrentCultureIgnoreCase)));
+            return ReturnValue;
+        };
+    }
 
-    public static Func<Integra7Preset, bool> PresetFilter(string text, int srx01, int srx02, int srx03, int srx04) =>
-        preset =>
+    public static Func<Integra7Preset, bool> PresetFilter(string text, int srx01, int srx02, int srx03, int srx04)
+    {
+        return preset =>
         {
             IEnumerable<string> textParts = Regex.Split(text, @"\s+").Where(s => s != string.Empty);
             return (preset.ToneBankStr == "PRST" ||
@@ -88,9 +92,11 @@ public class FilterProvider
                                           || preset.InternalUserDefinedStr.Contains(txt.Trim(),
                                               StringComparison.CurrentCultureIgnoreCase))));
         };
+    }
 
-    public static Func<Integra7Preset, bool> SaveTonePresetFilter(string toneTypeStr, string text) =>
-        preset =>
+    public static Func<Integra7Preset, bool> SaveTonePresetFilter(string toneTypeStr, string text)
+    {
+        return preset =>
         {
             IEnumerable<string> textParts = Regex.Split(text, @"\s+").Where(s => s != string.Empty);
             return preset.ToneTypeStr == toneTypeStr && preset.InternalUserDefinedStr == "USR" &&
@@ -106,4 +112,5 @@ public class FilterProvider
                                           || preset.InternalUserDefinedStr.Contains(txt.Trim(),
                                               StringComparison.CurrentCultureIgnoreCase))));
         };
+    }
 }

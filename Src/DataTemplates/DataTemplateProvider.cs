@@ -11,6 +11,9 @@ namespace Integra7AuralAlchemist.DataTemplates;
 
 public static class DataTemplateProvider
 {
+    public static FuncDataTemplate<FullyQualifiedParameter> ParameterValueTemplate { get; }
+        = new(parameter => parameter is not null, BuildParameterValuePresenter);
+
     private static Control BuildParameterValuePresenter(FullyQualifiedParameter p)
     {
         if (!p.IsNumeric && !p.IsDiscrete)
@@ -19,10 +22,8 @@ public static class DataTemplateProvider
             b.PropertyChanged += (s, e) =>
             {
                 if (e.Property.Name == "Text")
-                {
                     //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
                     MessageBus.Current.SendMessage(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
-                }
             };
             return b;
         }
@@ -30,10 +31,7 @@ public static class DataTemplateProvider
         if (p.IsDiscrete)
         {
             ComboBox c = new();
-            foreach (var el in p.ParSpec.Discrete)
-            {
-                c.Items.Add(el.Item2);
-            }
+            foreach (var el in p.ParSpec.Discrete) c.Items.Add(el.Item2);
             c.SelectedItem = p.StringValue;
             c.SelectionChanged += (s, e) =>
             {
@@ -42,9 +40,11 @@ public static class DataTemplateProvider
             };
             return c;
         }
+
         if (p.ParSpec.Repr != null)
         {
-            if (p.ParSpec.Repr.Count == 2 && p.ParSpec.Repr[0].ToUpper() == "OFF" && p.ParSpec.Repr[1].ToUpper() == "ON")
+            if (p.ParSpec.Repr.Count == 2 && p.ParSpec.Repr[0].ToUpper() == "OFF" &&
+                p.ParSpec.Repr[1].ToUpper() == "ON")
             {
                 ToggleSwitch c = new();
                 c.IsChecked = p.StringValue == p.ParSpec.Repr[1];
@@ -52,11 +52,8 @@ public static class DataTemplateProvider
                 {
                     if (s is ToggleSwitch checkBox)
                     {
-                        string msg = "OFF";
-                        if (checkBox?.IsChecked ?? false)
-                        {
-                            msg = "ON";
-                        }
+                        var msg = "OFF";
+                        if (checkBox?.IsChecked ?? false) msg = "ON";
                         //Debug.WriteLine($"ToggleSwitch {p.ParSpec.Path} changed to {msg}");
                         MessageBus.Current.SendMessage(new UpdateMessageSpec(p, msg), "ui2hw");
                     }
@@ -66,10 +63,7 @@ public static class DataTemplateProvider
             else
             {
                 ComboBox c = new();
-                foreach (var el in p.ParSpec.Repr)
-                {
-                    c.Items.Add(el.Value);
-                }
+                foreach (var el in p.ParSpec.Repr) c.Items.Add(el.Value);
                 c.SelectedItem = p.StringValue;
                 c.SelectionChanged += (s, e) =>
                 {
@@ -79,6 +73,7 @@ public static class DataTemplateProvider
                 return c;
             }
         }
+
         if (!float.IsNaN(p.ParSpec.OMin2) && !float.IsNaN(p.ParSpec.OMax2))
         {
             Slider s = new()
@@ -88,7 +83,7 @@ public static class DataTemplateProvider
                 Width = 200,
                 Orientation = Orientation.Horizontal,
                 IsSnapToTickEnabled = true,
-                Ticks = p.ParSpec.Ticks,
+                Ticks = p.ParSpec.Ticks
             };
             if (p.ParSpec.Ticks.First() > p.ParSpec.Ticks.Last())
             {
@@ -96,14 +91,11 @@ public static class DataTemplateProvider
                 s.Minimum = p.ParSpec.OMax2;
                 s.Maximum = p.ParSpec.OMin2;
             }
-            if (double.TryParse(p.StringValue, out double LValue))
-            {
+
+            if (double.TryParse(p.StringValue, out var LValue))
                 s.Value = Math.Round(LValue, 2);
-            }
             else
-            {
                 s.Value = p.ParSpec.OMin2;
-            }
             s.ValueChanged += (s, e) =>
             {
                 //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
@@ -120,7 +112,7 @@ public static class DataTemplateProvider
             };
             StackPanel pan = new()
             {
-                Orientation = Orientation.Horizontal,
+                Orientation = Orientation.Horizontal
             };
             pan.Children.Add(s);
             pan.Children.Add(v);
@@ -133,8 +125,10 @@ public static class DataTemplateProvider
                 };
                 pan.Children.Add(u);
             }
+
             return pan;
         }
+
         if (p.ParSpec.OMin != -20000)
         {
             Slider s = new()
@@ -144,7 +138,7 @@ public static class DataTemplateProvider
                 Width = 200,
                 Orientation = Orientation.Horizontal,
                 IsSnapToTickEnabled = true,
-                Ticks = p.ParSpec.Ticks,
+                Ticks = p.ParSpec.Ticks
             };
             if (p.ParSpec.Ticks.First() > p.ParSpec.Ticks.Last())
             {
@@ -152,14 +146,11 @@ public static class DataTemplateProvider
                 s.Minimum = p.ParSpec.OMax;
                 s.Maximum = p.ParSpec.OMin;
             }
-            if (double.TryParse(p.StringValue, out double LValue))
-            {
+
+            if (double.TryParse(p.StringValue, out var LValue))
                 s.Value = Math.Round(LValue, 2);
-            }
             else
-            {
                 s.Value = p.ParSpec.OMin;
-            }
             s.ValueChanged += (s, e) =>
             {
                 //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
@@ -176,7 +167,7 @@ public static class DataTemplateProvider
             };
             StackPanel pan = new()
             {
-                Orientation = Orientation.Horizontal,
+                Orientation = Orientation.Horizontal
             };
             pan.Children.Add(s);
             pan.Children.Add(v);
@@ -189,6 +180,7 @@ public static class DataTemplateProvider
                 };
                 pan.Children.Add(u);
             }
+
             return pan;
         }
         else
@@ -200,16 +192,12 @@ public static class DataTemplateProvider
                 Width = 200,
                 Orientation = Orientation.Horizontal,
                 IsSnapToTickEnabled = true,
-                Ticks = p.ParSpec.Ticks,
+                Ticks = p.ParSpec.Ticks
             };
-            if (double.TryParse(p.StringValue, out double LValue))
-            {
+            if (double.TryParse(p.StringValue, out var LValue))
                 s.Value = (long)Math.Round(LValue);
-            }
             else
-            {
                 s.Value = 0;
-            }
             s.ValueChanged += (s, e) =>
             {
                 //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
@@ -226,7 +214,7 @@ public static class DataTemplateProvider
             };
             StackPanel pan = new()
             {
-                Orientation = Orientation.Horizontal,
+                Orientation = Orientation.Horizontal
             };
             pan.Children.Add(s);
             pan.Children.Add(v);
@@ -243,7 +231,4 @@ public static class DataTemplateProvider
             return pan;
         }
     }
-
-    public static FuncDataTemplate<FullyQualifiedParameter> ParameterValueTemplate { get; }
-        = new FuncDataTemplate<FullyQualifiedParameter>(parameter => parameter is not null, BuildParameterValuePresenter);
 }

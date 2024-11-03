@@ -1,23 +1,12 @@
-
-
 namespace Integra7AuralAlchemist.Models.Services;
 
 public class Mapping
 {
     public static double clip(double value, double min, double max)
     {
-        if (min > max)
-        {
-            (min, max) = (max, min);
-        }
-        if (value < min)
-        {
-            return min;
-        }
-        if (value > max)
-        {
-            return max;
-        }
+        if (min > max) (min, max) = (max, min);
+        if (value < min) return min;
+        if (value > max) return max;
         return value;
     }
 
@@ -25,21 +14,14 @@ public class Mapping
     {
         if (imin == imax)
         {
-            if (value == imin && omin == omax)
-            {
-                return omin;
-            }
+            if (value == imin && omin == omax) return omin;
             return 0; // or throw exception?
         }
 
-        double output = ((omin + omax) + (omax - omin) * ((2 * value - (imin + imax)) / (imax - imin))) / 2.0;
+        var output = (omin + omax + (omax - omin) * ((2 * value - (imin + imax)) / (imax - imin))) / 2.0;
 
-        if (autoclip)
-        {
-            output = clip(output, omin, omax);
-        }
+        if (autoclip) output = clip(output, omin, omax);
 
         return output;
     }
-
 }

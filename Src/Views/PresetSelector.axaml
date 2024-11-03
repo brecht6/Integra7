@@ -9,15 +9,15 @@
              xmlns:vm="using:Integra7AuralAlchemist.ViewModels"
              x:DataType="vm:MainWindowViewModel"
              x:Name="PresetSelectorControl">
-    
+
     <StackPanel Orientation="Vertical" Spacing="10" Margin="10" Height="700">
-        
+
         <TextBox Watermark="Filter Presets..."
                  Background="#3c4043"
                  Width="600"
                  HorizontalAlignment="Left"
                  Text="{Binding #PresetSelectorControl.SearchText}" />
-        
+
         <DataGrid Name="PresetDataGrid"
                   SelectionMode="Single"
                   ItemsSource="{Binding #PresetSelectorControl.Presets}"
@@ -26,7 +26,7 @@
                   SelectedItem="{Binding #PresetSelectorControl.SelectedPreset, Mode=OneWay}"
                   CellPointerPressed="PresetDataGrid_CellPointerPressed"
                   Height="650">
-                  
+
             <DataGrid.Styles>
                 <Style Selector="DataGridCell:current /template/ Grid#FocusVisual">
                     <Setter Property="IsVisible"
@@ -34,8 +34,8 @@
                 </Style>
             </DataGrid.Styles>
             <DataGrid.Columns>
-                <DataGridTextColumn Header ="Kind"
-                                    Binding="{Binding InternalUserDefinedStr}"/>
+                <DataGridTextColumn Header="Kind"
+                                    Binding="{Binding InternalUserDefinedStr}" />
                 <DataGridTextColumn Header="Tone Type"
                                     Binding="{Binding ToneTypeStr}" />
                 <DataGridTextColumn Header="Tone Bank"

@@ -6,7 +6,6 @@ using System.Reactive.Linq;
 using DynamicData;
 using DynamicData.Binding;
 using Integra7AuralAlchemist.Models.Data;
-using Integra7AuralAlchemist.Models.Services;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
@@ -14,37 +13,17 @@ namespace Integra7AuralAlchemist.ViewModels;
 
 public partial class SaveUserToneViewModel : ViewModelBase
 {
-    [Reactive] private string _searchTextPreset = "";
-    
-    private Integra7Preset? _selectedPreset;
-    private List<Integra7Preset> i7presets = [];
-    private string _toneTypeStr;
-    public Integra7Preset? SelectedPreset => _selectedPreset;
-    public int SelectedPresetIndex { get; set; }
-    private SourceCache<Integra7Preset, int> _sourceCachePresets = new SourceCache<Integra7Preset, int>(x => x.Id);
     private readonly ReadOnlyObservableCollection<Integra7Preset> _presets = new([]);
-    public ReadOnlyObservableCollection<Integra7Preset> Presets => _presets;
-    private UserToneToSave? _userToneToSave = null;
-    
-    private string _newName = "";
-    public string NewName
-    {
-        get => _newName;
-        set
-        {
-            this.RaisePropertyChanging();
-            this.RaisePropertyChanging(nameof(NewNameNotEmpty));
-            _newName = value;
-            this.RaisePropertyChanged();
-            this.RaisePropertyChanged(nameof(NewNameNotEmpty));
-        } 
-    }
-    public bool NewNameNotEmpty => NewName != "";
-    
-    public ReactiveCommand<Unit, UserToneToSave?> CancelCommand { get; }
-    public ReactiveCommand<Unit, UserToneToSave> SaveCommand { get; }
-    
+    private readonly SourceCache<Integra7Preset, int> _sourceCachePresets = new(x => x.Id);
+    private readonly string _toneTypeStr;
+    private readonly List<Integra7Preset> i7presets = [];
+
     private IDisposable? _cleanupPresets;
+
+    private string _newName = "";
+    [Reactive] private string _searchTextPreset = "";
+
+    private UserToneToSave? _userToneToSave;
 
     public SaveUserToneViewModel(List<Integra7Preset> presets, string toneTypeStr)
     {
@@ -63,12 +42,12 @@ public partial class SaveUserToneViewModel : ViewModelBase
             _userToneToSave = new UserToneToSave(_newName, SelectedPresetIndex);
             return _userToneToSave;
         });
-        
+
         var parFilterPreset = this.WhenAnyValue(x => x.SearchTextPreset)
             .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
             .DistinctUntilChanged()
             .Select(text => FilterProvider.SaveTonePresetFilter(_toneTypeStr, text));
-        
+
         _cleanupPresets = _sourceCachePresets.Connect()
             .Throttle(TimeSpan.FromMilliseconds(Constants.THROTTLE))
             .Filter(parFilterPreset)
@@ -79,4 +58,27 @@ public partial class SaveUserToneViewModel : ViewModelBase
             .DisposeMany()
             .Subscribe();
     }
+
+    public Integra7Preset? SelectedPreset { get; }
+
+    public int SelectedPresetIndex { get; set; }
+    public ReadOnlyObservableCollection<Integra7Preset> Presets => _presets;
+
+    public string NewName
+    {
+        get => _newName;
+        set
+        {
+            this.RaisePropertyChanging();
+            this.RaisePropertyChanging(nameof(NewNameNotEmpty));
+            _newName = value;
+            this.RaisePropertyChanged();
+            this.RaisePropertyChanged(nameof(NewNameNotEmpty));
+        }
+    }
+
+    public bool NewNameNotEmpty => NewName != "";
+
+    public ReactiveCommand<Unit, UserToneToSave?> CancelCommand { get; }
+    public ReactiveCommand<Unit, UserToneToSave> SaveCommand { get; }
 }

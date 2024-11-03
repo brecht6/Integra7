@@ -1,5 +1,3 @@
-using Integra7AuralAlchemist.Models.Data;
-
 namespace Integra7AuralAlchemist.ViewModels;
 
 public class UserToneToSave(string newName, int zeroBasedMemoryId)

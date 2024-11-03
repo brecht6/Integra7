@@ -11,19 +11,12 @@ namespace Integra7AuralAlchemist.Models.Domain;
 
 public class DomainBase
 {
-    private readonly IIntegra7Api _integra7Api;
-    private readonly Integra7StartAddresses _startAddresses;
-    private readonly Integra7Parameters _parameters;
-    private readonly string _startAddressName;
-    public string StartAddressName => _startAddressName;
-    private readonly string _offsetAddressName;
-    public string OffsetAddressName => _offsetAddressName;
-    private readonly string _offset2AddressName;
-    public string Offset2AddressName => _offset2AddressName;
-
     private readonly List<FullyQualifiedParameter> _domainParameters = [];
+    private readonly IIntegra7Api _integra7Api;
+    private readonly Integra7Parameters _parameters;
 
     private readonly SemaphoreSlim _semaphore;
+    private readonly Integra7StartAddresses _startAddresses;
 
     public DomainBase(IIntegra7Api integra7Api, Integra7StartAddresses startAddresses, Integra7Parameters parameters,
         string startAddressName, string offsetAddressName, string offset2AddressName, string parameterNamePrefix,
@@ -32,40 +25,41 @@ public class DomainBase
         _integra7Api = integra7Api;
         _startAddresses = startAddresses;
         _parameters = parameters;
-        _startAddressName = startAddressName;
-        _offsetAddressName = offsetAddressName;
-        _offset2AddressName = offset2AddressName;
+        StartAddressName = startAddressName;
+        OffsetAddressName = offsetAddressName;
+        Offset2AddressName = offset2AddressName;
         _semaphore = semaphore;
 
         List<Integra7ParameterSpec> relevant = parameters.GetParametersWithPrefix(parameterNamePrefix);
-        for (int i = 0; i < relevant.Count; i++)
-        {
+        for (var i = 0; i < relevant.Count; i++)
             _domainParameters.Add(new FullyQualifiedParameter(startAddressName, offsetAddressName, offset2AddressName,
                 relevant[i]));
-        }
     }
+
+    public string StartAddressName { get; }
+
+    public string OffsetAddressName { get; }
+
+    public string Offset2AddressName { get; }
 
     public async Task ReadFromIntegraAsync()
     {
         Log.Debug(
             $"Reading range of parameters (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}, offset2 address: {_domainParameters[0].Offset2}) between {_domainParameters[0].ParSpec.Path} and {_domainParameters.Last().ParSpec.Path} from integra.");
-        FullyQualifiedParameterRange r = new FullyQualifiedParameterRange(_domainParameters[0].Start,
+        var r = new FullyQualifiedParameterRange(_domainParameters[0].Start,
             _domainParameters[0].Offset,
             _domainParameters[0].Offset2,
             _domainParameters[0].ParSpec,
             _domainParameters.Last().ParSpec);
         await r.RetrieveFromIntegraAsync(_integra7Api, _startAddresses, _parameters);
-        for (int i = 0; i < r.Range.Count; i++)
-        {
-            _domainParameters[i].CopyParsedDataFrom(r.Range[i]);
-        }
+        for (var i = 0; i < r.Range.Count; i++) _domainParameters[i].CopyParsedDataFrom(r.Range[i]);
     }
 
     public async Task WriteToIntegraAsync()
     {
         Log.Debug(
             $"Writing range of parameters (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2} between {_domainParameters[0].ParSpec.Path} and {_domainParameters.Last().ParSpec.Path} to integra.");
-        FullyQualifiedParameterRange r = new FullyQualifiedParameterRange(_domainParameters[0].Start,
+        var r = new FullyQualifiedParameterRange(_domainParameters[0].Start,
             _domainParameters[0].Offset,
             _domainParameters[0].Offset2,
             _domainParameters[0].ParSpec,
@@ -78,13 +72,13 @@ public class DomainBase
     {
         Log.Debug(
             $"Reading single parameter {parameterName}, (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2}) from integra.");
-        bool found = false;
-        ParserContext ctx = new ParserContext();
+        var found = false;
+        var ctx = new ParserContext();
         ctx.InitializeFromExistingData(_domainParameters);
 
-        for (int i = 0; i < _domainParameters.Count && !found; i++)
+        for (var i = 0; i < _domainParameters.Count && !found; i++)
         {
-            FullyQualifiedParameter p = _domainParameters[i];
+            var p = _domainParameters[i];
             if (p.ValidInContext(ctx) && p.ParSpec.Path == parameterName)
             {
                 found = true;
@@ -94,10 +88,7 @@ public class DomainBase
             }
         }
 
-        if (!found)
-        {
-            Log.Error($"parameter {parameterName} does not exist, or is not valid in the current context.");
-        }
+        if (!found) Log.Error($"parameter {parameterName} does not exist, or is not valid in the current context.");
 
         return null;
     }
@@ -106,12 +97,12 @@ public class DomainBase
     {
         Log.Debug(
             $"Writing single parameter {parameterName}, (start address:{_domainParameters[0].Start}, offset address: {_domainParameters[0].Offset}), offset2 address: {_domainParameters[0].Offset2}) to integra.");
-        bool found = false;
-        ParserContext ctx = new ParserContext();
+        var found = false;
+        var ctx = new ParserContext();
         ctx.InitializeFromExistingData(_domainParameters);
-        for (int i = 0; i < _domainParameters.Count && !found; i++)
+        for (var i = 0; i < _domainParameters.Count && !found; i++)
         {
-            FullyQualifiedParameter p = _domainParameters[i];
+            var p = _domainParameters[i];
             if (p.ValidInContext(ctx) && p.ParSpec.Path == parameterName)
             {
                 found = true;
@@ -120,10 +111,7 @@ public class DomainBase
             }
         }
 
-        if (!found)
-        {
-            Log.Error($"parameter {parameterName} does not exist, or is not valid in the current context.");
-        }
+        if (!found) Log.Error($"parameter {parameterName} does not exist, or is not valid in the current context.");
     }
 
     public async Task WriteToIntegraAsync(string parameterName, string displayedValue)
@@ -135,15 +123,15 @@ public class DomainBase
     public string LookupSingleParameterDisplayedValue(string parameterName)
     {
         Log.Debug($"Look up value of parameter {parameterName}");
-        ParserContext ctx = new ParserContext();
+        var ctx = new ParserContext();
         ctx.InitializeFromExistingData(_domainParameters);
 
-        for (int i = 0; i < _domainParameters.Count; i++)
+        for (var i = 0; i < _domainParameters.Count; i++)
         {
-            FullyQualifiedParameter p = _domainParameters[i];
+            var p = _domainParameters[i];
             if (p.ValidInContext(ctx) && p.ParSpec.Path == parameterName)
             {
-                string v = p.StringValue;
+                var v = p.StringValue;
                 Log.Debug($"Value found to be {v}");
                 return v;
             }
@@ -155,13 +143,13 @@ public class DomainBase
 
     public void ModifySingleParameterDisplayedValue(string parameterName, string displayedValue)
     {
-        bool found = false;
-        ParserContext ctx = new ParserContext();
+        var found = false;
+        var ctx = new ParserContext();
         ctx.InitializeFromExistingData(_domainParameters);
 
-        for (int i = 0; i < _domainParameters.Count && !found; i++)
+        for (var i = 0; i < _domainParameters.Count && !found; i++)
         {
-            FullyQualifiedParameter p = _domainParameters[i];
+            var p = _domainParameters[i];
             if (p.ValidInContext(ctx) && p.ParSpec.Path == parameterName)
             {
                 found = true;
@@ -171,30 +159,24 @@ public class DomainBase
         }
 
         if (!found)
-        {
             // did you try to update a parameter that simply does not exist?
             // or did you try to update a data dependent parameter while the parent parameter was set to a
             // value that makes this parameter inaccessible?
             Debug.Assert(false, $"Parameter {parameterName} does not exist or is not valid in the current context.");
-        }
     }
 
-    List<string> GetParameterNames(bool IncludeReserved = false, bool IncludeInvalidIncontext = false)
+    private List<string> GetParameterNames(bool IncludeReserved = false, bool IncludeInvalidIncontext = false)
     {
         List<string> names = [];
-        ParserContext ctx = new ParserContext();
+        var ctx = new ParserContext();
         ctx.InitializeFromExistingData(_domainParameters);
 
-        for (int i = 0; i < _domainParameters.Count; i++)
+        for (var i = 0; i < _domainParameters.Count; i++)
         {
-            Integra7ParameterSpec p = _domainParameters[i].ParSpec;
+            var p = _domainParameters[i].ParSpec;
             if (_domainParameters[i].ValidInContext(ctx) || IncludeInvalidIncontext)
-            {
-                if (p.Reserved && IncludeReserved || !p.Reserved)
-                {
+                if ((p.Reserved && IncludeReserved) || !p.Reserved)
                     names.Add(p.Path);
-                }
-            }
         }
 
         return names;
@@ -203,19 +185,15 @@ public class DomainBase
     public List<FullyQualifiedParameter> GetRelevantParameters(bool IncludeReserved = false,
         bool IncludeInvalidIncontext = false)
     {
-        ParserContext ctx = new ParserContext();
+        var ctx = new ParserContext();
         ctx.InitializeFromExistingData(_domainParameters);
         List<FullyQualifiedParameter> pars = [];
-        for (int i = 0; i < _domainParameters.Count; i++)
+        for (var i = 0; i < _domainParameters.Count; i++)
         {
-            Integra7ParameterSpec p = _domainParameters[i].ParSpec;
+            var p = _domainParameters[i].ParSpec;
             if (_domainParameters[i].ValidInContext(ctx) || IncludeInvalidIncontext)
-            {
-                if (p.Reserved && IncludeReserved || !p.Reserved)
-                {
+                if ((p.Reserved && IncludeReserved) || !p.Reserved)
                     pars.Add(_domainParameters[i]);
-                }
-            }
         }
 
         return pars;

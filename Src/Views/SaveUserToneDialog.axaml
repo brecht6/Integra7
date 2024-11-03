@@ -12,7 +12,7 @@
         Width="650"
         Height="800"
         WindowStartupLocation="CenterOwner">
-    
+
     <StackPanel Orientation="Vertical"
                 Margin="10,5,0,0"
                 Spacing="50"
@@ -26,15 +26,15 @@
                               VerticalAlignment="Top"
                               VerticalContentAlignment="Top"
                               IsVisible="True" />
-        
+
         <StackPanel Orientation="Horizontal"
                     Margin="10,5,0,0"
                     Spacing="50"
                     IsVisible="True">
-            <TextBox MinWidth="200" Watermark="type the new name here" Text="{Binding NewName}"></TextBox>
+            <TextBox MinWidth="200" Watermark="type the new name here" Text="{Binding NewName}" />
             <Button IsEnabled="{Binding NewNameNotEmpty}" Command="{Binding SaveCommand}">Save</Button>
             <Button Command="{Binding CancelCommand}">Cancel</Button>
         </StackPanel>
     </StackPanel>
-    
+
 </Window>

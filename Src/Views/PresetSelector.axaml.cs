@@ -11,29 +11,34 @@ public partial class PresetSelector : UserControl
     public static readonly StyledProperty<string> SearchTextProperty =
         AvaloniaProperty.Register<PresetSelector, string>(nameof(SearchText));
 
+    // add an argument "Presets" to the user control
+    public static readonly StyledProperty<ReadOnlyObservableCollection<Integra7Preset>> PresetsProperty =
+        AvaloniaProperty.Register<PresetSelector, ReadOnlyObservableCollection<Integra7Preset>>(nameof(Presets));
+
+    // add an argument "SelectedPreset" to the user control
+    public static readonly StyledProperty<Integra7Preset> SelectedPresetProperty =
+        AvaloniaProperty.Register<PresetSelector, Integra7Preset>(nameof(SelectedPreset));
+
+    // add an argument "SelectedPresetIndex" to the user control
+    public static readonly StyledProperty<int> SelectedPresetIndexProperty =
+        AvaloniaProperty.Register<PresetSelector, int>(nameof(SelectedPresetIndex));
+
+    public PresetSelector()
+    {
+        InitializeComponent();
+    }
+
     public string SearchText
     {
         get => GetValue(SearchTextProperty);
         set => SetValue(SearchTextProperty, value);
     }
 
-    // add an argument "Presets" to the user control
-    public static readonly StyledProperty<ReadOnlyObservableCollection<Integra7Preset>> PresetsProperty =
-        AvaloniaProperty.Register<PresetSelector, ReadOnlyObservableCollection<Integra7Preset>>(nameof(Presets));
-
     public ReadOnlyObservableCollection<Integra7Preset> Presets
     {
         get => GetValue(PresetsProperty);
         set => SetValue(PresetsProperty, value);
     }
-
-    // add an argument "SelectedPreset" to the user control
-    public static readonly StyledProperty<Integra7Preset> SelectedPresetProperty =
-        AvaloniaProperty.Register<PresetSelector, Integra7Preset>(nameof(SelectedPreset));
-    
-    // add an argumenbt "SelectedPresetIndex" to the user control
-    public static readonly StyledProperty<int> SelectedPresetIndexProperty =
-        AvaloniaProperty.Register<PresetSelector, int>(nameof(SelectedPresetIndex));
 
     public Integra7Preset SelectedPreset
     {
@@ -43,12 +48,11 @@ public partial class PresetSelector : UserControl
             SetValue(SelectedPresetProperty, value);
             PresetDataGrid.ScrollIntoView(value, null);
         }
-        
     }
 
     public int SelectedPresetIndex
     {
-        get => (int)GetValue(SelectedPresetIndexProperty);
+        get => GetValue(SelectedPresetIndexProperty);
         set => SetValue(SelectedPresetIndexProperty, value);
     }
 
@@ -56,10 +60,5 @@ public partial class PresetSelector : UserControl
     {
         SelectedPreset = (Integra7Preset)args.Row.DataContext;
         SelectedPresetIndex = args.Row.GetIndex();
-    }
-
-    public PresetSelector()
-    {
-        InitializeComponent();
     }
 }

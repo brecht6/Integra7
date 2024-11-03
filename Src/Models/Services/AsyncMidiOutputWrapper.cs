@@ -7,15 +7,15 @@ namespace Integra7AuralAlchemist.Models.Services;
 
 public class AsyncMidiOutputWrapper
 {
-    private IMidiOut _midiOutput;
-    private SemaphoreSlim? _semaphore;
-    
+    private readonly IMidiOut _midiOutput;
+    private readonly SemaphoreSlim? _semaphore;
+
     public AsyncMidiOutputWrapper(IMidiOut midiOut, SemaphoreSlim semaphore)
     {
         _midiOutput = midiOut;
         _semaphore = semaphore;
     }
-    
+
     public async Task SafeSendAsync(byte[] data)
     {
         await Task.Run(async () =>

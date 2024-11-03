@@ -7,7 +7,6 @@ namespace Integra7AuralAlchemist;
 
 public class ViewLocator : IDataTemplate
 {
-
     public Control? Build(object? data)
     {
         if (data is null)
@@ -20,7 +19,6 @@ public class ViewLocator : IDataTemplate
         var control = (Control)Activator.CreateInstance(type)!;
         control.DataContext = data;
         return control;
-
     }
 
     public bool Match(object? data)

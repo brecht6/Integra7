@@ -27,7 +27,7 @@
                       VerticalScrollBarVisibility="Visible"
                       HorizontalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding #ParameterCollectionControl.Parameters}"
-                           MaxWidth="550">
+                          MaxWidth="550">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid ColumnDefinitions="270,*"

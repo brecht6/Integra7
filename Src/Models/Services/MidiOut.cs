@@ -38,7 +38,10 @@ public class MidiOut : IMidiOut
         }
     }
 
-    public bool ConnectionOk() => _midiPortDetails != null;
+    public bool ConnectionOk()
+    {
+        return _midiPortDetails != null;
+    }
 
     public void SafeSend(byte[] data)
     {
@@ -51,15 +54,15 @@ public class MidiOut : IMidiOut
                     Log.Error("No MIDI message sent because no Integra-7 hardware found.");
                     return;
                 }
+
                 _access = _midiAccessManager?.OpenOutputAsync(_midiPortDetails?.Id).Result;
             }
+
             _access?.Send(data, 0, data.Length, 0);
             if (Verbose)
             {
-                if (_access is null)
-                {
-                    Log.Debug("_access is null... cannot complete the following: ");
-                }
+                if (_access is null) Log.Debug("_access is null... cannot complete the following: ");
+
                 ByteStreamDisplay.Display("Sent: ", data);
             }
         }

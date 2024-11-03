@@ -9,39 +9,19 @@ using ReactiveUI;
 
 namespace Integra7AuralAlchemist.ViewModels;
 
-public partial class PartialViewModel : ViewModelBase
+public class PartialViewModel : ViewModelBase
 {
-    private PartViewModel _parent;
+    protected readonly SemaphoreSlim _semaphore;
     protected readonly byte _zeroBasedPart;
     protected readonly byte _zeroBasedPartial;
     private Integra7StartAddresses _i7addr;
-    private Integra7Parameters _i7par;
     private IIntegra7Api _i7api;
     protected Integra7Domain? _i7domain;
+    private Integra7Parameters _i7par;
+    private PartViewModel _parent;
     protected string _toneTypeStr;
-    protected readonly SemaphoreSlim _semaphore;
 
-    public ReadOnlyObservableCollection<FullyQualifiedParameter> PartialParameters {
-        get => GetPartialParameters(); 
-    }
-
-    public string SearchTextPartial
-    {
-        get => GetSearchTextPartial();
-        set
-        {
-            this.RaisePropertyChanging(nameof(SearchTextPartial));
-            SetSearchTextPartial(value);
-            this.RaisePropertyChanged(nameof(SearchTextPartial));
-        } 
-    }
-
-    public Integra7Domain I7Domain
-    {
-        set => _i7domain = value;
-    }
-
-    public PartialViewModel(PartViewModel parent, byte zeroBasedPart, byte zeroBasedPartial, 
+    public PartialViewModel(PartViewModel parent, byte zeroBasedPart, byte zeroBasedPartial,
         string toneTypeStr, Integra7StartAddresses i7addr,
         Integra7Parameters par, IIntegra7Api i7api, Integra7Domain i7dom, SemaphoreSlim semaphore)
     {
@@ -56,16 +36,38 @@ public partial class PartialViewModel : ViewModelBase
         _semaphore = semaphore;
     }
 
+    public ReadOnlyObservableCollection<FullyQualifiedParameter> PartialParameters => GetPartialParameters();
+
+    public string SearchTextPartial
+    {
+        get => GetSearchTextPartial();
+        set
+        {
+            this.RaisePropertyChanging();
+            SetSearchTextPartial(value);
+            this.RaisePropertyChanged();
+        }
+    }
+
+    public Integra7Domain I7Domain
+    {
+        set => _i7domain = value;
+    }
+
+    public string Header => GetPartialName() + $" {_zeroBasedPartial + GetPartialOffset()}";
+
     public void UpdateToneTypeString(string toneTypeStr)
     {
         _toneTypeStr = toneTypeStr;
     }
+
     public virtual string GetSearchTextPartial()
     {
         // overridden in specific view models
         Debug.Assert(false, "Must implement in child class.");
         return "";
     }
+
     public virtual void SetSearchTextPartial(string value)
     {
         // overridden in specific view models
@@ -86,14 +88,13 @@ public partial class PartialViewModel : ViewModelBase
         Debug.Assert(false, "Must implement in child class.");
     }
 
-    public string Header => GetPartialName() + $" {_zeroBasedPartial + GetPartialOffset()}";
-
     public virtual string GetPartialName()
     {
         // overridden in specific view models
         Debug.Assert(false, "Must implement in child class.");
         return "";
     }
+
     public virtual int GetPartialOffset()
     {
         // overridden in specific view models
@@ -119,5 +120,4 @@ public partial class PartialViewModel : ViewModelBase
         Debug.Assert(false, "Must implement in child class.");
         return false;
     }
-    
 }

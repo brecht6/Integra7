@@ -41,14 +41,14 @@
                 ZIndex="100">
             <StackPanel Orientation="Vertical">
                 <TextBlock FontSize="150" Text="Syncing..." HorizontalAlignment="Center"
-                           VerticalAlignment="Center" IsVisible="{Binding IsSyncing}" 
-                           ZIndex="110"/>
+                           VerticalAlignment="Center" IsVisible="{Binding IsSyncing}"
+                           ZIndex="110" />
                 <TextBlock FontSize="25" Text="{Binding SyncInfo}" HorizontalAlignment="Center"
-                           VerticalAlignment="Center" IsVisible="{Binding IsSyncing}" 
-                           ZIndex="110"></TextBlock>
+                           VerticalAlignment="Center" IsVisible="{Binding IsSyncing}"
+                           ZIndex="110" />
             </StackPanel>
         </Border>
-        
+
         <TabControl Grid.Column="0" Grid.Row="0">
             <TabItem Header="Parameters">
                 <Grid ColumnDefinitions="*"
@@ -76,8 +76,8 @@
                             <Button.IsEnabled>
                                 <MultiBinding Converter="{x:Static BoolConverters.And}">
                                     <MultiBinding.Bindings>
-                                        <Binding Path="Connected"/>
-                                        <Binding Path = "!IsSyncing"></Binding>
+                                        <Binding Path="Connected" />
+                                        <Binding Path="!IsSyncing" />
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </Button.IsEnabled>
@@ -87,8 +87,8 @@
                             <Button.IsEnabled>
                                 <MultiBinding Converter="{x:Static BoolConverters.And}">
                                     <MultiBinding.Bindings>
-                                        <Binding Path="Connected"/>
-                                        <Binding Path = "!IsSyncing"></Binding>
+                                        <Binding Path="Connected" />
+                                        <Binding Path="!IsSyncing" />
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </Button.IsEnabled>
@@ -98,8 +98,8 @@
                             <Button.IsEnabled>
                                 <MultiBinding Converter="{x:Static BoolConverters.And}">
                                     <MultiBinding.Bindings>
-                                        <Binding Path="Connected"/>
-                                        <Binding Path = "!IsSyncing"></Binding>
+                                        <Binding Path="Connected" />
+                                        <Binding Path="!IsSyncing" />
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </Button.IsEnabled>
@@ -111,8 +111,8 @@
                             <Button.IsEnabled>
                                 <MultiBinding Converter="{x:Static BoolConverters.And}">
                                     <MultiBinding.Bindings>
-                                        <Binding Path="Connected"/>
-                                        <Binding Path = "!IsSyncing"></Binding>
+                                        <Binding Path="Connected" />
+                                        <Binding Path="!IsSyncing" />
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </Button.IsEnabled>
@@ -122,9 +122,9 @@
                             <Button.IsEnabled>
                                 <MultiBinding Converter="{x:Static BoolConverters.And}">
                                     <MultiBinding.Bindings>
-                                        <Binding Path="Connected"/>
-                                        <Binding Path = "!IsSyncing"/>
-                                        <Binding Path="CurrentPartIsNotCommonPart"/>
+                                        <Binding Path="Connected" />
+                                        <Binding Path="!IsSyncing" />
+                                        <Binding Path="CurrentPartIsNotCommonPart" />
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </Button.IsEnabled>
@@ -318,7 +318,7 @@
                                                     TabStripPlacement="Left">
                                                     <TabControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock Text="{Binding Header}"></TextBlock>
+                                                            <TextBlock Text="{Binding Header}" />
                                                         </DataTemplate>
                                                     </TabControl.ItemTemplate>
                                                     <TabControl.ContentTemplate>
@@ -336,7 +336,7 @@
                                                     TabStripPlacement="Left">
                                                     <TabControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock Text="{Binding Header}"></TextBlock>
+                                                            <TextBlock Text="{Binding Header}" />
                                                         </DataTemplate>
                                                     </TabControl.ItemTemplate>
                                                     <TabControl.ContentTemplate>
@@ -355,7 +355,7 @@
                                                     TabStripPlacement="Left">
                                                     <TabControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock Text="{Binding Header}"></TextBlock>
+                                                            <TextBlock Text="{Binding Header}" />
                                                         </DataTemplate>
                                                     </TabControl.ItemTemplate>
                                                     <TabControl.ContentTemplate>
@@ -374,7 +374,7 @@
                                                     TabStripPlacement="Left">
                                                     <TabControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock Text="{Binding Header}"></TextBlock>
+                                                            <TextBlock Text="{Binding Header}" />
                                                         </DataTemplate>
                                                     </TabControl.ItemTemplate>
                                                     <TabControl.ContentTemplate>
@@ -395,7 +395,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="SRX Loader">
-                <local:SrxSelector></local:SrxSelector>
+                <local:SrxSelector />
             </TabItem>
         </TabControl>
     </Grid>

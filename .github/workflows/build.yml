@@ -30,5 +30,12 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release
 
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifacts
+          path: |
+            **/Src/bin/Release/net8.0/**  # Adjust the path to your build output
+
 #      - name: Run tests
 #        run: dotnet test --configuration Release

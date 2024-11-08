@@ -6,6 +6,7 @@ Current functionality
  - At the moment all documented parameters are exposed and you can load SRX/EnSNx from the UI.
  - If you edit something on the integra-7, the tool updates its ui to show the changes
  - Vice versa, if you edit a parameter in the tool, it is sent to the integra-7
+ - After editing a tone you can save it on the integra-7 as a user preset
 
 # Some screenshots:
 

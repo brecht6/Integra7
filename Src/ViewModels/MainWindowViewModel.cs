@@ -41,7 +41,7 @@ public partial class MainWindowViewModel : ViewModelBase
         }
     }
 
-    private int _syncLevels;
+    private int _syncLevels = 0;
 
     public ReadOnlyObservableCollection<PartViewModel> PartViewModels { get; private set; }
 
@@ -154,13 +154,20 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         IsSyncing = true;
         _syncLevels = _syncLevels + 1;
+        Log.Debug($"Start Sync. Sync level is now {_syncLevels}.");
     }
 
     private void SignalStopSync()
     {
         _syncLevels = _syncLevels - 1;
+        if (_syncLevels < 0) // happens when starting the program while integra-7 is not switched on/connected
+        {
+            _syncLevels = 0;
+        }
+        Log.Debug($"Stop Sync. Sync level is now {_syncLevels}.");
         if (_syncLevels == 0)
         {
+            Log.Debug($"Hide Sync notification.");
             IsSyncing = false;
             SyncInfo = "";
         }

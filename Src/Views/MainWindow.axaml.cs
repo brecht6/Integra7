@@ -38,7 +38,7 @@ public partial class MainWindow : AppWindow, IViewFor<MainWindowViewModel>
             action(ViewModel!.ShowSaveUserToneDialog.RegisterHandler(DoShowDialogAsync)));
     }
 
-    private async Task DoShowDialogAsync(InteractionContext<SaveUserToneViewModel,
+    private async Task DoShowDialogAsync(IInteractionContext<SaveUserToneViewModel,
         UserToneToSave?> interaction)
     {
         var dialog = new SaveUserToneDialog();

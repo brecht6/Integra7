@@ -38,7 +38,7 @@ jobs:
         with:
           name: build-artifacts
           path: |
-            ${{ github.workspace }}/Src/bin/Release/net8.0/  # Adjust the path to your build output
+            ${{ github.workspace }}/../Src/bin/Release/net8.0/  # Adjust the path to your build output
 
 #      - name: Run tests
 #        run: dotnet test --configuration Release

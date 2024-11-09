@@ -38,7 +38,7 @@ jobs:
         with:
           name: build-artifacts
           path: |
-            /home/runner/work/Integra7AuralAlchemist/Integra7AuralAlchemist/Src/bin/Release/net8.0/
+             ${{ github.workspace }}/Src/bin/Release/net8.0/
 
 #      - name: Run tests
 #        run: dotnet test --configuration Release

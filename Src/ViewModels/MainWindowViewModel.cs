@@ -80,8 +80,11 @@ public partial class MainWindowViewModel : ViewModelBase
         if (tone != null)
             if (_integra7Communicator != null)
             {
+                string name = tone.NewName;
+                if (name.Length > 12)
+                    name = name.Substring(0, 12);
                 await Integra7?.WriteToneToUserMemory(_integra7Communicator, toneType,
-                    (byte)(_currentPartSelection - 1), tone.NewName, tone.ZeroBasedMemoryId);
+                    (byte)(_currentPartSelection - 1), name, tone.ZeroBasedMemoryId);
 
                 // also update name in preset list
                 var presetId = -1;
@@ -89,7 +92,7 @@ public partial class MainWindowViewModel : ViewModelBase
                     if (p.ToneTypeStr == toneType && p.InternalUserDefinedStr == "USR")
                     {
                         presetId++;
-                        if (presetId == tone.ZeroBasedMemoryId) p.Name = tone.NewName;
+                        if (presetId == tone.ZeroBasedMemoryId) p.Name = name;
                     }
             }
     }

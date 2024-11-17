@@ -8,6 +8,12 @@ Current functionality
  - Vice versa, if you edit a parameter in the tool, it is sent to the integra-7
  - After editing a tone you can save it on the integra-7 as a user preset
 
+# How to build and run from source code
+
+- First install jetbrains rider from https://www.jetbrains.com/rider/ It's free for non-commercial use nowadays.
+- In rider, open the solution file Integra7AuralAlchemist.sln
+- In the *run* menu of rider, click run. The tool should build in a few seconds and then start.
+
 # Some screenshots:
 
 Example of how parameters are exposed for a SuperNATURAL Drum kit (the other types of instruments are supported too)

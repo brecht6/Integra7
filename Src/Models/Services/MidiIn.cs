@@ -20,7 +20,7 @@ public interface IMidiIn
 
 public class MidiIn : IMidiIn
 {
-    private readonly IMidiAccess2? _midiAccessManager;
+    private readonly IMidiAccess? _midiAccessManager;
     private readonly IMidiInput? _access;
     private readonly IMidiPortDetails? _midiPortDetails;
     private bool _manualReplyHandling;
@@ -46,7 +46,7 @@ public class MidiIn : IMidiIn
 
     public MidiIn(string Name)
     {
-        _midiAccessManager = MidiAccessManager.Default as IMidiAccess2;
+        _midiAccessManager = MidiAccessManager.Default;
         _lastEventHandler = DefaultHandler;
         _manualReplyHandling = false;
         try

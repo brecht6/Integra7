@@ -13,7 +13,7 @@ public interface IMidiOut
 
 public class MidiOut : IMidiOut
 {
-    private readonly IMidiAccess2? _midiAccessManager;
+    private readonly IMidiAccess? _midiAccessManager;
     private IMidiOutput? _access;
     private IMidiPortDetails? _midiPortDetails;
 #if DEBUG
@@ -23,7 +23,7 @@ public class MidiOut : IMidiOut
 #endif
     public MidiOut(string Name)
     {
-        _midiAccessManager = MidiAccessManager.Default as IMidiAccess2;
+        _midiAccessManager = MidiAccessManager.Default;
         try
         {
             var outputs = _midiAccessManager?.Outputs.Where(x => x.Name.Contains(Name));

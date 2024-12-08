@@ -99,7 +99,7 @@ public static class DataTemplateProvider
             s.ValueChanged += (s, e) =>
             {
                 //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
-                MessageBus.Current.SendMessage(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
+                MessageBus.Current.SendMessage(new UpdateMessageSpec(p, $"{e.NewValue:0.##}"), "ui2hw");
             };
             TextBlock v = new()
             {
@@ -107,7 +107,8 @@ public static class DataTemplateProvider
                 [!TextBlock.TextProperty] = new Binding
                 {
                     Source = s,
-                    Path = nameof(s.Value)
+                    Path = nameof(s.Value),
+                    StringFormat = "0.##"
                 }
             };
             StackPanel pan = new()
@@ -154,7 +155,7 @@ public static class DataTemplateProvider
             s.ValueChanged += (s, e) =>
             {
                 //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
-                MessageBus.Current.SendMessage(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
+                MessageBus.Current.SendMessage(new UpdateMessageSpec(p, $"{e.NewValue:0.##}"), "ui2hw");
             };
             TextBlock v = new()
             {
@@ -162,7 +163,8 @@ public static class DataTemplateProvider
                 [!TextBlock.TextProperty] = new Binding
                 {
                     Source = s,
-                    Path = nameof(s.Value)
+                    Path = nameof(s.Value),
+                    StringFormat = "0.##"
                 }
             };
             StackPanel pan = new()
@@ -201,7 +203,7 @@ public static class DataTemplateProvider
             s.ValueChanged += (s, e) =>
             {
                 //Debug.WriteLine($"{p.ParSpec.Path} changed from \"{e.OldValue}\" to \"{e.NewValue}\"");
-                MessageBus.Current.SendMessage(new UpdateMessageSpec(p, $"{e.NewValue}"), "ui2hw");
+                MessageBus.Current.SendMessage(new UpdateMessageSpec(p, $"{e.NewValue:0.##}"), "ui2hw");
             };
             TextBlock v = new()
             {
@@ -209,7 +211,8 @@ public static class DataTemplateProvider
                 [!TextBlock.TextProperty] = new Binding
                 {
                     Source = s,
-                    Path = nameof(s.Value)
+                    Path = nameof(s.Value),
+                    StringFormat = "0.##"                    
                 }
             };
             StackPanel pan = new()

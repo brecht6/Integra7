@@ -1,6 +1,6 @@
 # Integra-7 Aural Alchemist
 
-A cross-platform editor (only tested on linux so far) for the Roland Integra-7 parameters.
+A cross-platform editor (works on linux and windows so far) for the Roland Integra-7 parameters.
 
 Current functionality
  - At the moment all documented parameters are exposed and you can load SRX/EnSNx from the UI.
